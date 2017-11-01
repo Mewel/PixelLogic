@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="de.mewel.pixellogic.util.PixelLogicSolverTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2017-10-30T15:50:57" hostname="ulbp-me" time="0.002">
+  <properties/>
+  <testcase name="solve" classname="de.mewel.pixellogic.util.PixelLogicSolverTest" time="0.002"/>
+  <system-out><![CDATA[xxxox
+ooooo
+?xxo?
+?ooo?
+xxxox
+
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
