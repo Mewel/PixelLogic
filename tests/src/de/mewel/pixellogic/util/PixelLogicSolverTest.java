@@ -8,6 +8,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertArrayEquals;
 
 
@@ -113,6 +114,51 @@ public class PixelLogicSolverTest {
         line = new Boolean[]{null, true, null, null, null, true, null};
         assertTrue("there should be changes", solver.checkLine(line, Arrays.asList(1, 2)));
         assertArrayEquals(new Boolean[]{false, true, false, false, null, true, null}, line);
+    }
+
+    @Test
+    public void blockLeft() {
+        PixelLogicSolver solver = new PixelLogicSolver();
+
+        // easy test
+        Boolean[] line = new Boolean[]{null, null, true, null};
+        List<PixelLogicSolver.LinePart> connectedParts = solver.splitOnNotConnected(line);
+        assertTrue("there should be changes", solver.blockLeft(line, connectedParts, Arrays.asList(2)));
+        assertArrayEquals(new Boolean[]{false, null, true, null}, line);
+
+        // test with already blocked
+        line = new Boolean[]{null, false, null, true, null};
+        connectedParts = solver.splitOnNotConnected(line);
+        assertTrue("there should be changes", solver.blockLeft(line, connectedParts, Arrays.asList(2)));
+        assertArrayEquals(new Boolean[]{false, false, null, true, null}, line);
+
+        // just one is missing
+        line = new Boolean[]{null, null, null, null, true, null, null, null, true, true, true};
+        connectedParts = solver.splitOnNotConnected(line);
+        assertTrue("there should be changes", solver.blockLeft(line, connectedParts, Arrays.asList(2, 3)));
+        assertArrayEquals(new Boolean[]{false, false, false, null, true, null, null, null, true, true, true}, line);
+
+        // we don't know yet -> cannot block left
+        line = new Boolean[]{null, null, null, null, true, null, null, null, null};
+        connectedParts = solver.splitOnNotConnected(line);
+        assertFalse("there shouldn't be changes", solver.blockLeft(line, connectedParts, Arrays.asList(2, 2)));
+        assertArrayEquals(new Boolean[]{null, null, null, null, true, null, null, null, null}, line);
+
+        line = new Boolean[]{null, null, null, true, true, true, null, null, null};
+        connectedParts = solver.splitOnNotConnected(line);
+        assertFalse("there shouldn't be changes", solver.blockLeft(line, connectedParts, Arrays.asList(2, 3)));
+        assertArrayEquals(new Boolean[]{null, null, null, true, true, true, null, null, null}, line);
+
+        // test the first is already filled
+        line = new Boolean[]{null, null, null, true, true, null, null, null};
+        connectedParts = solver.splitOnNotConnected(line);
+        assertTrue("there should be changes", solver.blockLeft(line, connectedParts, Arrays.asList(2, 1)));
+        assertArrayEquals(new Boolean[]{false, false, false, true, true, null, null, null}, line);
+
+        line = new Boolean[]{null, null, null, true, true, null, null, null};
+        connectedParts = solver.splitOnNotConnected(line);
+        assertFalse("there shouldn't be changes", solver.blockLeft(line, connectedParts, Arrays.asList(2, 2, 1)));
+        assertArrayEquals(new Boolean[]{null, null, null, true, true, null, null, null}, line);
     }
 
 }

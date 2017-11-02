@@ -81,10 +81,11 @@ public class PixelLogicSolver {
             return changed;
         }
         // block left & right
-        /*if (blockLeft(line, numbers.get(0))) {
+        List<LinePart> connectedParts = splitOnNotConnected(line);
+        if (blockLeft(line, connectedParts, numbers)) {
             changed = true;
         }
-        if (blockRight(line, numbers.get(numbers.size() - 1))) {
+        /*if (blockRight(line, numbers.get(numbers.size() - 1))) {
             changed = true;
         }*/
 
@@ -124,7 +125,7 @@ public class PixelLogicSolver {
         if (part != null) {
             addPart(line, parts, part, line.length);
         }
-        return null;
+        return parts;
     }
 
     private LinePart getPart(Boolean[] line, List<LinePart> parts, LinePart part, int lineIndex, boolean pixelType) {
@@ -163,10 +164,76 @@ public class PixelLogicSolver {
         return column;
     }
 
-    private boolean blockLeft(Boolean[] line, int number) {
+    boolean blockLeft(Boolean[] line, List<LinePart> connectedParts, List<Integer> numbers) {
+        if (numbers.isEmpty()) {
+            return false;
+        }
+        int number = numbers.get(0);
+        // no connected parts -> cannot block anything
+        if (connectedParts.isEmpty()) {
+            return false;
+        }
+        LinePart firstPart = connectedParts.get(0);
+        int alreadyFilled = firstPart.pixels.length;
+        // the "current" first part is not the actual first part and we cannot block anything
+        // of position 0 and 1.
+        if (alreadyFilled > number || firstPart.start <= 1) {
+            return false;
+        }
+
+        // all connected parts are on their respective position -> we know that the firstPart
+        // is really the first part
+        if(numbers.size() == connectedParts.size()) {
+            int toFill = number - alreadyFilled;
+            int blockTo = firstPart.start - toFill;
+            boolean changed = false;
+            for(int lineIndex = 0; lineIndex < blockTo; lineIndex++) {
+                if(line[lineIndex] == null) {
+                    line[lineIndex] = false;
+                    changed = true;
+                }
+            }
+            return changed;
+        }
+
+        // the first part
+        boolean canFitBefore = getMaxFreeConnectedPixel(line, 0, firstPart.start - 1) >= number;
+
+
+        // if there are enough free pixels to fit the actual first number and
+        if (canFitBefore) {
+            // change it
+
+            return true;
+        }
+
+        //boolean numberFitsInLeftPart = false;
+        //int firstFilled = firstPart.pixels.length;
+
         return false;
     }
 
+    /**
+     * Returns the maximum amount of free pixel in the given range.
+     *
+     * @param line the line to check
+     * @param from the start inclusive
+     * @param to   the end exclusive
+     * @return number of free connected pixels in this range
+     */
+    private int getMaxFreeConnectedPixel(Boolean line[], int from, int to) {
+        int freePixel = 0;
+        int maxFreePixel = 0;
+        for (int lineIndex = from; lineIndex < to; lineIndex++) {
+            if (line[lineIndex] == null) {
+                freePixel++;
+            } else {
+                maxFreePixel = freePixel > maxFreePixel ? freePixel : maxFreePixel;
+                freePixel = 0;
+            }
+        }
+        return freePixel > maxFreePixel ? freePixel : maxFreePixel;
+    }
 
     static class LinePart {
 
