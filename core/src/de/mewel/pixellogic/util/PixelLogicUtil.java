@@ -1,5 +1,7 @@
 package de.mewel.pixellogic.util;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +83,14 @@ public class PixelLogicUtil {
             }
         }
         return true;
+    }
+
+    public static Boolean[] invert(Boolean[] line) {
+        Boolean[] invertedLine = new Boolean[line.length];
+        for (int i = 0; i < line.length; i++) {
+            invertedLine[line.length - 1 - i] = line[i];
+        }
+        return invertedLine;
     }
 
     public static boolean[][] sampleLevel() {

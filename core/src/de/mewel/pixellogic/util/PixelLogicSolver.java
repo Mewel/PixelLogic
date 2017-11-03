@@ -3,7 +3,9 @@ package de.mewel.pixellogic.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Solves a pixel logic game.
@@ -81,15 +83,46 @@ public class PixelLogicSolver {
             return changed;
         }
         // block left & right
-        List<LinePart> connectedParts = splitOnNotConnected(line);
+        /*List<LinePart> connectedParts = splitOnNotConnected(line);
         if (blockLeft(line, connectedParts, numbers)) {
             changed = true;
-        }
+        }*/
         /*if (blockRight(line, numbers.get(numbers.size() - 1))) {
             changed = true;
         }*/
+        if (blockLine(line, numbers)) {
+            changed = true;
+        }
 
         return changed;
+    }
+
+    boolean blockLine(Boolean[] line, List<Integer> numbers) {
+        List<NumberPart> numberParts = new ArrayList<NumberPart>(numbers.size());
+        for (int numberIndex = 0; numberIndex < numbers.size(); numberIndex++) {
+            List<Integer> left = new ArrayList<Integer>(numbers.subList(0, numberIndex));
+            List<Integer> right = new ArrayList<Integer>(numbers.subList(numberIndex + 1, numbers.size()));
+
+            int pixelsToAdd = numbers.get(numberIndex);
+            int start = getNumberLength(left) + left.size();
+            int end = line.length - (getNumberLength(right) + right.size());
+            numberParts.add(new NumberPart(start, end, pixelsToAdd));
+        }
+
+        boolean changed;
+        do {
+            changed = false;
+            for (int i = 0; i < numberParts.size(); i++) {
+                NumberPart part = numberParts.get(i);
+                NumberPart leftPart = i > 0 ? numberParts.get(i - 1) : null;
+                NumberPart rightPart = i < (numberParts.size() - 1) ? numberParts.get(i + 1) : null;
+                if (part.update(line, leftPart, rightPart)) {
+                    changed = true;
+                }
+            }
+        } while (changed);
+
+        return NumberPart.block(line, numberParts);
     }
 
     /**
@@ -164,6 +197,7 @@ public class PixelLogicSolver {
         return column;
     }
 
+/*
     boolean blockLeft(Boolean[] line, List<LinePart> connectedParts, List<Integer> numbers) {
         if (numbers.isEmpty()) {
             return false;
@@ -181,37 +215,37 @@ public class PixelLogicSolver {
             return false;
         }
 
-        // all connected parts are on their respective position -> we know that the firstPart
-        // is really the first part
-        if(numbers.size() == connectedParts.size()) {
-            int toFill = number - alreadyFilled;
-            int blockTo = firstPart.start - toFill;
-            boolean changed = false;
-            for(int lineIndex = 0; lineIndex < blockTo; lineIndex++) {
-                if(line[lineIndex] == null) {
-                    line[lineIndex] = false;
-                    changed = true;
-                }
-            }
-            return changed;
-        }
-
         // the first part
         boolean canFitBefore = getMaxFreeConnectedPixel(line, 0, firstPart.start - 1) >= number;
 
-
         // if there are enough free pixels to fit the actual first number and
-        if (canFitBefore) {
-            // change it
-
-            return true;
+        if (canFitBefore && firstPart.pixels.length > numbers.get(1)) {
+            return false;
         }
 
         //boolean numberFitsInLeftPart = false;
         //int firstFilled = firstPart.pixels.length;
 
-        return false;
+        // all connected parts are on their respective position -> we know that the firstPart
+        // is really the first part
+        if(numbers.size() != connectedParts.size()) {
+
+        }
+
+
+        boolean changed = false;
+        int toFill = number - alreadyFilled;
+        int blockTo = firstPart.start - toFill;
+        for(int lineIndex = 0; lineIndex < blockTo; lineIndex++) {
+            if(line[lineIndex] == null) {
+                line[lineIndex] = false;
+                changed = true;
+            }
+        }
+        return changed;
     }
+*/
+
 
     /**
      * Returns the maximum amount of free pixel in the given range.
@@ -233,6 +267,14 @@ public class PixelLogicSolver {
             }
         }
         return freePixel > maxFreePixel ? freePixel : maxFreePixel;
+    }
+
+    private int getFilledPixels(Boolean[] line) {
+        int filledPixel = 0;
+        for (Boolean pixel : line) {
+            filledPixel += (pixel != null && pixel) ? 1 : 0;
+        }
+        return filledPixel;
     }
 
     static class LinePart {
@@ -354,12 +396,115 @@ public class PixelLogicSolver {
         }
     }
 
-    private int getFilledPixels(Boolean[] line) {
-        int filledPixel = 0;
-        for (Boolean pixel : line) {
-            filledPixel += (pixel != null && pixel) ? 1 : 0;
+    static class NumberPart {
+
+        int start, end, amount;
+
+        public NumberPart(int start, int end, int amount) {
+            this.start = start;
+            this.end = end;
+            this.amount = amount;
         }
-        return filledPixel;
+
+        public boolean update(Boolean[] line, NumberPart leftPart, NumberPart rightPart) {
+            boolean changed = false;
+            if (this.updateFitting(line)) {
+                changed = true;
+            }
+            if (this.updateLeft(leftPart)) {
+                changed = true;
+            }
+            if (this.updateRight(rightPart)) {
+                changed = true;
+            }
+            if (this.updateFitting(line)) {
+                changed = true;
+            }
+            return changed;
+        }
+
+        public boolean updateLeft(NumberPart leftPart) {
+            if (leftPart == null) {
+                return false;
+            }
+            int minLeft = leftPart.start + leftPart.amount + 1;
+            if (minLeft > this.start) {
+                this.start = minLeft;
+                return true;
+            }
+            return false;
+        }
+
+        public boolean updateRight(NumberPart rightPart) {
+            if (rightPart == null) {
+                return false;
+            }
+            int minRight = rightPart.end - (rightPart.amount + 1);
+            if (minRight < this.end) {
+                this.end = minRight;
+                return true;
+            }
+            return false;
+        }
+
+        public boolean updateFitting(Boolean[] line) {
+            int newStart = fitFirst(line, this.start, this.end, this.amount);
+            int newEnd = line.length - fitFirst(PixelLogicUtil.invert(line),
+                    line.length - end, line.length - start, this.amount);
+            boolean changed = false;
+            if (this.start != newStart) {
+                this.start = newStart;
+                changed = true;
+            }
+            if (this.end != newEnd) {
+                this.end = newEnd;
+                changed = true;
+            }
+            return changed;
+        }
+
+        int fitFirst(Boolean[] line, int start, int end, int pixel) {
+            for (int lineIndex = start; lineIndex < (end - pixel); lineIndex++) {
+                boolean fitSubLine = true;
+                for (int subLineIndex = lineIndex; subLineIndex < (lineIndex + pixel); subLineIndex++) {
+                    if (line[subLineIndex] != null && !line[subLineIndex]) {
+                        fitSubLine = false;
+                        break;
+                    }
+                }
+                if (fitSubLine) {
+                    return lineIndex;
+                }
+            }
+            throw new IllegalArgumentException("Does not fit at all. This should never happen!");
+        }
+
+        @Override
+        public String toString() {
+            return "s: " + start + " e: " + end + " a: " + amount;
+        }
+
+        public static boolean block(Boolean[] line, List<NumberPart> numberParts) {
+            Set<Integer> dontBlock = new HashSet<Integer>();
+            for (NumberPart part : numberParts) {
+                for (int i = part.start; i < part.end; i++) {
+                    dontBlock.add(i);
+                }
+            }
+
+            boolean changed = false;
+            for (int lineIndex = 0; lineIndex < line.length; lineIndex++) {
+                if (dontBlock.contains(lineIndex)) {
+                    continue;
+                }
+                if (line[lineIndex] == null) {
+                    line[lineIndex] = false;
+                    changed = true;
+                }
+            }
+            return changed;
+        }
+
     }
 
     /*

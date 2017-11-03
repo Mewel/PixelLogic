@@ -117,6 +117,28 @@ public class PixelLogicSolverTest {
     }
 
     @Test
+    public void blockLine() {
+        PixelLogicSolver solver = new PixelLogicSolver();
+
+        // easy test
+        Boolean[] line = new Boolean[]{null, null, true, null};
+        List<PixelLogicSolver.LinePart> connectedParts = solver.splitOnNotConnected(line);
+        assertTrue("there should be changes", solver.blockLine(line, Arrays.asList(2)));
+        assertArrayEquals(new Boolean[]{false, null, true, null}, line);
+
+        line = new Boolean[]{null, null, null, true, true, null, null, null};
+        connectedParts = solver.splitOnNotConnected(line);
+        assertFalse("there shouldn't be changes", solver.blockLine(line, Arrays.asList(2, 2, 1)));
+        assertArrayEquals(new Boolean[]{null, null, null, true, true, null, null, null}, line);
+
+        // complex test
+        line = new Boolean[]{null, false, null, true, null, false, null, false, null, null, null, false, null};
+        solver.blockLine(line, Arrays.asList(2, 2));
+        assertArrayEquals(new Boolean[]{false, false, null, true, null, false, false, false, null, null, null, false, false}, line);
+    }
+
+/*
+    @Test
     public void blockLeft() {
         PixelLogicSolver solver = new PixelLogicSolver();
 
@@ -159,6 +181,12 @@ public class PixelLogicSolverTest {
         connectedParts = solver.splitOnNotConnected(line);
         assertFalse("there shouldn't be changes", solver.blockLeft(line, connectedParts, Arrays.asList(2, 2, 1)));
         assertArrayEquals(new Boolean[]{null, null, null, true, true, null, null, null}, line);
-    }
 
+        // test the first part cannot fit into to left
+        line = new Boolean[]{null, false, null, false, null, null, null, null};
+        connectedParts = solver.splitOnNotConnected(line);
+        assertFalse("there should be changes", solver.blockLeft(line, connectedParts, Arrays.asList(2)));
+        assertArrayEquals(new Boolean[]{false, false, false, false, null, null, null, null}, line);
+    }
+*/
 }
