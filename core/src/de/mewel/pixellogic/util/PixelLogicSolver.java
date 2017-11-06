@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.sound.sampled.Line;
+
 /**
  * Solves a pixel logic game.
  */
@@ -106,7 +108,7 @@ public class PixelLogicSolver {
             int pixelsToAdd = numbers.get(numberIndex);
             int start = getNumberLength(left) + left.size();
             int end = line.length - (getNumberLength(right) + right.size());
-            numberParts.add(new NumberPart(start, end, pixelsToAdd));
+            numberParts.add(new NumberPart(line, start, end, pixelsToAdd, numberIndex));
         }
 
         boolean changed;
@@ -114,9 +116,7 @@ public class PixelLogicSolver {
             changed = false;
             for (int i = 0; i < numberParts.size(); i++) {
                 NumberPart part = numberParts.get(i);
-                NumberPart leftPart = i > 0 ? numberParts.get(i - 1) : null;
-                NumberPart rightPart = i < (numberParts.size() - 1) ? numberParts.get(i + 1) : null;
-                if (part.update(line, leftPart, rightPart)) {
+                if (part.update(numberParts)) {
                     changed = true;
                 }
             }
@@ -135,7 +135,7 @@ public class PixelLogicSolver {
      * @param end   where to stop exclusive
      * @return list of line parts
      */
-    List<LinePart> splitOnBlocked(Boolean[] line, int start, int end) {
+    static List<LinePart> splitOnBlocked(Boolean[] line, int start, int end) {
         List<LinePart> parts = new ArrayList<LinePart>();
         LinePart part = null;
         for (int lineIndex = start; lineIndex < end; lineIndex++) {
@@ -148,10 +148,10 @@ public class PixelLogicSolver {
         return parts;
     }
 
-    List<LinePart> splitOnNotConnected(Boolean[] line) {
+    static List<LinePart> splitOnNotConnected(Boolean[] line, int start, int end) {
         List<LinePart> parts = new ArrayList<LinePart>();
         LinePart part = null;
-        for (int lineIndex = 0; lineIndex < line.length; lineIndex++) {
+        for (int lineIndex = start; lineIndex < end; lineIndex++) {
             boolean filled = line[lineIndex] != null && line[lineIndex];
             part = getPart(line, parts, part, lineIndex, filled);
         }
@@ -161,7 +161,7 @@ public class PixelLogicSolver {
         return parts;
     }
 
-    private LinePart getPart(Boolean[] line, List<LinePart> parts, LinePart part, int lineIndex, boolean pixelType) {
+    private static LinePart getPart(Boolean[] line, List<LinePart> parts, LinePart part, int lineIndex, boolean pixelType) {
         if (part == null && pixelType) {
             part = new LinePart();
             part.start = lineIndex;
@@ -174,7 +174,7 @@ public class PixelLogicSolver {
         return part;
     }
 
-    private void addPart(Boolean[] line, List<LinePart> parts, LinePart part, int lineIndex) {
+    private static void addPart(Boolean[] line, List<LinePart> parts, LinePart part, int lineIndex) {
         int size = lineIndex - part.start;
         part.pixels = new Boolean[size];
         System.arraycopy(line, part.start, part.pixels, 0, size);
@@ -398,17 +398,35 @@ public class PixelLogicSolver {
 
     static class NumberPart {
 
-        int start, end, amount;
+        Boolean[] line;
 
-        public NumberPart(int start, int end, int amount) {
+        int start, end, amount, index;
+
+        /**
+         * Creates a new number part.
+         *
+         * @param line   the line
+         * @param start  start inclusive
+         * @param end    end exclusive
+         * @param amount amount of pixel to fill
+         */
+        public NumberPart(Boolean[] line, int start, int end, int amount, int index) {
+            this.line = line;
             this.start = start;
             this.end = end;
             this.amount = amount;
+            this.index = index;
         }
 
-        public boolean update(Boolean[] line, NumberPart leftPart, NumberPart rightPart) {
+        public boolean isComplete() {
+            return end - start == amount;
+        }
+
+        public boolean update(List<NumberPart> numberParts) {
+            NumberPart leftPart = index > 0 ? numberParts.get(index - 1) : null;
+            NumberPart rightPart = index < (numberParts.size() - 1) ? numberParts.get(index + 1) : null;
             boolean changed = false;
-            if (this.updateFitting(line)) {
+            if (this.updateFitting()) {
                 changed = true;
             }
             if (this.updateLeft(leftPart)) {
@@ -417,8 +435,26 @@ public class PixelLogicSolver {
             if (this.updateRight(rightPart)) {
                 changed = true;
             }
-            if (this.updateFitting(line)) {
+            if (this.updateFitting()) {
                 changed = true;
+            }
+            LinePart part = getUniqueFilledPart();
+            if (part != null) {
+                boolean hasPart = false;
+                for (int i = 0; i < numberParts.size(); i++) {
+                    if (i == index) {
+                        continue;
+                    }
+                    NumberPart otherPart = numberParts.get(i);
+                    if (part.start + part.pixels.length > otherPart.start || otherPart.end > part.start) {
+                        hasPart = true;
+                        break;
+                    }
+                }
+                if (!hasPart) {
+                    int toFill = this.amount - part.pixels.length;
+                    updateStartAndEnd(part.start - toFill, part.start + part.pixels.length + toFill);
+                }
             }
             return changed;
         }
@@ -427,36 +463,38 @@ public class PixelLogicSolver {
             if (leftPart == null) {
                 return false;
             }
-            int minLeft = leftPart.start + leftPart.amount + 1;
-            if (minLeft > this.start) {
-                this.start = minLeft;
-                return true;
-            }
-            return false;
+            return updateStartAndEnd(leftPart.start + leftPart.amount + 1, this.end);
         }
 
         public boolean updateRight(NumberPart rightPart) {
             if (rightPart == null) {
                 return false;
             }
-            int minRight = rightPart.end - (rightPart.amount + 1);
-            if (minRight < this.end) {
-                this.end = minRight;
-                return true;
-            }
-            return false;
+            return updateStartAndEnd(this.start, rightPart.end - (rightPart.amount + 1));
         }
 
-        public boolean updateFitting(Boolean[] line) {
+        public boolean updateFitting() {
             int newStart = fitFirst(line, this.start, this.end, this.amount);
             int newEnd = line.length - fitFirst(PixelLogicUtil.invert(line),
                     line.length - end, line.length - start, this.amount);
+            return updateStartAndEnd(newStart, newEnd);
+        }
+
+        /**
+         * Updates the start and the end value if the new values are greater or lower than the
+         * current ones.
+         *
+         * @param newStart the new start, has to be greated than the current start to be accepted
+         * @param newEnd   the new end, has to be lower than the current end to be accepted
+         * @return true if one of start or end has changed
+         */
+        private boolean updateStartAndEnd(int newStart, int newEnd) {
             boolean changed = false;
-            if (this.start != newStart) {
+            if (this.start < newStart) {
                 this.start = newStart;
                 changed = true;
             }
-            if (this.end != newEnd) {
+            if (this.end > newEnd) {
                 this.end = newEnd;
                 changed = true;
             }
@@ -477,6 +515,19 @@ public class PixelLogicSolver {
                 }
             }
             throw new IllegalArgumentException("Does not fit at all. This should never happen!");
+        }
+
+        private LinePart getUniqueFilledPart() {
+            List<LinePart> thisFilledParts = splitOnNotConnected(this.line, this.start, this.end);
+            for(LinePart part : new ArrayList<LinePart>(thisFilledParts)) {
+                if(part.pixels.length > this.amount) {
+                    thisFilledParts.remove(part);
+                }
+            }
+            //List<LinePart> allFilledParts = splitOnNotConnected(this.line, 0, this.line.length);
+
+
+            return thisFilledParts.size() == 1 ? thisFilledParts.get(0) : null;
         }
 
         @Override
