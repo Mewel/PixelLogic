@@ -46,19 +46,20 @@ public class PixelLogicSolver2 {
             parts.add(new PixelLogicLinePart(line, numberIndex, start, end, pixelsToAdd));
         }
 
-        boolean updated = false;
+        // update boundaries (start end values)
         boolean changed;
         do {
             changed = false;
             for (PixelLogicLinePart part : parts) {
-                if (part.updateLine(parts)) {
+                if (part.updateBoundaries(parts)) {
                     changed = true;
-                    updated = true;
                 }
             }
         } while (changed);
 
-        return updated;
+        // fill pixels in line
+
+        return false;
     }
 
     private Boolean[] columnToLine(Boolean[][] level, int col) {

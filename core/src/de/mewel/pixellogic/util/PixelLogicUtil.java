@@ -1,7 +1,5 @@
 package de.mewel.pixellogic.util;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,36 +23,45 @@ public class PixelLogicUtil {
         return colData;
     }
 
-    public static List<Integer> getNumbersOfRow(boolean[][] level, int row) {
-        ArrayList<Integer> numbers = new ArrayList<Integer>();
-        int cols = level[0].length;
-        int consecutive = 0;
-        for (int col = 0; col < cols; col++) {
-            if (level[row][col]) {
-                consecutive++;
-                continue;
-            }
-            if (consecutive == 0) {
-                continue;
-            }
-            numbers.add(consecutive);
-            consecutive = 0;
-        }
-        if (consecutive != 0) {
-            numbers.add(consecutive);
-        }
-        if (numbers.isEmpty()) {
-            numbers.add(0);
-        }
-        return numbers;
+    public static List<Integer> getNumbersOfRow(boolean[][] level, int indexOfRow) {
+        boolean[] row = getRow(level, indexOfRow);
+        return getConnectedPixel(row);
     }
 
-    public static List<Integer> getNumbersOfCol(boolean[][] level, int col) {
-        ArrayList<Integer> numbers = new ArrayList<Integer>();
+    public static List<Integer> getNumbersOfCol(boolean[][] level, int indexOfColumn) {
+        boolean[] column = getColumn(level, indexOfColumn);
+        return getConnectedPixel(column);
+    }
+
+    public static boolean[] getRow(boolean[][] level, int row) {
+        int cols = level[0].length;
+        boolean[] line = new boolean[cols];
+        System.arraycopy(level[row], 0, line, 0, cols);
+        return line;
+    }
+
+    public static boolean[] getColumn(boolean[][] level, int column) {
         int rows = level.length;
-        int consecutive = 0;
+        boolean[] line = new boolean[rows];
         for (int row = 0; row < rows; row++) {
-            if (level[row][col]) {
+            line[row] = level[row][column];
+        }
+        return line;
+    }
+
+    public static boolean[] toLevelLine(Boolean[] line) {
+        boolean[] levelLine = new boolean[line.length];
+        for (int i = 0; i < line.length; i++) {
+            levelLine[i] = line[i] != null && line[i];
+        }
+        return levelLine;
+    }
+
+    public static List<Integer> getConnectedPixel(boolean[] line) {
+        List<Integer> numbers = new ArrayList<Integer>();
+        int consecutive = 0;
+        for (boolean pixel : line) {
+            if (pixel) {
                 consecutive++;
                 continue;
             }
@@ -85,6 +92,37 @@ public class PixelLogicUtil {
         return true;
     }
 
+    public static boolean isSolved(boolean[] line, List<Integer> numbers) {
+        List<Integer> connectedPixels = getConnectedPixel(line);
+        return compareNumberLists(connectedPixels, numbers);
+    }
+
+    public static boolean isSolved(Boolean[] line, List<Integer> numbers) {
+        if (line == null) {
+            return false;
+        }
+        boolean levelLine[] = PixelLogicUtil.toLevelLine(line);
+        return isSolved(levelLine, numbers);
+    }
+
+    public static int countPixel(List<Integer> numbers) {
+        int amount = 0;
+        for (Integer number : numbers) {
+            amount += number;
+        }
+        return amount;
+    }
+
+    public static int countPixel(Boolean[] line) {
+        int amount = 0;
+        for (Boolean pixel : line) {
+            if (pixel != null && pixel) {
+                amount++;
+            }
+        }
+        return amount;
+    }
+
     public static Boolean[] invert(Boolean[] line) {
         Boolean[] invertedLine = new Boolean[line.length];
         for (int i = 0; i < line.length; i++) {
@@ -113,4 +151,12 @@ public class PixelLogicUtil {
         };
     }
 
+    public static boolean differs(Boolean[] line, Boolean[] newLine) {
+        for (int i = 0; i < line.length; i++) {
+            if (line[i] != newLine[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
