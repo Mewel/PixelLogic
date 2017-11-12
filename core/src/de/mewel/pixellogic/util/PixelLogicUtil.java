@@ -92,6 +92,25 @@ public class PixelLogicUtil {
         return true;
     }
 
+    public static boolean isValid(Boolean[][] level) {
+        for (int col = 0; col < level[0].length; col++) {
+            Boolean[] line = columnToLine(level, col);
+            for (Boolean pixel : line) {
+                if (pixel == null) {
+                    return false;
+                }
+            }
+        }
+        for (Boolean[] line : level) {
+            for (Boolean pixel : line) {
+                if (pixel == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public static boolean isSolved(boolean[] line, List<Integer> numbers) {
         List<Integer> connectedPixels = getConnectedPixel(line);
         return compareNumberLists(connectedPixels, numbers);
@@ -122,6 +141,15 @@ public class PixelLogicUtil {
         }
         return amount;
     }
+
+    public static Boolean[] columnToLine(Boolean[][] level, int columnIndex) {
+        Boolean[] column = new Boolean[level.length];
+        for (int row = 0; row < level.length; row++) {
+            column[row] = level[row][columnIndex];
+        }
+        return column;
+    }
+
 
     public static Boolean[] invert(Boolean[] line) {
         Boolean[] invertedLine = new Boolean[line.length];

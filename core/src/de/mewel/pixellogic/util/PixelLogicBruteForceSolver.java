@@ -1,63 +1,121 @@
 package de.mewel.pixellogic.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PixelLogicBruteForceSolver {
 
-    public Boolean[] solveLine(Boolean[] line, List<Integer> numbers) {
-        return bruteForceLine(line, numbers, 0);
-    }
+    public Boolean[][] solve(List<List<Integer>> rowNumbers, List<List<Integer>> colNumbers) {
+        int rows = rowNumbers.size();
+        int cols = colNumbers.size();
 
-    public Boolean[] bruteForceLine(Boolean[] line, List<Integer> numbers, int startIndex) {
-        if (PixelLogicUtil.countPixel(line) >= PixelLogicUtil.countPixel(numbers)) {
-            return line;
-        }
-        Boolean[] mergedLine = line;
-        for (int amount = 1; amount < line.length; amount++) {
-            for (int index = startIndex; index < line.length - amount; index++) {
-                Boolean[] newLine = fillPixel(line, index, amount);
-                if (PixelLogicUtil.isSolved(newLine, numbers)) {
-                    mergedLine = mergeLines(mergedLine, newLine);
-                } else if (index + 1 < line.length) {
-                    newLine = bruteForceLine(newLine, numbers, index + 1);
-                    if (PixelLogicUtil.isSolved(newLine, numbers)) {
-                        mergedLine = mergedLine == null ? newLine : mergeLines(mergedLine, newLine);
+        Boolean[][] level = new Boolean[rows][cols];
+
+        boolean changed;
+        do {
+            changed = false;
+            for (int col = 0; col < cols; col++) {
+                Boolean[] line = PixelLogicUtil.columnToLine(level, col);
+                if (solveLine(line, colNumbers.get(col))) {
+                    for (int row = 0; row < level.length; row++) {
+                        level[row][col] = line[row];
                     }
+                    changed = true;
                 }
             }
+            for (int row = 0; row < rows; row++) {
+                if (solveLine(level[row], rowNumbers.get(row))) {
+                    changed = true;
+                }
+            }
+        } while (changed);
+        return level;
+    }
+
+    public boolean solveLine(Boolean[] line, List<Integer> numbers) {
+        // if line is solved -> fill null pixel's
+        if (PixelLogicUtil.isSolved(line, numbers)) {
+            return blockRestOfLine(line);
+        }
+        // brute force
+        List<Boolean[]> lines = bruteForceLine(line, numbers, 0);
+        Boolean[] newLine = mergeLines(lines);
+        if (newLine != null && PixelLogicUtil.differs(line, newLine)) {
+            System.arraycopy(newLine, 0, line, 0, newLine.length);
+            return true;
+        }
+        return false;
+    }
+
+    private List<Boolean[]> bruteForceLine(Boolean[] line, List<Integer> numbers, int startIndex) {
+        List<Boolean[]> lines = new ArrayList<Boolean[]>();
+        if (PixelLogicUtil.countPixel(line) >= PixelLogicUtil.countPixel(numbers)) {
+            return lines;
+        }
+        for (int index = startIndex; index < line.length; index++) {
+            Boolean[] newLine = fillPixel(line, index);
+            if (PixelLogicUtil.isSolved(newLine, numbers)) {
+                lines.add(newLine);
+            } else if (index + 1 < line.length) {
+                lines.addAll(bruteForceLine(newLine, numbers, index + 1));
+            }
+        }
+        return lines;
+    }
+
+    private Boolean[] mergeLines(List<Boolean[]> lines) {
+        if (lines.isEmpty()) {
+            return null;
+        }
+        if (lines.size() == 1) {
+            return lines.get(0);
+        }
+        Boolean[] firstLine = lines.get(0);
+        Boolean[] mergedLine = new Boolean[firstLine.length];
+        boolean alwaysTrue;
+        boolean alwaysNullOrFalse;
+        for (int lineIndex = 0; lineIndex < firstLine.length; lineIndex++) {
+            alwaysTrue = true;
+            alwaysNullOrFalse = true;
+            for (Boolean[] line : lines) {
+                if (line[lineIndex] != null && line[lineIndex]) {
+                    alwaysNullOrFalse = false;
+                }
+                if (line[lineIndex] == null || !line[lineIndex]) {
+                    alwaysTrue = false;
+                }
+                if (!alwaysTrue && !alwaysNullOrFalse) {
+                    break;
+                }
+            }
+            if (alwaysTrue) {
+                mergedLine[lineIndex] = true;
+            } else if (alwaysNullOrFalse) {
+                mergedLine[lineIndex] = false;
+            }
+
+            //mergedLine[lineIndex] = (alwaysTrue ? true : (alwaysNullOrFalse ? false : null));
         }
         return mergedLine;
     }
 
-    private Boolean[] mergeLines(Boolean[] line1, Boolean[] line2) {
-        Boolean[] mergedLine = new Boolean[line1.length];
-        for (int lineIndex = 0; lineIndex < line1.length; lineIndex++) {
-            if (line1[lineIndex] == null || line2[lineIndex] == null) {
-                continue;
-            }
-            if (line1[lineIndex] == line2[lineIndex]) {
-                mergedLine[lineIndex] = line1[lineIndex];
-            }
-        }
-        return mergedLine;
-    }
-
-    private Boolean[] fillPixel(Boolean[] line, int index, int amount) {
-        return addPixel(line, index, amount, true);
-    }
-
-    private Boolean[] blockPixel(Boolean[] line, int index, int amount) {
-        return addPixel(line, index, amount, false);
-    }
-
-    private Boolean[] addPixel(Boolean[] line, int index, int amount, boolean value) {
+    private Boolean[] fillPixel(Boolean[] line, int index) {
         Boolean[] copy = copyLine(line);
-        for (int i = index; i < index + amount; i++) {
-            if (line[i] == null) {
-                copy[i] = value;
-            }
+        if (line[index] == null) {
+            copy[index] = true;
         }
         return copy;
+    }
+
+    private boolean blockRestOfLine(Boolean[] line) {
+        boolean changed = false;
+        for (int i = 0; i < line.length; i++) {
+            if (line[i] == null) {
+                line[i] = false;
+                changed = true;
+            }
+        }
+        return changed;
     }
 
     private static Boolean[] copyLine(Boolean[] line) {
