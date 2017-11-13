@@ -63,15 +63,15 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
     private PixelLogicLevel level;
 
     public PixelLogicGameScreen() {
-        level = new PixelLogicLevel(PixelLogicUtil.invalidSampleLevel());
+        Gdx.input.setInputProcessor(this);
+    }
 
+    public void loadLevel(PixelLogicLevel level) {
+        this.level = level;
         initViewport();
         initSprites();
         initFonts();
         initGUI();
-
-        // activate user input
-        Gdx.input.setInputProcessor(this);
     }
 
     private void checkGame() {
@@ -164,20 +164,10 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
         return new Vector2(x, y);
     }
 
-    private void drawPixel(Vector2 pixelVector, Boolean pixelToDraw) {
+    private void drawPixel(Vector2 pixelVector) {
         int row = (int) pixelVector.y;
         int col = (int) pixelVector.x;
-        if (pixelToDraw != null) {
-            level.set(row, col, pixelToDraw);
-        } else {
-            if (level.get(row, col) != null) {
-                level.set(row, col, null);
-                currentPixelType = null;
-            } else {
-                level.set(row, col, true);
-                currentPixelType = selectedPixelType;
-            }
-        }
+        level.set(row, col, this.currentPixelType);
     }
 
     private Vector2 toPixel(int screenX, int screenY) {
@@ -304,12 +294,15 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector2 pixel = toPixel(screenX, screenY);
-        if (pixel == null) {
+        Vector2 pixelVector = toPixel(screenX, screenY);
+        if (pixelVector == null) {
             return false;
         }
-        Gdx.app.debug("hit pixel", "pixel " + pixel);
-        drawPixel(pixel, null);
+        Gdx.app.debug("hit pixel", "pixel " + pixelVector);
+
+        Boolean currentPixel = level.get((int) pixelVector.y, (int) pixelVector.x);
+        this.currentPixelType = currentPixel == null ? selectedPixelType : null;
+        drawPixel(pixelVector);
         checkGame();
         return false;
     }
@@ -325,7 +318,7 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
         if (pixel == null) {
             return false;
         }
-        drawPixel(pixel, currentPixelType);
+        drawPixel(pixel);
         checkGame();
         return false;
     }

@@ -1,0 +1,31 @@
+{
+  "name": "Items",
+  "pixmapWidth": 16,
+  "pixmapHeight": 16,
+  "level": [
+    {
+      "name": "sword",
+      "x": 7,
+      "y": 0
+    },
+    {
+      "name": "spear",
+      "x": 1,
+      "y": 1
+    },
+    {
+      "name": "bow",
+      "x": 3,
+      "y": 3
+    },
+    {
+      "name": "magic wand",
+      "x": 5,
+      "y": 3
+    }
+  ]
+}
+
+
+
+
