@@ -9,6 +9,7 @@ import java.util.List;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -22,6 +23,7 @@ public class PixelLogicBruteForceSolverTest {
         List<List<Integer>> colData = PixelLogicUtil.getColumnData(level);
         Boolean[][] solvedLevel = new PixelLogicBruteForceSolver().solve(rowData, colData);
         assertTrue("level should be valid", PixelLogicUtil.isValid(solvedLevel));
+        assertArrayEquals("level should be equals", level, PixelLogicUtil.toLevel(solvedLevel));
 
         // test invalid
         level = PixelLogicUtil.invalidSampleLevel();

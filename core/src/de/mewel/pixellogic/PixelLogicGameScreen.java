@@ -23,7 +23,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import java.util.Collections;
 import java.util.List;
 
-import de.mewel.pixellogic.model.Pixel;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
@@ -59,8 +58,8 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
     private Skin skin;
 
     // game stuff
-    private Pixel selectedPixelType = Pixel.FULL;
-    private Pixel currentPixelType = Pixel.FULL;
+    private Boolean selectedPixelType = true;
+    private Boolean currentPixelType = true;
     private PixelLogicLevel level;
 
     public PixelLogicGameScreen() {
@@ -165,17 +164,17 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
         return new Vector2(x, y);
     }
 
-    private void drawPixel(Vector2 pixelVector, Pixel pixelToDraw) {
+    private void drawPixel(Vector2 pixelVector, Boolean pixelToDraw) {
         int row = (int) pixelVector.y;
         int col = (int) pixelVector.x;
         if (pixelToDraw != null) {
             level.set(row, col, pixelToDraw);
         } else {
-            if (!Pixel.EMPTY.equals(level.get(row, col))) {
-                level.set(row, col, Pixel.EMPTY);
-                currentPixelType = Pixel.EMPTY;
+            if (level.get(row, col) != null) {
+                level.set(row, col, null);
+                currentPixelType = null;
             } else {
-                level.set(row, col, Pixel.FULL);
+                level.set(row, col, true);
                 currentPixelType = selectedPixelType;
             }
         }
@@ -249,7 +248,8 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
                 Vector2 pixelPosition = getPixelPosition(row, col);
                 backgroundPixelSprite.setPosition(pixelPosition.x, pixelPosition.y);
                 backgroundPixelSprite.draw(batch);
-                if (Pixel.FULL.equals(level.get(row, col))) {
+                Boolean pixel = level.get(row, col);
+                if (pixel != null && pixel) {
                     fullPixelSprite.setPosition(pixelPosition.x + PIXEL_FULL_PADDING, pixelPosition.y + PIXEL_FULL_PADDING);
                     fullPixelSprite.draw(batch);
                 }

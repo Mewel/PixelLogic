@@ -15,8 +15,10 @@ public class PixelLogicValidator {
      * @return true if its valid, otherwise false
      */
     public boolean validate(boolean[][] levelData) {
-
-        return true;
+        List<List<Integer>> rowData = PixelLogicUtil.getRowData(levelData);
+        List<List<Integer>> colData = PixelLogicUtil.getColumnData(levelData);
+        Boolean[][] solvedLevel = new PixelLogicBruteForceSolver().solve(rowData, colData);
+        return PixelLogicUtil.isValid(solvedLevel);
     }
 
 }

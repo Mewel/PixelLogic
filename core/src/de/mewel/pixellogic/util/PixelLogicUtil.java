@@ -57,6 +57,16 @@ public class PixelLogicUtil {
         return levelLine;
     }
 
+    public static boolean[][] toLevel(Boolean[][] testLevel) {
+        boolean[][] level = new boolean[testLevel.length][testLevel[0].length];
+        for (int row = 0; row < testLevel.length; row++) {
+            for (int col = 0; col < testLevel[0].length; col++) {
+                level[row][col] = testLevel[row][col];
+            }
+        }
+        return level;
+    }
+
     public static List<Integer> getConnectedPixel(boolean[] line) {
         List<Integer> numbers = new ArrayList<Integer>();
         int consecutive = 0;
@@ -150,13 +160,13 @@ public class PixelLogicUtil {
         return column;
     }
 
-
-    public static Boolean[] invert(Boolean[] line) {
-        Boolean[] invertedLine = new Boolean[line.length];
+    public static boolean differs(Boolean[] line, Boolean[] newLine) {
         for (int i = 0; i < line.length; i++) {
-            invertedLine[line.length - 1 - i] = line[i];
+            if (line[i] != newLine[i]) {
+                return true;
+            }
         }
-        return invertedLine;
+        return false;
     }
 
     public static boolean[][] sampleLevel() {
@@ -179,12 +189,4 @@ public class PixelLogicUtil {
         };
     }
 
-    public static boolean differs(Boolean[] line, Boolean[] newLine) {
-        for (int i = 0; i < line.length; i++) {
-            if (line[i] != newLine[i]) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
