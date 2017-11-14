@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Checks if a pixel game has just one or multiple solutions.
  */
-public class PixelLogicValidator {
+public class PixelLogicLevelValidator {
 
     /**
      * Checks if the given puzzle is valid or not

@@ -6,8 +6,7 @@ import com.badlogic.gdx.Gdx;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
-import de.mewel.pixellogic.util.PixelLogicUtil;
-import de.mewel.pixellogic.util.PixelLogicValidator;
+import de.mewel.pixellogic.util.PixelLogicLevelValidator;
 
 public class PixelLogicGame extends Game {
 
@@ -17,13 +16,20 @@ public class PixelLogicGame extends Game {
         levelManager.setup();
         PixelLogicLevelCollection levelCollection = levelManager.getCollection("rpgitems");
 
-        PixelLogicLevel level = PixelLogicLevelLoader.load(levelCollection, 0);
+        PixelLogicLevelValidator validator = new PixelLogicLevelValidator();
 
-        boolean valid = new PixelLogicValidator().validate(level.getLevelData());
-        Gdx.app.log("validate level", "level is " + (valid ? "valid" : "invalid"));
+        // level 1
+        PixelLogicLevel level1 = PixelLogicLevelLoader.load(levelCollection, 0);
+        Gdx.app.log("validate level 1", "level is " + (validator.validate(level1.getLevelData()) ? "valid" : "invalid"));
 
-        PixelLogicGameScreen screen = new PixelLogicGameScreen();
-        screen.loadLevel(level);
+        // level 2
+        PixelLogicLevel level2 = PixelLogicLevelLoader.load(levelCollection, 1);
+        Gdx.app.log("validate level 2", "level is " + (validator.validate(level2.getLevelData()) ? "valid" : "invalid"));
+
+
+        PixelLogicLevelScreen screen = new PixelLogicLevelScreen();
+        screen.load(level1);
+        screen.load(level2);
 
         this.setScreen(screen);
     }

@@ -20,33 +20,43 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
-public class PixelLogicGameScreen implements Screen, InputProcessor {
+public class PixelLogicLevelScreen implements Screen, InputProcessor {
 
     private static int PIXEL_SIZE = 32;
     private static int PIXEL_SPACE = 2;
     private static int PIXEL_SPACE_COMBINED = PIXEL_SIZE + PIXEL_SPACE;
-    private static int PIXEL_FULL_PADDING = 0;
 
     // drawing stuff
     private SpriteBatch batch;
 
     private Sprite backgroundPixelSprite;
-    private Sprite fullPixelSprite;
+    private Sprite filledPixelSprite;
+    private Sprite blockedPixelSprite;
     private Sprite rowInfoSprite;
     private Sprite colInfoSprite;
 
     private Texture backgroundPixelTexture;
-    private Texture fullPixelTexture;
+    private Texture filledPixelTexture;
+    private Texture blockedPixelTexture;
     private Texture rowInfoTexture;
     private Texture colInfoTexture;
 
     private BitmapFont numberFont;
+
+    private static Color BACKGROUND_COLOR = Color.valueOf("#FAFAFA");
+    private static Color PIXEL_EMPTY_COLOR = Color.valueOf("#CEE3F6");
+    private static Color PIXEL_FILLED_COLOR = Color.valueOf("#1C1C1C");
+    private static Color PIXEL_BLOCKED_COLOR = Color.valueOf("#FA5882");
+    private static Color LINE_COLOR = Color.valueOf("#F5DA81");
+    private static Color LINE_COMPLETE_COLOR = Color.valueOf("#FF8000");
+    private static Color TEXT_COLOR = Color.valueOf("#424242");
 
     // camera and viewport
     private OrthographicCamera camera;
@@ -58,23 +68,24 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
     private Skin skin;
 
     // game stuff
+    private UserAction userAction;
     private Boolean selectedPixelType = true;
-    private Boolean currentPixelType = true;
     private PixelLogicLevel level;
 
-    public PixelLogicGameScreen() {
+    public PixelLogicLevelScreen() {
         Gdx.input.setInputProcessor(this);
     }
 
-    public void loadLevel(PixelLogicLevel level) {
+    public void load(PixelLogicLevel level) {
         this.level = level;
         initViewport();
         initSprites();
         initFonts();
         initGUI();
+        this.userAction = null;
     }
 
-    private void checkGame() {
+    private void isSolved() {
         if (level.isSolved()) {
             Gdx.app.log("Game", "SOLVED!");
         }
@@ -94,44 +105,52 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
 
     private void initSprites() {
         batch = new SpriteBatch();
-        // empty pixel
+
+        // PIXELS
         Pixmap pixelPixmap = new Pixmap(PIXEL_SIZE, PIXEL_SIZE, Pixmap.Format.RGBA8888);
-        pixelPixmap.setColor(Color.RED);
+        // empty pixel
+        pixelPixmap.setColor(PIXEL_EMPTY_COLOR);
         pixelPixmap.fill();
         backgroundPixelTexture = new Texture(pixelPixmap);
         backgroundPixelSprite = new Sprite(backgroundPixelTexture);
+
+        // filled pixel
+        pixelPixmap.setColor(PIXEL_FILLED_COLOR);
+        pixelPixmap.fill();
+        filledPixelTexture = new Texture(pixelPixmap);
+        filledPixelSprite = new Sprite(filledPixelTexture);
+
+        // blocked pixel
+        pixelPixmap.setColor(PIXEL_BLOCKED_COLOR);
+        pixelPixmap.fill();
+        blockedPixelTexture = new Texture(pixelPixmap);
+        blockedPixelSprite = new Sprite(blockedPixelTexture);
+
         pixelPixmap.dispose();
 
-        // full pixel
-        Pixmap fullPixelPixmap = new Pixmap(PIXEL_SIZE - (PIXEL_FULL_PADDING * 2), PIXEL_SIZE - (PIXEL_FULL_PADDING * 2), Pixmap.Format.RGBA8888);
-        fullPixelPixmap.setColor(Color.BLACK);
-        fullPixelPixmap.fill();
-        fullPixelTexture = new Texture(fullPixelPixmap);
-        fullPixelSprite = new Sprite(fullPixelTexture);
-        fullPixelPixmap.dispose();
+        // LINES
+        Pixmap linePixmap = new Pixmap(PIXEL_SIZE * 2, PIXEL_SIZE, Pixmap.Format.RGBA8888);
 
         // row info
-        Pixmap rowInfoPixmap = new Pixmap(PIXEL_SIZE * 2, PIXEL_SIZE, Pixmap.Format.RGBA8888);
-        rowInfoPixmap.setColor(Color.LIGHT_GRAY);
-        rowInfoPixmap.fill();
-        rowInfoTexture = new Texture(rowInfoPixmap);
+        linePixmap.setColor(LINE_COLOR);
+        linePixmap.fill();
+        rowInfoTexture = new Texture(linePixmap);
         rowInfoSprite = new Sprite(rowInfoTexture);
-        rowInfoPixmap.dispose();
 
         // col info
-        Pixmap colInfoPixmap = new Pixmap(PIXEL_SIZE, PIXEL_SIZE * 2, Pixmap.Format.RGBA8888);
-        colInfoPixmap.setColor(Color.LIGHT_GRAY);
-        colInfoPixmap.fill();
-        colInfoTexture = new Texture(colInfoPixmap);
+        linePixmap.setColor(LINE_COLOR);
+        linePixmap.fill();
+        colInfoTexture = new Texture(linePixmap);
         colInfoSprite = new Sprite(colInfoTexture);
-        colInfoPixmap.dispose();
+
+        linePixmap.dispose();
     }
 
     private void initFonts() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/FFFFORWA.TTF"));
         FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
         params.size = 8;
-        params.color = Color.BLACK;
+        params.color = TEXT_COLOR;
         params.flip = true;
         numberFont = generator.generateFont(params);
         generator.dispose();
@@ -151,7 +170,8 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
     public void dispose() {
         batch.dispose();
         backgroundPixelTexture.dispose();
-        fullPixelTexture.dispose();
+        filledPixelTexture.dispose();
+        blockedPixelTexture.dispose();
         rowInfoTexture.dispose();
         colInfoTexture.dispose();
     }
@@ -167,7 +187,7 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
     private void drawPixel(Vector2 pixelVector) {
         int row = (int) pixelVector.y;
         int col = (int) pixelVector.x;
-        level.set(row, col, this.currentPixelType);
+        level.set(row, col, this.userAction.update(pixelVector));
     }
 
     private Vector2 toPixel(int screenX, int screenY) {
@@ -191,7 +211,7 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 1, 1);
+        Gdx.gl.glClearColor(BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, BACKGROUND_COLOR.a);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
         camera.update();
@@ -203,12 +223,12 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
         for (int row = 0; row < level.getRows(); row++) {
             Vector2 pixelPosition = getPixelPosition(row, -2);
             rowInfoSprite.setPosition(pixelPosition.x, pixelPosition.y);
-            rowInfoSprite.setAlpha(level.isRowComplete(row) ? 0.7f : 1f);
+            rowInfoSprite.setColor(level.isRowComplete(row) ? LINE_COMPLETE_COLOR : LINE_COLOR);
             rowInfoSprite.draw(batch);
 
             List<Integer> rowLevelData = PixelLogicUtil.getNumbersOfRow(level.getLevelData(), row);
             Collections.reverse(rowLevelData);
-            float x = (PIXEL_SIZE * 2) - PIXEL_FULL_PADDING + (pixelPosition.x) - 8;
+            float x = (PIXEL_SIZE * 2) - (pixelPosition.x) - 8;
             float y = pixelPosition.y + 12;
             // TODO: align each number right
             for (int i = 0; i < rowLevelData.size(); i++) {
@@ -220,7 +240,7 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
         for (int col = 0; col < level.getColumns(); col++) {
             Vector2 pixelPosition = getPixelPosition(-2, col);
             colInfoSprite.setPosition(pixelPosition.x, pixelPosition.y);
-            colInfoSprite.setAlpha(level.isColumnComplete(col) ? 0.7f : 1f);
+            colInfoSprite.setColor(level.isColumnComplete(col) ? LINE_COMPLETE_COLOR : LINE_COLOR);
             colInfoSprite.draw(batch);
 
             List<Integer> colLevelData = PixelLogicUtil.getNumbersOfCol(level.getLevelData(), col);
@@ -240,8 +260,11 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
                 backgroundPixelSprite.draw(batch);
                 Boolean pixel = level.get(row, col);
                 if (pixel != null && pixel) {
-                    fullPixelSprite.setPosition(pixelPosition.x + PIXEL_FULL_PADDING, pixelPosition.y + PIXEL_FULL_PADDING);
-                    fullPixelSprite.draw(batch);
+                    filledPixelSprite.setPosition(pixelPosition.x, pixelPosition.y);
+                    filledPixelSprite.draw(batch);
+                } else if (pixel != null && !pixel) {
+                    blockedPixelSprite.setPosition(pixelPosition.x, pixelPosition.y);
+                    blockedPixelSprite.draw(batch);
                 }
             }
         }
@@ -294,21 +317,23 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector2 pixelVector = toPixel(screenX, screenY);
-        if (pixelVector == null) {
+        Vector2 pixel = toPixel(screenX, screenY);
+        if (pixel == null) {
             return false;
         }
-        Gdx.app.debug("hit pixel", "pixel " + pixelVector);
-
-        Boolean currentPixel = level.get((int) pixelVector.y, (int) pixelVector.x);
-        this.currentPixelType = currentPixel == null ? selectedPixelType : null;
-        drawPixel(pixelVector);
-        checkGame();
+        Boolean currentPixel = level.get((int) pixel.y, (int) pixel.x);
+        this.selectedPixelType = button == 0;
+        UserAction.Type action = currentPixel == null ? (this.selectedPixelType ? UserAction.Type.FILL : UserAction.Type.BLOCK) : UserAction.Type.EMPTY;
+        this.userAction = new UserAction(action, pixel);
+        drawPixel(pixel);
+        isSolved();
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        this.userAction = null;
+        Gdx.app.log("touchUp", "touch up");
         return false;
     }
 
@@ -319,7 +344,7 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
             return false;
         }
         drawPixel(pixel);
-        checkGame();
+        isSolved();
         return false;
     }
 
@@ -331,6 +356,48 @@ public class PixelLogicGameScreen implements Screen, InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    private static class UserAction {
+
+        enum Type {
+            EMPTY, FILL, BLOCK
+        }
+
+        private Type type;
+
+        private Vector2 activePixel;
+
+        private List<Vector2> pixels;
+
+        private Boolean lastAction;
+
+        public UserAction(Type type, Vector2 startPixel) {
+            this.activePixel = startPixel;
+            this.pixels = new ArrayList<Vector2>();
+            this.pixels.add(this.activePixel);
+            this.type = type;
+            this.lastAction = true;
+        }
+
+        public Boolean update(Vector2 pixel) {
+            if (Type.EMPTY.equals(this.type)) {
+                return null;
+            }
+            if (pixel.equals(this.activePixel)) {
+                return this.lastAction;
+            }
+            // pixel changed
+            this.activePixel = pixel;
+            if (pixels.contains(pixel)) {
+                pixels.remove(pixel);
+                return this.lastAction = null;
+            } else {
+                pixels.add(pixel);
+                return this.lastAction = Type.FILL.equals(this.type);
+            }
+        }
+
     }
 
 }
