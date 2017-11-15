@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -18,8 +19,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -85,12 +88,6 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
         this.userAction = null;
     }
 
-    private void isSolved() {
-        if (level.isSolved()) {
-            Gdx.app.log("Game", "SOLVED!");
-        }
-    }
-
     private void initViewport() {
         gameWidth = level.getColumns() * (PIXEL_SPACE_COMBINED) - PIXEL_SPACE;
         gameHeight = level.getRows() * (PIXEL_SPACE_COMBINED) - PIXEL_SPACE;
@@ -129,15 +126,16 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
         pixelPixmap.dispose();
 
         // LINES
-        Pixmap linePixmap = new Pixmap(PIXEL_SIZE * 2, PIXEL_SIZE, Pixmap.Format.RGBA8888);
 
         // row info
+        Pixmap linePixmap = new Pixmap(PIXEL_SIZE * 2, PIXEL_SIZE, Pixmap.Format.RGBA8888);
         linePixmap.setColor(LINE_COLOR);
         linePixmap.fill();
         rowInfoTexture = new Texture(linePixmap);
         rowInfoSprite = new Sprite(rowInfoTexture);
 
         // col info
+        linePixmap = new Pixmap(PIXEL_SIZE, PIXEL_SIZE * 2, Pixmap.Format.RGBA8888);
         linePixmap.setColor(LINE_COLOR);
         linePixmap.fill();
         colInfoTexture = new Texture(linePixmap);
@@ -212,6 +210,15 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
+        if (level.isSolved()) {
+            deactivateInput();
+            renderLevelSolved(delta);
+            return;
+        }
+        renderLevel(delta);
+    }
+
+    private void renderLevel(float delta) {
         Gdx.gl.glClearColor(BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, BACKGROUND_COLOR.a);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
@@ -220,6 +227,7 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
 
         batch.begin();
 
+        GlyphLayout layout = new GlyphLayout();
         // draw row info
         for (int row = 0; row < level.getRows(); row++) {
             Vector2 pixelPosition = getPixelPosition(row, -2);
@@ -229,11 +237,12 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
 
             List<Integer> rowLevelData = PixelLogicUtil.getNumbersOfRow(level.getLevelData(), row);
             Collections.reverse(rowLevelData);
-            float x = (PIXEL_SIZE * 2) - (pixelPosition.x) - 8;
+            float x = pixelPosition.x - 4;
             float y = pixelPosition.y + 12;
-            // TODO: align each number right
             for (int i = 0; i < rowLevelData.size(); i++) {
-                numberFont.draw(batch, String.valueOf(rowLevelData.get(i)), x - (i * 8), y);
+                layout.setText(numberFont, String.valueOf(rowLevelData.get(i)),
+                        TEXT_COLOR, PIXEL_SIZE * 2, Align.right, false);
+                numberFont.draw(batch, layout, x - (i * 8), y);
             }
         }
 
@@ -245,11 +254,12 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
             colInfoSprite.draw(batch);
 
             List<Integer> colLevelData = PixelLogicUtil.getNumbersOfCol(level.getLevelData(), col);
-            float x = pixelPosition.x + 15;
+            float x = pixelPosition.x + 2;
             float y = (pixelPosition.y) + (PIXEL_SIZE * 2) - 14;
-            // TODO: center each number
             for (int i = 0; i < colLevelData.size(); i++) {
-                numberFont.draw(batch, String.valueOf(colLevelData.get(i)), x, y - ((colLevelData.size() - 1 - i) * 14));
+                layout.setText(numberFont, String.valueOf(colLevelData.get(i)),
+                        TEXT_COLOR, PIXEL_SIZE, Align.center, false);
+                numberFont.draw(batch, layout, x, y - ((colLevelData.size() - 1 - i) * 14));
             }
         }
 
@@ -276,6 +286,10 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
         stage.draw();
     }
 
+    private void renderLevelSolved(float delta) {
+
+    }
+
     @Override
     public void show() {
 
@@ -285,6 +299,10 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
     public void resize(int width, int height) {
         viewport.update(width, height);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+    }
+
+    public void deactivateInput() {
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
@@ -327,7 +345,6 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
         UserAction.Type action = currentPixel == null ? (this.selectedPixelType ? UserAction.Type.FILL : UserAction.Type.BLOCK) : UserAction.Type.EMPTY;
         this.userAction = new UserAction(action, pixel);
         drawPixel(pixel);
-        isSolved();
         return false;
     }
 
@@ -345,7 +362,6 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
             return false;
         }
         drawPixel(pixel);
-        isSolved();
         return false;
     }
 
@@ -369,35 +385,55 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
 
         private Vector2 startPixel;
 
-        private LinkedList<Vector2> pixels;
+        private Vector2 lastPixel;
 
         private Boolean horizontal;
 
-        private Boolean[] originalLine;
-
-        public UserAction(Type type, Vector2 startPixel) {
+        UserAction(Type type, Vector2 startPixel) {
             this.startPixel = startPixel;
-            this.pixels = new LinkedList<Vector2>();
             this.type = type;
             this.horizontal = null;
-            this.originalLine = null;
         }
 
-        public void update(Vector2 pixel, PixelLogicLevel level) {
-            this.draw(this.startPixel, level, type);
-            if(horizontal == null && this.startPixel.equals(pixel)) {
+        void update(Vector2 pixel, PixelLogicLevel level) {
+            this.draw((int) startPixel.y, (int) startPixel.x, level, type);
+            if (horizontal == null && this.startPixel.equals(pixel)) {
                 return;
             }
-            if(horizontal == null) {
+            if (horizontal == null) {
                 horizontal = pixel.x != this.startPixel.x;
-               // this.originalLine = horizontal ? PixelLogicUtil.getRow();
             }
+            // draw pixel
+            int startFrom = horizontal ? (int) Math.min(startPixel.x, pixel.x) : (int) Math.min(startPixel.y, pixel.y);
+            int startTo = horizontal ? (int) Math.max(startPixel.x, pixel.x) : (int) Math.max(startPixel.y, pixel.y);
+            for (int i = startFrom; i <= startTo; i++) {
+                draw(level, i, type);
+            }
+            // empty old pixel
+            if (this.lastPixel != null) {
+                int lastFrom = horizontal ? (int) Math.min(lastPixel.x, pixel.x) : (int) Math.min(lastPixel.y, pixel.y);
+                for (int i = lastFrom; i < startFrom; i++) {
+                    draw(level, i, Type.EMPTY);
+                }
+                int lastTo = horizontal ? (int) Math.max(lastPixel.x, pixel.x) : (int) Math.max(lastPixel.y, pixel.y);
+                for (int i = startTo + 1; i <= lastTo; i++) {
+                    draw(level, i, Type.EMPTY);
+                }
+            }
+            this.lastPixel = pixel;
         }
 
-        private void draw(Vector2 pixel, PixelLogicLevel level, Type type) {
+        private void draw(PixelLogicLevel level, int i, Type drawType) {
+            int row = horizontal ? (int) startPixel.y : i;
+            int col = horizontal ? i : (int) startPixel.x;
+            if (Type.FILL.equals(this.type) && level.isBlocked(row, col)) {
+                return;
+            }
+            draw(row, col, level, drawType);
+        }
+
+        private void draw(int row, int col, PixelLogicLevel level, Type type) {
             Boolean pixelValue = Type.EMPTY.equals(type) ? null : Type.FILL.equals(type);
-            int row = (int) pixel.y;
-            int col = (int) pixel.x;
             level.set(row, col, pixelValue);
         }
 

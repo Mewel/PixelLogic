@@ -31,6 +31,18 @@ public class PixelLogicLevel {
         return pixels[row][col];
     }
 
+    public boolean isEmpty(int row, int col) {
+        return pixels[row][col] == null;
+    }
+
+    public boolean isFilled(int row, int col) {
+        return pixels[row][col] != null && pixels[row][col];
+    }
+
+    public boolean isBlocked(int row, int col) {
+        return pixels[row][col] != null && !pixels[row][col];
+    }
+
     public void set(int row, int col, Boolean pixel) {
         if (row < 0 || col < 0 || row >= getRows() || col >= getColumns()) {
             return;

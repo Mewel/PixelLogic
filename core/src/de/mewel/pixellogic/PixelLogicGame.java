@@ -29,7 +29,7 @@ public class PixelLogicGame extends Game {
 
         PixelLogicLevelScreen screen = new PixelLogicLevelScreen();
         screen.load(level1);
-        screen.load(level2);
+        //screen.load(level2);
 
         this.setScreen(screen);
     }
