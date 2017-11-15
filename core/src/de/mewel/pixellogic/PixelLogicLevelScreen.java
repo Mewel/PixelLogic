@@ -20,8 +20,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
@@ -184,10 +184,11 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
         return new Vector2(x, y);
     }
 
-    private void drawPixel(Vector2 pixelVector) {
-        int row = (int) pixelVector.y;
-        int col = (int) pixelVector.x;
-        level.set(row, col, this.userAction.update(pixelVector));
+    private void drawPixel(Vector2 pixel) {
+        if (this.userAction == null) {
+            return;
+        }
+        this.userAction.update(pixel, this.level);
     }
 
     private Vector2 toPixel(int screenX, int screenY) {
@@ -366,36 +367,38 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
 
         private Type type;
 
-        private Vector2 activePixel;
+        private Vector2 startPixel;
 
-        private List<Vector2> pixels;
+        private LinkedList<Vector2> pixels;
 
-        private Boolean lastAction;
+        private Boolean horizontal;
+
+        private Boolean[] originalLine;
 
         public UserAction(Type type, Vector2 startPixel) {
-            this.activePixel = startPixel;
-            this.pixels = new ArrayList<Vector2>();
-            this.pixels.add(this.activePixel);
+            this.startPixel = startPixel;
+            this.pixels = new LinkedList<Vector2>();
             this.type = type;
-            this.lastAction = true;
+            this.horizontal = null;
+            this.originalLine = null;
         }
 
-        public Boolean update(Vector2 pixel) {
-            if (Type.EMPTY.equals(this.type)) {
-                return null;
+        public void update(Vector2 pixel, PixelLogicLevel level) {
+            this.draw(this.startPixel, level, type);
+            if(horizontal == null && this.startPixel.equals(pixel)) {
+                return;
             }
-            if (pixel.equals(this.activePixel)) {
-                return this.lastAction;
+            if(horizontal == null) {
+                horizontal = pixel.x != this.startPixel.x;
+               // this.originalLine = horizontal ? PixelLogicUtil.getRow();
             }
-            // pixel changed
-            this.activePixel = pixel;
-            if (pixels.contains(pixel)) {
-                pixels.remove(pixel);
-                return this.lastAction = null;
-            } else {
-                pixels.add(pixel);
-                return this.lastAction = Type.FILL.equals(this.type);
-            }
+        }
+
+        private void draw(Vector2 pixel, PixelLogicLevel level, Type type) {
+            Boolean pixelValue = Type.EMPTY.equals(type) ? null : Type.FILL.equals(type);
+            int row = (int) pixel.y;
+            int col = (int) pixel.x;
+            level.set(row, col, pixelValue);
         }
 
     }

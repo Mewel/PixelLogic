@@ -5,7 +5,7 @@ import java.util.List;
 
 public class PixelLogicUtil {
 
-    public static List<List<Integer>> getRowData(boolean[][] level) {
+    public static List<List<Integer>> getRowData(Boolean[][] level) {
         List<List<Integer>> rowData = new ArrayList<List<Integer>>();
         int rows = level.length;
         for (int row = 0; row < rows; row++) {
@@ -14,7 +14,7 @@ public class PixelLogicUtil {
         return rowData;
     }
 
-    public static List<List<Integer>> getColumnData(boolean[][] level) {
+    public static List<List<Integer>> getColumnData(Boolean[][] level) {
         List<List<Integer>> colData = new ArrayList<List<Integer>>();
         int cols = level[0].length;
         for (int col = 0; col < cols; col++) {
@@ -23,55 +23,37 @@ public class PixelLogicUtil {
         return colData;
     }
 
-    public static List<Integer> getNumbersOfRow(boolean[][] level, int indexOfRow) {
-        boolean[] row = getRow(level, indexOfRow);
+    public static List<Integer> getNumbersOfRow(Boolean[][] level, int indexOfRow) {
+        Boolean[] row = getRow(level, indexOfRow);
         return getConnectedPixel(row);
     }
 
-    public static List<Integer> getNumbersOfCol(boolean[][] level, int indexOfColumn) {
-        boolean[] column = getColumn(level, indexOfColumn);
+    public static List<Integer> getNumbersOfCol(Boolean[][] level, int indexOfColumn) {
+        Boolean[] column = getColumn(level, indexOfColumn);
         return getConnectedPixel(column);
     }
 
-    public static boolean[] getRow(boolean[][] level, int row) {
+    public static Boolean[] getRow(Boolean[][] level, int row) {
         int cols = level[0].length;
-        boolean[] line = new boolean[cols];
+        Boolean[] line = new Boolean[cols];
         System.arraycopy(level[row], 0, line, 0, cols);
         return line;
     }
 
-    public static boolean[] getColumn(boolean[][] level, int column) {
+    public static Boolean[] getColumn(Boolean[][] level, int column) {
         int rows = level.length;
-        boolean[] line = new boolean[rows];
+        Boolean[] line = new Boolean[rows];
         for (int row = 0; row < rows; row++) {
             line[row] = level[row][column];
         }
         return line;
     }
 
-    public static boolean[] toLevelLine(Boolean[] line) {
-        boolean[] levelLine = new boolean[line.length];
-        for (int i = 0; i < line.length; i++) {
-            levelLine[i] = line[i] != null && line[i];
-        }
-        return levelLine;
-    }
-
-    public static boolean[][] toLevel(Boolean[][] testLevel) {
-        boolean[][] level = new boolean[testLevel.length][testLevel[0].length];
-        for (int row = 0; row < testLevel.length; row++) {
-            for (int col = 0; col < testLevel[0].length; col++) {
-                level[row][col] = testLevel[row][col];
-            }
-        }
-        return level;
-    }
-
-    public static List<Integer> getConnectedPixel(boolean[] line) {
+    public static List<Integer> getConnectedPixel(Boolean[] line) {
         List<Integer> numbers = new ArrayList<Integer>();
         int consecutive = 0;
-        for (boolean pixel : line) {
-            if (pixel) {
+        for (Boolean pixel : line) {
+            if (pixel != null && pixel) {
                 consecutive++;
                 continue;
             }
@@ -121,17 +103,12 @@ public class PixelLogicUtil {
         return true;
     }
 
-    public static boolean isSolved(boolean[] line, List<Integer> numbers) {
-        List<Integer> connectedPixels = getConnectedPixel(line);
-        return compareNumberLists(connectedPixels, numbers);
-    }
-
     public static boolean isSolved(Boolean[] line, List<Integer> numbers) {
         if (line == null) {
             return false;
         }
-        boolean levelLine[] = PixelLogicUtil.toLevelLine(line);
-        return isSolved(levelLine, numbers);
+        List<Integer> connectedPixels = getConnectedPixel(line);
+        return compareNumberLists(connectedPixels, numbers);
     }
 
     public static int countPixel(List<Integer> numbers) {
@@ -169,8 +146,8 @@ public class PixelLogicUtil {
         return false;
     }
 
-    public static boolean[][] sampleLevel() {
-        return new boolean[][]{
+    public static Boolean[][] sampleLevel() {
+        return new Boolean[][]{
                 {true, true, true, false, true},
                 {false, false, false, false, false},
                 {false, true, true, false, false},
@@ -179,8 +156,8 @@ public class PixelLogicUtil {
         };
     }
 
-    public static boolean[][] invalidSampleLevel() {
-        return new boolean[][]{
+    public static Boolean[][] invalidSampleLevel() {
+        return new Boolean[][]{
                 {true, true, true, false, true},
                 {false, false, false, false, false},
                 {false, true, true, false, false},

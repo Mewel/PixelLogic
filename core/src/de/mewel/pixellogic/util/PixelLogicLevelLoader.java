@@ -18,15 +18,15 @@ public abstract class PixelLogicLevelLoader {
         int srcX = levelData.getX() * collection.getPixmapWidth();
         int srcY = levelData.getY() * collection.getPixmapHeight();
         try {
-            boolean[][] level = buildLevel(pixmapHandle, srcX, srcY, collection.getPixmapWidth(), collection.getPixmapHeight());
+            Boolean[][] level = buildLevel(pixmapHandle, srcX, srcY, collection.getPixmapWidth(), collection.getPixmapHeight());
             return new PixelLogicLevel(level);
         } catch (IOException ioExc) {
             throw new RuntimeException("Unable to load pixmap.png of " + collection.getId(), ioExc);
         }
     }
 
-    public static boolean[][] buildLevel(FileHandle imageHandle, int srcX, int srcY, int width, int height) throws IOException {
-        boolean level[][] = new boolean[height][width];
+    public static Boolean[][] buildLevel(FileHandle imageHandle, int srcX, int srcY, int width, int height) throws IOException {
+        Boolean level[][] = new Boolean[height][width];
         Pixmap pixmap = new Pixmap(imageHandle);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {

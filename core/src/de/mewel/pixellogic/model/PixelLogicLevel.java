@@ -10,9 +10,9 @@ public class PixelLogicLevel {
 
     private Boolean[][] pixels;
 
-    private boolean[][] levelData;
+    private Boolean[][] levelData;
 
-    public PixelLogicLevel(boolean[][] levelData) {
+    public PixelLogicLevel(Boolean[][] levelData) {
         this.rows = levelData.length;
         this.cols = levelData[0].length;
         this.levelData = levelData;
@@ -68,7 +68,7 @@ public class PixelLogicLevel {
      */
     public boolean isRowComplete(int rowIndex) {
         List<Integer> levelRow = PixelLogicUtil.getNumbersOfRow(levelData, rowIndex);
-        boolean[] row = PixelLogicUtil.toLevelLine(this.pixels[rowIndex]);
+        Boolean[] row = this.pixels[rowIndex];
         List<Integer> connectedPixel = PixelLogicUtil.getConnectedPixel(row);
         return PixelLogicUtil.compareNumberLists(levelRow, connectedPixel);
     }
@@ -82,12 +82,12 @@ public class PixelLogicLevel {
      */
     public boolean isColumnComplete(int columnIndex) {
         List<Integer> levelColumn = PixelLogicUtil.getNumbersOfCol(levelData, columnIndex);
-        boolean[] column = PixelLogicUtil.toLevelLine(PixelLogicUtil.columnToLine(this.pixels, columnIndex));
+        Boolean[] column = PixelLogicUtil.columnToLine(this.pixels, columnIndex);
         List<Integer> connectedPixel = PixelLogicUtil.getConnectedPixel(column);
         return PixelLogicUtil.compareNumberLists(levelColumn, connectedPixel);
     }
 
-    public boolean[][] getLevelData() {
+    public Boolean[][] getLevelData() {
         return levelData;
     }
 
