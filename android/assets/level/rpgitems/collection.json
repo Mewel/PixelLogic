@@ -6,26 +6,32 @@
     {
       "name": "sword",
       "x": 7,
-      "y": 0
+      "y": 0,
+      "difficulty": 6
     },
     {
       "name": "spear",
       "x": 1,
-      "y": 1
+      "y": 1,
+      "difficulty": 7
     },
     {
       "name": "bow",
       "x": 3,
-      "y": 3
+      "y": 2,
+      "difficulty": 4
     },
     {
-      "name": "magic wand",
-      "x": 5,
-      "y": 3
+      "name": "chain",
+      "x": 1,
+      "y": 4,
+      "difficulty": 7
+    },
+    {
+      "name": "pizza",
+      "x": 3,
+      "y": 8,
+      "difficulty": 3
     }
   ]
 }
-
-
-
-

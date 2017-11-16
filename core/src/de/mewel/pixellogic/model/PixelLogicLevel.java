@@ -12,11 +12,18 @@ public class PixelLogicLevel {
 
     private Boolean[][] levelData;
 
+    private Integer[][] image;
+
     public PixelLogicLevel(Boolean[][] levelData) {
         this.rows = levelData.length;
         this.cols = levelData[0].length;
         this.levelData = levelData;
         pixels = new Boolean[rows][cols];
+    }
+
+    public PixelLogicLevel(Integer[][] imageData) {
+        this(PixelLogicUtil.toLevelData(imageData));
+        this.image = imageData;
     }
 
     public int getColumns() {

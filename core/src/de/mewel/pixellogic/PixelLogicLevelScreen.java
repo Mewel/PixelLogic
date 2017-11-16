@@ -72,10 +72,11 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
 
     // game stuff
     private UserAction userAction;
-    private Boolean selectedPixelType = true;
+    private boolean selectedPixelType;
     private PixelLogicLevel level;
 
     public PixelLogicLevelScreen() {
+        this.selectedPixelType = true;
         Gdx.input.setInputProcessor(this);
     }
 
@@ -210,12 +211,12 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
+        renderLevel(delta);
         if (level.isSolved()) {
             deactivateInput();
-            renderLevelSolved(delta);
-            return;
+//            renderLevelSolved(delta);
+//            return;
         }
-        renderLevel(delta);
     }
 
     private void renderLevel(float delta) {
@@ -242,7 +243,7 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
             for (int i = 0; i < rowLevelData.size(); i++) {
                 layout.setText(numberFont, String.valueOf(rowLevelData.get(i)),
                         TEXT_COLOR, PIXEL_SIZE * 2, Align.right, false);
-                numberFont.draw(batch, layout, x - (i * 8), y);
+                numberFont.draw(batch, layout, x - (i * 10), y);
             }
         }
 
@@ -270,12 +271,14 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
                 backgroundPixelSprite.setPosition(pixelPosition.x, pixelPosition.y);
                 backgroundPixelSprite.draw(batch);
                 Boolean pixel = level.get(row, col);
-                if (pixel != null && pixel) {
-                    filledPixelSprite.setPosition(pixelPosition.x, pixelPosition.y);
-                    filledPixelSprite.draw(batch);
-                } else if (pixel != null && !pixel) {
-                    blockedPixelSprite.setPosition(pixelPosition.x, pixelPosition.y);
-                    blockedPixelSprite.draw(batch);
+                if (pixel != null) {
+                    if (pixel) {
+                        filledPixelSprite.setPosition(pixelPosition.x, pixelPosition.y);
+                        filledPixelSprite.draw(batch);
+                    } else {
+                        blockedPixelSprite.setPosition(pixelPosition.x, pixelPosition.y);
+                        blockedPixelSprite.draw(batch);
+                    }
                 }
             }
         }
@@ -343,7 +346,7 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
         Boolean currentPixel = level.get((int) pixel.y, (int) pixel.x);
         this.selectedPixelType = button == 0;
         UserAction.Type action = currentPixel == null ? (this.selectedPixelType ? UserAction.Type.FILL : UserAction.Type.BLOCK) : UserAction.Type.EMPTY;
-        this.userAction = new UserAction(action, pixel);
+        this.userAction = new UserAction(action, pixel, this.selectedPixelType);
         drawPixel(pixel);
         return false;
     }
@@ -383,20 +386,27 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
 
         private Type type;
 
+        private boolean selectedPixelType;
+
         private Vector2 startPixel;
 
         private Vector2 lastPixel;
 
         private Boolean horizontal;
 
-        UserAction(Type type, Vector2 startPixel) {
+        UserAction(Type type, Vector2 startPixel, boolean selectedPixelType) {
             this.startPixel = startPixel;
             this.type = type;
+            this.selectedPixelType = selectedPixelType;
             this.horizontal = null;
         }
 
         void update(Vector2 pixel, PixelLogicLevel level) {
-            this.draw((int) startPixel.y, (int) startPixel.x, level, type);
+            int startColumn = (int) startPixel.y;
+            int startRow = (int) startPixel.x;
+            if (isDrawable(level, startColumn, startRow)) {
+                this.draw((int) startColumn, startRow, level, type);
+            }
             if (horizontal == null && this.startPixel.equals(pixel)) {
                 return;
             }
@@ -404,8 +414,8 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
                 horizontal = pixel.x != this.startPixel.x;
             }
             // draw pixel
-            int startFrom = horizontal ? (int) Math.min(startPixel.x, pixel.x) : (int) Math.min(startPixel.y, pixel.y);
-            int startTo = horizontal ? (int) Math.max(startPixel.x, pixel.x) : (int) Math.max(startPixel.y, pixel.y);
+            int startFrom = horizontal ? (int) Math.min(startRow, pixel.x) : (int) Math.min(startColumn, pixel.y);
+            int startTo = horizontal ? (int) Math.max(startRow, pixel.x) : (int) Math.max(startColumn, pixel.y);
             for (int i = startFrom; i <= startTo; i++) {
                 draw(level, i, type);
             }
@@ -426,10 +436,25 @@ public class PixelLogicLevelScreen implements Screen, InputProcessor {
         private void draw(PixelLogicLevel level, int i, Type drawType) {
             int row = horizontal ? (int) startPixel.y : i;
             int col = horizontal ? i : (int) startPixel.x;
-            if (Type.FILL.equals(this.type) && level.isBlocked(row, col)) {
-                return;
+            if (isDrawable(level, row, col)) {
+                draw(row, col, level, drawType);
             }
-            draw(row, col, level, drawType);
+        }
+
+        private boolean isDrawable(PixelLogicLevel level, int row, int col) {
+            boolean blocked = level.isBlocked(row, col);
+            boolean filled = level.isFilled(row, col);
+            if (Type.FILL.equals(this.type) && blocked) {
+                return false;
+            }
+            if (Type.BLOCK.equals(this.type) && filled) {
+                return false;
+            }
+            if (Type.EMPTY.equals(this.type) &&
+                    ((this.selectedPixelType && blocked) || (!this.selectedPixelType && filled))) {
+                return false;
+            }
+            return true;
         }
 
         private void draw(int row, int col, PixelLogicLevel level, Type type) {

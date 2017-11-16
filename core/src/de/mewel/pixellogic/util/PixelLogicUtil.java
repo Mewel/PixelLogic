@@ -1,5 +1,7 @@
 package de.mewel.pixellogic.util;
 
+import com.badlogic.gdx.graphics.Color;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,6 +146,20 @@ public class PixelLogicUtil {
             }
         }
         return false;
+    }
+
+
+    public static Boolean[][] toLevelData(Integer[][] imageData) {
+        int rows = imageData.length;
+        int cols = imageData[0].length;
+        Boolean[][] level = new Boolean[rows][cols];
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                int value = imageData[col][row];
+                level[row][col] = new Color(value).a == 1.0f;
+            }
+        }
+        return level;
     }
 
     public static Boolean[][] sampleLevel() {

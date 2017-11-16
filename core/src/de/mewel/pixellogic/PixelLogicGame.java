@@ -19,17 +19,18 @@ public class PixelLogicGame extends Game {
         PixelLogicLevelValidator validator = new PixelLogicLevelValidator();
 
         // level 1
-        PixelLogicLevel level1 = PixelLogicLevelLoader.load(levelCollection, 0);
+        PixelLogicLevel level1 = PixelLogicLevelLoader.load(levelCollection, 4);
         Gdx.app.log("validate level 1", "level is " + (validator.validate(level1.getLevelData()) ? "valid" : "invalid"));
 
         // level 2
-        PixelLogicLevel level2 = PixelLogicLevelLoader.load(levelCollection, 1);
-        Gdx.app.log("validate level 2", "level is " + (validator.validate(level2.getLevelData()) ? "valid" : "invalid"));
-
+        // PixelLogicLevel level2 = PixelLogicLevelLoader.load(levelCollection, 1);
+        // Gdx.app.log("validate level 2", "level is " + (validator.validate(level2.getLevelData()) ? "valid" : "invalid"));
 
         PixelLogicLevelScreen screen = new PixelLogicLevelScreen();
         screen.load(level1);
         //screen.load(level2);
+
+        // valid sword,
 
         this.setScreen(screen);
     }
