@@ -59,6 +59,7 @@ class PixelLogicGUIBoardPixel extends Actor {
                 Color pixelColor = level.getColor(row, col);
                 if (pixelColor != null) {
                     SequenceAction sequenceAction = new SequenceAction();
+                    sequenceAction.addAction(Actions.delay(0.3f));
                     float mult = (float) (col + row) / (float) (level.getColumns() + level.getRows());
                     sequenceAction.addAction(Actions.delay(0.2f * mult));
                     sequenceAction.addAction(Actions.color(Color.WHITE, 0.2f + (0.4f * mult)));

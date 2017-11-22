@@ -22,7 +22,7 @@ public class PixelLogicGame extends Game {
 
         PixelLogicLevelValidator validator = new PixelLogicLevelValidator();
 
-        PixelLogicLevel level = PixelLogicLevelLoader.load(levelCollection, "shield");
+        PixelLogicLevel level = PixelLogicLevelLoader.load(levelCollection, "bow");
         Gdx.app.log("validate level 1", "level is " + (validator.validate(level.getLevelData()) ? "valid" : "invalid"));
 
         List<List<Integer>> rowData = PixelLogicUtil.getRowData(level.getLevelData());
