@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
@@ -39,6 +41,7 @@ public class PixelLogicLevelStage extends Stage {
         initViewport();
         initSprites();
         this.userAction = null;
+        this.checkSolved();
     }
 
     private void initViewport() {
@@ -71,7 +74,13 @@ public class PixelLogicLevelStage extends Stage {
 
     private void checkSolved() {
         if (this.level.isSolved()) {
+            // disable input
             Gdx.input.setInputProcessor(null);
+            // center board
+            SequenceAction sequenceAction = new SequenceAction();
+            sequenceAction.addAction(Actions.delay(0.2f));
+            sequenceAction.addAction(Actions.moveBy(-PIXEL_SPACE_COMBINED, -PIXEL_SPACE_COMBINED, 0.2f));
+            this.board.addAction(sequenceAction);
         }
     }
 

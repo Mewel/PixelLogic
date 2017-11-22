@@ -31,9 +31,8 @@ public class PixelLogicGUIRowGroup extends Group {
         super.act(delta);
         if (!fadeOutStarted && level.isSolved()) {
             fadeOutStarted = true;
-            this.addAction(Actions.fadeOut(1f));
+            this.addAction(Actions.fadeOut(0.4f));
         }
     }
-
 
 }

@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.mewel.pixellogic.model.PixelLogicLevel;
+
 public class PixelLogicUtil {
 
     public static List<List<Integer>> getRowData(Boolean[][] level) {
@@ -179,6 +181,17 @@ public class PixelLogicUtil {
                 {true, false, false, false, true},
                 {true, true, false, false, true}
         };
+    }
+
+    public static PixelLogicLevel sampleImageLevel() {
+        int red = Color.RED.toIntBits();
+        return new PixelLogicLevel(new Integer[][]{
+                {red, red, red, 0, red},
+                {0, 0, 0, 0, 0},
+                {0, red, red, 0, 0},
+                {red, 0, 0, 0, red},
+                {red, red, 0, 0, red}
+        });
     }
 
 }

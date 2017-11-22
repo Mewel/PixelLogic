@@ -1,5 +1,7 @@
 package de.mewel.pixellogic.model;
 
+import com.badlogic.gdx.graphics.Color;
+
 import java.util.List;
 
 import de.mewel.pixellogic.util.PixelLogicUtil;
@@ -18,7 +20,7 @@ public class PixelLogicLevel {
         this.rows = levelData.length;
         this.cols = levelData[0].length;
         this.levelData = levelData;
-        pixels = new Boolean[rows][cols];
+        this.pixels = new Boolean[rows][cols];
     }
 
     public PixelLogicLevel(Integer[][] imageData) {
@@ -36,6 +38,13 @@ public class PixelLogicLevel {
 
     public Boolean get(int row, int col) {
         return pixels[row][col];
+    }
+
+    public Color getColor(int row, int col) {
+        if (this.image == null) {
+            return null;
+        }
+        return new Color(this.image[row][col]);
     }
 
     public boolean isEmpty(int row, int col) {
@@ -108,6 +117,10 @@ public class PixelLogicLevel {
 
     public Boolean[][] getLevelData() {
         return levelData;
+    }
+
+    public void setPixels(Boolean[][] levelData) {
+        this.pixels = levelData;
     }
 
     public String toString() {
