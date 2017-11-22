@@ -49,4 +49,15 @@ public class PixelLogicLevelCollection {
     public void setLevelList(List<PixelLogicLevelData> level) {
         this.level = level;
     }
+
+    public Integer getLevelIndexByName(String name) {
+        for (int i = 0; i < this.level.size(); i++) {
+            PixelLogicLevelData levelData = level.get(i);
+            if (levelData.getName().equals(name)) {
+                return i;
+            }
+        }
+        return null;
+    }
+
 }

@@ -12,6 +12,11 @@ import de.mewel.pixellogic.model.PixelLogicLevelData;
 
 public abstract class PixelLogicLevelLoader {
 
+    public static PixelLogicLevel load(PixelLogicLevelCollection collection, String name) {
+        Integer levelIndex = collection.getLevelIndexByName(name);
+        return load(collection, levelIndex);
+    }
+
     public static PixelLogicLevel load(PixelLogicLevelCollection collection, int levelIndex) {
         FileHandle pixmapHandle = Gdx.files.internal("level").child(collection.getId()).child("pixmap.png");
         PixelLogicLevelData levelData = collection.getLevelList().get(levelIndex);

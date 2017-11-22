@@ -32,6 +32,18 @@
       "x": 3,
       "y": 8,
       "difficulty": 3
+    },
+    {
+      "name": "diamond ring",
+      "x": 1,
+      "y": 5,
+      "difficulty": 4
+    },
+    {
+      "name": "white ring",
+      "x": 6,
+      "y": 6,
+      "difficulty": 4
     }
   ]
 }

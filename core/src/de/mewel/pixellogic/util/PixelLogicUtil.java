@@ -148,14 +148,13 @@ public class PixelLogicUtil {
         return false;
     }
 
-
     public static Boolean[][] toLevelData(Integer[][] imageData) {
         int rows = imageData.length;
         int cols = imageData[0].length;
         Boolean[][] level = new Boolean[rows][cols];
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                int value = imageData[col][row];
+                int value = imageData[row][col];
                 level[row][col] = new Color(value).a == 1.0f;
             }
         }
