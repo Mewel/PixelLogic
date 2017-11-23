@@ -3,14 +3,16 @@ package de.mewel.pixellogic.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import de.mewel.pixellogic.PixelLogicGame;
+import de.mewel.pixellogic.gui.PixelLogicGUIConstants;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Pixellogic";
 		config.useGL30 = true;
-		config.width = 672;
-		config.height = 672;
+		int size = (PixelLogicGUIConstants.PIXEL_SPACE_COMBINED * 18) - PixelLogicGUIConstants.PIXEL_SPACE;
+		config.width = size * 2;
+		config.height = size * 2;
 		new LwjglApplication(new PixelLogicGame(), config);
 	}
 }

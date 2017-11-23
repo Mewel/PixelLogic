@@ -47,8 +47,8 @@ public class PixelLogicLevelStage extends Stage {
     private void initViewport() {
         gameWidth = level.getColumns() * (PIXEL_SPACE_COMBINED) - PIXEL_SPACE;
         gameHeight = level.getRows() * (PIXEL_SPACE_COMBINED) - PIXEL_SPACE;
-        int viewportWidth = gameWidth + ((PIXEL_SIZE) * 3);
-        int viewportHeight = gameHeight + ((PIXEL_SIZE) * 3);
+        int viewportWidth = gameWidth + ((PIXEL_SPACE_COMBINED) * 2);
+        int viewportHeight = gameHeight + ((PIXEL_SPACE_COMBINED) * 2);
         OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(true);
         setViewport(new FitViewport(viewportWidth, viewportHeight, camera));
