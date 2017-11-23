@@ -3,14 +3,15 @@ package de.mewel.pixellogic.util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PixelLogicBruteForceSolver {
+public class PixelLogicSolver {
 
-    public Boolean[][] solve(List<List<Integer>> rowNumbers, List<List<Integer>> colNumbers) {
+    public PixelLogicSolverResult solve(List<List<Integer>> rowNumbers, List<List<Integer>> colNumbers) {
         int rows = rowNumbers.size();
         int cols = colNumbers.size();
 
         Boolean[][] level = new Boolean[rows][cols];
 
+        int complexity = 0;
         boolean changed;
         do {
             changed = false;
@@ -28,11 +29,12 @@ public class PixelLogicBruteForceSolver {
                     changed = true;
                 }
             }
+            complexity++;
         } while (changed);
-        return level;
+        return new PixelLogicSolverResult(level, complexity);
     }
 
-    public boolean solveLine(Boolean[] line, List<Integer> numbers) {
+    boolean solveLine(Boolean[] line, List<Integer> numbers) {
         // if line is solved -> fill null pixel's
         if (PixelLogicUtil.isSolved(line, numbers)) {
             return blockRestOfLine(line);

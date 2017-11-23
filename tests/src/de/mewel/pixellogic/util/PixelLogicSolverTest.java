@@ -10,7 +10,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class PixelLogicBruteForceSolverTest {
+public class PixelLogicSolverTest {
 
     @Test
     public void solve() throws Exception {
@@ -18,7 +18,7 @@ public class PixelLogicBruteForceSolverTest {
         Boolean[][] level = PixelLogicUtil.sampleLevel();
         List<List<Integer>> rowData = PixelLogicUtil.getRowData(level);
         List<List<Integer>> colData = PixelLogicUtil.getColumnData(level);
-        Boolean[][] solvedLevel = new PixelLogicBruteForceSolver().solve(rowData, colData);
+        Boolean[][] solvedLevel = new PixelLogicSolver().solve(rowData, colData).getLevel();
         assertTrue("level should be valid", PixelLogicUtil.isValid(solvedLevel));
         assertArrayEquals("level should be equals", level, solvedLevel);
 
@@ -26,13 +26,13 @@ public class PixelLogicBruteForceSolverTest {
         level = PixelLogicUtil.invalidSampleLevel();
         rowData = PixelLogicUtil.getRowData(level);
         colData = PixelLogicUtil.getColumnData(level);
-        solvedLevel = new PixelLogicBruteForceSolver().solve(rowData, colData);
+        solvedLevel = new PixelLogicSolver().solve(rowData, colData).getLevel();
         assertFalse("level should be invalid", PixelLogicUtil.isValid(solvedLevel));
     }
 
     @Test
     public void solveLine() {
-        PixelLogicBruteForceSolver solver = new PixelLogicBruteForceSolver();
+        PixelLogicSolver solver = new PixelLogicSolver();
 
         Boolean[] line;
 

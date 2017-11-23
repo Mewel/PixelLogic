@@ -17,7 +17,7 @@ public class PixelLogicLevelValidator {
     public boolean validate(Boolean[][] levelData) {
         List<List<Integer>> rowData = PixelLogicUtil.getRowData(levelData);
         List<List<Integer>> colData = PixelLogicUtil.getColumnData(levelData);
-        Boolean[][] solvedLevel = new PixelLogicBruteForceSolver().solve(rowData, colData);
+        Boolean[][] solvedLevel = new PixelLogicSolver().solve(rowData, colData).getLevel();
         return PixelLogicUtil.isValid(solvedLevel);
     }
 

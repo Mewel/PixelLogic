@@ -8,6 +8,8 @@ import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicLevel {
 
+    private String name;
+
     private int rows, cols;
 
     private Boolean[][] pixels;
@@ -17,14 +19,19 @@ public class PixelLogicLevel {
     private Integer[][] image;
 
     public PixelLogicLevel(Boolean[][] levelData) {
+        this(null, levelData);
+    }
+
+    public PixelLogicLevel(String name, Boolean[][] levelData) {
+        this.name = name;
         this.rows = levelData.length;
         this.cols = levelData[0].length;
         this.levelData = levelData;
         this.pixels = new Boolean[rows][cols];
     }
 
-    public PixelLogicLevel(Integer[][] imageData) {
-        this(PixelLogicUtil.toLevelData(imageData));
+    public PixelLogicLevel(String name, Integer[][] imageData) {
+        this(name, PixelLogicUtil.toLevelData(imageData));
         this.image = imageData;
     }
 
@@ -121,6 +128,14 @@ public class PixelLogicLevel {
 
     public void setPixels(Boolean[][] levelData) {
         this.pixels = levelData;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String toString() {

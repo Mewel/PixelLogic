@@ -185,7 +185,7 @@ public class PixelLogicUtil {
 
     public static PixelLogicLevel sampleImageLevel() {
         int red = Color.RED.toIntBits();
-        return new PixelLogicLevel(new Integer[][]{
+        return new PixelLogicLevel(null, new Integer[][]{
                 {red, red, red, 0, red},
                 {0, 0, 0, 0, 0},
                 {0, red, red, 0, 0},
