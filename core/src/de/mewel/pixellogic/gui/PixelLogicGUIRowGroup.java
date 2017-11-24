@@ -30,7 +30,7 @@ public class PixelLogicGUIRowGroup extends Group {
         super.act(delta);
         for (int i = 0; i < level.getRows(); i++) {
             Actor actor = this.getChildren().get(i);
-            float y = getX() + ((PIXEL_SPACE_COMBINED * PIXEL_SCALE) * i);
+            float y = PIXEL_SPACE_COMBINED * PIXEL_SCALE * i;
             actor.setBounds(getX(), y, (PIXEL_SIZE * PIXEL_SCALE) * 2, (PIXEL_SIZE * PIXEL_SCALE));
         }
         if (!fadeOutStarted && level.isSolved()) {

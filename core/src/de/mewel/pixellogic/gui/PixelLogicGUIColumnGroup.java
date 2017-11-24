@@ -30,7 +30,7 @@ public class PixelLogicGUIColumnGroup extends Group {
     public void act(float delta) {
         for (int i = 0; i < level.getColumns(); i++) {
             Actor actor = this.getChildren().get(i);
-            float x = getX() + ((PIXEL_SPACE_COMBINED * PIXEL_SCALE) * i);
+            float x = PIXEL_SPACE_COMBINED * PIXEL_SCALE * i;
             actor.setBounds(x, getY(), (PIXEL_SIZE * PIXEL_SCALE), (PIXEL_SIZE * PIXEL_SCALE) * 2);
         }
         super.act(delta);
