@@ -12,7 +12,6 @@ import de.mewel.pixellogic.model.PixelLogicLevel;
 import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_BLOCKED_COLOR;
 import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_EMPTY_COLOR;
 import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_FILLED_COLOR;
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SPACE_COMBINED;
 
 class PixelLogicGUIBoardPixel extends Actor {
 

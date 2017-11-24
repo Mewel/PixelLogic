@@ -6,7 +6,6 @@ import com.badlogic.gdx.utils.Json;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;

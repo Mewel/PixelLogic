@@ -16,6 +16,7 @@ import de.mewel.pixellogic.util.PixelLogicUtil;
 
 import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.LINE_COLOR;
 import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.LINE_COMPLETE_COLOR;
+import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SCALE;
 import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SIZE;
 import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.TEXT_COLOR;
 
@@ -54,7 +55,7 @@ public class PixelLogicGUIRowInfo extends Actor {
         textColor.a = baseColor.a * parentAlpha;
         for (int i = 0; i < rowLevelData.size(); i++) {
             layout.setText(font, String.valueOf(rowLevelData.get(i)),
-                    textColor, PIXEL_SIZE * 2, Align.right, false);
+                    textColor, (PIXEL_SIZE * PIXEL_SCALE) * 2, Align.right, false);
             font.draw(batch, layout, x - (i * 10), y);
         }
         batch.setColor(baseColor.r, baseColor.g, baseColor.b, 1f);

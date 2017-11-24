@@ -2,18 +2,17 @@ package de.mewel.pixellogic.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SIZE;
+import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SCALE;
 import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SPACE;
 import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SPACE_COMBINED;
 
@@ -45,31 +44,57 @@ public class PixelLogicLevelStage extends Stage {
     }
 
     private void initViewport() {
-        gameWidth = level.getColumns() * (PIXEL_SPACE_COMBINED) - PIXEL_SPACE;
-        gameHeight = level.getRows() * (PIXEL_SPACE_COMBINED) - PIXEL_SPACE;
-        int viewportWidth = gameWidth + ((PIXEL_SPACE_COMBINED) * 2);
-        int viewportHeight = gameHeight + ((PIXEL_SPACE_COMBINED) * 2);
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+
+        updateScaling(screenWidth, screenHeight);
+
         OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(true);
-        setViewport(new FitViewport(viewportWidth, viewportHeight, camera));
-        getViewport().apply();
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+        setViewport(new ExtendViewport(screenWidth, screenHeight, camera));
     }
 
     private void initSprites() {
         // BOARD
         this.board = new PixelLogicGUIBoard(level);
-        this.board.setPosition(PIXEL_SPACE_COMBINED * 2, PIXEL_SPACE_COMBINED * 2);
         getRoot().addActor(this.board);
 
         // LINES
         this.rowGroup = new PixelLogicGUIRowGroup(level);
-        this.rowGroup.setPosition(0, PIXEL_SPACE_COMBINED * 2);
         getRoot().addActor(this.rowGroup);
 
         this.columnGroup = new PixelLogicGUIColumnGroup(level);
-        this.columnGroup.setPosition(PIXEL_SPACE_COMBINED * 2, 0);
         getRoot().addActor(this.columnGroup);
+
+        updateSpritePosition();
+    }
+
+    private void updateScaling(int screenWidth, int screenHeight) {
+        int boardWidth = level.getColumns() * (PIXEL_SPACE_COMBINED) - PIXEL_SPACE;
+        int boardHeight = level.getRows() * (PIXEL_SPACE_COMBINED) - PIXEL_SPACE;
+        int minLevelWidth = boardWidth + ((PIXEL_SPACE_COMBINED) * 2);
+        int minLevelHeight = boardHeight + ((PIXEL_SPACE_COMBINED) * 2);
+
+        int xFactor = MathUtils.floor((float) screenWidth / (float) minLevelWidth);
+        int yFactor = MathUtils.floor((float) screenHeight / (float) minLevelHeight);
+        PixelLogicGUIConstants.PIXEL_SCALE = Math.min(xFactor, yFactor);
+        Gdx.app.log("viewport", "factor: " + PixelLogicGUIConstants.PIXEL_SCALE);
+        gameWidth = boardWidth;
+        gameHeight = boardHeight;
+        updateSpritePosition();
+    }
+
+    private void updateSpritePosition() {
+        int offset = (PIXEL_SPACE_COMBINED * PIXEL_SCALE) * 2;
+        if(this.board != null) {
+            this.board.setPosition(offset, offset);
+        }
+        if(this.rowGroup != null) {
+            this.rowGroup.setPosition(0, offset);
+        }
+        if(this.columnGroup != null) {
+            this.columnGroup.setPosition(offset, 0);
+        }
     }
 
     private void checkSolved() {
@@ -79,7 +104,7 @@ public class PixelLogicLevelStage extends Stage {
             // center board
             SequenceAction sequenceAction = new SequenceAction();
             sequenceAction.addAction(Actions.delay(0.2f));
-            sequenceAction.addAction(Actions.moveBy(-PIXEL_SPACE_COMBINED, -PIXEL_SPACE_COMBINED, 0.2f));
+            sequenceAction.addAction(Actions.moveBy(-(PIXEL_SPACE_COMBINED * PIXEL_SCALE), -(PIXEL_SPACE_COMBINED * PIXEL_SCALE), 0.2f));
             this.board.addAction(sequenceAction);
         }
     }
@@ -154,19 +179,25 @@ public class PixelLogicLevelStage extends Stage {
         Vector2 relativeToGame = new Vector2(viewportCoordinates.x - boardCoordinates.x,
                 viewportCoordinates.y - boardCoordinates.y);
         if (relativeToGame.x < 0 || relativeToGame.y < 0 ||
-                relativeToGame.x > gameWidth || relativeToGame.y > gameHeight) {
-            Gdx.app.debug("to Pixel", "out of game");
+                relativeToGame.x > (gameWidth * PixelLogicGUIConstants.PIXEL_SCALE) || relativeToGame.y > (gameHeight * PixelLogicGUIConstants.PIXEL_SCALE)) {
+            Gdx.app.log("to Pixel", "out of game");
             return null;
         }
-        int x = MathUtils.floor(relativeToGame.x) / (PIXEL_SIZE + PIXEL_SPACE);
-        int y = MathUtils.floor(relativeToGame.y) / (PIXEL_SIZE + PIXEL_SPACE);
-        boolean outOfPixelX = relativeToGame.x > ((x + 1) * (PIXEL_SIZE + PIXEL_SPACE) - PIXEL_SPACE);
-        boolean outOfPixelY = relativeToGame.y > ((y + 1) * (PIXEL_SIZE + PIXEL_SPACE) - PIXEL_SPACE);
+        int x = MathUtils.floor(relativeToGame.x) / ((PIXEL_SPACE_COMBINED * PIXEL_SCALE));
+        int y = MathUtils.floor(relativeToGame.y) / ((PIXEL_SPACE_COMBINED * PIXEL_SCALE));
+        boolean outOfPixelX = relativeToGame.x > ((x + 1) * ((PIXEL_SPACE_COMBINED * PIXEL_SCALE)) - (PIXEL_SPACE * PIXEL_SCALE));
+        boolean outOfPixelY = relativeToGame.y > ((y + 1) * ((PIXEL_SPACE_COMBINED * PIXEL_SCALE)) - (PIXEL_SPACE * PIXEL_SCALE));
         if (outOfPixelX || outOfPixelY) {
-            Gdx.app.debug("to Pixel", "out of pixel");
+            Gdx.app.log("to Pixel", "out of pixel");
             return null;
         }
         return new Vector2(x, y);
+    }
+
+    public void resize(int width, int height) {
+        getViewport().update(width, height);
+        ((OrthographicCamera) getCamera()).setToOrtho(true, width, height);
+        updateScaling(width, height);
     }
 
     private static class UserAction {

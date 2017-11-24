@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.mewel.pixellogic" >
 
-    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="27" />
+    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="27" />
 
     <application
         android:allowBackup="true"
