@@ -7,10 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SCALE;
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SIZE;
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SPACE_COMBINED;
-
 public class PixelLogicGUIColumnGroup extends Group {
 
     private PixelLogicLevel level;
@@ -28,10 +24,11 @@ public class PixelLogicGUIColumnGroup extends Group {
 
     @Override
     public void act(float delta) {
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         for (int i = 0; i < level.getColumns(); i++) {
             Actor actor = this.getChildren().get(i);
-            float x = PIXEL_SPACE_COMBINED * PIXEL_SCALE * i;
-            actor.setBounds(x, getY(), (PIXEL_SIZE * PIXEL_SCALE), (PIXEL_SIZE * PIXEL_SCALE) * 2);
+            float x = resolution.getGamePixelSizeCombined() * i;
+            actor.setBounds(x, getY(), (resolution.getGamePixelSize()), (resolution.getGamePixelSize()) * 2);
         }
         super.act(delta);
         if (!fadeOutStarted && level.isSolved()) {

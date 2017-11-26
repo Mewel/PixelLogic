@@ -12,10 +12,6 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SCALE;
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SPACE;
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SPACE_COMBINED;
-
 public class PixelLogicLevelStage extends Stage {
 
     // level width
@@ -46,9 +42,6 @@ public class PixelLogicLevelStage extends Stage {
     private void initViewport() {
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
-
-        updateScaling(screenWidth, screenHeight);
-
         OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(true);
         setViewport(new ExtendViewport(screenWidth, screenHeight, camera));
@@ -69,42 +62,45 @@ public class PixelLogicLevelStage extends Stage {
         updateSpritePosition();
     }
 
-    private void updateScaling(int screenWidth, int screenHeight) {
-        int boardWidth = level.getColumns() * (PIXEL_SPACE_COMBINED) - PIXEL_SPACE;
-        int boardHeight = level.getRows() * (PIXEL_SPACE_COMBINED) - PIXEL_SPACE;
-        int minLevelWidth = boardWidth + ((PIXEL_SPACE_COMBINED) * 2);
-        int minLevelHeight = boardHeight + ((PIXEL_SPACE_COMBINED) * 2);
+    /*
+        private void updateScaling(int screenWidth, int screenHeight) {
+            PixelLogicGUIResolution resolution = PixelLogicGUIResolutionManager.instance().get(screenWidth, screenHeight);
+            int boardWidth = level.getColumns() * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
+            int boardHeight = level.getRows() * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
+            int minLevelWidth = boardWidth + (resolution.getGamePixelSizeCombined() * 2);
+            int minLevelHeight = boardHeight + (resolution.getGamePixelSizeCombined() * 2);
 
-        int xFactor = MathUtils.floor((float) screenWidth / (float) minLevelWidth);
-        int yFactor = MathUtils.floor((float) screenHeight / (float) minLevelHeight);
-        PixelLogicGUIConstants.PIXEL_SCALE = Math.min(xFactor, yFactor);
-        Gdx.app.log("viewport", "factor: " + PixelLogicGUIConstants.PIXEL_SCALE);
-        gameWidth = boardWidth;
-        gameHeight = boardHeight;
-        updateSpritePosition();
-    }
-
+            int xFactor = MathUtils.floor((float) screenWidth / (float) minLevelWidth);
+            int yFactor = MathUtils.floor((float) screenHeight / (float) minLevelHeight);
+            Gdx.app.log("viewport", "factor: " + PixelLogicGUIConstants.PIXEL_SCALE);
+            gameWidth = boardWidth;
+            gameHeight = boardHeight;
+            updateSpritePosition();
+        }
+    */
     private void updateSpritePosition() {
-        int offset = (PIXEL_SPACE_COMBINED * PIXEL_SCALE) * 2;
-        if(this.board != null) {
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        int offset = resolution.getGamePixelSizeCombined() * 2;
+        if (this.board != null) {
             this.board.setPosition(offset, offset);
         }
-        if(this.rowGroup != null) {
+        if (this.rowGroup != null) {
             this.rowGroup.setPosition(0, offset);
         }
-        if(this.columnGroup != null) {
+        if (this.columnGroup != null) {
             this.columnGroup.setPosition(offset, 0);
         }
     }
 
     private void checkSolved() {
         if (this.level.isSolved()) {
+            PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             // disable input
             Gdx.input.setInputProcessor(null);
             // center board
             SequenceAction sequenceAction = new SequenceAction();
             sequenceAction.addAction(Actions.delay(0.2f));
-            sequenceAction.addAction(Actions.moveBy(-(PIXEL_SPACE_COMBINED * PIXEL_SCALE), -(PIXEL_SPACE_COMBINED * PIXEL_SCALE), 0.2f));
+            sequenceAction.addAction(Actions.moveBy(-(resolution.getGamePixelSizeCombined()), -(resolution.getGamePixelSizeCombined()), 0.2f));
             this.board.addAction(sequenceAction);
         }
     }
@@ -178,15 +174,18 @@ public class PixelLogicLevelStage extends Stage {
         Vector2 boardCoordinates = new Vector2(this.board.getX(), this.board.getY());
         Vector2 relativeToGame = new Vector2(viewportCoordinates.x - boardCoordinates.x,
                 viewportCoordinates.y - boardCoordinates.y);
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        int boardWidth = level.getColumns() * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
+        int boardHeight = level.getRows() * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
         if (relativeToGame.x < 0 || relativeToGame.y < 0 ||
-                relativeToGame.x > (gameWidth * PixelLogicGUIConstants.PIXEL_SCALE) || relativeToGame.y > (gameHeight * PixelLogicGUIConstants.PIXEL_SCALE)) {
+                relativeToGame.x > boardWidth || relativeToGame.y > boardHeight) {
             Gdx.app.log("to Pixel", "out of game");
             return null;
         }
-        int x = MathUtils.floor(relativeToGame.x) / ((PIXEL_SPACE_COMBINED * PIXEL_SCALE));
-        int y = MathUtils.floor(relativeToGame.y) / ((PIXEL_SPACE_COMBINED * PIXEL_SCALE));
-        boolean outOfPixelX = relativeToGame.x > ((x + 1) * ((PIXEL_SPACE_COMBINED * PIXEL_SCALE)) - (PIXEL_SPACE * PIXEL_SCALE));
-        boolean outOfPixelY = relativeToGame.y > ((y + 1) * ((PIXEL_SPACE_COMBINED * PIXEL_SCALE)) - (PIXEL_SPACE * PIXEL_SCALE));
+        int x = MathUtils.floor(relativeToGame.x) / resolution.getGamePixelSizeCombined();
+        int y = MathUtils.floor(relativeToGame.y) / resolution.getGamePixelSizeCombined();
+        boolean outOfPixelX = relativeToGame.x > ((x + 1) * (resolution.getGamePixelSizeCombined()) - (resolution.getGamePixelSize()));
+        boolean outOfPixelY = relativeToGame.y > ((y + 1) * (resolution.getGamePixelSizeCombined()) - (resolution.getGamePixelSize()));
         if (outOfPixelX || outOfPixelY) {
             Gdx.app.log("to Pixel", "out of pixel");
             return null;
@@ -197,7 +196,6 @@ public class PixelLogicLevelStage extends Stage {
     public void resize(int width, int height) {
         getViewport().update(width, height);
         ((OrthographicCamera) getCamera()).setToOrtho(true, width, height);
-        updateScaling(width, height);
     }
 
     private static class UserAction {

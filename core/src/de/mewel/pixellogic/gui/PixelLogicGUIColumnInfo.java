@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
@@ -16,9 +15,6 @@ import de.mewel.pixellogic.util.PixelLogicUtil;
 
 import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.LINE_COLOR;
 import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.LINE_COMPLETE_COLOR;
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_FONT_SIZE;
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SCALE;
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SIZE;
 import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.TEXT_COLOR;
 
 public class PixelLogicGUIColumnInfo extends Actor {
@@ -27,12 +23,10 @@ public class PixelLogicGUIColumnInfo extends Actor {
     private int column;
 
     private Texture texture;
-    private BitmapFont font;
 
     public PixelLogicGUIColumnInfo(PixelLogicLevel level, int column) {
         this.level = level;
         this.column = column;
-        this.font = PixelLogicGUIUtil.getNumberFont();
         this.texture = PixelLogicGUIUtil.getWhiteTexture();
     }
 
@@ -48,17 +42,18 @@ public class PixelLogicGUIColumnInfo extends Actor {
                 getHeight() * getScaleY());
 
         // text
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         GlyphLayout layout = new GlyphLayout();
         List<Integer> colLevelData = PixelLogicUtil.getNumbersOfCol(level.getLevelData(), column);
-        int yOffset = ((PIXEL_FONT_SIZE / 2) * PIXEL_SCALE) - 2;
+        int yOffset = (resolution.getGameFontSize() / 2) - 2;
         float x = getX() + 2;
-        float y = getY() + ((PIXEL_SIZE * PIXEL_SCALE) * 2) - yOffset;
+        float y = getY() + (resolution.getGamePixelSize() * 2) - yOffset;
         Color textColor = TEXT_COLOR;
         textColor.a = baseColor.a * parentAlpha;
         for (int i = 0; i < colLevelData.size(); i++) {
-            layout.setText(font, String.valueOf(colLevelData.get(i)),
-                    textColor, (PIXEL_SIZE * PIXEL_SCALE), Align.center, false);
-            font.draw(batch, layout, x, y - ((colLevelData.size() - 1 - i) * yOffset));
+            layout.setText(resolution.getGameFont(), String.valueOf(colLevelData.get(i)),
+                    textColor, resolution.getGamePixelSize(), Align.center, false);
+            resolution.getGameFont().draw(batch, layout, x, y - ((colLevelData.size() - 1 - i) * yOffset));
         }
         batch.setColor(baseColor.r, baseColor.g, baseColor.b, 1f);
     }
@@ -67,7 +62,6 @@ public class PixelLogicGUIColumnInfo extends Actor {
     public void clear() {
         super.clear();
         this.texture.dispose();
-        this.font.dispose();
     }
 
 }

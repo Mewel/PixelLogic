@@ -1,9 +1,9 @@
 package de.mewel.pixellogic.gui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
@@ -16,8 +16,6 @@ import de.mewel.pixellogic.util.PixelLogicUtil;
 
 import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.LINE_COLOR;
 import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.LINE_COMPLETE_COLOR;
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SCALE;
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_SIZE;
 import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.TEXT_COLOR;
 
 public class PixelLogicGUIRowInfo extends Actor {
@@ -26,12 +24,10 @@ public class PixelLogicGUIRowInfo extends Actor {
     private int row;
 
     private Texture texture;
-    private BitmapFont font;
 
     public PixelLogicGUIRowInfo(PixelLogicLevel level, int row) {
         this.level = level;
         this.row = row;
-        this.font = PixelLogicGUIUtil.getNumberFont();
         this.texture = PixelLogicGUIUtil.getWhiteTexture();
     }
 
@@ -53,10 +49,11 @@ public class PixelLogicGUIRowInfo extends Actor {
         float y = getY() + 12;
         Color textColor = TEXT_COLOR;
         textColor.a = baseColor.a * parentAlpha;
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         for (int i = 0; i < rowLevelData.size(); i++) {
-            layout.setText(font, String.valueOf(rowLevelData.get(i)),
-                    textColor, (PIXEL_SIZE * PIXEL_SCALE) * 2, Align.right, false);
-            font.draw(batch, layout, x - (i * 10), y);
+            layout.setText(resolution.getGameFont(), String.valueOf(rowLevelData.get(i)),
+                    textColor, resolution.getGamePixelSize() * 2, Align.right, false);
+            resolution.getGameFont().draw(batch, layout, x - (i * 10), y);
         }
         batch.setColor(baseColor.r, baseColor.g, baseColor.b, 1f);
     }
@@ -65,7 +62,6 @@ public class PixelLogicGUIRowInfo extends Actor {
     public void clear() {
         super.clear();
         this.texture.dispose();
-        this.font.dispose();
     }
 
 }

@@ -22,7 +22,6 @@ public class PixelLogicGame extends Game {
         levelManager.setup();
         PixelLogicLevelCollection levelCollection = levelManager.getCollection("rpgitems");
 
-
         PixelLogicLevel level = PixelLogicLevelLoader.load(levelCollection, "bow");
 
         // validateLevel(level);
@@ -30,8 +29,8 @@ public class PixelLogicGame extends Game {
         // solveLevel(level);
 
         PixelLogicLevelScreen screen = new PixelLogicLevelScreen();
-        // screen.load(PixelLogicUtil.sampleImageLevel());
-        screen.load(level);
+         screen.load(PixelLogicUtil.sampleImageLevel());
+        //screen.load(level);
 
         this.setScreen(screen);
     }
