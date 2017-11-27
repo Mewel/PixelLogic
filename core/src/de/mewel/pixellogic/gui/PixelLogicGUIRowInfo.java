@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
@@ -42,18 +43,20 @@ public class PixelLogicGUIRowInfo extends Actor {
                 getHeight() * getScaleY());
 
         // text
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), level);
+        BitmapFont font = resolution.getGameFont();
         GlyphLayout layout = new GlyphLayout();
         List<Integer> rowLevelData = PixelLogicUtil.getNumbersOfRow(level.getLevelData(), row);
         Collections.reverse(rowLevelData);
-        float x = getX() - 4;
-        float y = getY() + 12;
+        float offset = font.getXHeight() / 2;
+        float x = getX() - offset;
+        float y = getY() + ((resolution.getGamePixelSize() / 2) - offset);
         Color textColor = TEXT_COLOR;
         textColor.a = baseColor.a * parentAlpha;
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         for (int i = 0; i < rowLevelData.size(); i++) {
-            layout.setText(resolution.getGameFont(), String.valueOf(rowLevelData.get(i)),
+            layout.setText(font, String.valueOf(rowLevelData.get(i)),
                     textColor, resolution.getGamePixelSize() * 2, Align.right, false);
-            resolution.getGameFont().draw(batch, layout, x - (i * 10), y);
+            font.draw(batch, layout, x - (i * font.getSpaceWidth() * 1.5f), y);
         }
         batch.setColor(baseColor.r, baseColor.g, baseColor.b, 1f);
     }

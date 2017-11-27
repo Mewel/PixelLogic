@@ -62,24 +62,8 @@ public class PixelLogicLevelStage extends Stage {
         updateSpritePosition();
     }
 
-    /*
-        private void updateScaling(int screenWidth, int screenHeight) {
-            PixelLogicGUIResolution resolution = PixelLogicGUIResolutionManager.instance().get(screenWidth, screenHeight);
-            int boardWidth = level.getColumns() * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
-            int boardHeight = level.getRows() * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
-            int minLevelWidth = boardWidth + (resolution.getGamePixelSizeCombined() * 2);
-            int minLevelHeight = boardHeight + (resolution.getGamePixelSizeCombined() * 2);
-
-            int xFactor = MathUtils.floor((float) screenWidth / (float) minLevelWidth);
-            int yFactor = MathUtils.floor((float) screenHeight / (float) minLevelHeight);
-            Gdx.app.log("viewport", "factor: " + PixelLogicGUIConstants.PIXEL_SCALE);
-            gameWidth = boardWidth;
-            gameHeight = boardHeight;
-            updateSpritePosition();
-        }
-    */
     private void updateSpritePosition() {
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), level);
         int offset = resolution.getGamePixelSizeCombined() * 2;
         if (this.board != null) {
             this.board.setPosition(offset, offset);
@@ -94,7 +78,7 @@ public class PixelLogicLevelStage extends Stage {
 
     private void checkSolved() {
         if (this.level.isSolved()) {
-            PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), level);
             // disable input
             Gdx.input.setInputProcessor(null);
             // center board
@@ -174,7 +158,7 @@ public class PixelLogicLevelStage extends Stage {
         Vector2 boardCoordinates = new Vector2(this.board.getX(), this.board.getY());
         Vector2 relativeToGame = new Vector2(viewportCoordinates.x - boardCoordinates.x,
                 viewportCoordinates.y - boardCoordinates.y);
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), level);
         int boardWidth = level.getColumns() * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
         int boardHeight = level.getRows() * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
         if (relativeToGame.x < 0 || relativeToGame.y < 0 ||
@@ -184,18 +168,19 @@ public class PixelLogicLevelStage extends Stage {
         }
         int x = MathUtils.floor(relativeToGame.x) / resolution.getGamePixelSizeCombined();
         int y = MathUtils.floor(relativeToGame.y) / resolution.getGamePixelSizeCombined();
-        boolean outOfPixelX = relativeToGame.x > ((x + 1) * (resolution.getGamePixelSizeCombined()) - (resolution.getGamePixelSize()));
+        /*boolean outOfPixelX = relativeToGame.x > ((x + 1) * (resolution.getGamePixelSizeCombined()) - (resolution.getGamePixelSize()));
         boolean outOfPixelY = relativeToGame.y > ((y + 1) * (resolution.getGamePixelSizeCombined()) - (resolution.getGamePixelSize()));
         if (outOfPixelX || outOfPixelY) {
             Gdx.app.log("to Pixel", "out of pixel");
             return null;
-        }
+        }*/
         return new Vector2(x, y);
     }
 
     public void resize(int width, int height) {
         getViewport().update(width, height);
         ((OrthographicCamera) getCamera()).setToOrtho(true, width, height);
+        updateSpritePosition();
     }
 
     private static class UserAction {

@@ -1,6 +1,7 @@
 package de.mewel.pixellogic.gui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
@@ -24,9 +25,14 @@ public class PixelLogicGUIBoard extends Group {
     }
 
     @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+    }
+
+    @Override
     public void act(float delta) {
         super.act(delta);
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), level);
         for (int row = 0; row < level.getRows(); row++) {
             for (int col = 0; col < level.getColumns(); col++) {
                 float x = resolution.getGamePixelSizeCombined() * col;

@@ -42,10 +42,10 @@ public class PixelLogicGUIColumnInfo extends Actor {
                 getHeight() * getScaleY());
 
         // text
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), level);
         GlyphLayout layout = new GlyphLayout();
         List<Integer> colLevelData = PixelLogicUtil.getNumbersOfCol(level.getLevelData(), column);
-        int yOffset = (resolution.getGameFontSize() / 2) - 2;
+        int yOffset = ((int)resolution.getGameFont().getLineHeight() / 2) + 2;
         float x = getX() + 2;
         float y = getY() + (resolution.getGamePixelSize() * 2) - yOffset;
         Color textColor = TEXT_COLOR;

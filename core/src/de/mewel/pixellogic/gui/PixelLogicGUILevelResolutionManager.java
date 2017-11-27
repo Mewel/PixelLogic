@@ -1,47 +1,32 @@
 package de.mewel.pixellogic.gui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.mewel.pixellogic.model.PixelLogicLevel;
+
+import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.TEXT_COLOR;
 
 public class PixelLogicGUILevelResolutionManager {
 
     private static PixelLogicGUILevelResolutionManager INSTANCE;
 
-    // private List<PixelLogicGUIResolution> resolutions;
+    private Map<Integer, BitmapFont> fonts;
 
     private PixelLogicGUILevelResolutionManager() {
-        //   this.resolutions = new ArrayList<PixelLogicGUIResolution>();
+        this.fonts = new HashMap<Integer, BitmapFont>();
     }
 
     public static PixelLogicGUILevelResolutionManager instance() {
         if (INSTANCE == null) {
             INSTANCE = new PixelLogicGUILevelResolutionManager();
-            INSTANCE.init();
         }
         return INSTANCE;
-    }
-
-    private void init() {
-        /*int fontScale = 2;
-        // 320
-        resolutions.add(new PixelLogicGUIResolution(320, 21, 1, 8 * fontScale));
-        // 360
-        resolutions.add(new PixelLogicGUIResolution(360, 24, 1, 8 * fontScale));
-        // 480
-        resolutions.add(new PixelLogicGUIResolution(480, 32, 2, 16 * fontScale));
-        // 540
-        resolutions.add(new PixelLogicGUIResolution(540, 36, 2, 16 * fontScale));
-        // 640
-        resolutions.add(new PixelLogicGUIResolution(640, 42, 3, 16 * fontScale));
-        // 720
-        resolutions.add(new PixelLogicGUIResolution(720, 48, 3, 24 * fontScale));
-        // 960
-        resolutions.add(new PixelLogicGUIResolution(960, 64, 4, 32 * fontScale));
-        // 1080
-        resolutions.add(new PixelLogicGUIResolution(1080, 72, 4, 32 * fontScale));
-        // 1440
-        resolutions.add(new PixelLogicGUIResolution(1440, 96, 6, 48 * fontScale));*/
     }
 
     public PixelLogicGUILevelResolution get(int width, int height, PixelLogicLevel level) {
@@ -51,22 +36,35 @@ public class PixelLogicGUILevelResolutionManager {
         float pixelPerColumn = MathUtils.floor((float) width / (float) columns);
         float pixelPerRow = MathUtils.floor((float) height / (float) rows);
 
+        float maxPixel = Math.min(pixelPerColumn, pixelPerRow);
+        float spaceSize = MathUtils.floor(maxPixel / 17);
+        float pixelSize = maxPixel - spaceSize;
 
+        BitmapFont font = getFont(pixelSize);
+        return new PixelLogicGUILevelResolution((int) pixelSize, (int) spaceSize, font);
+    }
 
-        float columnSpace = MathUtils.floor(pixelPerColumn / 17);
-        float rowSpace = MathUtils.floor(pixelPerRow / 17);
+    private BitmapFont getFont(float pixelSize) {
+        int fontSize = MathUtils.floor(pixelSize / 8f) * 8;
+        BitmapFont font = fonts.get(fontSize);
+        if (font == null) {
+            font = buildFont(fontSize);
+            this.fonts.put(fontSize, font);
+        }
+        return font;
+    }
 
-        PixelLogicGUILevelResolution bestResolution = null;
-        /*for (PixelLogicGUIResolution resolution : resolutions) {
-            if (bestResolution == null) {
-                bestResolution = resolution;
-                continue;
-            }
-            if (resolution.getResolution() <= min && resolution.getResolution() > bestResolution.getResolution()) {
-                bestResolution = resolution;
-            }
-        }*/
-        return bestResolution;
+    private BitmapFont buildFont(int fontSize) {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ObelusCompact.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        params.size = fontSize;
+        params.color = TEXT_COLOR;
+        params.flip = true;
+        try {
+            return generator.generateFont(params);
+        } finally {
+            generator.dispose();
+        }
     }
 
     public void dispose() {
