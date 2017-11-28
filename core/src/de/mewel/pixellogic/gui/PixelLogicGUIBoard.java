@@ -1,16 +1,41 @@
 package de.mewel.pixellogic.gui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
 public class PixelLogicGUIBoard extends Group {
 
+    private static Map<Integer, Integer> GRID;
+
+    static {
+        GRID = new HashMap<Integer, Integer>();
+        GRID.put(6, 3);
+        GRID.put(7, 3);
+        GRID.put(8, 4);
+        GRID.put(9, 3);
+        GRID.put(10, 5);
+        GRID.put(11, 5);
+        GRID.put(12, 4);
+        GRID.put(13, 5);
+        GRID.put(14, 5);
+        GRID.put(15, 5);
+        GRID.put(16, 4);
+    }
+
     private PixelLogicLevel level;
 
     private PixelLogicGUIBoardPixel[][] pixels;
+
+    private Texture gridTexture;
 
     public PixelLogicGUIBoard(PixelLogicLevel level) {
         this.level = level;
@@ -22,11 +47,32 @@ public class PixelLogicGUIBoard extends Group {
                 this.addActor(pixel);
             }
         }
+        this.gridTexture = PixelLogicGUIUtil.getWhiteTexture();
+        this.setColor(PixelLogicGUIConstants.GRID_COLOR);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), level);
+        int spaceSize = resolution.getGameSpaceSize();
+        int combined = resolution.getGamePixelSizeCombined();
+        int xWidth = combined * level.getColumns() - spaceSize;
+        int yWidth = combined * level.getRows() - spaceSize;
+
+        Color color = getColor();
+        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+
+        Integer gridY = GRID.get(level.getRows());
+        for(int y = gridY; y < level.getRows(); y += gridY) {
+            batch.draw(gridTexture, getX(), getY() + (combined * y) - spaceSize, xWidth, spaceSize);
+        }
+        Integer gridX = GRID.get(level.getColumns());
+        for(int x = gridX; x < level.getColumns(); x += gridX) {
+            batch.draw(gridTexture, getX() + (combined * x) - spaceSize, getY(), spaceSize, yWidth);
+        }
+
+        batch.setColor(color);
     }
 
     @Override
@@ -43,4 +89,9 @@ public class PixelLogicGUIBoard extends Group {
         }
     }
 
+    @Override
+    public void clear() {
+        super.clear();
+        this.gridTexture.dispose();
+    }
 }
