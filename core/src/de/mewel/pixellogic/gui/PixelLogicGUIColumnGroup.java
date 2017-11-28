@@ -24,7 +24,7 @@ public class PixelLogicGUIColumnGroup extends Group {
 
     @Override
     public void act(float delta) {
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), level);
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
         for (int i = 0; i < level.getColumns(); i++) {
             Actor actor = this.getChildren().get(i);
             float x = resolution.getGamePixelSizeCombined() * i;

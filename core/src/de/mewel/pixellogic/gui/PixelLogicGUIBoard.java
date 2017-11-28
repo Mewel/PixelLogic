@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 import java.util.HashMap;
@@ -54,7 +53,7 @@ public class PixelLogicGUIBoard extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), level);
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
         int spaceSize = resolution.getGameSpaceSize();
         int combined = resolution.getGamePixelSizeCombined();
         int xWidth = combined * level.getColumns() - spaceSize;
@@ -64,11 +63,11 @@ public class PixelLogicGUIBoard extends Group {
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
         Integer gridY = GRID.get(level.getRows());
-        for(int y = gridY; y < level.getRows(); y += gridY) {
+        for (int y = gridY; y < level.getRows(); y += gridY) {
             batch.draw(gridTexture, getX(), getY() + (combined * y) - spaceSize, xWidth, spaceSize);
         }
         Integer gridX = GRID.get(level.getColumns());
-        for(int x = gridX; x < level.getColumns(); x += gridX) {
+        for (int x = gridX; x < level.getColumns(); x += gridX) {
             batch.draw(gridTexture, getX() + (combined * x) - spaceSize, getY(), spaceSize, yWidth);
         }
 
@@ -78,7 +77,7 @@ public class PixelLogicGUIBoard extends Group {
     @Override
     public void act(float delta) {
         super.act(delta);
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), level);
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
         for (int row = 0; row < level.getRows(); row++) {
             for (int col = 0; col < level.getColumns(); col++) {
                 float x = resolution.getGamePixelSizeCombined() * col;

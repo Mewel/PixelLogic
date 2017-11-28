@@ -10,6 +10,6 @@ public abstract class PixelLogicGUIConstants {
     public static Color LINE_COLOR = Color.valueOf("#F5DA81");
     public static Color LINE_COMPLETE_COLOR = Color.valueOf("#FF8000");
     public static Color TEXT_COLOR = Color.valueOf("#424242");
-    public static Color GRID_COLOR = Color.valueOf("#666666");
+    public static Color GRID_COLOR = Color.valueOf("#8DBEEA");
 
 }

@@ -1,69 +1,57 @@
 package de.mewel.pixellogic.gui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
-public class PixelLogicLevelStage extends Stage {
-
-    // level width
-    private int gameWidth, gameHeight;
+public class PixelLogicGUILevel extends Group {
 
     // gui
     private PixelLogicGUIRowGroup rowGroup;
     private PixelLogicGUIColumnGroup columnGroup;
     private PixelLogicGUIBoard board;
 
+    // input
+    private LevelInputListener boardInputListener;
+
     // game stuff
-    private UserAction userAction;
-    private boolean selectedPixelType;
     private PixelLogicLevel level;
 
-    public PixelLogicLevelStage() {
-        this.selectedPixelType = true;
+    public PixelLogicGUILevel() {
     }
 
     public void load(PixelLogicLevel level) {
         this.level = level;
-        initViewport();
+        this.boardInputListener = new LevelInputListener(this);
         initSprites();
-        this.userAction = null;
         this.checkSolved();
-    }
-
-    private void initViewport() {
-        int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
-        OrthographicCamera camera = new OrthographicCamera();
-        camera.setToOrtho(true);
-        setViewport(new ExtendViewport(screenWidth, screenHeight, camera));
     }
 
     private void initSprites() {
         // BOARD
         this.board = new PixelLogicGUIBoard(level);
-        getRoot().addActor(this.board);
+        addActor(this.board);
+        this.board.addListener(this.boardInputListener);
 
         // LINES
         this.rowGroup = new PixelLogicGUIRowGroup(level);
-        getRoot().addActor(this.rowGroup);
+        addActor(this.rowGroup);
 
         this.columnGroup = new PixelLogicGUIColumnGroup(level);
-        getRoot().addActor(this.columnGroup);
+        addActor(this.columnGroup);
 
         updateSpritePosition();
     }
 
     private void updateSpritePosition() {
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), level);
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
         int offset = resolution.getGamePixelSizeCombined() * 2;
         if (this.board != null) {
             this.board.setPosition(offset, offset);
@@ -78,7 +66,7 @@ public class PixelLogicLevelStage extends Stage {
 
     private void checkSolved() {
         if (this.level.isSolved()) {
-            PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), level);
+            PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
             // disable input
             Gdx.input.setInputProcessor(null);
             // center board
@@ -89,98 +77,63 @@ public class PixelLogicLevelStage extends Stage {
         }
     }
 
-    private void drawPixel(Vector2 pixel) {
-        if (this.userAction == null) {
-            return;
-        }
-        this.userAction.update(pixel, this.level);
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        Gdx.app.debug("keyDown", "code " + keycode);
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector2 pixel = toPixel(screenX, screenY);
-        if (pixel == null) {
-            return false;
-        }
-        Boolean currentPixel = level.get((int) pixel.y, (int) pixel.x);
-        this.selectedPixelType = button == 0;
-        UserAction.Type action = currentPixel == null ? (this.selectedPixelType ? UserAction.Type.FILL : UserAction.Type.BLOCK) : UserAction.Type.EMPTY;
-        this.userAction = new UserAction(action, pixel, this.selectedPixelType);
-        drawPixel(pixel);
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        this.userAction = null;
-        checkSolved();
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        Vector2 pixel = toPixel(screenX, screenY);
-        if (pixel == null) {
-            return false;
-        }
-        drawPixel(pixel);
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-    }
-
-    private Vector2 toPixel(int screenX, int screenY) {
-        Vector3 viewportCoordinates = getViewport().unproject(new Vector3(screenX, screenY, 0));
-        Vector2 boardCoordinates = new Vector2(this.board.getX(), this.board.getY());
-        Vector2 relativeToGame = new Vector2(viewportCoordinates.x - boardCoordinates.x,
-                viewportCoordinates.y - boardCoordinates.y);
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), level);
-        int boardWidth = level.getColumns() * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
-        int boardHeight = level.getRows() * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
-        if (relativeToGame.x < 0 || relativeToGame.y < 0 ||
-                relativeToGame.x > boardWidth || relativeToGame.y > boardHeight) {
-            Gdx.app.log("to Pixel", "out of game");
-            return null;
-        }
-        int x = MathUtils.floor(relativeToGame.x) / resolution.getGamePixelSizeCombined();
-        int y = MathUtils.floor(relativeToGame.y) / resolution.getGamePixelSizeCombined();
-        /*boolean outOfPixelX = relativeToGame.x > ((x + 1) * (resolution.getGamePixelSizeCombined()) - (resolution.getGamePixelSize()));
-        boolean outOfPixelY = relativeToGame.y > ((y + 1) * (resolution.getGamePixelSizeCombined()) - (resolution.getGamePixelSize()));
-        if (outOfPixelX || outOfPixelY) {
-            Gdx.app.log("to Pixel", "out of pixel");
-            return null;
-        }*/
-        return new Vector2(x, y);
-    }
 
     public void resize(int width, int height) {
-        getViewport().update(width, height);
-        ((OrthographicCamera) getCamera()).setToOrtho(true, width, height);
+        PixelLogicGUILevelResolutionManager.instance().setWidth(width);
+        PixelLogicGUILevelResolutionManager.instance().setHeight(height);
         updateSpritePosition();
+    }
+
+    private static class LevelInputListener extends InputListener {
+
+        private PixelLogicGUILevel gui;
+        private PixelLogicLevel level;
+        private UserAction userAction;
+        private boolean selectedPixelType;
+
+        public LevelInputListener(PixelLogicGUILevel gui) {
+            this.gui = gui;
+            this.level = gui.level;
+            this.userAction = null;
+            this.selectedPixelType = true;
+        }
+
+        @Override
+        public boolean touchDown(InputEvent event, float boardX, float boardY, int pointer, int button) {
+            Vector2 pixel = toPixel(boardX, boardY);
+            Boolean currentPixel = gui.level.get((int) pixel.y, (int) pixel.x);
+            this.selectedPixelType = button == 0;
+            UserAction.Type action = currentPixel == null ? (this.selectedPixelType ? UserAction.Type.FILL : UserAction.Type.BLOCK) : UserAction.Type.EMPTY;
+            this.userAction = new UserAction(action, pixel, this.selectedPixelType);
+            drawPixel(pixel);
+            return true;
+        }
+
+        @Override
+        public void touchUp(InputEvent event, float boardX, float boardY, int pointer, int button) {
+            this.userAction = null;
+            gui.checkSolved();
+        }
+
+        @Override
+        public void touchDragged(InputEvent event, float boardX, float boardY, int pointer) {
+            drawPixel(toPixel(boardX, boardY));
+        }
+
+        private Vector2 toPixel(float boardX, float boardY) {
+            PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
+            int x = MathUtils.floor(boardX) / resolution.getGamePixelSizeCombined();
+            int y = MathUtils.floor(boardY) / resolution.getGamePixelSizeCombined();
+            return new Vector2(x, y);
+        }
+
+        private void drawPixel(Vector2 pixel) {
+            if (this.userAction == null) {
+                return;
+            }
+            this.userAction.update(pixel, this.level);
+        }
+
     }
 
     private static class UserAction {

@@ -18,8 +18,12 @@ public class PixelLogicGUILevelResolutionManager {
 
     private Map<Integer, BitmapFont> fonts;
 
+    private int width, height;
+
     private PixelLogicGUILevelResolutionManager() {
         this.fonts = new HashMap<Integer, BitmapFont>();
+        this.width = Gdx.graphics.getWidth();
+        this.height = Gdx.graphics.getHeight();
     }
 
     public static PixelLogicGUILevelResolutionManager instance() {
@@ -29,7 +33,15 @@ public class PixelLogicGUILevelResolutionManager {
         return INSTANCE;
     }
 
-    public PixelLogicGUILevelResolution get(int width, int height, PixelLogicLevel level) {
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public PixelLogicGUILevelResolution get(PixelLogicLevel level) {
         int columns = level.getColumns() + 2;
         int rows = level.getRows() + 2;
 
@@ -41,6 +53,9 @@ public class PixelLogicGUILevelResolutionManager {
         float pixelSize = maxPixel - spaceSize;
 
         BitmapFont font = getFont(pixelSize);
+
+        //Gdx.app.log("res", "font " + font.getLineHeight());
+
         return new PixelLogicGUILevelResolution((int) pixelSize, (int) spaceSize, font);
     }
 
@@ -68,9 +83,9 @@ public class PixelLogicGUILevelResolutionManager {
     }
 
     public void dispose() {
-        /*for (PixelLogicGUIResolution resolution : resolutions) {
-            resolution.dispose();
-        }*/
+        for (BitmapFont font : fonts.values()) {
+            font.dispose();
+        }
     }
 
 }

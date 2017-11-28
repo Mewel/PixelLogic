@@ -43,7 +43,7 @@ public class PixelLogicGUIRowInfo extends Actor {
                 getHeight() * getScaleY());
 
         // text
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), level);
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
         BitmapFont font = resolution.getGameFont();
         GlyphLayout layout = new GlyphLayout();
         List<Integer> rowLevelData = PixelLogicUtil.getNumbersOfRow(level.getLevelData(), row);

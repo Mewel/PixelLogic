@@ -5,23 +5,38 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
-import de.mewel.pixellogic.gui.PixelLogicLevelStage;
+import de.mewel.pixellogic.gui.PixelLogicGUILevel;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
 public class PixelLogicLevelScreen implements Screen {
 
     private static Color BACKGROUND_COLOR = Color.valueOf("#FAFAFA");
 
-    private PixelLogicLevelStage levelStage;
+    private Stage stage;
+
+    private PixelLogicGUILevel level;
 
     public PixelLogicLevelScreen() {
-        this.levelStage = new PixelLogicLevelStage();
-        Gdx.input.setInputProcessor(this.levelStage);
+        this.level = new PixelLogicGUILevel();
+        this.stage = new Stage();
+        this.stage.addActor(level);
+        Gdx.input.setInputProcessor(this.stage);
+    }
+
+    private void initViewport() {
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+        OrthographicCamera camera = new OrthographicCamera();
+        camera.setToOrtho(true);
+        stage.setViewport(new ExtendViewport(screenWidth, screenHeight, camera));
     }
 
     public void load(PixelLogicLevel level) {
-        this.levelStage.load(level);
+        initViewport();
+        this.level.load(level);
     }
 
     @Override
@@ -34,13 +49,14 @@ public class PixelLogicLevelScreen implements Screen {
         Gdx.gl.glClearColor(BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, BACKGROUND_COLOR.a);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
-        levelStage.act(delta);
-        levelStage.draw();
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-        levelStage.resize(width, height);
+        stage.getViewport().update(width, height);
+        level.resize(width, height);
     }
 
     @Override
@@ -58,7 +74,7 @@ public class PixelLogicLevelScreen implements Screen {
 
     @Override
     public void dispose() {
-        levelStage.dispose();
+        stage.dispose();
     }
 
 }
