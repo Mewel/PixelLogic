@@ -77,11 +77,12 @@ public class PixelLogicGUILevel extends Group {
         }
     }
 
-
     public void resize(int width, int height) {
         PixelLogicGUILevelResolutionManager.instance().setWidth(width);
         PixelLogicGUILevelResolutionManager.instance().setHeight(height);
         updateSpritePosition();
+        Vector2 size = PixelLogicGUILevelResolutionManager.instance().getLevelSize(level);
+        this.setSize(size.x, size.y);
     }
 
     private static class LevelInputListener extends InputListener {

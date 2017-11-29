@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +40,13 @@ public class PixelLogicGUILevelResolutionManager {
 
     public void setWidth(int width) {
         this.width = width;
+    }
+
+    public Vector2 getLevelSize(PixelLogicLevel level) {
+        PixelLogicGUILevelResolution resolution = get(level);
+        float x = (level.getColumns() + 2) * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
+        float y = (level.getRows() + 2) * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
+        return new Vector2(x, y);
     }
 
     public PixelLogicGUILevelResolution get(PixelLogicLevel level) {

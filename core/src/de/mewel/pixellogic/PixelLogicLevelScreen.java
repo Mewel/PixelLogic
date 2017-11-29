@@ -37,6 +37,7 @@ public class PixelLogicLevelScreen implements Screen {
     public void load(PixelLogicLevel level) {
         initViewport();
         this.level.load(level);
+        this.updateLevelBounds();
     }
 
     @Override
@@ -56,7 +57,8 @@ public class PixelLogicLevelScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height);
-        level.resize(width, height);
+        ((OrthographicCamera) stage.getCamera()).setToOrtho(true, width, height);
+        this.updateLevelBounds();
     }
 
     @Override
@@ -75,6 +77,16 @@ public class PixelLogicLevelScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    private void updateLevelBounds() {
+        int levelMaxWidth = Gdx.graphics.getWidth();
+        int levelMaxHeight = Gdx.graphics.getHeight() - 50;
+        this.level.resize(levelMaxWidth, levelMaxHeight);
+        Gdx.app.log("updatelevelbound", "width " + this.level.getWidth());
+        float x = levelMaxWidth / 2f - this.level.getWidth() / 2f;
+        float y = levelMaxHeight / 2f - this.level.getHeight() / 2f;
+        this.level.setPosition(x, y);
     }
 
 }
