@@ -5,10 +5,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import de.mewel.pixellogic.gui.PixelLogicGUILevel;
+import de.mewel.pixellogic.gui.PixelLogicGUILevelToolbar;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
 public class PixelLogicLevelScreen implements Screen {
@@ -19,10 +22,21 @@ public class PixelLogicLevelScreen implements Screen {
 
     private PixelLogicGUILevel level;
 
+    private Table table;
+
+    private PixelLogicGUILevelToolbar toolbar;
+
     public PixelLogicLevelScreen() {
-        this.level = new PixelLogicGUILevel();
         this.stage = new Stage();
+        this.level = new PixelLogicGUILevel();
+        this.table = new Table();
+        this.table.setFillParent(true);
+        this.toolbar = new PixelLogicGUILevelToolbar();
+
         this.stage.addActor(level);
+        this.stage.addActor(table);
+        this.table.addActor(toolbar);
+
         Gdx.input.setInputProcessor(this.stage);
     }
 
@@ -37,7 +51,7 @@ public class PixelLogicLevelScreen implements Screen {
     public void load(PixelLogicLevel level) {
         initViewport();
         this.level.load(level);
-        this.updateLevelBounds();
+        this.updateBounds();
     }
 
     @Override
@@ -58,7 +72,7 @@ public class PixelLogicLevelScreen implements Screen {
     public void resize(int width, int height) {
         stage.getViewport().update(width, height);
         ((OrthographicCamera) stage.getCamera()).setToOrtho(true, width, height);
-        this.updateLevelBounds();
+        this.updateBounds();
     }
 
     @Override
@@ -79,12 +93,18 @@ public class PixelLogicLevelScreen implements Screen {
         stage.dispose();
     }
 
-    private void updateLevelBounds() {
-        int levelMaxWidth = Gdx.graphics.getWidth();
-        int levelMaxHeight = Gdx.graphics.getHeight() - 50;
-        this.level.resize(levelMaxWidth, levelMaxHeight);
-        Gdx.app.log("updatelevelbound", "width " + this.level.getWidth());
-        float x = levelMaxWidth / 2f - this.level.getWidth() / 2f;
+    private void updateBounds() {
+        // toolbar
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+        int toolbarHeight = Math.max(MathUtils.floor(screenHeight / 360f) * 24, 48);
+        int toolbarPaddingTop = toolbarHeight / 10;
+        this.toolbar.setBounds(0, screenHeight - toolbarHeight, screenWidth, toolbarHeight);
+
+        // level
+        int levelMaxHeight = screenHeight - (int) this.toolbar.getHeight() - toolbarPaddingTop;
+        this.level.resize(screenWidth, levelMaxHeight);
+        float x = screenWidth / 2f - this.level.getWidth() / 2f;
         float y = levelMaxHeight / 2f - this.level.getHeight() / 2f;
         this.level.setPosition(x, y);
     }

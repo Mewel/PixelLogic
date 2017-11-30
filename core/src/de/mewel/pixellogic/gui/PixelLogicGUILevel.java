@@ -102,6 +102,9 @@ public class PixelLogicGUILevel extends Group {
         @Override
         public boolean touchDown(InputEvent event, float boardX, float boardY, int pointer, int button) {
             Vector2 pixel = toPixel(boardX, boardY);
+            if(pixel == null) {
+                return false;
+            }
             Boolean currentPixel = gui.level.get((int) pixel.y, (int) pixel.x);
             this.selectedPixelType = button == 0;
             UserAction.Type action = currentPixel == null ? (this.selectedPixelType ? UserAction.Type.FILL : UserAction.Type.BLOCK) : UserAction.Type.EMPTY;
@@ -125,11 +128,14 @@ public class PixelLogicGUILevel extends Group {
             PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
             int x = MathUtils.floor(boardX) / resolution.getGamePixelSizeCombined();
             int y = MathUtils.floor(boardY) / resolution.getGamePixelSizeCombined();
+            if(x < 0 || y < 0 || x >= level.getColumns() || y >= level.getRows()) {
+                return null;
+            }
             return new Vector2(x, y);
         }
 
         private void drawPixel(Vector2 pixel) {
-            if (this.userAction == null) {
+            if (pixel == null || this.userAction == null) {
                 return;
             }
             this.userAction.update(pixel, this.level);

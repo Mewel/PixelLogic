@@ -62,8 +62,6 @@ public class PixelLogicGUILevelResolutionManager {
 
         BitmapFont font = getFont(pixelSize);
 
-        //Gdx.app.log("res", "font " + font.getLineHeight());
-
         return new PixelLogicGUILevelResolution((int) pixelSize, (int) spaceSize, font);
     }
 
