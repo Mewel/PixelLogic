@@ -10,8 +10,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Pixellogic";
 		config.useGL30 = true;
-		//int size = (PixelLogicGUIConstants.PIXEL_SPACE_COMBINED * 18) - PixelLogicGUIConstants.PIXEL_SPACE;
-		config.width = 960;
+		config.width = 660;
 		config.height = 960;
 		new LwjglApplication(new PixelLogicGame(), config);
 	}
