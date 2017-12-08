@@ -6,10 +6,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import de.mewel.pixellogic.gui.PixelLogicGUILevel;
@@ -32,9 +34,13 @@ public class PixelLogicLevelScreen implements Screen {
 
     private Texture backgroundTexture;
 
+    private Sprite backgroundSprite;
+
     public PixelLogicLevelScreen() {
         this.spriteBatch = new SpriteBatch();
         this.backgroundTexture = new Texture(Gdx.files.internal("background/level_1.jpg"));
+        this.backgroundSprite = new Sprite(backgroundTexture);
+        //this.backgroundSprite.scale(0);
 
         this.stage = new Stage();
         this.level = new PixelLogicGUILevel();
@@ -75,7 +81,7 @@ public class PixelLogicLevelScreen implements Screen {
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
         spriteBatch.begin();
-        spriteBatch.draw(backgroundTexture, 0, 0);
+        spriteBatch.draw(backgroundSprite, 0, 200);
         spriteBatch.end();
 
         stage.act(delta);
