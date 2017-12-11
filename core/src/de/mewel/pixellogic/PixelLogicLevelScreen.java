@@ -10,8 +10,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import de.mewel.pixellogic.gui.PixelLogicGUILevel;
@@ -34,13 +37,11 @@ public class PixelLogicLevelScreen implements Screen {
 
     private Texture backgroundTexture;
 
-    private Sprite backgroundSprite;
+    private Image backgroundImage;
 
     public PixelLogicLevelScreen() {
         this.spriteBatch = new SpriteBatch();
         this.backgroundTexture = new Texture(Gdx.files.internal("background/level_1.jpg"));
-        this.backgroundSprite = new Sprite(backgroundTexture);
-        //this.backgroundSprite.scale(0);
 
         this.stage = new Stage();
         this.level = new PixelLogicGUILevel();
@@ -48,7 +49,12 @@ public class PixelLogicLevelScreen implements Screen {
         this.table.setFillParent(true);
         this.toolbar = new PixelLogicGUILevelToolbar();
         this.toolbar.setColor(1, 1, 1, 0.7f);
+        this.backgroundImage = new Image(backgroundTexture);
+        this.backgroundImage.setFillParent(true);
+        this.backgroundImage.setScaling(Scaling.fill);
+        this.backgroundImage.setPosition(this.backgroundImage.getImageWidth(), 0);
 
+        this.stage.addActor(backgroundImage);
         this.stage.addActor(level);
         this.stage.addActor(table);
         this.table.addActor(toolbar);
@@ -79,10 +85,6 @@ public class PixelLogicLevelScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, BACKGROUND_COLOR.a);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
-
-        spriteBatch.begin();
-        spriteBatch.draw(backgroundSprite, 0, 200);
-        spriteBatch.end();
 
         stage.act(delta);
         stage.draw();
