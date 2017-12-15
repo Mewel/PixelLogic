@@ -30,9 +30,14 @@ public class PixelLogicLevel {
         this.pixels = new Boolean[rows][cols];
     }
 
-    public PixelLogicLevel(String name, Integer[][] imageData) {
-        this(name, PixelLogicUtil.toLevelData(imageData));
-        this.image = imageData;
+    public PixelLogicLevel(String name, Integer[][] image) {
+        this(name, PixelLogicUtil.toLevelData(image));
+        this.image = image;
+    }
+
+    public PixelLogicLevel(String name, Boolean[][] levelData, Integer[][] image) {
+        this(name, levelData);
+        this.image = image;
     }
 
     public int getColumns() {

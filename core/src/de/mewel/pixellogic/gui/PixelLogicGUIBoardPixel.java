@@ -51,11 +51,19 @@ class PixelLogicGUIBoardPixel extends Actor {
         }
         if (solved && !solvedAnimationStarted) {
             boolean isFilled = level.isFilled(row, col);
+            Color pixelColor = level.getColor(row, col);
             if (!isFilled) {
-                this.addAction(Actions.fadeOut(0.4f));
+                if(pixelColor == null) {
+                    this.addAction(Actions.fadeOut(0.4f));
+                } else {
+                    SequenceAction sequenceAction = new SequenceAction();
+                    sequenceAction.addAction(Actions.fadeOut(0.4f));
+                    sequenceAction.addAction(Actions.delay(0.8f));
+                    sequenceAction.addAction(Actions.color(pixelColor, 0.4f));
+                    this.addAction(sequenceAction);
+                }
             }
             if (isFilled) {
-                Color pixelColor = level.getColor(row, col);
                 if (pixelColor != null) {
                     SequenceAction sequenceAction = new SequenceAction();
                     sequenceAction.addAction(Actions.delay(0.3f));

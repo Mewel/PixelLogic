@@ -53,25 +53,27 @@ public class PixelLogicGUIBoard extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
-        int spaceSize = resolution.getGameSpaceSize();
-        int combined = resolution.getGamePixelSizeCombined();
-        int xWidth = combined * level.getColumns() - spaceSize;
-        int yWidth = combined * level.getRows() - spaceSize;
+        if(!level.isSolved()) {
+            PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
+            int spaceSize = resolution.getGameSpaceSize();
+            int combined = resolution.getGamePixelSizeCombined();
+            int xWidth = combined * level.getColumns() - spaceSize;
+            int yWidth = combined * level.getRows() - spaceSize;
 
-        Color color = getColor();
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+            Color color = getColor();
+            batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        Integer gridY = GRID.get(level.getRows());
-        for (int y = gridY; y < level.getRows(); y += gridY) {
-            batch.draw(gridTexture, getX(), getY() + (combined * y) - spaceSize, xWidth, spaceSize);
+            Integer gridY = GRID.get(level.getRows());
+            for (int y = gridY; y < level.getRows(); y += gridY) {
+                batch.draw(gridTexture, getX(), getY() + (combined * y) - spaceSize, xWidth, spaceSize);
+            }
+            Integer gridX = GRID.get(level.getColumns());
+            for (int x = gridX; x < level.getColumns(); x += gridX) {
+                batch.draw(gridTexture, getX() + (combined * x) - spaceSize, getY(), spaceSize, yWidth);
+            }
+
+            batch.setColor(color);
         }
-        Integer gridX = GRID.get(level.getColumns());
-        for (int x = gridX; x < level.getColumns(); x += gridX) {
-            batch.draw(gridTexture, getX() + (combined * x) - spaceSize, getY(), spaceSize, yWidth);
-        }
-
-        batch.setColor(color);
     }
 
     @Override

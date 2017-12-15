@@ -121,7 +121,7 @@ public class PixelLogicLevelScreen implements Screen {
         // toolbar
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
-        int toolbarHeight = Math.max(MathUtils.floor(screenHeight / 360f) * 24, 48);
+        int toolbarHeight = Math.max(MathUtils.floor(screenHeight / 240f) * 24, 48);
         int toolbarPaddingTop = toolbarHeight / 10;
         this.toolbar.setBounds(0, screenHeight - toolbarHeight, screenWidth, toolbarHeight);
 

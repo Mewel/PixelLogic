@@ -21,11 +21,11 @@ public class PixelLogicGame extends Game {
     public void create() {
         PixelLogicLevelManager levelManager = new PixelLogicLevelManager();
         levelManager.setup();
-        PixelLogicLevelCollection levelCollection = levelManager.getCollection("rpgitems");
+        PixelLogicLevelCollection levelCollection = levelManager.getCollection("characters");
 
-        PixelLogicLevel level = PixelLogicLevelLoader.load(levelCollection, "bow");
+        PixelLogicLevel level = PixelLogicLevelLoader.load(levelCollection, "Tentacle");
 
-        // validateLevel(level);
+        validateLevel(level);
         // analyzeCollection(levelCollection);
         // solveLevel(level);
 

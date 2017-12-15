@@ -7,38 +7,50 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
+import javax.xml.soap.Text;
+
+import de.mewel.pixellogic.util.PixelLogicUtil;
+
 public class PixelLogicGUILevelToolbar extends Group {
 
-    private Texture texture;
-
-    private Sprite background;
+    private Texture backgroundTexture;
 
     private PixelLogicGUILevelSwitcher switcher;
 
     public PixelLogicGUILevelToolbar() {
-        this.texture = new Texture(Gdx.files.internal("gui/level/toolbar.png"));
-        this.background = new Sprite(texture, 0, 0, 1, 20);
-        this.background.flip(false, true);
-
-        this.switcher = new PixelLogicGUILevelSwitcher(texture);
-        this.switcher.setBounds(0, 0, 16, 16);
+        this.backgroundTexture = PixelLogicGUIUtil.getTexture(Color.BLACK);
+        this.switcher = new PixelLogicGUILevelSwitcher();
         this.addActor(this.switcher);
+        this.updateBounds();
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         Color color = getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-        batch.draw(background, getX(), getY(), getWidth() * getScaleX(),
+        batch.draw(this.backgroundTexture, getX(), getY(), getWidth() * getScaleX(),
                 getHeight() * getScaleY());
         batch.setColor(color);
-
         super.draw(batch, parentAlpha);
     }
 
     @Override
     public void clear() {
-        this.texture.dispose();
+        this.backgroundTexture.dispose();
+    }
+
+    @Override
+    public void setBounds(float x, float y, float width, float height) {
+        super.setBounds(x, y, width, height);
+        updateBounds();
+    }
+
+    private void updateBounds() {
+        float padding = this.getHeight() / 32;
+        float switcherWidth = this.getHeight() * 2;
+        float switcherHeight = this.getHeight() - (padding * 2);
+        this.switcher.setBounds((this.getWidth() - switcherWidth) - padding,
+                (this.getHeight() - switcherHeight) / 2, switcherWidth, switcherHeight);
     }
 
 }

@@ -1,0 +1,31 @@
+{
+  "name": "Characters",
+  "pixmapWidth": 8,
+  "pixmapHeight": 8,
+  "level": [
+    {
+      "name": "Donald",
+      "x": 0,
+      "y": 0,
+      "difficulty": 6
+    },
+    {
+      "name": "Mario",
+      "x": 1,
+      "y": 0,
+      "difficulty": 7
+    },
+    {
+      "name": "Ninja Turtle",
+      "x": 2,
+      "y": 0,
+      "difficulty": 4
+    },
+    {
+      "name": "Tentacle",
+      "x": 3,
+      "y": 0,
+      "difficulty": 1
+    }
+  ]
+}
