@@ -36,6 +36,7 @@ public class PixelLogicGUILevelToolbar extends Group {
 
     @Override
     public void clear() {
+        super.clear();
         this.backgroundTexture.dispose();
     }
 

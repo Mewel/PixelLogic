@@ -53,7 +53,7 @@ class PixelLogicGUIBoardPixel extends Actor {
             boolean isFilled = level.isFilled(row, col);
             Color pixelColor = level.getColor(row, col);
             if (!isFilled) {
-                if(pixelColor == null) {
+                if (pixelColor == null) {
                     this.addAction(Actions.fadeOut(0.4f));
                 } else {
                     SequenceAction sequenceAction = new SequenceAction();
@@ -81,6 +81,7 @@ class PixelLogicGUIBoardPixel extends Actor {
 
     @Override
     public void clear() {
+        super.clear();
         this.texture.dispose();
     }
 
