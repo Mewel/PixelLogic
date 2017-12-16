@@ -23,7 +23,7 @@ public class PixelLogicGame extends Game {
         levelManager.setup();
         PixelLogicLevelCollection levelCollection = levelManager.getCollection("characters");
 
-        PixelLogicLevel level = PixelLogicLevelLoader.load(levelCollection, "Tentacle");
+        PixelLogicLevel level = PixelLogicLevelLoader.load(levelCollection, "Pikachu");
 
         validateLevel(level);
         // analyzeCollection(levelCollection);

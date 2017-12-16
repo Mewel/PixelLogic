@@ -26,6 +26,78 @@
       "x": 3,
       "y": 0,
       "difficulty": 1
+    },
+    {
+      "name": "Toad",
+      "x": 0,
+      "y": 1,
+      "difficulty": 1
+    },
+    {
+      "name": "Plant",
+      "x": 1,
+      "y": 1,
+      "difficulty": 1
+    },
+    {
+      "name": "Ghost",
+      "x": 2,
+      "y": 1,
+      "difficulty": 1
+    },
+    {
+      "name": "Rhino",
+      "x": 3,
+      "y": 1,
+      "difficulty": 1
+    },
+    {
+      "name": "Snowball",
+      "x": 0,
+      "y": 2,
+      "difficulty": 1
+    },
+    {
+      "name": "Santa's Little Helper",
+      "x": 1,
+      "y": 2,
+      "difficulty": 1
+    },
+    {
+      "name": "Jake",
+      "x": 2,
+      "y": 2,
+      "difficulty": 1
+    },
+    {
+      "name": "Dog",
+      "x": 3,
+      "y": 2,
+      "difficulty": 1
+    },
+    {
+      "name": "Yoshi",
+      "x": 0,
+      "y": 3,
+      "difficulty": 1
+    },
+    {
+      "name": "Shy Guy",
+      "x": 1,
+      "y": 3,
+      "difficulty": 1
+    },
+    {
+      "name": "Pikachu",
+      "x": 2,
+      "y": 3,
+      "difficulty": 1
+    },
+    {
+      "name": "Blanka",
+      "x": 3,
+      "y": 3,
+      "difficulty": 1
     }
   ]
 }
