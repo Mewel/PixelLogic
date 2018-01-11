@@ -1,6 +1,7 @@
 package de.mewel.pixellogic.gui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
@@ -60,26 +61,30 @@ public class PixelLogicGUILevelResolutionManager {
         float spaceSize = MathUtils.floor(maxPixel / 17);
         float pixelSize = maxPixel - spaceSize;
 
-        BitmapFont font = getFont(pixelSize);
+        BitmapFont font = getFont(pixelSize, TEXT_COLOR);
 
         return new PixelLogicGUILevelResolution((int) pixelSize, (int) spaceSize, font);
     }
 
-    private BitmapFont getFont(float pixelSize) {
+    public BitmapFont getFont(float pixelSize, Color color) {
         int fontSize = MathUtils.floor(pixelSize / 8f) * 8;
         BitmapFont font = fonts.get(fontSize);
         if (font == null) {
-            font = buildFont(fontSize);
+            font = buildFont(fontSize, color);
             this.fonts.put(fontSize, font);
         }
         return font;
     }
 
-    private BitmapFont buildFont(int fontSize) {
+    public int getBaseHeight() {
+        return MathUtils.floor(Gdx.graphics.getHeight() / 240f) * 24;
+    }
+
+    private BitmapFont buildFont(int fontSize, Color color) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ObelusCompact.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
         params.size = fontSize;
-        params.color = TEXT_COLOR;
+        params.color = color;
         params.flip = true;
         try {
             return generator.generateFont(params);

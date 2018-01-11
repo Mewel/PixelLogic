@@ -5,19 +5,45 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+
+import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.event.PixelLogicSwitcherChangedEvent;
+
+import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.TOOLBAR_SWITCHER_ACTIVE_COLOR;
 
 public class PixelLogicGUILevelSwitcher extends Group {
 
-    private Texture background;
+    private Texture background, icons;
+
+    private Sprite penSprite, xSprite;
+
+    private Color penColor, xColor;
 
     private Marker marker;
 
+    private boolean fillPixel;
+
+    private boolean swappingAnimationActivated;
+
+    private boolean swappingAnimationStarted;
+
     public PixelLogicGUILevelSwitcher() {
-        Texture texture = new Texture(Gdx.files.internal("gui/level/toolbar.png"));
-        //this.background = new Sprite(texture, 0, 0, 1, 20);
-        //this.background.flip(false, true);
+        this.icons = new Texture(Gdx.files.internal("gui/level/toolbar.png"));
+        int iconSize = 24;
+        this.penSprite = new Sprite(this.icons, 0, 0, iconSize, iconSize);
+        this.xSprite = new Sprite(this.icons, iconSize, 0, iconSize, iconSize);
+        this.penSprite.flip(false, true);
+        this.xSprite.flip(false, true);
+        this.penColor = PixelLogicGUIConstants.TOOLBAR_SWITCHER_ACTIVE_COLOR;
+        this.xColor = PixelLogicGUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
+
+        this.fillPixel = true;
+        this.swappingAnimationActivated = false;
+        this.swappingAnimationStarted = false;
 
         this.background = PixelLogicGUIUtil.getTexture(Color.LIGHT_GRAY);
         this.marker = new Marker();
@@ -32,9 +58,18 @@ public class PixelLogicGUILevelSwitcher extends Group {
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
         batch.draw(background, getX(), getY(), getWidth() * getScaleX(),
                 getHeight() * getScaleY());
-        //batch.draw(this.marker, getX(), getY(), 12 * getScaleX(), 12 * getScaleY());
-        batch.setColor(color);
         super.draw(batch, parentAlpha);
+
+        float size = PixelLogicGUILevelResolutionManager.instance().getBaseHeight() / 2;
+        float offset = size / 2;
+        float y = MathUtils.floor(getY()) + offset;
+        float x = MathUtils.floor(getX()) + offset;
+        float alpha = parentAlpha * color.a;
+        batch.setColor(new Color(this.penColor.r, this.penColor.g, this.penColor.b, this.penColor.a * alpha));
+        batch.draw(penSprite, x, y, size, size);
+        batch.setColor(new Color(this.xColor.r, this.xColor.g, this.xColor.b,this.xColor.a * alpha));
+        batch.draw(xSprite, x + size + 2 * offset, y, size, size);
+        batch.setColor(color);
     }
 
     @Override
@@ -51,6 +86,44 @@ public class PixelLogicGUILevelSwitcher extends Group {
     public void clear() {
         super.clear();
         this.background.dispose();
+        this.icons.dispose();
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if(this.swappingAnimationActivated) {
+            this.penColor = PixelLogicGUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
+            this.xColor = PixelLogicGUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
+            float x = this.fillPixel ? 0 : this.getWidth() - this.marker.getWidth();
+            this.marker.addAction(Actions.sequence(
+                    Actions.moveTo(x, 0, 0.1f),
+                    Actions.color(TOOLBAR_SWITCHER_ACTIVE_COLOR, 0.05f),
+                    Actions.color(Color.ORANGE, 0.1f),
+                    Actions.run(new Runnable() {
+                        @Override
+                        public void run() {
+                            swappingAnimationStarted = false;
+                            penColor = fillPixel ? TOOLBAR_SWITCHER_ACTIVE_COLOR : PixelLogicGUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
+                            xColor = !fillPixel ? TOOLBAR_SWITCHER_ACTIVE_COLOR : PixelLogicGUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
+                            PixelLogicEventManager.instance().fire(
+                                    new PixelLogicSwitcherChangedEvent(
+                                            PixelLogicGUILevelSwitcher.this, fillPixel
+                                    ));
+                        }
+                    }
+            )));
+            this.swappingAnimationActivated = false;
+            this.swappingAnimationStarted = true;
+        }
+    }
+
+    public void swap() {
+        if(this.swappingAnimationStarted) {
+            return;
+        }
+        this.swappingAnimationActivated = true;
+        this.fillPixel = !this.fillPixel;
     }
 
     private static class Marker extends Actor {
@@ -58,7 +131,8 @@ public class PixelLogicGUILevelSwitcher extends Group {
         private Texture texture;
 
         Marker() {
-            this.texture = PixelLogicGUIUtil.getTexture(Color.ORANGE);
+            this.texture = PixelLogicGUIUtil.getTexture(Color.WHITE);
+            this.setColor(Color.ORANGE);
         }
 
         @Override

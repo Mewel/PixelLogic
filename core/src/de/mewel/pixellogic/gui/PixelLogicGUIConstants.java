@@ -12,4 +12,7 @@ public abstract class PixelLogicGUIConstants {
     public static Color TEXT_COLOR = Color.valueOf("#424242");
     public static Color GRID_COLOR = Color.valueOf("#8DBEEA");
 
+    public static Color TOOLBAR_SWITCHER_ACTIVE_COLOR = Color.WHITE;
+    public static Color TOOLBAR_SWITCHER_INACTIVE_COLOR = Color.DARK_GRAY;
+
 }

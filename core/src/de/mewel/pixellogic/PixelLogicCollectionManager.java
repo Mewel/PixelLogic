@@ -10,12 +10,16 @@ import java.util.Map;
 
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 
-public class PixelLogicLevelManager {
+public class PixelLogicCollectionManager {
 
     private Map<String, PixelLogicLevelCollection> collections;
 
-    public PixelLogicLevelManager() {
+    private PixelLogicCollectionManager() {
         collections = new HashMap<String, PixelLogicLevelCollection>();
+    }
+
+    public static PixelLogicCollectionManager instance() {
+        return InstanceHolder.INSTANCE;
     }
 
     public void setup() {
@@ -40,6 +44,12 @@ public class PixelLogicLevelManager {
 
     public PixelLogicLevelCollection getCollection(String id) {
         return this.collections.get(id);
+    }
+
+    private static class InstanceHolder {
+
+        static final PixelLogicCollectionManager INSTANCE = new PixelLogicCollectionManager();
+
     }
 
 }

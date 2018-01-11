@@ -1,17 +1,21 @@
 package de.mewel.pixellogic.gui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import de.mewel.pixellogic.event.PixelLogicLevelChangeAdapter;
+import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
+import de.mewel.pixellogic.event.PixelLogicLevelChangeListener;
+import de.mewel.pixellogic.gui.screen.PixelLogicLevelStatus;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
-public class PixelLogicGUIBoard extends Group {
+public class PixelLogicGUIBoard extends Group implements PixelLogicLevelChangeListener{
 
     private static Map<Integer, Integer> GRID;
 
@@ -32,12 +36,24 @@ public class PixelLogicGUIBoard extends Group {
 
     private PixelLogicLevel level;
 
+    private PixelLogicLevelStatus levelStatus;
+
     private PixelLogicGUIBoardPixel[][] pixels;
 
     private Texture gridTexture;
 
-    public PixelLogicGUIBoard(PixelLogicLevel level) {
-        this.level = level;
+    private PixelLogicLevelChangeAdapter changeAdapter;
+
+    public PixelLogicGUIBoard() {
+        this.gridTexture = PixelLogicGUIUtil.getWhiteTexture();
+        this.setColor(PixelLogicGUIConstants.GRID_COLOR);
+        this.changeAdapter = new PixelLogicLevelChangeAdapter();
+        this.changeAdapter.bind(this);
+    }
+
+    @Override
+    public void onLevelLoad(PixelLogicLevelChangeEvent event) {
+        this.level = event.getLevel();
         this.pixels = new PixelLogicGUIBoardPixel[level.getRows()][level.getColumns()];
         for (int row = 0; row < level.getRows(); row++) {
             for (int col = 0; col < level.getColumns(); col++) {
@@ -46,40 +62,62 @@ public class PixelLogicGUIBoard extends Group {
                 this.addActor(pixel);
             }
         }
-        this.gridTexture = PixelLogicGUIUtil.getWhiteTexture();
-        this.setColor(PixelLogicGUIConstants.GRID_COLOR);
+        this.addAction(Actions.fadeIn(2f));
+    }
+
+    @Override
+    public void onLevelSolved(PixelLogicLevelChangeEvent event) {
+
+    }
+
+    @Override
+    public void onLevelDestroyed(PixelLogicLevelChangeEvent event) {
+
+    }
+
+    @Override
+    public void onLevelChange(PixelLogicLevelChangeEvent event) {
+        this.levelStatus = event.getStatus();
+        for (int row = 0; row < level.getRows(); row++) {
+            for (int col = 0; col < level.getColumns(); col++) {
+                this.pixels[row][col].updateLevelStatus(event.getStatus());
+            }
+        }
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        if(!level.isSolved()) {
-            PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
-            int spaceSize = resolution.getGameSpaceSize();
-            int combined = resolution.getGamePixelSizeCombined();
-            int xWidth = combined * level.getColumns() - spaceSize;
-            int yWidth = combined * level.getRows() - spaceSize;
-
-            Color color = getColor();
-            batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-
-            Integer gridY = GRID.get(level.getRows());
-            for (int y = gridY; y < level.getRows(); y += gridY) {
-                batch.draw(gridTexture, getX(), getY() + (combined * y) - spaceSize, xWidth, spaceSize);
-            }
-            Integer gridX = GRID.get(level.getColumns());
-            for (int x = gridX; x < level.getColumns(); x += gridX) {
-                batch.draw(gridTexture, getX() + (combined * x) - spaceSize, getY(), spaceSize, yWidth);
-            }
-
-            batch.setColor(color);
+        if(PixelLogicLevelStatus.playable.equals(this.levelStatus)) {
+            drawGrid(batch, parentAlpha);
         }
+    }
+
+    private void drawGrid(Batch batch, float parentAlpha) {
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
+        int spaceSize = resolution.getGameSpaceSize();
+        int combined = resolution.getGamePixelSizeCombined();
+        int xWidth = combined * level.getColumns() - spaceSize;
+        int yWidth = combined * level.getRows() - spaceSize;
+
+        Color color = getColor();
+        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+
+        Integer gridY = GRID.get(level.getRows());
+        for (int y = gridY; y < level.getRows(); y += gridY) {
+            batch.draw(gridTexture, getX(), getY() + (combined * y) - spaceSize, xWidth, spaceSize);
+        }
+        Integer gridX = GRID.get(level.getColumns());
+        for (int x = gridX; x < level.getColumns(); x += gridX) {
+            batch.draw(gridTexture, getX() + (combined * x) - spaceSize, getY(), spaceSize, yWidth);
+        }
+        batch.setColor(color);
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(this.level);
         for (int row = 0; row < level.getRows(); row++) {
             for (int col = 0; col < level.getColumns(); col++) {
                 float x = resolution.getGamePixelSizeCombined() * col;
@@ -94,5 +132,6 @@ public class PixelLogicGUIBoard extends Group {
     public void clear() {
         super.clear();
         this.gridTexture.dispose();
+        this.changeAdapter.unbind();
     }
 }

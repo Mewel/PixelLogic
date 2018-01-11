@@ -9,7 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
+import de.mewel.pixellogic.event.PixelLogicEvent;
+import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
+import de.mewel.pixellogic.event.PixelLogicListener;
+import de.mewel.pixellogic.event.PixelLogicSwitcherChangedEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.gui.screen.PixelLogicLevelStatus;
 
 public class PixelLogicGUILevel extends Group {
 
@@ -19,38 +25,64 @@ public class PixelLogicGUILevel extends Group {
     private PixelLogicGUIBoard board;
 
     // input
-    private LevelInputListener boardInputListener;
+    private LevelListener levelListener;
 
     // game stuff
     private PixelLogicLevel level;
+    private PixelLogicLevelStatus status;
 
     public PixelLogicGUILevel() {
+        this.levelListener = new LevelListener(this);
     }
 
     public void load(PixelLogicLevel level) {
         this.level = level;
-        this.boardInputListener = new LevelInputListener(this);
         initSprites();
-        this.checkSolved();
+    }
+
+    public void resize(int width, int height) {
+        PixelLogicGUILevelResolutionManager.instance().setWidth(width);
+        PixelLogicGUILevelResolutionManager.instance().setHeight(height);
+        updateSpritePosition();
+        Vector2 size = PixelLogicGUILevelResolutionManager.instance().getLevelSize(level);
+        this.setSize(size.x, size.y);
+    }
+
+    public boolean isSolved() {
+        return this.level.isSolved();
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+        PixelLogicEventManager.instance().remove(this.levelListener);
+    }
+
+    public PixelLogicLevel getLevel() {
+        return this.level;
     }
 
     private void initSprites() {
         // BOARD
-        this.board = new PixelLogicGUIBoard(level);
+        this.board = new PixelLogicGUIBoard();
         addActor(this.board);
-        this.board.addListener(this.boardInputListener);
+        this.board.addListener(this.levelListener);
+        PixelLogicEventManager.instance().listen(this.levelListener);
 
         // LINES
-        this.rowGroup = new PixelLogicGUIRowGroup(level);
+        this.rowGroup = new PixelLogicGUIRowGroup();
         addActor(this.rowGroup);
 
-        this.columnGroup = new PixelLogicGUIColumnGroup(level);
+        this.columnGroup = new PixelLogicGUIColumnGroup();
         addActor(this.columnGroup);
 
         updateSpritePosition();
     }
 
     private void updateSpritePosition() {
+        if(level == null) {
+            return;
+        }
         PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
         int offset = resolution.getGamePixelSizeCombined() * 2;
         if (this.board != null) {
@@ -64,51 +96,56 @@ public class PixelLogicGUILevel extends Group {
         }
     }
 
-    private void checkSolved() {
-        if (this.level.isSolved()) {
-            PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
-            // disable input
-            Gdx.input.setInputProcessor(null);
-            // center board
-            SequenceAction sequenceAction = new SequenceAction();
-            sequenceAction.addAction(Actions.delay(0.2f));
-            sequenceAction.addAction(Actions.moveBy(-(resolution.getGamePixelSizeCombined()), -(resolution.getGamePixelSizeCombined()), 0.2f));
-            this.board.addAction(sequenceAction);
-        }
+    private void startSolveAnimation() {
+        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
+        // center board
+        SequenceAction sequenceAction = new SequenceAction();
+        sequenceAction.addAction(Actions.delay(0.2f));
+        int moveBy = resolution.getGamePixelSizeCombined();
+        Gdx.app.log("level start solve", "" + moveBy);
+        sequenceAction.addAction(Actions.moveBy(-moveBy, -moveBy, 0.2f));
+        this.board.addAction(sequenceAction);
     }
 
-    public void resize(int width, int height) {
-        PixelLogicGUILevelResolutionManager.instance().setWidth(width);
-        PixelLogicGUILevelResolutionManager.instance().setHeight(height);
-        updateSpritePosition();
-        Vector2 size = PixelLogicGUILevelResolutionManager.instance().getLevelSize(level);
-        this.setSize(size.x, size.y);
-    }
-
-    private static class LevelInputListener extends InputListener {
+    private static class LevelListener extends InputListener implements PixelLogicListener {
 
         private PixelLogicGUILevel gui;
-        private PixelLogicLevel level;
         private UserAction userAction;
         private boolean selectedPixelType;
 
-        public LevelInputListener(PixelLogicGUILevel gui) {
+        LevelListener(PixelLogicGUILevel gui) {
             this.gui = gui;
-            this.level = gui.level;
             this.userAction = null;
             this.selectedPixelType = true;
         }
 
         @Override
+        public void handle(PixelLogicEvent event) {
+            if(event instanceof PixelLogicSwitcherChangedEvent) {
+                selectedPixelType = ((PixelLogicSwitcherChangedEvent) event).isFillPixel();
+            }
+            if(event instanceof PixelLogicLevelChangeEvent) {
+                PixelLogicLevelChangeEvent changeEvent = (PixelLogicLevelChangeEvent) event;
+                gui.status = changeEvent.getStatus();
+                if(PixelLogicLevelStatus.solved.equals(gui.status)) {
+                    gui.startSolveAnimation();
+                }
+            }
+        }
+
+        @Override
         public boolean touchDown(InputEvent event, float boardX, float boardY, int pointer, int button) {
+            if(!PixelLogicLevelStatus.playable.equals(gui.status)) {
+                return true;
+            }
             Vector2 pixel = toPixel(boardX, boardY);
             if(pixel == null) {
                 return false;
             }
             Boolean currentPixel = gui.level.get((int) pixel.y, (int) pixel.x);
-            this.selectedPixelType = button == 0;
-            UserAction.Type action = currentPixel == null ? (this.selectedPixelType ? UserAction.Type.FILL : UserAction.Type.BLOCK) : UserAction.Type.EMPTY;
-            this.userAction = new UserAction(action, pixel, this.selectedPixelType);
+            boolean selected = button != 1 && this.selectedPixelType;
+            UserAction.Type action = currentPixel == null ? (selected ? UserAction.Type.FILL : UserAction.Type.BLOCK) : UserAction.Type.EMPTY;
+            this.userAction = new UserAction(action, pixel, selected);
             drawPixel(pixel);
             return true;
         }
@@ -116,7 +153,6 @@ public class PixelLogicGUILevel extends Group {
         @Override
         public void touchUp(InputEvent event, float boardX, float boardY, int pointer, int button) {
             this.userAction = null;
-            gui.checkSolved();
         }
 
         @Override
@@ -125,6 +161,7 @@ public class PixelLogicGUILevel extends Group {
         }
 
         private Vector2 toPixel(float boardX, float boardY) {
+            PixelLogicLevel level = gui.level;
             PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
             int x = MathUtils.floor(boardX) / resolution.getGamePixelSizeCombined();
             int y = MathUtils.floor(boardY) / resolution.getGamePixelSizeCombined();
@@ -138,7 +175,7 @@ public class PixelLogicGUILevel extends Group {
             if (pixel == null || this.userAction == null) {
                 return;
             }
-            this.userAction.update(pixel, this.level);
+            this.userAction.update(pixel, gui.level);
         }
 
     }
