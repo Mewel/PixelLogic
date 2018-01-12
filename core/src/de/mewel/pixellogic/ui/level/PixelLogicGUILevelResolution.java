@@ -1,10 +1,6 @@
-package de.mewel.pixellogic.gui;
+package de.mewel.pixellogic.ui.level;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.TEXT_COLOR;
 
 public class PixelLogicGUILevelResolution {
 

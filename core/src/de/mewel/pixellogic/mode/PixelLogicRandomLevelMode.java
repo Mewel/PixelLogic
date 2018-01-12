@@ -10,11 +10,11 @@ import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicListener;
-import de.mewel.pixellogic.gui.screen.PixelLogicLevelStatus;
+import de.mewel.pixellogic.ui.screen.PixelLogicLevelStatus;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
-import de.mewel.pixellogic.gui.screen.PixelLogicLevelScreen;
-import de.mewel.pixellogic.gui.screen.PixelLogicScreenManager;
+import de.mewel.pixellogic.ui.screen.PixelLogicLevelScreen;
+import de.mewel.pixellogic.ui.screen.PixelLogicScreenManager;
 import de.mewel.pixellogic.util.PixelLogicComplexityAnalyzer;
 import de.mewel.pixellogic.util.PixelLogicComplexityAnalyzerResult;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
@@ -28,6 +28,8 @@ public class PixelLogicRandomLevelMode implements PixelLogicLevelMode, PixelLogi
 
     private List<Integer> played;
 
+    private PixelLogicLevel level;
+
     @Override
     public void run(PixelLogicLevelCollection collection) {
         this.collection = collection;
@@ -38,27 +40,17 @@ public class PixelLogicRandomLevelMode implements PixelLogicLevelMode, PixelLogi
     }
 
     private void loadNextLevel() {
-        final PixelLogicLevel level = next();
+        PixelLogicLevel level = next();
         if(level == null) {
             // TODO handle no more level's
             return;
         }
+        this.level = level;
+
         PixelLogicScreenManager screenManager = PixelLogicScreenManager.instance();
         PixelLogicLevelScreen levelScreen = screenManager.getLevelScreen();
         levelScreen.loadLevel(level);
         screenManager.set(levelScreen);
-
-        PixelLogicEventManager.instance().listen(new PixelLogicListener() {
-            @Override
-            public void handle(PixelLogicEvent event) {
-                if(event instanceof PixelLogicLevelChangeEvent) {
-                    PixelLogicLevelChangeEvent changeEvent = (PixelLogicLevelChangeEvent) event;
-                    if(PixelLogicLevelStatus.playable.equals(changeEvent.getStatus())) {
-                        // solveLevel(level);
-                    }
-                }
-            }
-        });
     }
 
     public PixelLogicLevel next() {
@@ -85,6 +77,9 @@ public class PixelLogicRandomLevelMode implements PixelLogicLevelMode, PixelLogi
             PixelLogicLevelChangeEvent changeEvent = (PixelLogicLevelChangeEvent) event;
             if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus())) {
                 loadNextLevel();
+            }
+            if(PixelLogicLevelStatus.playable.equals(changeEvent.getStatus())) {
+                // solveLevel(level);
             }
         }
     }

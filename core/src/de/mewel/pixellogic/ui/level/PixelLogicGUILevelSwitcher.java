@@ -1,6 +1,5 @@
-package de.mewel.pixellogic.gui;
+package de.mewel.pixellogic.ui.level;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -12,12 +11,15 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicSwitcherChangedEvent;
+import de.mewel.pixellogic.ui.PixelLogicGUIConstants;
+import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
 
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.TOOLBAR_SWITCHER_ACTIVE_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.TOOLBAR_ICON_SIZE;
+import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.TOOLBAR_SWITCHER_ACTIVE_COLOR;
 
 public class PixelLogicGUILevelSwitcher extends Group {
 
-    private Texture background, icons;
+    private Texture background;
 
     private Sprite penSprite, xSprite;
 
@@ -31,11 +33,9 @@ public class PixelLogicGUILevelSwitcher extends Group {
 
     private boolean swappingAnimationStarted;
 
-    public PixelLogicGUILevelSwitcher() {
-        this.icons = new Texture(Gdx.files.internal("gui/level/toolbar.png"));
-        int iconSize = 24;
-        this.penSprite = new Sprite(this.icons, 0, 0, iconSize, iconSize);
-        this.xSprite = new Sprite(this.icons, iconSize, 0, iconSize, iconSize);
+    public PixelLogicGUILevelSwitcher(Texture icons) {
+        this.penSprite = new Sprite(icons, 0, 0, TOOLBAR_ICON_SIZE, TOOLBAR_ICON_SIZE);
+        this.xSprite = new Sprite(icons, TOOLBAR_ICON_SIZE, 0, TOOLBAR_ICON_SIZE, TOOLBAR_ICON_SIZE);
         this.penSprite.flip(false, true);
         this.xSprite.flip(false, true);
         this.penColor = PixelLogicGUIConstants.TOOLBAR_SWITCHER_ACTIVE_COLOR;
@@ -84,9 +84,11 @@ public class PixelLogicGUILevelSwitcher extends Group {
 
     @Override
     public void clear() {
-        super.clear();
+        for (Actor actor : this.getChildren()) {
+            actor.clear();
+        }
         this.background.dispose();
-        this.icons.dispose();
+        super.clear();
     }
 
     @Override

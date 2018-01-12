@@ -1,4 +1,4 @@
-package de.mewel.pixellogic.gui;
+package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,16 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
-import de.mewel.pixellogic.event.PixelLogicEvent;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
-import de.mewel.pixellogic.event.PixelLogicListener;
-import de.mewel.pixellogic.gui.screen.PixelLogicLevelStatus;
+import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
+import de.mewel.pixellogic.ui.screen.PixelLogicLevelStatus;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_BLOCKED_COLOR;
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_EMPTY_COLOR;
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.PIXEL_FILLED_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.PIXEL_BLOCKED_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.PIXEL_EMPTY_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.PIXEL_FILLED_COLOR;
 
 class PixelLogicGUIBoardPixel extends Actor {
 

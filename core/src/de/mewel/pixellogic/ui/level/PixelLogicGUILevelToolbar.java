@@ -1,28 +1,30 @@
-package de.mewel.pixellogic.gui;
+package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
-import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicLevelChangeAdapter;
 import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicLevelChangeListener;
-import de.mewel.pixellogic.event.PixelLogicListener;
+import de.mewel.pixellogic.event.PixelLogicUserEvent;
+import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
 import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.gui.screen.PixelLogicLevelStatus;
 
 public class PixelLogicGUILevelToolbar extends Group implements PixelLogicLevelChangeListener {
 
-    private Texture backgroundTexture;
+    private Texture icons, backgroundTexture;
+
+    private PixelLogicGUILevelMenuButton menuButton;
 
     private PixelLogicGUILevelSwitcher switcher;
 
@@ -36,7 +38,20 @@ public class PixelLogicGUILevelToolbar extends Group implements PixelLogicLevelC
         this.level = null;
         this.solvedLabel = null;
         this.backgroundTexture = PixelLogicGUIUtil.getTexture(Color.BLACK);
-        this.switcher = new PixelLogicGUILevelSwitcher();
+        this.icons = new Texture(Gdx.files.internal("gui/level/toolbar.png"));
+
+        this.menuButton = new PixelLogicGUILevelMenuButton(this.icons);
+        this.menuButton.addListener(new InputListener() {
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                PixelLogicEventManager.instance().fire(new PixelLogicUserEvent(PixelLogicGUILevelToolbar.this, PixelLogicUserEvent.Type.TOOLBAR_MENU_CLICKED));
+                return super.touchDown(event, x, y, pointer, button);
+            }
+
+        });
+
+        this.switcher = new PixelLogicGUILevelSwitcher(this.icons);
         this.switcher.addListener(new InputListener() {
 
             @Override
@@ -46,9 +61,11 @@ public class PixelLogicGUILevelToolbar extends Group implements PixelLogicLevelC
             }
 
         });
+
         this.changeAdapter = new PixelLogicLevelChangeAdapter();
         this.changeAdapter.bind(this);
 
+        this.addActor(this.menuButton);
         this.addActor(this.switcher);
         this.updateBounds();
     }
@@ -60,13 +77,16 @@ public class PixelLogicGUILevelToolbar extends Group implements PixelLogicLevelC
     @Override
     public void onLevelLoad(PixelLogicLevelChangeEvent event) {
         this.level = event.getLevel();
+        this.menuButton.addAction(Actions.fadeIn(.3f));
         this.switcher.addAction(Actions.fadeIn(.3f));
     }
 
     @Override
     public void onLevelSolved(PixelLogicLevelChangeEvent event) {
-        // fade out switcher
+        // fade out toolbar elements
+        this.menuButton.addAction(Actions.fadeOut(.3f));
         this.switcher.addAction(Actions.fadeOut(.3f));
+
         // display text
         if (this.solvedLabel == null) {
             BitmapFont labelFont = PixelLogicGUILevelResolutionManager.instance().getFont(this.getHeight(), Color.WHITE);
@@ -99,9 +119,13 @@ public class PixelLogicGUILevelToolbar extends Group implements PixelLogicLevelC
 
     @Override
     public void clear() {
-        super.clear();
         this.backgroundTexture.dispose();
+        this.icons.dispose();
         this.changeAdapter.unbind();
+        for (Actor actor : this.getChildren()) {
+            actor.clear();
+        }
+        super.clear();
     }
 
     @Override
@@ -112,10 +136,11 @@ public class PixelLogicGUILevelToolbar extends Group implements PixelLogicLevelC
 
     private void updateBounds() {
         float padding = this.getHeight() / 32;
+        float iconSize = this.getHeight() - (padding * 2);
         float switcherWidth = this.getHeight() * 2;
-        float switcherHeight = this.getHeight() - (padding * 2);
+        this.menuButton.setBounds(padding, padding, iconSize, iconSize);
         this.switcher.setBounds((this.getWidth() - switcherWidth) - padding,
-                (this.getHeight() - switcherHeight) / 2, switcherWidth, switcherHeight);
+                (this.getHeight() - iconSize) / 2, switcherWidth, iconSize);
     }
 
 }

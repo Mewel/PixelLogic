@@ -1,4 +1,4 @@
-package de.mewel.pixellogic.gui.screen;
+package de.mewel.pixellogic.ui.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -14,14 +16,21 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
+import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
-import de.mewel.pixellogic.gui.PixelLogicGUILevel;
-import de.mewel.pixellogic.gui.PixelLogicGUILevelResolutionManager;
-import de.mewel.pixellogic.gui.PixelLogicGUILevelToolbar;
+import de.mewel.pixellogic.event.PixelLogicListener;
+import de.mewel.pixellogic.event.PixelLogicUserEvent;
+import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
+import de.mewel.pixellogic.ui.level.PixelLogicGUILevel;
+import de.mewel.pixellogic.ui.level.PixelLogicGUILevelMenu;
+import de.mewel.pixellogic.ui.level.PixelLogicGUILevelResolutionManager;
+import de.mewel.pixellogic.ui.level.PixelLogicGUILevelToolbar;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
 public class PixelLogicLevelScreen implements Screen {
@@ -38,35 +47,45 @@ public class PixelLogicLevelScreen implements Screen {
 
     private PixelLogicGUILevelToolbar toolbar;
 
+    private PixelLogicGUILevelMenu menu;
+
     private Texture backgroundTexture;
 
     private Image backgroundImage;
 
     private PixelLogicLevelStatus levelStatus;
 
+    private ScreenListener screenListener;
+
     public PixelLogicLevelScreen() {
         this.levelStatus = null;
+        this.stage = new Stage();
 
+        // BACKGROUND
         this.spriteBatch = new SpriteBatch();
         this.backgroundTexture = new Texture(Gdx.files.internal("background/level_1.jpg"));
-
-        this.levelUI = null;
-        this.stage = new Stage();
-        this.table = new Table();
-        this.table.setFillParent(true);
-        this.toolbar = new PixelLogicGUILevelToolbar();
         this.backgroundImage = new Image(backgroundTexture);
         this.backgroundImage.setFillParent(true);
         this.backgroundImage.setScaling(Scaling.fill);
         this.backgroundImage.setPosition(this.backgroundImage.getImageWidth(), 0);
-
         this.stage.addActor(backgroundImage);
+
+        // LEVEL
+        this.levelUI = null;
+        this.table = new Table();
+        this.table.setFillParent(true);
+        this.toolbar = new PixelLogicGUILevelToolbar();
         this.stage.addActor(table);
         this.table.addActor(toolbar);
 
-        this.stage.getRoot().setColor(new Color(1, 1, 1, 0));
-        this.stage.addListener(new ScreenInputListener(this));
+        // MENU
+        this.menu = new PixelLogicGUILevelMenu(this.stage.getRoot());
 
+        // STAGE
+        this.stage.getRoot().setColor(new Color(1, 1, 1, 0));
+        this.screenListener = new ScreenListener(this);
+        this.stage.addListener(this.screenListener);
+        PixelLogicEventManager.instance().listen(this.screenListener);
         Gdx.input.setInputProcessor(this.stage);
     }
 
@@ -139,12 +158,12 @@ public class PixelLogicLevelScreen implements Screen {
         this.stage.addAction(Actions.sequence(
                 Actions.delay(1.5f),
                 Actions.run(new Runnable() {
-                    @Override
-                    public void run() {
-                        changeLevelStatus(PixelLogicLevelStatus.finished);
-                    }
-                }
-        )));
+                                @Override
+                                public void run() {
+                                    changeLevelStatus(PixelLogicLevelStatus.finished);
+                                }
+                            }
+                )));
     }
 
     private void changeLevelStatus(PixelLogicLevelStatus status) {
@@ -182,6 +201,7 @@ public class PixelLogicLevelScreen implements Screen {
 
     @Override
     public void dispose() {
+        PixelLogicEventManager.instance().remove(this.screenListener);
         this.stage.dispose();
         this.spriteBatch.dispose();
         this.backgroundTexture.dispose();
@@ -204,13 +224,16 @@ public class PixelLogicLevelScreen implements Screen {
             float y = levelMaxHeight / 2f - this.levelUI.getHeight() / 2f;
             this.levelUI.setPosition(x, y);
         }
+
+        // menu
+        this.menu.updateBounds();
     }
 
-    private static class ScreenInputListener extends InputListener {
+    private static class ScreenListener extends InputListener implements PixelLogicListener {
 
         private PixelLogicLevelScreen screen;
 
-        ScreenInputListener(PixelLogicLevelScreen screen) {
+        ScreenListener(PixelLogicLevelScreen screen) {
             this.screen = screen;
         }
 
@@ -220,6 +243,16 @@ public class PixelLogicLevelScreen implements Screen {
                 this.screen.destroyLevel();
             }
             return super.touchDown(event, x, y, pointer, button);
+        }
+
+        @Override
+        public void handle(PixelLogicEvent event) {
+            if (event instanceof PixelLogicUserEvent) {
+                PixelLogicUserEvent userEvent = (PixelLogicUserEvent) event;
+                if (PixelLogicUserEvent.Type.TOOLBAR_MENU_CLICKED.equals(userEvent.getType())) {
+                    screen.menu.show();
+                }
+            }
         }
 
     }

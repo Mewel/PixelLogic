@@ -1,8 +1,9 @@
-package de.mewel.pixellogic.gui;
+package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -14,8 +15,8 @@ import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicSwitcherChangedEvent;
+import de.mewel.pixellogic.ui.screen.PixelLogicLevelStatus;
 import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.gui.screen.PixelLogicLevelStatus;
 
 public class PixelLogicGUILevel extends Group {
 
@@ -54,8 +55,11 @@ public class PixelLogicGUILevel extends Group {
 
     @Override
     public void clear() {
-        super.clear();
+        for (Actor actor : this.getChildren()) {
+            actor.clear();
+        }
         PixelLogicEventManager.instance().remove(this.levelListener);
+        super.clear();
     }
 
     public PixelLogicLevel getLevel() {
@@ -80,7 +84,7 @@ public class PixelLogicGUILevel extends Group {
     }
 
     private void updateSpritePosition() {
-        if(level == null) {
+        if (level == null) {
             return;
         }
         PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
@@ -121,13 +125,13 @@ public class PixelLogicGUILevel extends Group {
 
         @Override
         public void handle(PixelLogicEvent event) {
-            if(event instanceof PixelLogicSwitcherChangedEvent) {
+            if (event instanceof PixelLogicSwitcherChangedEvent) {
                 selectedPixelType = ((PixelLogicSwitcherChangedEvent) event).isFillPixel();
             }
-            if(event instanceof PixelLogicLevelChangeEvent) {
+            if (event instanceof PixelLogicLevelChangeEvent) {
                 PixelLogicLevelChangeEvent changeEvent = (PixelLogicLevelChangeEvent) event;
                 gui.status = changeEvent.getStatus();
-                if(PixelLogicLevelStatus.solved.equals(gui.status)) {
+                if (PixelLogicLevelStatus.solved.equals(gui.status)) {
                     gui.startSolveAnimation();
                 }
             }
@@ -135,11 +139,11 @@ public class PixelLogicGUILevel extends Group {
 
         @Override
         public boolean touchDown(InputEvent event, float boardX, float boardY, int pointer, int button) {
-            if(!PixelLogicLevelStatus.playable.equals(gui.status)) {
+            if (!PixelLogicLevelStatus.playable.equals(gui.status)) {
                 return true;
             }
             Vector2 pixel = toPixel(boardX, boardY);
-            if(pixel == null) {
+            if (pixel == null) {
                 return false;
             }
             Boolean currentPixel = gui.level.get((int) pixel.y, (int) pixel.x);
@@ -165,7 +169,7 @@ public class PixelLogicGUILevel extends Group {
             PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
             int x = MathUtils.floor(boardX) / resolution.getGamePixelSizeCombined();
             int y = MathUtils.floor(boardY) / resolution.getGamePixelSizeCombined();
-            if(x < 0 || y < 0 || x >= level.getColumns() || y >= level.getRows()) {
+            if (x < 0 || y < 0 || x >= level.getColumns() || y >= level.getRows()) {
                 return null;
             }
             return new Vector2(x, y);

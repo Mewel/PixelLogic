@@ -1,4 +1,4 @@
-package de.mewel.pixellogic.gui;
+package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -57,8 +57,11 @@ public class PixelLogicGUIColumnGroup extends Group implements PixelLogicLevelCh
 
     @Override
     public void clear() {
-        super.clear();
+        for (Actor actor : this.getChildren()) {
+            actor.clear();
+        }
         this.changeAdapter.unbind();
+        super.clear();
     }
 
 }

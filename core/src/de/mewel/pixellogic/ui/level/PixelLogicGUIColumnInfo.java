@@ -1,6 +1,5 @@
-package de.mewel.pixellogic.gui;
+package de.mewel.pixellogic.ui.level;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -10,12 +9,13 @@ import com.badlogic.gdx.utils.Align;
 
 import java.util.List;
 
+import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.LINE_COLOR;
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.LINE_COMPLETE_COLOR;
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.TEXT_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.LINE_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.LINE_COMPLETE_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.TEXT_COLOR;
 
 public class PixelLogicGUIColumnInfo extends Actor {
 

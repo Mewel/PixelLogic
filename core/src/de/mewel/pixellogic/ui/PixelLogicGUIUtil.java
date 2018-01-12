@@ -1,4 +1,4 @@
-package de.mewel.pixellogic.gui;
+package de.mewel.pixellogic.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;

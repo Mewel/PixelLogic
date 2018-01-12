@@ -1,4 +1,4 @@
-package de.mewel.pixellogic.gui.screen;
+package de.mewel.pixellogic.ui.screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;

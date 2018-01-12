@@ -1,4 +1,4 @@
-package de.mewel.pixellogic.gui;
+package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
-import static de.mewel.pixellogic.gui.PixelLogicGUIConstants.TEXT_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.TEXT_COLOR;
 
 public class PixelLogicGUILevelResolutionManager {
 
