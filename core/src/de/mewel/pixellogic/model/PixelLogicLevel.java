@@ -78,6 +78,10 @@ public class PixelLogicLevel {
         pixels[row][col] = pixel;
     }
 
+    public void reset() {
+        this.pixels = new Boolean[rows][cols];
+    }
+
     /**
      * Checks if the whole level is solved.
      *

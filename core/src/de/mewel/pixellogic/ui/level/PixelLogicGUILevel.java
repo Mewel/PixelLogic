@@ -34,11 +34,20 @@ public class PixelLogicGUILevel extends Group {
 
     public PixelLogicGUILevel() {
         this.levelListener = new LevelListener(this);
+        this.level = null;
+        this.status = null;
     }
 
     public void load(PixelLogicLevel level) {
         this.level = level;
         initSprites();
+    }
+
+    public void resetLevel() {
+        if (this.level == null) {
+            return;
+        }
+        this.level.reset();
     }
 
     public void resize(int width, int height) {

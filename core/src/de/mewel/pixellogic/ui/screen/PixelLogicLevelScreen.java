@@ -79,7 +79,7 @@ public class PixelLogicLevelScreen implements Screen {
         this.table.addActor(toolbar);
 
         // MENU
-        this.menu = new PixelLogicGUILevelMenu(this.stage.getRoot());
+        this.menu = new PixelLogicGUILevelMenu(this);
 
         // STAGE
         this.stage.getRoot().setColor(new Color(1, 1, 1, 0));
@@ -112,6 +112,10 @@ public class PixelLogicLevelScreen implements Screen {
             }
         }));
         this.stage.getRoot().addAction(fadeInAction);
+    }
+
+    public void resetLevel() {
+        this.levelUI.resetLevel();
     }
 
     public void destroyLevel() {
@@ -179,6 +183,10 @@ public class PixelLogicLevelScreen implements Screen {
         return this.levelStatus;
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height);
@@ -226,7 +234,7 @@ public class PixelLogicLevelScreen implements Screen {
         }
 
         // menu
-        this.menu.updateBounds();
+        this.menu.setBounds(0, 0, screenWidth, screenHeight);
     }
 
     private static class ScreenListener extends InputListener implements PixelLogicListener {

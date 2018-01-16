@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public abstract class PixelLogicUIModal extends Group {
@@ -26,7 +27,6 @@ public abstract class PixelLogicUIModal extends Group {
         this.addActor(content);
         this.fadeInDuration = .2f;
         buildContent(this.content);
-        updateBounds();
     }
 
     public void show() {
@@ -36,13 +36,13 @@ public abstract class PixelLogicUIModal extends Group {
     }
 
     public void close() {
-        Actions.sequence(Actions.fadeOut(this.fadeInDuration), Actions.run(new Runnable() {
+        this.addAction(Actions.sequence(Actions.fadeOut(this.fadeInDuration), Actions.run(new Runnable() {
             @Override
             public void run() {
                 PixelLogicUIModal modal = PixelLogicUIModal.this;
                 modal.parent.removeActor(modal);
             }
-        }));
+        })));
     }
 
     protected abstract void buildContent(Table content);
@@ -52,11 +52,14 @@ public abstract class PixelLogicUIModal extends Group {
         super.draw(batch, parentAlpha * getColor().a);
     }
 
-    public void updateBounds() {
+    @Override
+    protected void sizeChanged() {
+        super.sizeChanged();
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
         this.setBounds(0, 0, screenWidth, screenHeight);
         this.backdrop.setBounds(0, 0, screenWidth, screenHeight);
+        this.content.setBounds(0, 0, screenWidth, screenHeight);
     }
 
     public void setFadeInDuration(float fadeInDuration) {
