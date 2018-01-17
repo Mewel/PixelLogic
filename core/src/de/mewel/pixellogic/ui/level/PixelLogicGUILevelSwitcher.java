@@ -14,7 +14,7 @@ import de.mewel.pixellogic.event.PixelLogicSwitcherChangedEvent;
 import de.mewel.pixellogic.ui.PixelLogicGUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
 
-import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.TOOLBAR_ICON_SIZE;
+import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.BASE_SIZE;
 import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.TOOLBAR_SWITCHER_ACTIVE_COLOR;
 
 public class PixelLogicGUILevelSwitcher extends Group {
@@ -34,8 +34,8 @@ public class PixelLogicGUILevelSwitcher extends Group {
     private boolean swappingAnimationStarted;
 
     public PixelLogicGUILevelSwitcher(Texture icons) {
-        this.penSprite = new Sprite(icons, 0, 0, TOOLBAR_ICON_SIZE, TOOLBAR_ICON_SIZE);
-        this.xSprite = new Sprite(icons, TOOLBAR_ICON_SIZE, 0, TOOLBAR_ICON_SIZE, TOOLBAR_ICON_SIZE);
+        this.penSprite = new Sprite(icons, 0, 0, BASE_SIZE, BASE_SIZE);
+        this.xSprite = new Sprite(icons, BASE_SIZE, 0, BASE_SIZE, BASE_SIZE);
         this.penSprite.flip(false, true);
         this.xSprite.flip(false, true);
         this.penColor = PixelLogicGUIConstants.TOOLBAR_SWITCHER_ACTIVE_COLOR;
@@ -60,7 +60,7 @@ public class PixelLogicGUILevelSwitcher extends Group {
                 getHeight() * getScaleY());
         super.draw(batch, parentAlpha);
 
-        float size = PixelLogicGUILevelResolutionManager.instance().getBaseHeight() / 2;
+        float size = PixelLogicGUILevelResolutionManager.instance().getIconBaseHeight();
         float offset = size / 2;
         float y = MathUtils.floor(getY()) + offset;
         float x = MathUtils.floor(getX()) + offset;

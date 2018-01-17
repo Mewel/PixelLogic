@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.ui.level;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -7,14 +8,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.TOOLBAR_ICON_SIZE;
+import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.BASE_SIZE;
 
 public class PixelLogicGUILevelMenuButton extends Actor {
 
     private Sprite sprite;
 
     public PixelLogicGUILevelMenuButton(Texture icons) {
-        this.sprite = new Sprite(icons, TOOLBAR_ICON_SIZE * 2, 0, TOOLBAR_ICON_SIZE, TOOLBAR_ICON_SIZE);
+        this.sprite = new Sprite(icons, BASE_SIZE * 2, 0, BASE_SIZE, BASE_SIZE);
         this.sprite.flip(false, true);
     }
 
@@ -24,7 +25,7 @@ public class PixelLogicGUILevelMenuButton extends Actor {
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
         super.draw(batch, parentAlpha);
 
-        float size = PixelLogicGUILevelResolutionManager.instance().getBaseHeight() / 2;
+        float size = PixelLogicGUILevelResolutionManager.instance().getIconBaseHeight();
         float offset = size / 2;
         float y = MathUtils.floor(getY()) + offset - 1;
         float x = MathUtils.floor(getX()) + offset;

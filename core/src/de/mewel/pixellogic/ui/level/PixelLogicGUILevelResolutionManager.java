@@ -12,18 +12,19 @@ import java.util.Map;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
+import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.BASE_SIZE;
 import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.TEXT_COLOR;
 
 public class PixelLogicGUILevelResolutionManager {
 
     private static PixelLogicGUILevelResolutionManager INSTANCE;
 
-    private Map<Integer, BitmapFont> fonts;
+    private Map<String, BitmapFont> fonts;
 
     private int width, height;
 
     private PixelLogicGUILevelResolutionManager() {
-        this.fonts = new HashMap<Integer, BitmapFont>();
+        this.fonts = new HashMap<String, BitmapFont>();
         this.width = Gdx.graphics.getWidth();
         this.height = Gdx.graphics.getHeight();
     }
@@ -68,16 +69,23 @@ public class PixelLogicGUILevelResolutionManager {
 
     public BitmapFont getFont(float pixelSize, Color color) {
         int fontSize = MathUtils.floor(pixelSize / 8f) * 8;
-        BitmapFont font = fonts.get(fontSize);
+        String hash = pixelSize + "_" + color.toString();
+        BitmapFont font = fonts.get(hash);
         if (font == null) {
             font = buildFont(fontSize, color);
-            this.fonts.put(fontSize, font);
+            this.fonts.put(hash, font);
         }
         return font;
     }
 
     public int getBaseHeight() {
-        return MathUtils.floor(Gdx.graphics.getHeight() / 240f) * 24;
+        int baseHeight = MathUtils.floor(Gdx.graphics.getHeight() / (BASE_SIZE * 10)) * BASE_SIZE;
+        return Math.max(BASE_SIZE, baseHeight);
+    }
+
+    public int getIconBaseHeight() {
+        int baseHeight = MathUtils.floor(Gdx.graphics.getHeight() / (BASE_SIZE * 20)) * BASE_SIZE;
+        return Math.max(BASE_SIZE, baseHeight);
     }
 
     private BitmapFont buildFont(int fontSize, Color color) {

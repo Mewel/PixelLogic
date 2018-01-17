@@ -33,6 +33,8 @@ import de.mewel.pixellogic.ui.level.PixelLogicGUILevelResolutionManager;
 import de.mewel.pixellogic.ui.level.PixelLogicGUILevelToolbar;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
+import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.BASE_SIZE;
+
 public class PixelLogicLevelScreen implements Screen {
 
     private static Color BACKGROUND_COLOR = Color.valueOf("#FAFAFA");
@@ -219,8 +221,8 @@ public class PixelLogicLevelScreen implements Screen {
         // toolbar
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
-        int baseHeight = PixelLogicGUILevelResolutionManager.instance().getBaseHeight();
-        int toolbarHeight = Math.max(baseHeight, 48);
+        int baseHeight = PixelLogicGUILevelResolutionManager.instance().getIconBaseHeight() * 2;
+        int toolbarHeight = Math.max(baseHeight, BASE_SIZE * 2);
         int toolbarPaddingTop = toolbarHeight / 10;
         this.toolbar.setBounds(0, screenHeight - toolbarHeight, screenWidth, toolbarHeight);
 
