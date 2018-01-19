@@ -10,7 +10,7 @@ import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicListener;
-import de.mewel.pixellogic.ui.screen.PixelLogicLevelStatus;
+import de.mewel.pixellogic.ui.PixelLogicLevelStatus;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 import de.mewel.pixellogic.ui.screen.PixelLogicLevelScreen;

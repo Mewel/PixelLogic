@@ -15,7 +15,7 @@ import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicSwitcherChangedEvent;
-import de.mewel.pixellogic.ui.screen.PixelLogicLevelStatus;
+import de.mewel.pixellogic.ui.PixelLogicLevelStatus;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
 public class PixelLogicGUILevel extends Group {

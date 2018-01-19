@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -16,8 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
@@ -26,7 +22,7 @@ import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
-import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
+import de.mewel.pixellogic.ui.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.PixelLogicGUILevel;
 import de.mewel.pixellogic.ui.level.PixelLogicGUILevelMenu;
 import de.mewel.pixellogic.ui.level.PixelLogicGUILevelResolutionManager;
@@ -191,7 +187,7 @@ public class PixelLogicLevelScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height);
+        this.stage.getViewport().update(width, height);
         ((OrthographicCamera) stage.getCamera()).setToOrtho(true, width, height);
         this.updateBounds();
     }
@@ -218,9 +214,10 @@ public class PixelLogicLevelScreen implements Screen {
     }
 
     private void updateBounds() {
-        // toolbar
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
+
+        // toolbar
         int baseHeight = PixelLogicGUILevelResolutionManager.instance().getIconBaseHeight() * 2;
         int toolbarHeight = Math.max(baseHeight, BASE_SIZE * 2);
         int toolbarPaddingTop = toolbarHeight / 10;

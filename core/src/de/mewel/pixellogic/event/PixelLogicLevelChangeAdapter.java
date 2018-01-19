@@ -1,6 +1,6 @@
 package de.mewel.pixellogic.event;
 
-import de.mewel.pixellogic.ui.screen.PixelLogicLevelStatus;
+import de.mewel.pixellogic.ui.PixelLogicLevelStatus;
 
 public class PixelLogicLevelChangeAdapter {
 

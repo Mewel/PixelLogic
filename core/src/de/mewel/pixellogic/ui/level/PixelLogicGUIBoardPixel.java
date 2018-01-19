@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
-import de.mewel.pixellogic.ui.screen.PixelLogicLevelStatus;
+import de.mewel.pixellogic.ui.PixelLogicLevelStatus;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
 import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.PIXEL_BLOCKED_COLOR;

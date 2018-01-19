@@ -1,4 +1,4 @@
-package de.mewel.pixellogic.ui.screen;
+package de.mewel.pixellogic.ui;
 
 public enum PixelLogicLevelStatus {
     loaded, playable, solved, finished, destroyed

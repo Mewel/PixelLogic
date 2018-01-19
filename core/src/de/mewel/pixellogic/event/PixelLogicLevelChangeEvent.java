@@ -1,7 +1,7 @@
 package de.mewel.pixellogic.event;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.ui.screen.PixelLogicLevelStatus;
+import de.mewel.pixellogic.ui.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.screen.PixelLogicLevelScreen;
 
 public class PixelLogicLevelChangeEvent extends PixelLogicEvent {
