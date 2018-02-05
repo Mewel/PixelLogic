@@ -30,18 +30,20 @@ public class PixelLogicRandomLevelMode implements PixelLogicLevelMode, PixelLogi
 
     private PixelLogicLevel level;
 
-    @Override
-    public void run(PixelLogicLevelCollection collection) {
+    public PixelLogicRandomLevelMode(PixelLogicLevelCollection collection) {
         this.collection = collection;
         this.played = new ArrayList<Integer>();
-
         PixelLogicEventManager.instance().listen(this);
+    }
+
+    @Override
+    public void run() {
         loadNextLevel();
     }
 
     private void loadNextLevel() {
         PixelLogicLevel level = next();
-        if(level == null) {
+        if (level == null) {
             // TODO handle no more level's
             return;
         }
@@ -73,12 +75,12 @@ public class PixelLogicRandomLevelMode implements PixelLogicLevelMode, PixelLogi
 
     @Override
     public void handle(PixelLogicEvent event) {
-        if(event instanceof PixelLogicLevelChangeEvent) {
+        if (event instanceof PixelLogicLevelChangeEvent) {
             PixelLogicLevelChangeEvent changeEvent = (PixelLogicLevelChangeEvent) event;
             if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus())) {
                 loadNextLevel();
             }
-            if(PixelLogicLevelStatus.playable.equals(changeEvent.getStatus())) {
+            if (PixelLogicLevelStatus.playable.equals(changeEvent.getStatus())) {
                 // solveLevel(level);
             }
         }

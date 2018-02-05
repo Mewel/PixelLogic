@@ -117,6 +117,7 @@ public class PixelLogicLevelScreen implements Screen {
     }
 
     public void destroyLevel() {
+        changeLevelStatus(PixelLogicLevelStatus.beforeDestroyed);
         Action fadeOutAction = Actions.sequence(Actions.fadeOut(.4f), Actions.run(new Runnable() {
             @Override
             public void run() {
@@ -158,7 +159,7 @@ public class PixelLogicLevelScreen implements Screen {
     private void onSolved() {
         changeLevelStatus(PixelLogicLevelStatus.solved);
         this.stage.addAction(Actions.sequence(
-                Actions.delay(1.5f),
+                Actions.delay(.3f),
                 Actions.run(new Runnable() {
                                 @Override
                                 public void run() {

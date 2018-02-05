@@ -44,6 +44,7 @@ public class PixelLogicGUIRowInfo extends Actor {
 
         // text
         PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
+        int scale = PixelLogicGUIUtil.getInfoSizeFactor(level);
         BitmapFont font = resolution.getGameFont();
         GlyphLayout layout = new GlyphLayout();
         List<Integer> rowLevelData = PixelLogicUtil.getNumbersOfRow(level.getLevelData(), row);
@@ -55,7 +56,7 @@ public class PixelLogicGUIRowInfo extends Actor {
         textColor.a = baseColor.a * parentAlpha;
         for (int i = 0; i < rowLevelData.size(); i++) {
             layout.setText(font, String.valueOf(rowLevelData.get(i)),
-                    textColor, resolution.getGamePixelSize() * 2, Align.right, false);
+                    textColor, resolution.getGamePixelSize() * scale, Align.right, false);
             font.draw(batch, layout, x - (i * font.getSpaceWidth() * 1.5f), y);
         }
         batch.setColor(baseColor.r, baseColor.g, baseColor.b, 1f);

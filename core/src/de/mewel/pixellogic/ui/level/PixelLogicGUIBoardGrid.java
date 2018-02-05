@@ -54,12 +54,16 @@ public class PixelLogicGUIBoardGrid extends Actor {
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
         Integer gridY = GRID.get(level.getRows());
-        for (int y = gridY; y < level.getRows(); y += gridY) {
-            batch.draw(gridTexture, getX(), getY() + (combined * y) - spaceSize, xWidth, spaceSize);
+        if(gridY != null) {
+            for (int y = gridY; y < level.getRows(); y += gridY) {
+                batch.draw(gridTexture, getX(), getY() + (combined * y) - spaceSize, xWidth, spaceSize);
+            }
         }
         Integer gridX = GRID.get(level.getColumns());
-        for (int x = gridX; x < level.getColumns(); x += gridX) {
-            batch.draw(gridTexture, getX() + (combined * x) - spaceSize, getY(), spaceSize, yWidth);
+        if(gridX != null) {
+            for (int x = gridX; x < level.getColumns(); x += gridX) {
+                batch.draw(gridTexture, getX() + (combined * x) - spaceSize, getY(), spaceSize, yWidth);
+            }
         }
         batch.setColor(color);
     }

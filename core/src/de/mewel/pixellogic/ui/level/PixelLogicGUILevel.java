@@ -9,12 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.utils.Align;
 
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicSwitcherChangedEvent;
+import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
 import de.mewel.pixellogic.ui.PixelLogicLevelStatus;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
@@ -96,10 +98,14 @@ public class PixelLogicGUILevel extends Group {
         if (level == null) {
             return;
         }
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
-        int offset = resolution.getGamePixelSizeCombined() * 2;
+        PixelLogicGUILevelResolutionManager resolutionManager = PixelLogicGUILevelResolutionManager.instance();
+        PixelLogicGUILevelResolution resolution = resolutionManager.get(level);
+        int scaleFactor = PixelLogicGUIUtil.getInfoSizeFactor(level);
+        int offset = resolution.getGamePixelSizeCombined() * scaleFactor;
         if (this.board != null) {
+            Vector2 boardSize = resolutionManager.getBoardSize(level);
             this.board.setPosition(offset, offset);
+            this.board.setSize(boardSize.x, boardSize.y);
         }
         if (this.rowGroup != null) {
             this.rowGroup.setPosition(0, offset);
@@ -114,9 +120,9 @@ public class PixelLogicGUILevel extends Group {
         // center board
         SequenceAction sequenceAction = new SequenceAction();
         sequenceAction.addAction(Actions.delay(0.2f));
-        int moveBy = resolution.getGamePixelSizeCombined();
-        Gdx.app.log("level start solve", "" + moveBy);
-        sequenceAction.addAction(Actions.moveBy(-moveBy, -moveBy, 0.2f));
+        float x = this.getWidth() / 2f - this.board.getWidth() / 2f;
+        float y = this.getHeight() / 2f - this.board.getHeight() / 2f;
+        sequenceAction.addAction(Actions.moveTo(x, y, 0.2f));
         this.board.addAction(sequenceAction);
     }
 

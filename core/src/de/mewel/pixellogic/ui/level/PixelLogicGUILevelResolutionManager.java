@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
 
 import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.BASE_SIZE;
 import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.TEXT_COLOR;
@@ -46,8 +47,16 @@ public class PixelLogicGUILevelResolutionManager {
 
     public Vector2 getLevelSize(PixelLogicLevel level) {
         PixelLogicGUILevelResolution resolution = get(level);
-        float x = (level.getColumns() + 2) * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
-        float y = (level.getRows() + 2) * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
+        int infoSize = PixelLogicGUIUtil.getInfoSizeFactor(level);
+        float x = (level.getColumns() + infoSize) * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
+        float y = (level.getRows() + infoSize) * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
+        return new Vector2(x, y);
+    }
+
+    public Vector2 getBoardSize(PixelLogicLevel level) {
+        PixelLogicGUILevelResolution resolution = get(level);
+        float x = level.getColumns() * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
+        float y = level.getRows() * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
         return new Vector2(x, y);
     }
 

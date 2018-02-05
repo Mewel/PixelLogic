@@ -8,6 +8,7 @@ import de.mewel.pixellogic.event.PixelLogicLevelChangeAdapter;
 import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicLevelChangeListener;
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
 
 public class PixelLogicGUIRowGroup extends Group implements PixelLogicLevelChangeListener {
 
@@ -48,10 +49,11 @@ public class PixelLogicGUIRowGroup extends Group implements PixelLogicLevelChang
     public void act(float delta) {
         super.act(delta);
         PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
+        int scale = PixelLogicGUIUtil.getInfoSizeFactor(level);
         for (int i = 0; i < level.getRows(); i++) {
             Actor actor = this.getChildren().get(i);
             float y = resolution.getGamePixelSizeCombined() * i;
-            actor.setBounds(getX(), y, (resolution.getGamePixelSize()) * 2, (resolution.getGamePixelSize()));
+            actor.setBounds(getX(), y, (resolution.getGamePixelSize()) * scale, (resolution.getGamePixelSize()));
         }
     }
 

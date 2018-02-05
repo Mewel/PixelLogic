@@ -28,8 +28,15 @@ public abstract class PixelLogicLevelLoader {
     }
 
     public static PixelLogicLevel load(PixelLogicLevelCollection collection, int levelIndex) {
+        PixelLogicLevelData levelData = collection.getLevelList().get(levelIndex);
+        if (levelData.getPixels() == null) {
+            return getPixelLogicImageLevel(collection, levelData);
+        }
+        return new PixelLogicLevel(levelData.getName(), levelData.getPixels());
+    }
+
+    private static PixelLogicLevel getPixelLogicImageLevel(PixelLogicLevelCollection collection, PixelLogicLevelData levelData) {
         try {
-            PixelLogicLevelData levelData = collection.getLevelList().get(levelIndex);
             Integer[][] pixmap = getImageData(collection, levelData, "pixmap.png");
             Integer[][] levelmap = getImageData(collection, levelData, "levelmap.png");
             Boolean[][] level = PixelLogicUtil.toLevelData(levelmap);

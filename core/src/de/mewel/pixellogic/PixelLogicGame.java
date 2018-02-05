@@ -2,6 +2,7 @@ package de.mewel.pixellogic;
 
 import com.badlogic.gdx.Game;
 
+import de.mewel.pixellogic.mode.PixelLogicCampaignMode;
 import de.mewel.pixellogic.ui.level.PixelLogicGUILevelResolutionManager;
 import de.mewel.pixellogic.mode.PixelLogicLevelMode;
 import de.mewel.pixellogic.mode.PixelLogicRandomLevelMode;
@@ -15,9 +16,12 @@ public class PixelLogicGame extends Game {
         PixelLogicCollectionManager.instance().setup();
         PixelLogicScreenManager.instance().setup(this);
 
-        PixelLogicLevelCollection levelCollection = PixelLogicCollectionManager.instance().getCollection("characters2");
-        PixelLogicLevelMode mode = new PixelLogicRandomLevelMode();
-        mode.run(levelCollection);
+        /*PixelLogicLevelCollection levelCollection = PixelLogicCollectionManager.instance().getCollection("characters2");
+        PixelLogicLevelMode mode = new PixelLogicRandomLevelMode(levelCollection);
+        mode.run();*/
+
+        PixelLogicLevelMode mode = new PixelLogicCampaignMode();
+        mode.run();
     }
 
     @Override

@@ -5,7 +5,7 @@ import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 
 public interface PixelLogicLevelMode {
 
-    void run(PixelLogicLevelCollection collection);
+    void run();
 
     PixelLogicLevel next();
 
