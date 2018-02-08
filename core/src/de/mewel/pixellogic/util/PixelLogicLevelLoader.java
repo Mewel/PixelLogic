@@ -17,7 +17,9 @@ public abstract class PixelLogicLevelLoader {
     public static List<PixelLogicLevel> load(PixelLogicLevelCollection collection) {
         List<PixelLogicLevel> levelList = new ArrayList<PixelLogicLevel>();
         for (int i = 0; i < collection.getLevelList().size(); i++) {
-            levelList.add(load(collection, i));
+            PixelLogicLevel level = load(collection, i);
+            PixelLogicUtil.validateLevel(level);
+            levelList.add(level);
         }
         return levelList;
     }
@@ -29,16 +31,16 @@ public abstract class PixelLogicLevelLoader {
 
     public static PixelLogicLevel load(PixelLogicLevelCollection collection, int levelIndex) {
         PixelLogicLevelData levelData = collection.getLevelList().get(levelIndex);
-        if (levelData.getPixels() == null) {
-            return getPixelLogicImageLevel(collection, levelData);
-        }
-        return new PixelLogicLevel(levelData.getName(), levelData.getPixels());
+        return getPixelLogicImageLevel(collection, levelData);
     }
 
     private static PixelLogicLevel getPixelLogicImageLevel(PixelLogicLevelCollection collection, PixelLogicLevelData levelData) {
         try {
             Integer[][] pixmap = getImageData(collection, levelData, "pixmap.png");
             Integer[][] levelmap = getImageData(collection, levelData, "levelmap.png");
+            if(levelmap == null) {
+                levelmap = pixmap;
+            }
             Boolean[][] level = PixelLogicUtil.toLevelData(levelmap);
             return new PixelLogicLevel(levelData.getName(), level, pixmap);
         } catch (IOException ioExc) {
@@ -47,10 +49,13 @@ public abstract class PixelLogicLevelLoader {
     }
 
     private static Integer[][] getImageData(PixelLogicLevelCollection collection, PixelLogicLevelData levelData, String fileName) throws IOException {
-        FileHandle levelmapHandle = Gdx.files.internal("level").child(collection.getId()).child(fileName);
+        FileHandle fileHandle = Gdx.files.internal("level").child(collection.getId()).child(fileName);
+        if(!fileHandle.exists()) {
+            return null;
+        }
         int srcX = levelData.getX() * collection.getPixmapWidth();
         int srcY = levelData.getY() * collection.getPixmapHeight();
-        return parseImage(levelmapHandle, srcX, srcY, collection.getPixmapWidth(), collection.getPixmapHeight());
+        return parseImage(fileHandle, srcX, srcY, collection.getPixmapWidth(), collection.getPixmapHeight());
     }
 
     private static Integer[][] parseImage(FileHandle imageHandle, int srcX, int srcY, int width, int height) throws IOException {

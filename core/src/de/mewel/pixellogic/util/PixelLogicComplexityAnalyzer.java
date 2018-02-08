@@ -6,9 +6,9 @@ import java.util.List;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 
-public class PixelLogicComplexityAnalyzer {
+public abstract class PixelLogicComplexityAnalyzer {
 
-    public List<PixelLogicComplexityAnalyzerResult> analyze(PixelLogicLevelCollection collection) {
+    public static List<PixelLogicComplexityAnalyzerResult> analyze(PixelLogicLevelCollection collection) {
         List<PixelLogicComplexityAnalyzerResult> resultList = new ArrayList<PixelLogicComplexityAnalyzerResult>();
         List<PixelLogicLevel> levels = PixelLogicLevelLoader.load(collection);
         for (PixelLogicLevel level : levels) {
@@ -17,7 +17,7 @@ public class PixelLogicComplexityAnalyzer {
         return resultList;
     }
 
-    public PixelLogicComplexityAnalyzerResult analyze(PixelLogicLevel level) {
+    public static PixelLogicComplexityAnalyzerResult analyze(PixelLogicLevel level) {
         Boolean[][] levelData = level.getLevelData();
         List<List<Integer>> rowData = PixelLogicUtil.getRowData(levelData);
         List<List<Integer>> colData = PixelLogicUtil.getColumnData(levelData);

@@ -1,11 +1,13 @@
 package de.mewel.pixellogic.util;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 
 public class PixelLogicUtil {
 
@@ -192,6 +194,18 @@ public class PixelLogicUtil {
                 {red, 0, 0, 0, red},
                 {red, red, 0, 0, red}
         });
+    }
+
+    public static void validateLevel(PixelLogicLevel level) {
+        PixelLogicLevelValidator validator = new PixelLogicLevelValidator();
+        Gdx.app.log("validate level", level.getName() + " is " + (validator.validate(level.getLevelData()) ? "valid" : "invalid"));
+    }
+
+    public static void solveLevel(PixelLogicLevel level) {
+        List<List<Integer>> rowData = PixelLogicUtil.getRowData(level.getLevelData());
+        List<List<Integer>> colData = PixelLogicUtil.getColumnData(level.getLevelData());
+        Boolean[][] solvedLevel = new PixelLogicSolver().solve(rowData, colData).getLevel();
+        level.setPixels(solvedLevel);
     }
 
 }

@@ -1,0 +1,42 @@
+{
+  "name": "5x5",
+  "pixmapWidth": 5,
+  "pixmapHeight": 5,
+  "level": [
+    {
+      "name": "Tree",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "name": "Monitor",
+      "x": 1,
+      "y": 0
+    },
+    {
+      "name": "Grave",
+      "x": 2,
+      "y": 0
+    },
+    {
+      "name": "Cloud",
+      "x": 3,
+      "y": 0
+    },
+    {
+      "name": "Headset",
+      "x": 4,
+      "y": 0
+    },
+    {
+      "name": "Trolley",
+      "x": 5,
+      "y": 0
+    },
+    {
+      "name": "Calendar",
+      "x": 6,
+      "y": 0
+    }
+  ]
+}

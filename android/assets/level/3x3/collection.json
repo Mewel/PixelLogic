@@ -1,0 +1,22 @@
+{
+  "name": "3x3",
+  "pixmapWidth": 3,
+  "pixmapHeight": 3,
+  "level": [
+    {
+      "name": "One Pixel",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "name": "Two Pixels",
+      "x": 1,
+      "y": 0
+    },
+    {
+      "name": "Three Pixels",
+      "x": 2,
+      "y": 0
+    }
+  ]
+}

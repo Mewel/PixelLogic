@@ -1,0 +1,12 @@
+{
+  "name": "11x11",
+  "pixmapWidth": 11,
+  "pixmapHeight": 11,
+  "level": [
+    {
+      "name": "Snowflake",
+      "x": 0,
+      "y": 0
+    }
+  ]
+}
