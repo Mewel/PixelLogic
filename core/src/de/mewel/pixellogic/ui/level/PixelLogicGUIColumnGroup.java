@@ -10,17 +10,9 @@ import de.mewel.pixellogic.event.PixelLogicLevelChangeListener;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
 
-public class PixelLogicGUIColumnGroup extends Group implements PixelLogicLevelChangeListener {
+public class PixelLogicGUIColumnGroup extends PixelLogicUILevelGroup {
 
-    private PixelLogicLevel level;
-
-    private PixelLogicLevelChangeAdapter changeAdapter;
-
-    public PixelLogicGUIColumnGroup() {
-        this.level = null;
-        this.changeAdapter = new PixelLogicLevelChangeAdapter();
-        this.changeAdapter.bind(this);
-    }
+    private PixelLogicLevel level = null;
 
     @Override
     public void onLevelChange(PixelLogicLevelChangeEvent event) {
@@ -33,6 +25,7 @@ public class PixelLogicGUIColumnGroup extends Group implements PixelLogicLevelCh
             PixelLogicGUIColumnInfo part = new PixelLogicGUIColumnInfo(level, i);
             this.addActor(part);
         }
+        this.updateChildrenBounds();
     }
 
     @Override
@@ -46,7 +39,15 @@ public class PixelLogicGUIColumnGroup extends Group implements PixelLogicLevelCh
     }
 
     @Override
-    public void act(float delta) {
+    protected void sizeChanged() {
+        super.sizeChanged();
+        this.updateChildrenBounds();
+    }
+
+    protected void updateChildrenBounds() {
+        if(this.level == null) {
+            return;
+        }
         PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
         int scale = PixelLogicGUIUtil.getInfoSizeFactor(level);
         for (int i = 0; i < level.getColumns(); i++) {
@@ -54,16 +55,6 @@ public class PixelLogicGUIColumnGroup extends Group implements PixelLogicLevelCh
             float x = resolution.getGamePixelSizeCombined() * i;
             actor.setBounds(x, getY(), (resolution.getGamePixelSize()), (resolution.getGamePixelSize()) * scale);
         }
-        super.act(delta);
-    }
-
-    @Override
-    public void clear() {
-        for (Actor actor : this.getChildren()) {
-            actor.clear();
-        }
-        this.changeAdapter.unbind();
-        super.clear();
     }
 
 }

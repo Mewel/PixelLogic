@@ -1,28 +1,17 @@
 package de.mewel.pixellogic.ui.level;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
-import de.mewel.pixellogic.event.PixelLogicLevelChangeAdapter;
 import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
-import de.mewel.pixellogic.event.PixelLogicLevelChangeListener;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
-public class PixelLogicGUIBoard extends Group implements PixelLogicLevelChangeListener {
+public class PixelLogicGUIBoard extends PixelLogicUILevelGroup {
 
     private PixelLogicLevel level;
 
     private PixelLogicGUIBoardPixel[][] pixels;
 
     private PixelLogicGUIBoardGrid grid;
-
-    private PixelLogicLevelChangeAdapter changeAdapter;
-
-    public PixelLogicGUIBoard() {
-        this.changeAdapter = new PixelLogicLevelChangeAdapter();
-        this.changeAdapter.bind(this);
-    }
 
     @Override
     public void onLevelLoad(PixelLogicLevelChangeEvent event) {
@@ -38,6 +27,7 @@ public class PixelLogicGUIBoard extends Group implements PixelLogicLevelChangeLi
             }
         }
         this.addAction(Actions.fadeIn(2f));
+        this.updateChildrenBounds();
     }
 
     @Override
@@ -60,8 +50,15 @@ public class PixelLogicGUIBoard extends Group implements PixelLogicLevelChangeLi
     }
 
     @Override
-    public void act(float delta) {
-        super.act(delta);
+    protected void sizeChanged() {
+        super.sizeChanged();
+        this.updateChildrenBounds();
+    }
+
+    private void updateChildrenBounds() {
+        if(this.level == null) {
+            return;
+        }
         PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(this.level);
         for (int row = 0; row < level.getRows(); row++) {
             for (int col = 0; col < level.getColumns(); col++) {
@@ -71,15 +68,7 @@ public class PixelLogicGUIBoard extends Group implements PixelLogicLevelChangeLi
                 pixel.setBounds(x, y, resolution.getGamePixelSize(), resolution.getGamePixelSize());
             }
         }
-    }
 
-    @Override
-    public void clear() {
-        for (Actor actor : this.getChildren()) {
-            actor.clear();
-        }
-        this.changeAdapter.unbind();
-        super.clear();
     }
 
 }

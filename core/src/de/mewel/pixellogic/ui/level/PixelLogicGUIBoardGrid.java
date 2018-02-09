@@ -20,6 +20,8 @@ public class PixelLogicGUIBoardGrid extends Actor {
 
     private Texture gridTexture;
 
+    private PixelLogicGUILevelResolution resolution;
+
     static {
         GRID = new HashMap<Integer, Integer>();
         GRID.put(6, 3);
@@ -39,12 +41,12 @@ public class PixelLogicGUIBoardGrid extends Actor {
         this.level = level;
         this.setColor(PixelLogicGUIConstants.GRID_COLOR);
         this.gridTexture = PixelLogicGUIUtil.getWhiteTexture();
+        this.update();
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
         int spaceSize = resolution.getGameSpaceSize();
         int combined = resolution.getGamePixelSizeCombined();
         int xWidth = combined * level.getColumns() - spaceSize;
@@ -54,18 +56,28 @@ public class PixelLogicGUIBoardGrid extends Actor {
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
         Integer gridY = GRID.get(level.getRows());
-        if(gridY != null) {
+        if (gridY != null) {
             for (int y = gridY; y < level.getRows(); y += gridY) {
                 batch.draw(gridTexture, getX(), getY() + (combined * y) - spaceSize, xWidth, spaceSize);
             }
         }
         Integer gridX = GRID.get(level.getColumns());
-        if(gridX != null) {
+        if (gridX != null) {
             for (int x = gridX; x < level.getColumns(); x += gridX) {
                 batch.draw(gridTexture, getX() + (combined * x) - spaceSize, getY(), spaceSize, yWidth);
             }
         }
         batch.setColor(color);
+    }
+
+    @Override
+    protected void sizeChanged() {
+        super.sizeChanged();
+        this.update();
+    }
+
+    protected void update() {
+        this.resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
     }
 
     @Override

@@ -3,6 +3,7 @@ package de.mewel.pixellogic.ui.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -136,6 +137,8 @@ public class PixelLogicLevelScreen implements Screen {
 
     }
 
+    private FPSLogger fpsLogger = new FPSLogger();
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, BACKGROUND_COLOR.a);
@@ -151,6 +154,8 @@ public class PixelLogicLevelScreen implements Screen {
             }));
             stage.addAction(delay);
         }
+
+        fpsLogger.log();
 
         stage.act(delta);
         stage.draw();

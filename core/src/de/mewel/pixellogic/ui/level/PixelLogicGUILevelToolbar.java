@@ -20,7 +20,7 @@ import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
-public class PixelLogicGUILevelToolbar extends Group implements PixelLogicLevelChangeListener {
+public class PixelLogicGUILevelToolbar extends PixelLogicUILevelGroup {
 
     private Texture icons, backgroundTexture;
 
@@ -31,8 +31,6 @@ public class PixelLogicGUILevelToolbar extends Group implements PixelLogicLevelC
     private PixelLogicLevel level;
 
     private Label solvedLabel;
-
-    private PixelLogicLevelChangeAdapter changeAdapter;
 
     public PixelLogicGUILevelToolbar() {
         this.level = null;
@@ -61,9 +59,6 @@ public class PixelLogicGUILevelToolbar extends Group implements PixelLogicLevelC
             }
 
         });
-
-        this.changeAdapter = new PixelLogicLevelChangeAdapter();
-        this.changeAdapter.bind(this);
 
         this.addActor(this.menuButton);
         this.addActor(this.switcher);
@@ -121,10 +116,6 @@ public class PixelLogicGUILevelToolbar extends Group implements PixelLogicLevelC
     public void clear() {
         this.backgroundTexture.dispose();
         this.icons.dispose();
-        this.changeAdapter.unbind();
-        for (Actor actor : this.getChildren()) {
-            actor.clear();
-        }
         super.clear();
     }
 

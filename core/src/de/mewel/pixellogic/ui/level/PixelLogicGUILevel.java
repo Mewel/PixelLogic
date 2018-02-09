@@ -102,16 +102,16 @@ public class PixelLogicGUILevel extends Group {
         PixelLogicGUILevelResolution resolution = resolutionManager.get(level);
         int scaleFactor = PixelLogicGUIUtil.getInfoSizeFactor(level);
         int offset = resolution.getGamePixelSizeCombined() * scaleFactor;
+        Vector2 boardSize = resolutionManager.getBoardSize(level);
         if (this.board != null) {
-            Vector2 boardSize = resolutionManager.getBoardSize(level);
             this.board.setPosition(offset, offset);
             this.board.setSize(boardSize.x, boardSize.y);
         }
         if (this.rowGroup != null) {
-            this.rowGroup.setPosition(0, offset);
+            this.rowGroup.setBounds(0, offset, offset, boardSize.y);
         }
         if (this.columnGroup != null) {
-            this.columnGroup.setPosition(offset, 0);
+            this.columnGroup.setBounds(offset, 0, boardSize.x, offset);
         }
     }
 
