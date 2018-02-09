@@ -155,7 +155,7 @@ public class PixelLogicLevelScreen implements Screen {
             stage.addAction(delay);
         }
 
-        fpsLogger.log();
+        // fpsLogger.log();
 
         stage.act(delta);
         stage.draw();

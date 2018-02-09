@@ -44,16 +44,17 @@ public class PixelLogicGUIColumnInfo extends Group {
     public void draw(Batch batch, float parentAlpha) {
         Color baseColor = getColor();
         // block
-        Color blockColor = level.isColumnComplete(this.column) ? LINE_COMPLETE_COLOR : LINE_COLOR;
+        /*Color blockColor = level.isColumnComplete(this.column) ? LINE_COMPLETE_COLOR : LINE_COLOR;
         blockColor.a = baseColor.a * parentAlpha;
         batch.setColor(blockColor);
         batch.draw(texture, getX(), getY(), getWidth() * getScaleX(),
-                getHeight() * getScaleY());
+                getHeight() * getScaleY());*/
         // text
         /*for(TextData data : textDataList) {
             resolution.getGameFont().draw(batch, data.layout, data.x, data.y);
         }*/
-        batch.setColor(baseColor.r, baseColor.g, baseColor.b,   1);
+
+        batch.setColor(baseColor);
         super.draw(batch, parentAlpha);
     }
 
@@ -82,7 +83,7 @@ public class PixelLogicGUIColumnInfo extends Group {
         int scale = PixelLogicGUIUtil.getInfoSizeFactor(level);
         List<Integer> colLevelData = PixelLogicUtil.getNumbersOfCol(level.getLevelData(), column);
         int yOffset = ((int) resolution.getGameFont().getLineHeight() / 2) + 2;
-        float x = getX() + 2;
+        float x = 0;
         float y = getY() + (resolution.getGamePixelSize() * scale) - yOffset;
         if(this.labels.isEmpty()) {
             for (int i = 0; i < colLevelData.size(); i++) {
@@ -94,9 +95,11 @@ public class PixelLogicGUIColumnInfo extends Group {
                 this.addActor(label);
                 this.labels.add(label);
 
-                Gdx.app.log("ci", "add label " + text);
+                Gdx.app.log("ci", "add label");
+
+                /*Gdx.app.log("ci", "add label " + text);
                 Gdx.app.log("ci", "x " + x);
-                Gdx.app.log("ci", "y " + (y - ((colLevelData.size() - 1 - i) * yOffset)));
+                Gdx.app.log("ci", "y " + (y - ((colLevelData.size() - 1 - i) * yOffset)));*/
 
 
                 /*layout.setText(resolution.getGameFont(), String.valueOf(colLevelData.get(i)),
