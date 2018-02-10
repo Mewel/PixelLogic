@@ -61,8 +61,9 @@ public class PixelLogicGUILevelResolutionManager {
     }
 
     public PixelLogicGUILevelResolution get(PixelLogicLevel level) {
-        int columns = level.getColumns() + 2;
-        int rows = level.getRows() + 2;
+        int size = PixelLogicGUIUtil.getInfoSizeFactor(level);
+        int columns = level.getColumns() + size;
+        int rows = level.getRows() + size;
 
         float pixelPerColumn = MathUtils.floor((float) width / (float) columns);
         float pixelPerRow = MathUtils.floor((float) height / (float) rows);
