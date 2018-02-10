@@ -8,6 +8,8 @@ public interface PixelLogicLevelChangeListener {
 
     void onLevelSolved(PixelLogicLevelChangeEvent event);
 
+    void onLevelBeforeDestroyed(PixelLogicLevelChangeEvent event);
+
     void onLevelDestroyed(PixelLogicLevelChangeEvent event);
 
 }

@@ -15,10 +15,6 @@ public class PixelLogicGUIColumnGroup extends PixelLogicUILevelGroup {
     private PixelLogicLevel level = null;
 
     @Override
-    public void onLevelChange(PixelLogicLevelChangeEvent event) {
-    }
-
-    @Override
     public void onLevelLoad(PixelLogicLevelChangeEvent event) {
         this.level = event.getLevel();
         for (int i = 0; i < level.getColumns(); i++) {

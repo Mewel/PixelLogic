@@ -98,8 +98,8 @@ public class PixelLogicGUILevelToolbar extends PixelLogicUILevelGroup {
     }
 
     @Override
-    public void onLevelDestroyed(PixelLogicLevelChangeEvent event) {
-        this.solvedLabel.addAction(Actions.fadeOut(.1f));
+    public void onLevelBeforeDestroyed(PixelLogicLevelChangeEvent event) {
+        this.solvedLabel.addAction(Actions.fadeOut(.4f));
     }
 
     @Override

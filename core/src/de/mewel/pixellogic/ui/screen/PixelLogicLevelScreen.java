@@ -2,6 +2,7 @@ package de.mewel.pixellogic.ui.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL30;
@@ -13,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
@@ -39,8 +39,6 @@ public class PixelLogicLevelScreen implements Screen {
 
     private PixelLogicGUILevel levelUI;
 
-    private Table table;
-
     private PixelLogicGUILevelToolbar toolbar;
 
     private PixelLogicGUILevelMenu menu;
@@ -64,35 +62,37 @@ public class PixelLogicLevelScreen implements Screen {
 
         // LEVEL
         this.levelUI = null;
-        this.table = new Table();
-        this.table.setFillParent(true);
         this.toolbar = new PixelLogicGUILevelToolbar();
-        this.stage.addActor(table);
-        this.table.addActor(toolbar);
+        this.stage.addActor(this.toolbar);
 
         // MENU
         this.menu = new PixelLogicGUILevelMenu(this);
 
         // STAGE
-        this.stage.getRoot().setColor(new Color(1, 1, 1, 0));
         this.screenListener = new ScreenListener(this);
         this.stage.addListener(this.screenListener);
         PixelLogicEventManager.instance().listen(this.screenListener);
         Gdx.input.setInputProcessor(this.stage);
     }
 
-    private void initViewport() {
-        int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
+    private void updateViewport(int width, int height) {
         OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(true);
-        stage.setViewport(new ExtendViewport(screenWidth, screenHeight, camera));
+        stage.setViewport(new ExtendViewport(width, height, camera));
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        this.updateViewport(width, height);
+        this.stage.getViewport().update(width, height);
+        this.updateBounds();
+        this.updateBackgroundImage();
     }
 
     public void loadLevel(PixelLogicLevel level) {
-        initViewport();
-        this.stage.getRoot().setColor(new Color(1, 1, 1, 0));
+        updateViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.levelUI = new PixelLogicGUILevel();
+        this.levelUI.getColor().a = .0f;
         this.levelUI.load(level);
         this.stage.addActor(this.levelUI);
         this.updateBounds();
@@ -103,7 +103,7 @@ public class PixelLogicLevelScreen implements Screen {
                 changeLevelStatus(PixelLogicLevelStatus.playable);
             }
         }));
-        this.stage.getRoot().addAction(fadeInAction);
+        this.levelUI.addAction(fadeInAction);
     }
 
     public void resetLevel() {
@@ -122,7 +122,7 @@ public class PixelLogicLevelScreen implements Screen {
                 }
             }
         }));
-        this.stage.getRoot().addAction(fadeOutAction);
+        this.levelUI.addAction(fadeOutAction);
     }
 
     @Override
@@ -182,14 +182,6 @@ public class PixelLogicLevelScreen implements Screen {
 
     public Stage getStage() {
         return stage;
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        this.stage.getViewport().update(width, height);
-        ((OrthographicCamera) stage.getCamera()).setToOrtho(true, width, height);
-        this.updateBounds();
-        this.updateBackgroundImage();
     }
 
     @Override

@@ -17,6 +17,8 @@ public class PixelLogicLevelChangeAdapter {
                         changeListener.onLevelLoad(changeEvent);
                     } else if(PixelLogicLevelStatus.solved.equals(levelStatus)) {
                         changeListener.onLevelSolved(changeEvent);
+                    } else if(PixelLogicLevelStatus.beforeDestroyed.equals(levelStatus)) {
+                        changeListener.onLevelBeforeDestroyed(changeEvent);
                     } else if(PixelLogicLevelStatus.destroyed.equals(levelStatus)) {
                         changeListener.onLevelDestroyed(changeEvent);
                     }
