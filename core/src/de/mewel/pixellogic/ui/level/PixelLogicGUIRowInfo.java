@@ -22,7 +22,6 @@ public class PixelLogicGUIRowInfo extends PixelLogicGUILineInfo {
 
     @Override
     protected void addLabels(int fontSize, Label.LabelStyle style) {
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
         List<Integer> rowLevelData = PixelLogicUtil.getNumbersOfRow(level.getLevelData(), this.line);
         Collections.reverse(rowLevelData);
         float x = getWidth() - (getWidth() / 12);

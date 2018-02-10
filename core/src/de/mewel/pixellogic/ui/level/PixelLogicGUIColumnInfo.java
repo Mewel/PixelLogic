@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Align;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class PixelLogicGUIColumnInfo extends PixelLogicGUILineInfo {
     protected void addLabels(int fontSize, Label.LabelStyle style) {
         int yOffset = fontSize / 2 - (fontSize / 12);
         float x = getWidth() / 2 + 1;
-        float y = getY() + fontSize - yOffset;
+        float y = getHeight() - yOffset;
 
         List<Integer> colLevelData = PixelLogicUtil.getNumbersOfCol(level.getLevelData(), this.line);
         for (int i = 0; i < colLevelData.size(); i++) {

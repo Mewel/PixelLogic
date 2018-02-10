@@ -70,13 +70,10 @@ public abstract class PixelLogicGUILineInfo extends Group {
     protected void updateLabels() {
         clearLabels();
         PixelLogicGUILevelResolutionManager resolutionManager = PixelLogicGUILevelResolutionManager.instance();
-        int scale = PixelLogicGUIUtil.getInfoSizeFactor(level);
-
         PixelLogicGUILevelResolution resolution = resolutionManager.get(level);
-        int fontSize = resolution.getGamePixelSize() * scale;
+        int fontSize = resolution.getGamePixelSize();
         BitmapFont labelFont = resolutionManager.buildFont(fontSize, Color.BLACK);
         Label.LabelStyle style = new Label.LabelStyle(labelFont, TEXT_COLOR);
-
         addLabels(fontSize, style);
     }
 
