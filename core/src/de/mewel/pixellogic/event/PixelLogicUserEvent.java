@@ -3,7 +3,7 @@ package de.mewel.pixellogic.event;
 public class PixelLogicUserEvent extends PixelLogicEvent {
 
     public enum Type {
-        TOOLBAR_MENU_CLICKED
+        TOOLBAR_MENU_CLICKED, BOARD_CHANGED
     }
 
     private Type type;

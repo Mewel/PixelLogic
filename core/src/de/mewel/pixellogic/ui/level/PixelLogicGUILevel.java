@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.ui.level;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -9,13 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.utils.Align;
 
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
+import de.mewel.pixellogic.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicListener;
-import de.mewel.pixellogic.event.PixelLogicSwitcherChangedEvent;
+import de.mewel.pixellogic.event.PixelLogicLevelSwitcherChangedEvent;
+import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
 import de.mewel.pixellogic.ui.PixelLogicLevelStatus;
 import de.mewel.pixellogic.model.PixelLogicLevel;
@@ -50,6 +49,7 @@ public class PixelLogicGUILevel extends Group {
             return;
         }
         this.level.reset();
+        PixelLogicEventManager.instance().fire(new PixelLogicUserEvent(this, PixelLogicUserEvent.Type.BOARD_CHANGED));
     }
 
     public void resize(int width, int height) {
@@ -140,11 +140,11 @@ public class PixelLogicGUILevel extends Group {
 
         @Override
         public void handle(PixelLogicEvent event) {
-            if (event instanceof PixelLogicSwitcherChangedEvent) {
-                selectedPixelType = ((PixelLogicSwitcherChangedEvent) event).isFillPixel();
+            if (event instanceof PixelLogicLevelSwitcherChangedEvent) {
+                selectedPixelType = ((PixelLogicLevelSwitcherChangedEvent) event).isFillPixel();
             }
-            if (event instanceof PixelLogicLevelChangeEvent) {
-                PixelLogicLevelChangeEvent changeEvent = (PixelLogicLevelChangeEvent) event;
+            if (event instanceof PixelLogicLevelStatusChangeEvent) {
+                PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
                 gui.status = changeEvent.getStatus();
                 if (PixelLogicLevelStatus.solved.equals(gui.status)) {
                     gui.startSolveAnimation();
@@ -281,6 +281,7 @@ public class PixelLogicGUILevel extends Group {
         private void draw(int row, int col, PixelLogicLevel level, Type type) {
             Boolean pixelValue = Type.EMPTY.equals(type) ? null : Type.FILL.equals(type);
             level.set(row, col, pixelValue);
+            PixelLogicEventManager.instance().fire(new PixelLogicUserEvent(this, PixelLogicUserEvent.Type.BOARD_CHANGED));
         }
 
     }

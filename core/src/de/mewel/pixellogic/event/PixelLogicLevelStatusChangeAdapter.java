@@ -2,16 +2,16 @@ package de.mewel.pixellogic.event;
 
 import de.mewel.pixellogic.ui.PixelLogicLevelStatus;
 
-public class PixelLogicLevelChangeAdapter {
+public class PixelLogicLevelStatusChangeAdapter {
 
     private PixelLogicListener listener;
 
-    public void bind(final PixelLogicLevelChangeListener changeListener) {
+    public void bind(final PixelLogicLevelStatusChangeListener changeListener) {
         this.listener = new PixelLogicListener() {
             @Override
             public void handle(PixelLogicEvent event) {
-                if(event instanceof PixelLogicLevelChangeEvent) {
-                    PixelLogicLevelChangeEvent changeEvent = (PixelLogicLevelChangeEvent) event;
+                if(event instanceof PixelLogicLevelStatusChangeEvent) {
+                    PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
                     PixelLogicLevelStatus levelStatus = changeEvent.getStatus();
                     if(PixelLogicLevelStatus.loaded.equals(levelStatus)) {
                         changeListener.onLevelLoad(changeEvent);

@@ -2,7 +2,6 @@ package de.mewel.pixellogic.ui.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL30;
@@ -19,7 +18,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
+import de.mewel.pixellogic.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
@@ -50,6 +49,8 @@ public class PixelLogicLevelScreen implements Screen {
     private PixelLogicLevelStatus levelStatus;
 
     private ScreenListener screenListener;
+
+    private FPSLogger fpsLogger = new FPSLogger();
 
     public PixelLogicLevelScreen() {
         this.levelStatus = null;
@@ -130,8 +131,6 @@ public class PixelLogicLevelScreen implements Screen {
 
     }
 
-    private FPSLogger fpsLogger = new FPSLogger();
-
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, BACKGROUND_COLOR.a);
@@ -148,7 +147,7 @@ public class PixelLogicLevelScreen implements Screen {
             stage.addAction(delay);
         }
 
-        fpsLogger.log();
+        // fpsLogger.log();
 
         stage.act(delta);
         stage.draw();
@@ -169,7 +168,7 @@ public class PixelLogicLevelScreen implements Screen {
 
     private void changeLevelStatus(PixelLogicLevelStatus status) {
         this.levelStatus = status;
-        PixelLogicEventManager.instance().fire(new PixelLogicLevelChangeEvent(this, getLevel(), getLevelStatus()));
+        PixelLogicEventManager.instance().fire(new PixelLogicLevelStatusChangeEvent(this, getLevel(), getLevelStatus()));
     }
 
     public PixelLogicLevel getLevel() {

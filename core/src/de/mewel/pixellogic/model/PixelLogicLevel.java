@@ -158,4 +158,27 @@ public class PixelLogicLevel {
         return builder.toString();
     }
 
+    public String toPixelString() {
+        StringBuilder builder = new StringBuilder();
+        for (int row = 0; row < this.rows; row++) {
+            for (int col = 0; col < this.cols; col++) {
+                builder.append(this.pixels[row][col] == null ? " " : this.pixels[row][col] ? "x" : "o");
+            }
+        }
+        return builder.toString();
+    }
+
+    public void ofPixelString(String pixelData) {
+        for (int i = 0; i < pixelData.length(); i++) {
+            char c = pixelData.charAt(i);
+            int row = i / getColumns();
+            int col = i - (row * getColumns());
+            if (c == 'x') {
+                set(row, col, true);
+            } else if (c == 'o') {
+                set(row, col, false);
+            }
+        }
+    }
+
 }

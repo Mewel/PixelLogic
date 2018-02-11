@@ -2,7 +2,7 @@ package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
-import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
+import de.mewel.pixellogic.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
 public class PixelLogicGUIBoard extends PixelLogicUILevelGroup {
@@ -14,7 +14,7 @@ public class PixelLogicGUIBoard extends PixelLogicUILevelGroup {
     private PixelLogicGUIBoardGrid grid;
 
     @Override
-    public void onLevelLoad(PixelLogicLevelChangeEvent event) {
+    public void onLevelLoad(PixelLogicLevelStatusChangeEvent event) {
         this.level = event.getLevel();
         this.pixels = new PixelLogicGUIBoardPixel[level.getRows()][level.getColumns()];
         this.grid = new PixelLogicGUIBoardGrid(this.level);
@@ -31,17 +31,17 @@ public class PixelLogicGUIBoard extends PixelLogicUILevelGroup {
     }
 
     @Override
-    public void onLevelSolved(PixelLogicLevelChangeEvent event) {
+    public void onLevelSolved(PixelLogicLevelStatusChangeEvent event) {
         this.grid.addAction(Actions.fadeOut(.2f));
     }
 
     @Override
-    public void onLevelDestroyed(PixelLogicLevelChangeEvent event) {
+    public void onLevelDestroyed(PixelLogicLevelStatusChangeEvent event) {
 
     }
 
     @Override
-    public void onLevelChange(PixelLogicLevelChangeEvent event) {
+    public void onLevelChange(PixelLogicLevelStatusChangeEvent event) {
         for (int row = 0; row < level.getRows(); row++) {
             for (int col = 0; col < level.getColumns(); col++) {
                 this.pixels[row][col].updateLevelStatus(event.getStatus());

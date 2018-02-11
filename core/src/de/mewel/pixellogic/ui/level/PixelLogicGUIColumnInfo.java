@@ -28,7 +28,7 @@ public class PixelLogicGUIColumnInfo extends PixelLogicGUILineInfo {
         for (int i = 0; i < colLevelData.size(); i++) {
             String text = String.valueOf(colLevelData.get(i));
             Label label = new Label(text, style);
-            label.setPosition(x - label.getWidth() / 2, y - ((colLevelData.size() - 1 - i) * yOffset));
+            label.setPosition(x - label.getPrefWidth() / 2, y - ((colLevelData.size() - 1 - i) * yOffset));
             this.addActor(label);
             this.labels.add(label);
         }

@@ -3,16 +3,16 @@ package de.mewel.pixellogic.ui.level;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
-import de.mewel.pixellogic.event.PixelLogicLevelChangeAdapter;
-import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
-import de.mewel.pixellogic.event.PixelLogicLevelChangeListener;
+import de.mewel.pixellogic.event.PixelLogicLevelStatusChangeAdapter;
+import de.mewel.pixellogic.event.PixelLogicLevelStatusChangeEvent;
+import de.mewel.pixellogic.event.PixelLogicLevelStatusChangeListener;
 
-public abstract class PixelLogicUILevelGroup extends Group implements PixelLogicLevelChangeListener {
+public abstract class PixelLogicUILevelGroup extends Group implements PixelLogicLevelStatusChangeListener {
 
-    private PixelLogicLevelChangeAdapter changeAdapter;
+    private PixelLogicLevelStatusChangeAdapter changeAdapter;
 
     public PixelLogicUILevelGroup() {
-        this.changeAdapter = new PixelLogicLevelChangeAdapter();
+        this.changeAdapter = new PixelLogicLevelStatusChangeAdapter();
         this.changeAdapter.bind(this);
     }
 
@@ -26,23 +26,23 @@ public abstract class PixelLogicUILevelGroup extends Group implements PixelLogic
     }
 
     @Override
-    public void onLevelChange(PixelLogicLevelChangeEvent event) {
+    public void onLevelChange(PixelLogicLevelStatusChangeEvent event) {
     }
 
     @Override
-    public void onLevelLoad(PixelLogicLevelChangeEvent event) {
+    public void onLevelLoad(PixelLogicLevelStatusChangeEvent event) {
     }
 
     @Override
-    public void onLevelSolved(PixelLogicLevelChangeEvent event) {
+    public void onLevelSolved(PixelLogicLevelStatusChangeEvent event) {
     }
 
     @Override
-    public void onLevelBeforeDestroyed(PixelLogicLevelChangeEvent event) {
+    public void onLevelBeforeDestroyed(PixelLogicLevelStatusChangeEvent event) {
     }
 
     @Override
-    public void onLevelDestroyed(PixelLogicLevelChangeEvent event) {
+    public void onLevelDestroyed(PixelLogicLevelStatusChangeEvent event) {
     }
 
 }

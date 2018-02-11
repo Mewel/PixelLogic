@@ -2,6 +2,7 @@ package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
@@ -102,6 +103,8 @@ public class PixelLogicGUILevelResolutionManager {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ObelusCompact.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
         params.size = fontSize;
+        //params.renderCount = 0;
+        params.kerning = false;
         params.color = color;
         params.flip = true;
         params.mono = true;

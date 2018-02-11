@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.ui.level;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -71,9 +72,10 @@ public abstract class PixelLogicGUILineInfo extends Group {
         clearLabels();
         PixelLogicGUILevelResolutionManager resolutionManager = PixelLogicGUILevelResolutionManager.instance();
         PixelLogicGUILevelResolution resolution = resolutionManager.get(level);
-        int fontSize = resolution.getGamePixelSize();
+        int fontSize = 50;//resolution.getGamePixelSize();
         BitmapFont labelFont = resolutionManager.buildFont(fontSize, Color.BLACK);
         Label.LabelStyle style = new Label.LabelStyle(labelFont, TEXT_COLOR);
+        Gdx.app.log("line info", "" + style.font.getCapHeight());
         addLabels(fontSize, style);
     }
 

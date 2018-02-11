@@ -1,26 +1,19 @@
 package de.mewel.pixellogic.mode;
 
-import com.badlogic.gdx.Gdx;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
+import de.mewel.pixellogic.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.ui.PixelLogicLevelStatus;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 import de.mewel.pixellogic.ui.screen.PixelLogicLevelScreen;
 import de.mewel.pixellogic.ui.screen.PixelLogicScreenManager;
-import de.mewel.pixellogic.util.PixelLogicComplexityAnalyzer;
-import de.mewel.pixellogic.util.PixelLogicComplexityAnalyzerResult;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
-import de.mewel.pixellogic.util.PixelLogicLevelValidator;
-import de.mewel.pixellogic.util.PixelLogicSolver;
-import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicRandomLevelMode implements PixelLogicLevelMode, PixelLogicListener {
 
@@ -75,8 +68,8 @@ public class PixelLogicRandomLevelMode implements PixelLogicLevelMode, PixelLogi
 
     @Override
     public void handle(PixelLogicEvent event) {
-        if (event instanceof PixelLogicLevelChangeEvent) {
-            PixelLogicLevelChangeEvent changeEvent = (PixelLogicLevelChangeEvent) event;
+        if (event instanceof PixelLogicLevelStatusChangeEvent) {
+            PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
             if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus())) {
                 loadNextLevel();
             }

@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.event.PixelLogicSwitcherChangedEvent;
+import de.mewel.pixellogic.event.PixelLogicLevelSwitcherChangedEvent;
 import de.mewel.pixellogic.ui.PixelLogicGUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
 
@@ -109,7 +109,7 @@ public class PixelLogicGUILevelSwitcher extends Group {
                             penColor = fillPixel ? TOOLBAR_SWITCHER_ACTIVE_COLOR : PixelLogicGUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
                             xColor = !fillPixel ? TOOLBAR_SWITCHER_ACTIVE_COLOR : PixelLogicGUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
                             PixelLogicEventManager.instance().fire(
-                                    new PixelLogicSwitcherChangedEvent(
+                                    new PixelLogicLevelSwitcherChangedEvent(
                                             PixelLogicGUILevelSwitcher.this, fillPixel
                                     ));
                         }

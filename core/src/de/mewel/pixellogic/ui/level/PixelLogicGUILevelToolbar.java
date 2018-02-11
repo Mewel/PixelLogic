@@ -5,17 +5,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.event.PixelLogicLevelChangeAdapter;
-import de.mewel.pixellogic.event.PixelLogicLevelChangeEvent;
-import de.mewel.pixellogic.event.PixelLogicLevelChangeListener;
+import de.mewel.pixellogic.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
 import de.mewel.pixellogic.model.PixelLogicLevel;
@@ -66,18 +62,18 @@ public class PixelLogicGUILevelToolbar extends PixelLogicUILevelGroup {
     }
 
     @Override
-    public void onLevelChange(PixelLogicLevelChangeEvent event) {
+    public void onLevelChange(PixelLogicLevelStatusChangeEvent event) {
     }
 
     @Override
-    public void onLevelLoad(PixelLogicLevelChangeEvent event) {
+    public void onLevelLoad(PixelLogicLevelStatusChangeEvent event) {
         this.level = event.getLevel();
         this.menuButton.addAction(Actions.fadeIn(.3f));
         this.switcher.addAction(Actions.fadeIn(.3f));
     }
 
     @Override
-    public void onLevelSolved(PixelLogicLevelChangeEvent event) {
+    public void onLevelSolved(PixelLogicLevelStatusChangeEvent event) {
         // fade out toolbar elements
         this.menuButton.addAction(Actions.fadeOut(.3f));
         this.switcher.addAction(Actions.fadeOut(.3f));
@@ -98,7 +94,7 @@ public class PixelLogicGUILevelToolbar extends PixelLogicUILevelGroup {
     }
 
     @Override
-    public void onLevelBeforeDestroyed(PixelLogicLevelChangeEvent event) {
+    public void onLevelBeforeDestroyed(PixelLogicLevelStatusChangeEvent event) {
         this.solvedLabel.addAction(Actions.fadeOut(.4f));
     }
 
