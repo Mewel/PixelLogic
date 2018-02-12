@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 public abstract class PixelLogicGUIConstants {
 
     public static int BASE_SIZE = 24;
+    public static int FONT_SCALE = 1;
 
     public static Color PIXEL_EMPTY_COLOR = Color.valueOf("#CEE3F6");
     public static Color PIXEL_FILLED_COLOR = Color.valueOf("#1C1C1C");

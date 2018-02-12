@@ -4,39 +4,25 @@
   "pixmapHeight": 5,
   "level": [
     {
-      "name": "Tree",
-      "x": 0,
-      "y": 0
+      "name": "Chrome"
     },
     {
-      "name": "Monitor",
-      "x": 1,
-      "y": 0
+      "name": "Tree"
     },
     {
-      "name": "Grave",
-      "x": 2,
-      "y": 0
+      "name": "Monitor"
     },
     {
-      "name": "Cloud",
-      "x": 3,
-      "y": 0
+      "name": "Grave"
     },
     {
-      "name": "Headset",
-      "x": 4,
-      "y": 0
+      "name": "Cloud"
     },
     {
-      "name": "Trolley",
-      "x": 5,
-      "y": 0
+      "name": "Headset"
     },
     {
-      "name": "Calendar",
-      "x": 6,
-      "y": 0
+      "name": "Trolley"
     }
   ]
 }

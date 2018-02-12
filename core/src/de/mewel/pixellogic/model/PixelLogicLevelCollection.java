@@ -60,4 +60,8 @@ public class PixelLogicLevelCollection {
         return null;
     }
 
+    public Integer indexOf(PixelLogicLevelData levelData) {
+        return this.level.indexOf(levelData);
+    }
+
 }

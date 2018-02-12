@@ -56,6 +56,7 @@ public class PixelLogicCampaignMode implements PixelLogicLevelMode, PixelLogicLi
         }
         this.level = level;
         this.preferences.putString("levelName", this.level.getName());
+        this.preferences.remove("pixels");
         this.preferences.flush();
         runLevel(level);
     }
