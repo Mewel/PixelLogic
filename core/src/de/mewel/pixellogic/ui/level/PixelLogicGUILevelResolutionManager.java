@@ -103,16 +103,14 @@ public class PixelLogicGUILevelResolutionManager {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ObelusCompact.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
         params.size = fontSize;
-        //params.renderCount = 0;
-        params.kerning = false;
         params.color = color;
         params.flip = true;
-        params.mono = true;
         try {
             return generator.generateFont(params);
         } finally {
             generator.dispose();
         }
+
     }
 
     public void dispose() {

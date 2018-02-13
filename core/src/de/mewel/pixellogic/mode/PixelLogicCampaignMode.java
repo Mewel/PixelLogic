@@ -33,7 +33,7 @@ public class PixelLogicCampaignMode implements PixelLogicLevelMode, PixelLogicLi
     }
 
     public void run() {
-        String levelName = this.preferences.getString("levelName");
+        /*String levelName = this.preferences.getString("levelName");
         if(levelName != null) {
             PixelLogicLevel level = findLevel(levelName);
             if(level != null) {
@@ -44,7 +44,7 @@ public class PixelLogicCampaignMode implements PixelLogicLevelMode, PixelLogicLi
                 runLevel(level);
                 return;
             }
-        }
+        }*/
         runLevel(this.levels.get(0));
     }
 
@@ -118,8 +118,8 @@ public class PixelLogicCampaignMode implements PixelLogicLevelMode, PixelLogicLi
         PixelLogicCollectionManager collectionManager = PixelLogicCollectionManager.instance();
 
         // load tutorial level's
-        levels.addAll(PixelLogicLevelLoader.load(collectionManager.getCollection("3x3")));
-        levels.addAll(PixelLogicLevelLoader.load(collectionManager.getCollection("4x4")));
+        //levels.addAll(PixelLogicLevelLoader.load(collectionManager.getCollection("3x3")));
+        //levels.addAll(PixelLogicLevelLoader.load(collectionManager.getCollection("4x4")));
         levels.addAll(PixelLogicLevelLoader.load(collectionManager.getCollection("5x5")));
         levels.addAll(PixelLogicLevelLoader.load(collectionManager.getCollection("6x6")));
         levels.addAll(PixelLogicLevelLoader.load(collectionManager.getCollection("7x7")));

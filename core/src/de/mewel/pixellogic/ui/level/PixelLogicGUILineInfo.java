@@ -14,10 +14,10 @@ import java.util.List;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
 
-import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.FONT_SCALE;
 import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.LINE_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.LINE_COMPLETE_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.TEXT_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicGUIUtil.getFontScaleFactor;
 
 public abstract class PixelLogicGUILineInfo extends Group {
 
@@ -73,11 +73,10 @@ public abstract class PixelLogicGUILineInfo extends Group {
         clearLabels();
         PixelLogicGUILevelResolutionManager resolutionManager = PixelLogicGUILevelResolutionManager.instance();
         PixelLogicGUILevelResolution resolution = resolutionManager.get(level);
-        int fontSize = resolution.getGamePixelSize() * FONT_SCALE;
+        int fontSize = resolution.getGamePixelSize() * getFontScaleFactor();
         BitmapFont labelFont = resolutionManager.buildFont(fontSize, Color.BLACK);
-        labelFont.getData().setScale(1f / FONT_SCALE);
+        labelFont.getData().setScale(1f / getFontScaleFactor());
         Label.LabelStyle style = new Label.LabelStyle(labelFont, TEXT_COLOR);
-        Gdx.app.log("line info", "" + style.font.getCapHeight());
         addLabels(fontSize, style);
     }
 

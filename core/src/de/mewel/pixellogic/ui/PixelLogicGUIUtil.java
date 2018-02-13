@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +11,8 @@ import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicGUIUtil {
+
+    private static int SCREEN_WIDTH = Gdx.graphics.getWidth();
 
     public static Texture getWhiteTexture() {
         return getTexture(Color.WHITE);
@@ -37,6 +40,17 @@ public class PixelLogicGUIUtil {
             }
         }
         return (int) Math.ceil(maxNumbers / 2d);
+    }
+
+    public static int getFontScaleFactor() {
+        if(SCREEN_WIDTH < 250) {
+            return 6;
+        } else if(SCREEN_WIDTH < 500) {
+            return 4;
+        } else if(SCREEN_WIDTH < 750) {
+            return 2;
+        }
+        return 1;
     }
 
 }

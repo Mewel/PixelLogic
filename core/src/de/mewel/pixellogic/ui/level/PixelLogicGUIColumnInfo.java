@@ -5,10 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import java.util.List;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.ui.PixelLogicGUIConstants;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
-import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.FONT_SCALE;
+import static de.mewel.pixellogic.ui.PixelLogicGUIUtil.getFontScaleFactor;
 
 public class PixelLogicGUIColumnInfo extends PixelLogicGUILineInfo {
 
@@ -23,7 +22,7 @@ public class PixelLogicGUIColumnInfo extends PixelLogicGUILineInfo {
 
     @Override
     protected void addLabels(int fontSize, Label.LabelStyle style) {
-        int yOffset = (fontSize / FONT_SCALE) / 2 - (fontSize / (12 * FONT_SCALE));
+        int yOffset = (fontSize / getFontScaleFactor()) / 2 - (fontSize / (12 * getFontScaleFactor()));
         float x = getWidth() / 2 + 1;
         float y = getHeight() - yOffset;
 
