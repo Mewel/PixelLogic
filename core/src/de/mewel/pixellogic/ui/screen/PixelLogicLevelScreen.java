@@ -222,7 +222,7 @@ public class PixelLogicLevelScreen implements Screen {
             this.levelUI.resize(screenWidth, levelMaxHeight);
             float x = screenWidth / 2f - this.levelUI.getWidth() / 2f;
             float y = levelMaxHeight / 2f - this.levelUI.getHeight() / 2f;
-            this.levelUI.setPosition(x, y);
+            this.levelUI.setPosition((int)x, (int)y);
         }
 
         // menu

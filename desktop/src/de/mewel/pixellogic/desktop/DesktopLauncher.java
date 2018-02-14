@@ -12,13 +12,13 @@ public class DesktopLauncher {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = "Pixellogic";
         config.useGL30 = true;
-        /*config.width = 360;
-        config.height = 590;
-        new LwjglApplication(new PixelLogicGame(), config);*/
-
         config.width = 360;
         config.height = 590;
-        new LwjglApplication(new FontTest(), config);
+        new LwjglApplication(new PixelLogicGame(), config);
+/*
+        config.width = 360;
+        config.height = 990;
+        new LwjglApplication(new FontTest(), config);*/
     }
 
 }

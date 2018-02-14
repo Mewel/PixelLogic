@@ -110,7 +110,6 @@ public class PixelLogicGUILevelResolutionManager {
         } finally {
             generator.dispose();
         }
-
     }
 
     public void dispose() {

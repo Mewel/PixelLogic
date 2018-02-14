@@ -7,8 +7,6 @@ import java.util.List;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
-import static de.mewel.pixellogic.ui.PixelLogicGUIUtil.getFontScaleFactor;
-
 public class PixelLogicGUIColumnInfo extends PixelLogicGUILineInfo {
 
     public PixelLogicGUIColumnInfo(PixelLogicLevel level, int column) {
@@ -22,7 +20,7 @@ public class PixelLogicGUIColumnInfo extends PixelLogicGUILineInfo {
 
     @Override
     protected void addLabels(int fontSize, Label.LabelStyle style) {
-        int yOffset = (fontSize / getFontScaleFactor()) / 2 - (fontSize / (12 * getFontScaleFactor()));
+        int yOffset = fontSize / 2 - (fontSize / 12);
         float x = getWidth() / 2 + 1;
         float y = getHeight() - yOffset;
 
