@@ -4,9 +4,7 @@
   "pixmapHeight": 9,
   "level": [
     {
-      "name": "Windows Logo",
-      "x": 0,
-      "y": 0
+      "name": "Windows Logo"
     }
   ]
 }
