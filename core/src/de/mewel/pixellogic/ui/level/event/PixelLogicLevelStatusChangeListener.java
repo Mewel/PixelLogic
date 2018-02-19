@@ -1,4 +1,4 @@
-package de.mewel.pixellogic.event;
+package de.mewel.pixellogic.ui.level.event;
 
 public interface PixelLogicLevelStatusChangeListener {
 

@@ -8,11 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.mewel.pixellogic.ui.PixelLogicGUIConstants;
-import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
+import de.mewel.pixellogic.ui.PixelLogicUIConstants;
+import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
-public class PixelLogicGUIBoardGrid extends Actor {
+public class PixelLogicUIBoardGrid extends Actor {
 
     private static Map<Integer, Integer> GRID;
 
@@ -20,7 +20,7 @@ public class PixelLogicGUIBoardGrid extends Actor {
 
     private Texture gridTexture;
 
-    private PixelLogicGUILevelResolution resolution;
+    private PixelLogicUILevelResolution resolution;
 
     static {
         GRID = new HashMap<Integer, Integer>();
@@ -37,10 +37,10 @@ public class PixelLogicGUIBoardGrid extends Actor {
         GRID.put(16, 4);
     }
 
-    public PixelLogicGUIBoardGrid(PixelLogicLevel level) {
+    public PixelLogicUIBoardGrid(PixelLogicLevel level) {
         this.level = level;
-        this.setColor(PixelLogicGUIConstants.GRID_COLOR);
-        this.gridTexture = PixelLogicGUIUtil.getWhiteTexture();
+        this.setColor(PixelLogicUIConstants.GRID_COLOR);
+        this.gridTexture = PixelLogicUIUtil.getWhiteTexture();
         this.update();
     }
 
@@ -77,7 +77,7 @@ public class PixelLogicGUIBoardGrid extends Actor {
     }
 
     protected void update() {
-        this.resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
+        this.resolution = PixelLogicUIUtil.get(level);
     }
 
     @Override

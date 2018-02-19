@@ -2,26 +2,33 @@ package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
-import de.mewel.pixellogic.event.PixelLogicLevelStatusChangeEvent;
+import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
-public class PixelLogicGUIBoard extends PixelLogicUILevelGroup {
+public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
 
     private PixelLogicLevel level;
 
-    private PixelLogicGUIBoardPixel[][] pixels;
+    private PixelLogicUIBoardPixel[][] pixels;
 
-    private PixelLogicGUIBoardGrid grid;
+    private PixelLogicUIBoardGrid grid;
+
+    public PixelLogicUIBoard(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
+        super(assets, eventManager);
+    }
 
     @Override
     public void onLevelLoad(PixelLogicLevelStatusChangeEvent event) {
         this.level = event.getLevel();
-        this.pixels = new PixelLogicGUIBoardPixel[level.getRows()][level.getColumns()];
-        this.grid = new PixelLogicGUIBoardGrid(this.level);
+        this.pixels = new PixelLogicUIBoardPixel[level.getRows()][level.getColumns()];
+        this.grid = new PixelLogicUIBoardGrid(this.level);
         this.addActor(this.grid);
         for (int row = 0; row < level.getRows(); row++) {
             for (int col = 0; col < level.getColumns(); col++) {
-                PixelLogicGUIBoardPixel pixel = new PixelLogicGUIBoardPixel(level, row, col);
+                PixelLogicUIBoardPixel pixel = new PixelLogicUIBoardPixel(level, row, col);
                 this.pixels[row][col] = pixel;
                 this.addActor(pixel);
             }
@@ -56,15 +63,15 @@ public class PixelLogicGUIBoard extends PixelLogicUILevelGroup {
     }
 
     private void updateChildrenBounds() {
-        if(this.level == null) {
+        if (this.level == null) {
             return;
         }
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(this.level);
+        PixelLogicUILevelResolution resolution = PixelLogicUIUtil.get(this.level);
         for (int row = 0; row < level.getRows(); row++) {
             for (int col = 0; col < level.getColumns(); col++) {
                 float x = resolution.getGamePixelSizeCombined() * col;
                 float y = resolution.getGamePixelSizeCombined() * row;
-                PixelLogicGUIBoardPixel pixel = this.pixels[row][col];
+                PixelLogicUIBoardPixel pixel = this.pixels[row][col];
                 pixel.setBounds(x, y, resolution.getGamePixelSize(), resolution.getGamePixelSize());
             }
         }

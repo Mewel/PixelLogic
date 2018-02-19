@@ -1,6 +1,5 @@
 buildscript {
     
-
     repositories {
         google()
         mavenLocal()
@@ -9,11 +8,11 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.1'
-        
-
+        classpath "com.android.tools.build:gradle:3.0.1"
+        classpath "com.mobidevelop.robovm:robovm-gradle-plugin:2.3.1"
+        classpath "com.badlogicgames.gdx:gdx-tools:1.9.7"
     }
+
 }
 
 allprojects {
@@ -41,12 +40,12 @@ allprojects {
 project(":desktop") {
     apply plugin: "java"
 
-
     dependencies {
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     }
 }
 
@@ -138,6 +137,21 @@ project(":tests") {
         testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     }
 }
+
+/*
+project.ext.texturePacker = [ "android/assets/level/", "android/assets/target/", "level" ]
+
+// Import the texture packer
+import com.badlogic.gdx.tools.texturepacker.TexturePacker
+
+// Add a new task that packs the textures for you
+task texturePacker << {
+    if (project.ext.has('texturePacker')) {
+        logger.info "Calling TexturePacker: "+texturePacker
+        TexturePacker.process(texturePacker[0], texturePacker[1], texturePacker[2])
+    }
+}
+*/
 
 tasks.eclipse.doLast {
     delete ".project"

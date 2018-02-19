@@ -2,7 +2,7 @@ package de.mewel.pixellogic.ui;
 
 import com.badlogic.gdx.graphics.Color;
 
-public abstract class PixelLogicGUIConstants {
+public abstract class PixelLogicUIConstants {
 
     public static int BASE_SIZE = 24;
 

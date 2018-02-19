@@ -1,7 +1,5 @@
 package de.mewel.pixellogic.util;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 
 import java.io.IOException;
@@ -16,10 +14,12 @@ public abstract class PixelLogicLevelLoader {
 
     public static List<PixelLogicLevel> load(PixelLogicLevelCollection collection) {
         List<PixelLogicLevel> levelList = new ArrayList<PixelLogicLevel>();
-        for (int i = 0; i < collection.getLevelList().size(); i++) {
-            PixelLogicLevel level = load(collection, i);
-            PixelLogicUtil.validateLevel(level);
-            levelList.add(level);
+        if(collection != null) {
+            for (int i = 0; i < collection.getLevelList().size(); i++) {
+                PixelLogicLevel level = load(collection, i);
+                PixelLogicUtil.validateLevel(level);
+                levelList.add(level);
+            }
         }
         return levelList;
     }
@@ -36,44 +36,41 @@ public abstract class PixelLogicLevelLoader {
 
     private static PixelLogicLevel getPixelLogicImageLevel(PixelLogicLevelCollection collection, PixelLogicLevelData levelData) {
         try {
-            Integer[][] pixmap = getImageData(collection, levelData, "pixmap.png");
-            Integer[][] levelmap = getImageData(collection, levelData, "levelmap.png");
-            if(levelmap == null) {
+            Integer[][] pixmap = getImageData(collection, levelData, collection.getPixmap());
+            Integer[][] levelmap = getImageData(collection, levelData, collection.getLevelmap());
+            if (levelmap == null) {
                 levelmap = pixmap;
             }
             Boolean[][] level = PixelLogicUtil.toLevelData(levelmap);
             return new PixelLogicLevel(levelData.getName(), level, pixmap);
-        } catch (IOException ioExc) {
-            throw new RuntimeException("Unable to load pixmap.png of " + collection.getId(), ioExc);
+        } catch (Exception exc) {
+            throw new RuntimeException("Unable to load level '" + levelData.getName() + "'", exc);
         }
     }
 
-    private static Integer[][] getImageData(PixelLogicLevelCollection collection, PixelLogicLevelData levelData, String fileName) throws IOException {
-        FileHandle fileHandle = Gdx.files.internal("level").child(collection.getId()).child(fileName);
-        if(!fileHandle.exists()) {
+    private static Integer[][] getImageData(PixelLogicLevelCollection collection, PixelLogicLevelData levelData, Pixmap pixmap) throws IOException {
+        if (pixmap == null) {
             return null;
         }
         int srcX, srcY;
-        if(levelData.getX() == null) {
+        if (levelData.getX() == null) {
             srcX = collection.indexOf(levelData) * collection.getPixmapWidth();
             srcY = 0;
         } else {
             srcX = levelData.getX() * collection.getPixmapWidth();
             srcY = levelData.getY() * collection.getPixmapHeight();
         }
-        return parseImage(fileHandle, srcX, srcY, collection.getPixmapWidth(), collection.getPixmapHeight());
+        return parseImage(pixmap, srcX, srcY, collection.getPixmapWidth(), collection.getPixmapHeight());
     }
 
-    private static Integer[][] parseImage(FileHandle imageHandle, int srcX, int srcY, int width, int height) throws IOException {
+    private static Integer[][] parseImage(Pixmap pixmap, int srcX, int srcY, int width, int height) throws IOException {
         Integer imageData[][] = new Integer[height][width];
-        Pixmap pixmap = new Pixmap(imageHandle);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int pixel = pixmap.getPixel(x + srcX, y + srcY);
                 imageData[y][x] = pixel;
             }
         }
-        pixmap.dispose();
         return imageData;
     }
 

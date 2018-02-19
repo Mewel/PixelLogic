@@ -2,7 +2,7 @@ package de.mewel.pixellogic.ui.screen;
 
 import com.badlogic.gdx.Screen;
 
-public class PixelLogicMenuScreen implements Screen {
+public class PixelLogicUIMenuScreen implements Screen {
 
 
     @Override

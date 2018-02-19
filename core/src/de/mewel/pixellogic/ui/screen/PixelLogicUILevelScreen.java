@@ -1,7 +1,6 @@
 package de.mewel.pixellogic.ui.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL30;
@@ -16,31 +15,31 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
+import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.event.PixelLogicLevelStatusChangeEvent;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.ui.PixelLogicLevelStatus;
-import de.mewel.pixellogic.ui.level.PixelLogicGUILevel;
-import de.mewel.pixellogic.ui.level.PixelLogicGUILevelMenu;
-import de.mewel.pixellogic.ui.level.PixelLogicGUILevelResolutionManager;
-import de.mewel.pixellogic.ui.level.PixelLogicGUILevelToolbar;
+import de.mewel.pixellogic.model.PixelLogicLevelStatus;
+import de.mewel.pixellogic.ui.PixelLogicUIScreen;
+import de.mewel.pixellogic.ui.PixelLogicUIUtil;
+import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
+import de.mewel.pixellogic.ui.level.PixelLogicUILevelMenu;
+import de.mewel.pixellogic.ui.level.PixelLogicUILevelToolbar;
 
-import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.BASE_SIZE;
-
-public class PixelLogicLevelScreen implements Screen {
+public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
 
     private static Color BACKGROUND_COLOR = Color.valueOf("#FAFAFA");
 
     private Stage stage;
 
-    private PixelLogicGUILevel levelUI;
+    private PixelLogicUILevel levelUI;
 
-    private PixelLogicGUILevelToolbar toolbar;
+    private PixelLogicUILevelToolbar toolbar;
 
-    private PixelLogicGUILevelMenu menu;
+    private PixelLogicUILevelMenu menu;
 
     private Texture backgroundTexture;
 
@@ -52,27 +51,32 @@ public class PixelLogicLevelScreen implements Screen {
 
     private FPSLogger fpsLogger = new FPSLogger();
 
-    public PixelLogicLevelScreen() {
-        this.levelStatus = null;
+    public PixelLogicUILevelScreen(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
+        super(assets, eventManager);
         this.stage = new Stage();
 
         // BACKGROUND
         this.backgroundTexture = new Texture(Gdx.files.internal("background/level_1.jpg"));
         this.backgroundImage = null;
-        this.updateBackgroundImage();
 
         // LEVEL
         this.levelUI = null;
-        this.toolbar = new PixelLogicGUILevelToolbar();
+        this.toolbar = new PixelLogicUILevelToolbar(getAssets(), getEventManager());
         this.stage.addActor(this.toolbar);
 
         // MENU
-        this.menu = new PixelLogicGUILevelMenu(this);
+        this.menu = new PixelLogicUILevelMenu(getAssets(), getEventManager(), this);
 
         // STAGE
         this.screenListener = new ScreenListener(this);
         this.stage.addListener(this.screenListener);
-        PixelLogicEventManager.instance().listen(this.screenListener);
+        getEventManager().listen(this.screenListener);
+    }
+
+    @Override
+    public void activate() {
+        this.levelStatus = null;
+        this.updateBackgroundImage();
         Gdx.input.setInputProcessor(this.stage);
     }
 
@@ -91,8 +95,7 @@ public class PixelLogicLevelScreen implements Screen {
     }
 
     public void loadLevel(PixelLogicLevel level) {
-        updateViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        this.levelUI = new PixelLogicGUILevel();
+        this.levelUI = new PixelLogicUILevel(getAssets(), getEventManager());
         this.levelUI.getColor().a = .0f;
         this.levelUI.load(level);
         this.stage.addActor(this.levelUI);
@@ -147,7 +150,7 @@ public class PixelLogicLevelScreen implements Screen {
             stage.addAction(delay);
         }
 
-        // fpsLogger.log();
+        fpsLogger.log();
 
         stage.act(delta);
         stage.draw();
@@ -168,7 +171,7 @@ public class PixelLogicLevelScreen implements Screen {
 
     private void changeLevelStatus(PixelLogicLevelStatus status) {
         this.levelStatus = status;
-        PixelLogicEventManager.instance().fire(new PixelLogicLevelStatusChangeEvent(this, getLevel(), getLevelStatus()));
+        getEventManager().fire(new PixelLogicLevelStatusChangeEvent(this, getLevel(), getLevelStatus()));
     }
 
     public PixelLogicLevel getLevel() {
@@ -198,7 +201,7 @@ public class PixelLogicLevelScreen implements Screen {
 
     @Override
     public void dispose() {
-        PixelLogicEventManager.instance().remove(this.screenListener);
+        getEventManager().remove(this.screenListener);
         this.stage.dispose();
         this.backgroundTexture.dispose();
     }
@@ -211,18 +214,16 @@ public class PixelLogicLevelScreen implements Screen {
         this.stage.getRoot().setSize(screenWidth, screenHeight);
 
         // toolbar
-        int baseHeight = PixelLogicGUILevelResolutionManager.instance().getIconBaseHeight() * 2;
-        int toolbarHeight = Math.max(baseHeight, BASE_SIZE * 2);
-        int toolbarPaddingTop = toolbarHeight / 10;
+        int toolbarHeight = PixelLogicUIUtil.getToolbarHeight();
         this.toolbar.setBounds(0, screenHeight - toolbarHeight, screenWidth, toolbarHeight);
 
         // level
         if (this.levelUI != null) {
-            int levelMaxHeight = screenHeight - (int) this.toolbar.getHeight() - toolbarPaddingTop;
-            this.levelUI.resize(screenWidth, levelMaxHeight);
+            int levelMaxHeight = PixelLogicUIUtil.getLevelMaxHeight();
+            this.levelUI.resize();
             float x = screenWidth / 2f - this.levelUI.getWidth() / 2f;
             float y = levelMaxHeight / 2f - this.levelUI.getHeight() / 2f;
-            this.levelUI.setPosition((int)x, (int)y);
+            this.levelUI.setPosition((int) x, (int) y);
         }
 
         // menu
@@ -231,21 +232,21 @@ public class PixelLogicLevelScreen implements Screen {
 
     private void updateBackgroundImage() {
         Gdx.app.log("screen", "" + this.stage.getRoot().getWidth());
-        if(this.backgroundImage != null) {
+        if (this.backgroundImage != null) {
             this.backgroundImage.remove();
         }
         this.backgroundImage = new Image(backgroundTexture);
         this.backgroundImage.setFillParent(true);
         this.backgroundImage.setScaling(Scaling.fill);
         this.backgroundImage.setPosition(this.backgroundImage.getImageWidth(), 0);
-        this.stage.getRoot().addActorAt(0, this.backgroundImage);
+        //this.stage.getRoot().addActorAt(0, this.backgroundImage);
     }
 
     private static class ScreenListener extends InputListener implements PixelLogicListener {
 
-        private PixelLogicLevelScreen screen;
+        private PixelLogicUILevelScreen screen;
 
-        ScreenListener(PixelLogicLevelScreen screen) {
+        ScreenListener(PixelLogicUILevelScreen screen) {
             this.screen = screen;
         }
 

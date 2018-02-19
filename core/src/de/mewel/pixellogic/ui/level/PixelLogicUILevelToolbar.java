@@ -10,42 +10,44 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
+import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.event.PixelLogicLevelStatusChangeEvent;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
-import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
-public class PixelLogicGUILevelToolbar extends PixelLogicUILevelGroup {
+public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup {
 
     private Texture icons, backgroundTexture;
 
-    private PixelLogicGUILevelMenuButton menuButton;
+    private PixelLogicUILevelMenuButton menuButton;
 
-    private PixelLogicGUILevelSwitcher switcher;
+    private PixelLogicUILevelSwitcher switcher;
 
     private PixelLogicLevel level;
 
     private Label solvedLabel;
 
-    public PixelLogicGUILevelToolbar() {
+    public PixelLogicUILevelToolbar(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
+        super(assets, eventManager);
         this.level = null;
         this.solvedLabel = null;
-        this.backgroundTexture = PixelLogicGUIUtil.getTexture(Color.BLACK);
+        this.backgroundTexture = PixelLogicUIUtil.getTexture(Color.BLACK);
         this.icons = new Texture(Gdx.files.internal("gui/level/toolbar.png"));
 
-        this.menuButton = new PixelLogicGUILevelMenuButton(this.icons);
+        this.menuButton = new PixelLogicUILevelMenuButton(this.icons);
         this.menuButton.addListener(new InputListener() {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                PixelLogicEventManager.instance().fire(new PixelLogicUserEvent(PixelLogicGUILevelToolbar.this, PixelLogicUserEvent.Type.TOOLBAR_MENU_CLICKED));
+                getEventManager().fire(new PixelLogicUserEvent(PixelLogicUILevelToolbar.this, PixelLogicUserEvent.Type.TOOLBAR_MENU_CLICKED));
                 return super.touchDown(event, x, y, pointer, button);
             }
 
         });
 
-        this.switcher = new PixelLogicGUILevelSwitcher(this.icons);
+        this.switcher = new PixelLogicUILevelSwitcher(getAssets(), getEventManager(), this.icons);
         this.switcher.addListener(new InputListener() {
 
             @Override
@@ -80,7 +82,7 @@ public class PixelLogicGUILevelToolbar extends PixelLogicUILevelGroup {
 
         // display text
         if (this.solvedLabel == null) {
-            BitmapFont labelFont = PixelLogicGUILevelResolutionManager.instance().getFont(this.getHeight(), Color.WHITE);
+            BitmapFont labelFont = getAssets().getLevelFont((int) this.getHeight());
             Label.LabelStyle style = new Label.LabelStyle(labelFont, Color.WHITE);
             this.solvedLabel = new Label(level.getName(), style);
             this.addActor(this.solvedLabel);

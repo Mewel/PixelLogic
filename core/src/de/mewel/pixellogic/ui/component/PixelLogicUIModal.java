@@ -9,7 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-public abstract class PixelLogicUIModal extends Group {
+import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.ui.PixelLogicUIGroup;
+
+public abstract class PixelLogicUIModal extends PixelLogicUIGroup {
 
     private Group parent;
 
@@ -19,7 +23,8 @@ public abstract class PixelLogicUIModal extends Group {
 
     private float fadeInDuration;
 
-    public PixelLogicUIModal(Group parent) {
+    public PixelLogicUIModal(PixelLogicAssets assets, PixelLogicEventManager eventManager, Group parent) {
+        super(assets, eventManager);
         this.parent = parent;
         this.backdrop = new PixelLogicUIColoredSurface(new Color(0f, 0f, 0f, .8f));
         this.addActor(backdrop);

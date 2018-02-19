@@ -6,7 +6,6 @@ public class PixelLogicLevelData {
     private Integer x;
     private Integer y;
     private Integer difficulty;
-    private Boolean[][] pixels;
 
     public String getName() {
         return name;
@@ -18,10 +17,6 @@ public class PixelLogicLevelData {
 
     public Integer getY() {
         return y;
-    }
-
-    public Boolean[][] getPixels() {
-        return pixels;
     }
 
 }

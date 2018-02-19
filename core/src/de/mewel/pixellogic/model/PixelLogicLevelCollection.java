@@ -1,5 +1,8 @@
 package de.mewel.pixellogic.model;
 
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
 import java.util.List;
 
 public class PixelLogicLevelCollection {
@@ -9,6 +12,9 @@ public class PixelLogicLevelCollection {
     private Integer pixmapWidth;
     private Integer pixmapHeight;
     private List<PixelLogicLevelData> level;
+
+    private Pixmap pixmap;
+    private Pixmap levelmap;
 
     public String getId() {
         return id;
@@ -62,6 +68,22 @@ public class PixelLogicLevelCollection {
 
     public Integer indexOf(PixelLogicLevelData levelData) {
         return this.level.indexOf(levelData);
+    }
+
+    public void setPixmap(Pixmap pixmap) {
+        this.pixmap = pixmap;
+    }
+
+    public void setLevelmap(Pixmap levelmap) {
+        this.levelmap = levelmap;
+    }
+
+    public Pixmap getPixmap() {
+        return pixmap;
+    }
+
+    public Pixmap getLevelmap() {
+        return levelmap;
     }
 
 }

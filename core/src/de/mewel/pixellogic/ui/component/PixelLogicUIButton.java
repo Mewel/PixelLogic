@@ -1,15 +1,16 @@
 package de.mewel.pixellogic.ui.component;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
-import de.mewel.pixellogic.ui.PixelLogicGUIConstants;
-import de.mewel.pixellogic.ui.level.PixelLogicGUILevelResolutionManager;
+import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.ui.PixelLogicUIConstants;
+import de.mewel.pixellogic.ui.PixelLogicUIGroup;
+import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
-public class PixelLogicUIButton extends Group {
+public class PixelLogicUIButton extends PixelLogicUIGroup {
 
     private Label label;
 
@@ -17,9 +18,10 @@ public class PixelLogicUIButton extends Group {
 
     private PixelLogicUIColoredSurface background;
 
-    public PixelLogicUIButton(String text) {
+    public PixelLogicUIButton(PixelLogicAssets assets, PixelLogicEventManager eventManager, String text) {
+        super(assets, eventManager);
         this.text = text;
-        this.background = new PixelLogicUIColoredSurface(PixelLogicGUIConstants.LINE_COLOR);
+        this.background = new PixelLogicUIColoredSurface(PixelLogicUIConstants.LINE_COLOR);
         this.addActor(this.background);
         this.updateLabel();
     }
@@ -32,10 +34,9 @@ public class PixelLogicUIButton extends Group {
     }
 
     private void updateLabel() {
-        PixelLogicGUILevelResolutionManager resolutionManager = PixelLogicGUILevelResolutionManager.instance();
-        BitmapFont labelFont = resolutionManager.getFont(resolutionManager.getBaseHeight(), Color.WHITE);
-        if(this.label != null) {
-            if(labelFont.equals(this.label.getStyle().font)) {
+        BitmapFont labelFont = getAssets().getLevelFont(PixelLogicUIUtil.getBaseHeight());
+        if (this.label != null) {
+            if (labelFont.equals(this.label.getStyle().font)) {
                 return;
             }
             this.removeActor(this.label);
@@ -55,9 +56,8 @@ public class PixelLogicUIButton extends Group {
 
     @Override
     public void clear() {
-        super.clear();
         this.background.clear();
-        this.label.clear();
+        super.clear();
     }
 
 }

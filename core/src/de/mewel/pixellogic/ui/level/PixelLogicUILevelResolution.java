@@ -1,19 +1,14 @@
 package de.mewel.pixellogic.ui.level;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-
-public class PixelLogicGUILevelResolution {
+public class PixelLogicUILevelResolution {
 
     private int gamePixelSize;
 
     private int gameSpaceSize;
 
-    private BitmapFont gameFont;
-
-    public PixelLogicGUILevelResolution(int gamePixelSize, int gameSpaceSize, BitmapFont font) {
+    public PixelLogicUILevelResolution(int gamePixelSize, int gameSpaceSize) {
         this.gamePixelSize = gamePixelSize;
         this.gameSpaceSize = gameSpaceSize;
-        this.gameFont = font;
     }
 
     public int getGamePixelSize() {
@@ -22,10 +17,6 @@ public class PixelLogicGUILevelResolution {
 
     public int getGameSpaceSize() {
         return gameSpaceSize;
-    }
-
-    public BitmapFont getGameFont() {
-        return gameFont;
     }
 
     public int getGamePixelSizeCombined() {

@@ -7,15 +7,15 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
-import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
-import de.mewel.pixellogic.ui.PixelLogicLevelStatus;
+import de.mewel.pixellogic.ui.PixelLogicUIUtil;
+import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
-import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.PIXEL_BLOCKED_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.PIXEL_EMPTY_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.PIXEL_FILLED_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.PIXEL_BLOCKED_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.PIXEL_EMPTY_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.PIXEL_FILLED_COLOR;
 
-class PixelLogicGUIBoardPixel extends Actor {
+class PixelLogicUIBoardPixel extends Actor {
 
     private PixelLogicLevel level;
     private int row, col;
@@ -28,13 +28,13 @@ class PixelLogicGUIBoardPixel extends Actor {
 
     private boolean solvedAnimationStarted;
 
-    public PixelLogicGUIBoardPixel(PixelLogicLevel level, int row, int col) {
+    public PixelLogicUIBoardPixel(PixelLogicLevel level, int row, int col) {
         this.level = level;
         this.row = row;
         this.col = col;
         this.solvedAnimationStarted = this.solved = false;
         this.levelStatus = null;
-        this.texture = PixelLogicGUIUtil.getWhiteTexture();
+        this.texture = PixelLogicUIUtil.getWhiteTexture();
     }
 
     public void updateLevelStatus(PixelLogicLevelStatus status) {

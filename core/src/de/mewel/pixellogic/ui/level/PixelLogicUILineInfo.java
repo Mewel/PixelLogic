@@ -4,20 +4,22 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
+import de.mewel.pixellogic.ui.PixelLogicUIGroup;
+import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
-import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.LINE_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.LINE_COMPLETE_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicGUIConstants.TEXT_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.LINE_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.LINE_COMPLETE_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
 
-public abstract class PixelLogicGUILineInfo extends Group {
+public abstract class PixelLogicUILineInfo extends PixelLogicUIGroup {
 
     protected PixelLogicLevel level;
 
@@ -27,10 +29,11 @@ public abstract class PixelLogicGUILineInfo extends Group {
 
     protected Texture texture;
 
-    public PixelLogicGUILineInfo(PixelLogicLevel level, int line) {
+    public PixelLogicUILineInfo(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicLevel level, int line) {
+        super(assets, eventManager);
         this.level = level;
         this.line = line;
-        this.texture = PixelLogicGUIUtil.getWhiteTexture();
+        this.texture = PixelLogicUIUtil.getWhiteTexture();
         this.labels = new ArrayList<Label>();
     }
 
@@ -69,10 +72,9 @@ public abstract class PixelLogicGUILineInfo extends Group {
 
     protected void updateLabels() {
         clearLabels();
-        PixelLogicGUILevelResolutionManager resolutionManager = PixelLogicGUILevelResolutionManager.instance();
-        PixelLogicGUILevelResolution resolution = resolutionManager.get(level);
+        PixelLogicUILevelResolution resolution = PixelLogicUIUtil.get(level);
         int fontSize = resolution.getGamePixelSize();
-        BitmapFont labelFont = resolutionManager.buildFont(fontSize, Color.BLACK);
+        BitmapFont labelFont = getAssets().getLevelFont(fontSize);
         Label.LabelStyle style = new Label.LabelStyle(labelFont, TEXT_COLOR);
         addLabels(fontSize, style);
     }

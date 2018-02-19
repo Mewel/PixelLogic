@@ -1,6 +1,8 @@
-package de.mewel.pixellogic.event;
+package de.mewel.pixellogic.ui.level.event;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import de.mewel.pixellogic.event.PixelLogicEvent;
 
 public class PixelLogicLevelSwitcherChangedEvent extends PixelLogicEvent {
 

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
+import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 public class PixelLogicUIColoredSurface extends Actor {
 
@@ -19,7 +19,7 @@ public class PixelLogicUIColoredSurface extends Actor {
         if (this.texture != null) {
             this.texture.dispose();
         }
-        this.texture = PixelLogicGUIUtil.getTexture(textureColor);
+        this.texture = PixelLogicUIUtil.getTexture(textureColor);
     }
 
     @Override

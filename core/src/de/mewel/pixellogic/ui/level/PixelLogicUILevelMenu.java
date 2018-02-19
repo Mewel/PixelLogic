@@ -4,25 +4,45 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIModal;
-import de.mewel.pixellogic.ui.screen.PixelLogicLevelScreen;
+import de.mewel.pixellogic.ui.screen.PixelLogicUILevelScreen;
+import de.mewel.pixellogic.util.PixelLogicUtil;
 
-public class PixelLogicGUILevelMenu extends PixelLogicUIModal {
+public class PixelLogicUILevelMenu extends PixelLogicUIModal {
 
-    private PixelLogicLevelScreen screen;
+    private PixelLogicUILevelScreen screen;
 
-    private PixelLogicUIButton resetLevelButton, continueButton;
+    private PixelLogicUIButton solveLevelButton, resetLevelButton, continueButton;
 
-    public PixelLogicGUILevelMenu(PixelLogicLevelScreen screen) {
-        super(screen.getStage().getRoot());
+    public PixelLogicUILevelMenu(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicUILevelScreen screen) {
+        super(assets, eventManager, screen.getStage().getRoot());
         this.screen = screen;
     }
 
     @Override
     protected void buildContent(Table content) {
+
+        // solve level
+        this.solveLevelButton = new PixelLogicUIButton(getAssets(), getEventManager(), "solve level");
+        this.solveLevelButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                PixelLogicUILevelMenu.this.close();
+                PixelLogicUtil.solveLevel(PixelLogicUILevelMenu.this.screen.getLevel());
+            }
+        });
+
         // reset level
-        this.resetLevelButton = new PixelLogicUIButton("reset level");
+        this.resetLevelButton = new PixelLogicUIButton(getAssets(), getEventManager(), "reset level");
         this.resetLevelButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -31,13 +51,13 @@ public class PixelLogicGUILevelMenu extends PixelLogicUIModal {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                PixelLogicGUILevelMenu.this.close();
-                PixelLogicGUILevelMenu.this.screen.resetLevel();
+                PixelLogicUILevelMenu.this.close();
+                PixelLogicUILevelMenu.this.screen.resetLevel();
             }
         });
 
         // continue
-        this.continueButton = new PixelLogicUIButton("continue");
+        this.continueButton = new PixelLogicUIButton(getAssets(), getEventManager(), "continue");
         this.continueButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -46,22 +66,24 @@ public class PixelLogicGUILevelMenu extends PixelLogicUIModal {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                PixelLogicGUILevelMenu.this.close();
+                PixelLogicUILevelMenu.this.close();
             }
         });
 
         this.updateButtonSize();
 
         // add to contet
-        int padding = PixelLogicGUILevelResolutionManager.instance().getBaseHeight() / 2;
+        int padding = PixelLogicUIUtil.getBaseHeight() / 2;
         content.add(this.continueButton).padBottom(padding);
         content.row();
         content.add(this.resetLevelButton).padBottom(padding);
+        content.row();
+        content.add(this.solveLevelButton).padBottom(padding);
 
     }
 
     private int getButtonHeight() {
-        return PixelLogicGUILevelResolutionManager.instance().getBaseHeight();
+        return PixelLogicUIUtil.getBaseHeight();
     }
 
     private int getButtonWidth() {
@@ -78,6 +100,7 @@ public class PixelLogicGUILevelMenu extends PixelLogicUIModal {
         int buttonWidth = getButtonWidth();
         int buttonHeight = getButtonHeight();
 
+        this.solveLevelButton.setSize(buttonWidth, buttonHeight);
         this.resetLevelButton.setSize(buttonWidth, buttonHeight);
         this.continueButton.setSize(buttonWidth, buttonHeight);
     }

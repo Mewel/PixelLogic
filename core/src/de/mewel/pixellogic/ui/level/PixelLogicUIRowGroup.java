@@ -3,23 +3,25 @@ package de.mewel.pixellogic.ui.level;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
-import de.mewel.pixellogic.event.PixelLogicLevelStatusChangeEvent;
+import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.ui.PixelLogicGUIUtil;
+import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
-public class PixelLogicGUIRowGroup extends PixelLogicUILevelGroup {
+public class PixelLogicUIRowGroup extends PixelLogicUILevelGroup {
 
     private PixelLogicLevel level = null;
 
-    @Override
-    public void onLevelChange(PixelLogicLevelStatusChangeEvent event) {
+    public PixelLogicUIRowGroup(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
+        super(assets, eventManager);
     }
 
     @Override
     public void onLevelLoad(PixelLogicLevelStatusChangeEvent event) {
         this.level = event.getLevel();
         for (int i = 0; i < level.getRows(); i++) {
-            PixelLogicGUIRowInfo part = new PixelLogicGUIRowInfo(level, i);
+            PixelLogicUIRowInfo part = new PixelLogicUIRowInfo(getAssets(), getEventManager(), level, i);
             this.addActor(part);
         }
         this.updateChildrenBounds();
@@ -42,11 +44,11 @@ public class PixelLogicGUIRowGroup extends PixelLogicUILevelGroup {
     }
 
     protected void updateChildrenBounds() {
-        if(this.level == null) {
+        if (this.level == null) {
             return;
         }
-        PixelLogicGUILevelResolution resolution = PixelLogicGUILevelResolutionManager.instance().get(level);
-        int scale = PixelLogicGUIUtil.getInfoSizeFactor(level);
+        PixelLogicUILevelResolution resolution = PixelLogicUIUtil.get(level);
+        int scale = PixelLogicUIUtil.getInfoSizeFactor(level);
         for (int i = 0; i < level.getRows(); i++) {
             Actor actor = this.getChildren().get(i);
             float y = resolution.getGamePixelSizeCombined() * i;

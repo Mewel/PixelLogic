@@ -7,10 +7,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+
+import de.mewel.pixellogic.asset.PixelLogicAssets;
 
 public class FontTest extends Game {
 
@@ -27,10 +31,10 @@ public class FontTest extends Game {
 
         public TestScreen() {
             this.stage = new Stage();
-
-            FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ObelusCompact.ttf"));
-
             int pos = 10;
+
+            /*FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ObelusCompact.ttf"));
+
             for(int i = 16; i <= 64; i += 2) {
                 FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
                 params.size = i;
@@ -42,7 +46,26 @@ public class FontTest extends Game {
                 actor.setPosition(20, pos);
                 pos += i;
                 stage.addActor(actor);
+            }*/
+
+            PixelLogicAssets assets = new PixelLogicAssets();
+            assets.load();
+
+
+/*            TextureAtlas textureAtlas = assets.get().get("target/level.atlas", TextureAtlas.class);
+            Sprite sprite = textureAtlas.createSprite("characters/example");
+            this.stage.addActor(new Image(sprite));
+*/
+
+            for(int i = 16; i <= 128; i += 16) {
+                BitmapFont levelFont = assets.getLevelFont(i);
+                Label.LabelStyle style = new Label.LabelStyle(levelFont, Color.RED);
+                Label actor = new Label(i + ": test 1234567890", style);
+                actor.setPosition(20, pos);
+                pos += i;
+                stage.addActor(actor);
             }
+
         }
 
         @Override

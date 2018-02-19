@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.event.PixelLogicLevelStatusChangeEvent;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicListener;
-import de.mewel.pixellogic.ui.PixelLogicLevelStatus;
+import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
-import de.mewel.pixellogic.ui.screen.PixelLogicLevelScreen;
-import de.mewel.pixellogic.ui.screen.PixelLogicScreenManager;
+import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
 
 public class PixelLogicRandomLevelMode implements PixelLogicLevelMode, PixelLogicListener {
@@ -23,10 +23,20 @@ public class PixelLogicRandomLevelMode implements PixelLogicLevelMode, PixelLogi
 
     private PixelLogicLevel level;
 
+    private PixelLogicAssets assets;
+
+    private PixelLogicEventManager eventManager;
+
     public PixelLogicRandomLevelMode(PixelLogicLevelCollection collection) {
         this.collection = collection;
+    }
+
+    @Override
+    public void setup(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
+        this.assets = assets;
+        this.eventManager = eventManager;
         this.played = new ArrayList<Integer>();
-        PixelLogicEventManager.instance().listen(this);
+        this.eventManager.listen(this);
     }
 
     @Override
@@ -41,11 +51,7 @@ public class PixelLogicRandomLevelMode implements PixelLogicLevelMode, PixelLogi
             return;
         }
         this.level = level;
-
-        PixelLogicScreenManager screenManager = PixelLogicScreenManager.instance();
-        PixelLogicLevelScreen levelScreen = screenManager.getLevelScreen();
-        levelScreen.loadLevel(level);
-        screenManager.set(levelScreen);
+        this.eventManager.fire(new PixelLogicNextLevelEvent(this, level));
     }
 
     public PixelLogicLevel next() {

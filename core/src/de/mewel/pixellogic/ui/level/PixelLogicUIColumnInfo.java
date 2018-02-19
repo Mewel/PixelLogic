@@ -4,13 +4,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import java.util.List;
 
+import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
-public class PixelLogicGUIColumnInfo extends PixelLogicGUILineInfo {
+public class PixelLogicUIColumnInfo extends PixelLogicUILineInfo {
 
-    public PixelLogicGUIColumnInfo(PixelLogicLevel level, int column) {
-        super(level, column);
+    public PixelLogicUIColumnInfo(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicLevel level, int column) {
+        super(assets, eventManager, level, column);
     }
 
     @Override

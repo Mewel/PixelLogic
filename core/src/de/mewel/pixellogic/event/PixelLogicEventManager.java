@@ -13,13 +13,9 @@ public class PixelLogicEventManager {
 
     private List<PixelLogicListener> listeners;
 
-    private PixelLogicEventManager() {
+    public PixelLogicEventManager() {
         this.eventQueue = new LinkedBlockingQueue<PixelLogicEvent>();
         this.listeners = new ArrayList<PixelLogicListener>();
-    }
-
-    public static PixelLogicEventManager instance() {
-        return InstanceHolder.INSTANCE;
     }
 
     public void fire(PixelLogicEvent event) {
@@ -44,10 +40,9 @@ public class PixelLogicEventManager {
         this.listeners.remove(listener);
     }
 
-    private static class InstanceHolder {
-
-        static final PixelLogicEventManager INSTANCE = new PixelLogicEventManager();
-
+    public void dispose() {
+        this.eventQueue.clear();
+        this.listeners.clear();
     }
 
 }

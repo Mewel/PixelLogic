@@ -1,27 +1,25 @@
 package de.mewel.pixellogic.ui.level;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
+import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeAdapter;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeListener;
+import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 
-import de.mewel.pixellogic.event.PixelLogicLevelStatusChangeAdapter;
-import de.mewel.pixellogic.event.PixelLogicLevelStatusChangeEvent;
-import de.mewel.pixellogic.event.PixelLogicLevelStatusChangeListener;
-
-public abstract class PixelLogicUILevelGroup extends Group implements PixelLogicLevelStatusChangeListener {
+public abstract class PixelLogicUILevelGroup extends PixelLogicUIGroup implements PixelLogicLevelStatusChangeListener {
 
     private PixelLogicLevelStatusChangeAdapter changeAdapter;
 
-    public PixelLogicUILevelGroup() {
-        this.changeAdapter = new PixelLogicLevelStatusChangeAdapter();
+    public PixelLogicUILevelGroup(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
+        super(assets, eventManager);
+        this.changeAdapter = new PixelLogicLevelStatusChangeAdapter(eventManager);
         this.changeAdapter.bind(this);
     }
 
     @Override
     public void clear() {
         this.changeAdapter.unbind();
-        for (Actor actor : this.getChildren()) {
-            actor.clear();
-        }
         super.clear();
     }
 

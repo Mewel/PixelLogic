@@ -15,10 +15,12 @@ public class DesktopLauncher {
         config.width = 360;
         config.height = 590;
         new LwjglApplication(new PixelLogicGame(), config);
-/*
+
+    /*
         config.width = 360;
         config.height = 990;
-        new LwjglApplication(new FontTest(), config);*/
+        new LwjglApplication(new FontTest(), config);
+      */
     }
 
 }
