@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -48,8 +49,8 @@ public class FontTest extends Game {
                 stage.addActor(actor);
             }*/
 
-            PixelLogicAssets assets = new PixelLogicAssets();
-            assets.load();
+            //PixelLogicAssets assets = new PixelLogicAssets();
+            //assets.load();
 
 
 /*            TextureAtlas textureAtlas = assets.get().get("target/level.atlas", TextureAtlas.class);
@@ -57,6 +58,7 @@ public class FontTest extends Game {
             this.stage.addActor(new Image(sprite));
 */
 
+/*
             for(int i = 16; i <= 128; i += 16) {
                 BitmapFont levelFont = assets.getLevelFont(i);
                 Label.LabelStyle style = new Label.LabelStyle(levelFont, Color.RED);
@@ -65,7 +67,15 @@ public class FontTest extends Game {
                 pos += i;
                 stage.addActor(actor);
             }
+*/
 
+            BitmapFont font = new BitmapFont(Gdx.files.internal("fonts/numbers.fnt"), true);
+            font.getData().scale(5f);
+
+            Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
+            Label actor = new Label("21 36 11 999", style);
+            actor.setPosition(0, 0);
+            stage.addActor(actor);
         }
 
         @Override
