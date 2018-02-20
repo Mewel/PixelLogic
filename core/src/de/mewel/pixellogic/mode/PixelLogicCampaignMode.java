@@ -117,13 +117,13 @@ public class PixelLogicCampaignMode implements PixelLogicLevelMode, PixelLogicLi
         levels = new ArrayList<PixelLogicLevel>();
 
         // load tutorial level's
-/*        levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("3x3")));
+        levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("3x3")));
         levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("4x4")));
         levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("5x5")));
         levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("6x6")));
         levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("7x7")));
         levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("8x8")));
-        levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("9x9")));*/
+        levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("9x9")));
         levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("10x10")));
         // levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("11x11")));
         levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("12x12")));

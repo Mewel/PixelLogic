@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.ui.level;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class PixelLogicUIColumnInfo extends PixelLogicUILineInfo {
 
     @Override
     protected void addLabels(int fontSize, Label.LabelStyle style) {
-        int yOffset = fontSize / 2 - (fontSize / 12);
+        int yOffset = fontSize + (fontSize / 3);
         float x = getWidth() / 2 + 1;
         float y = getHeight() - yOffset;
 

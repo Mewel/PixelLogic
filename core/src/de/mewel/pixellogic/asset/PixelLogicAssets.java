@@ -2,17 +2,14 @@ package de.mewel.pixellogic.asset;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.BitmapFontLoader;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.PixmapLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
-import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +18,9 @@ import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 
 public class PixelLogicAssets {
 
-    private static int FONT_ITERATIONS = 20;
+    private static int FONT_ITERATION_START = 2;
+
+    private static int FONT_ITERATION_END = 20;
 
     private static int LEVEL_FONT_SIZE = 5;
 
@@ -39,7 +38,7 @@ public class PixelLogicAssets {
         FileHandleResolver resolver = new InternalFileHandleResolver();
         manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         //manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
-        manager.setLoader(BitmapFont.class, ".fnt", new BitmapFontLoader(resolver));
+        manager.setLoader(BitmapFont.class, ".fnt", new PixelLogicBitmapFontLoader(resolver));
         //manager.setLoader(TextureAtlas.class, new TextureAtlasLoader(resolver));
         manager.setLoader(Pixmap.class, new PixmapLoader(resolver));
 
@@ -83,20 +82,23 @@ public class PixelLogicAssets {
     }
 */
     protected void loadFont(String path, String prefix) {
-        for (int i = 1; i <= FONT_ITERATIONS; i++) {
-            String assetName = prefix + i + ".fnt";
-            BitmapFontLoader.BitmapFontParameter parameter = new BitmapFontLoader.BitmapFontParameter();
-            parameter.flip = true;
-            parameter.bitmapFontData = new BitmapFont.BitmapFontData();
-            parameter.bitmapFontData.scale(i);
-            manager.load(path, BitmapFont.class, parameter);
+        for (int i = FONT_ITERATION_START; i <= FONT_ITERATION_END; i++) {
+            String assetName = prefix + (i * LEVEL_FONT_SIZE) + ".fnt";
+            PixelLogicBitmapFontLoader.PixelLogicBitmapFontLoaderParameters params = new PixelLogicBitmapFontLoader.PixelLogicBitmapFontLoaderParameters();
+            params.fileName = path;
+            params.flip = true;
+            params.scale = i;
+            manager.load(assetName, BitmapFont.class, params);
+            Gdx.app.log("assets", "font " + assetName + " loaded");
         }
     }
 
     public BitmapFont getLevelFont(int size) {
         int fixedSize = (int) Math.ceil(size / LEVEL_FONT_SIZE) * LEVEL_FONT_SIZE;
-        fixedSize = Math.min(fixedSize, FONT_ITERATIONS * LEVEL_FONT_SIZE);
-        return manager.get(LEVEL_FONT_PREFIX + fixedSize + ".ttf", BitmapFont.class);
+        fixedSize = Math.max(fixedSize, FONT_ITERATION_START * LEVEL_FONT_SIZE);
+        fixedSize = Math.min(fixedSize, FONT_ITERATION_END * LEVEL_FONT_SIZE);
+        BitmapFont bitmapFont = manager.get(LEVEL_FONT_PREFIX + fixedSize + ".fnt", BitmapFont.class);
+        return bitmapFont;
     }
 
     public PixelLogicLevelCollection getLevelCollection(String name) {

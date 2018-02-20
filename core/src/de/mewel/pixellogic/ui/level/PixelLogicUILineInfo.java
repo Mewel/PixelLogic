@@ -73,10 +73,10 @@ public abstract class PixelLogicUILineInfo extends PixelLogicUIGroup {
     protected void updateLabels() {
         clearLabels();
         PixelLogicUILevelResolution resolution = PixelLogicUIUtil.get(level);
-        int fontSize = resolution.getGamePixelSize();
+        int fontSize = resolution.getGamePixelSize() / 3;
         BitmapFont labelFont = getAssets().getLevelFont(fontSize);
         Label.LabelStyle style = new Label.LabelStyle(labelFont, TEXT_COLOR);
-        addLabels(fontSize, style);
+        addLabels((int) labelFont.getLineHeight(), style);
     }
 
     protected abstract void addLabels(int fontSize, Label.LabelStyle style);

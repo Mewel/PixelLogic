@@ -26,7 +26,7 @@ public class PixelLogicUIRowInfo extends PixelLogicUILineInfo {
     protected void addLabels(int fontSize, Label.LabelStyle style) {
         List<Integer> rowLevelData = PixelLogicUtil.getNumbersOfRow(level.getLevelData(), this.line);
         Collections.reverse(rowLevelData);
-        float x = getWidth() - (getWidth() / 12);
+        float x = getWidth() - (getWidth() / 18);
         float y = getHeight() / 2;
 
         for (int i = 0; i < rowLevelData.size(); i++) {
