@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
@@ -90,6 +91,14 @@ public class PixelLogicUtil {
         return true;
     }
 
+    public static boolean isSolved(Boolean[] line, List<Integer> numbers) {
+        if (line == null) {
+            return false;
+        }
+        List<Integer> connectedPixels = getConnectedPixel(line);
+        return compareNumberLists(connectedPixels, numbers);
+    }
+
     public static boolean isValid(Boolean[][] level) {
         for (int col = 0; col < level[0].length; col++) {
             Boolean[] line = columnToLine(level, col);
@@ -107,14 +116,6 @@ public class PixelLogicUtil {
             }
         }
         return true;
-    }
-
-    public static boolean isSolved(Boolean[] line, List<Integer> numbers) {
-        if (line == null) {
-            return false;
-        }
-        List<Integer> connectedPixels = getConnectedPixel(line);
-        return compareNumberLists(connectedPixels, numbers);
     }
 
     public static int countPixel(List<Integer> numbers) {
@@ -165,6 +166,33 @@ public class PixelLogicUtil {
         return level;
     }
 
+    public static Boolean[][] createRandomLevel(int rows, int cols) {
+        boolean valid;
+        Boolean[][] level;
+        Random random = new Random();
+        do {
+            level = new Boolean[rows][cols];
+            for (int row = 0; row < rows; row++) {
+                for (int col = 0; col < cols; col++) {
+                    level[row][col] = random.nextBoolean();
+                }
+            }
+            valid = isSolvable(level);
+        } while(!valid);
+        return level;
+    }
+
+    public static Boolean[][] createRandomLevel(int rows, int cols, int minComplexity) {
+        boolean found;
+        Boolean[][] randomLevel;
+        do {
+            randomLevel = createRandomLevel(rows, cols);
+            PixelLogicSolverResult result = PixelLogicComplexityAnalyzer.analyze(randomLevel);
+            found = result.getComplexity() >= minComplexity;
+        } while (!found);
+        return randomLevel;
+    }
+
     public static Boolean[][] sampleLevel() {
         return new Boolean[][]{
                 {true, true, true, false, true},
@@ -196,9 +224,17 @@ public class PixelLogicUtil {
         });
     }
 
-    public static void validateLevel(PixelLogicLevel level) {
-        PixelLogicLevelValidator validator = new PixelLogicLevelValidator();
-        Gdx.app.log("validate level", level.getName() + " is " + (validator.validate(level.getLevelData()) ? "valid" : "invalid"));
+    /**
+     * Checks if the given puzzle is solvable or not
+     *
+     * @param levelData the level data to check
+     * @return true if its solvable, otherwise false
+     */
+    public static boolean isSolvable(Boolean[][] levelData) {
+        List<List<Integer>> rowData = PixelLogicUtil.getRowData(levelData);
+        List<List<Integer>> colData = PixelLogicUtil.getColumnData(levelData);
+        Boolean[][] solvedLevel = new PixelLogicSolver().solve(rowData, colData).getLevel();
+        return isValid(solvedLevel);
     }
 
     public static void solveLevel(PixelLogicLevel level) {

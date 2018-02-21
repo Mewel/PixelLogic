@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.util;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 
 import java.io.IOException;
@@ -14,10 +15,13 @@ public abstract class PixelLogicLevelLoader {
 
     public static List<PixelLogicLevel> load(PixelLogicLevelCollection collection) {
         List<PixelLogicLevel> levelList = new ArrayList<PixelLogicLevel>();
-        if(collection != null) {
+        if (collection != null) {
             for (int i = 0; i < collection.getLevelList().size(); i++) {
                 PixelLogicLevel level = load(collection, i);
-                PixelLogicUtil.validateLevel(level);
+                boolean solvable = PixelLogicUtil.isSolvable(level.getLevelData());
+                PixelLogicComplexityAnalyzerResult result = PixelLogicComplexityAnalyzer.analyze(level);
+                // Gdx.app.log("level loader", level.getName() + " is " + (solvable ? "valid" : "invalid"));
+                Gdx.app.log("level loader", level.getName() + " complexity " + result.getComplexity());
                 levelList.add(level);
             }
         }

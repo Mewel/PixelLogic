@@ -8,6 +8,7 @@ import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
 import de.mewel.pixellogic.mode.PixelLogicCampaignMode;
+import de.mewel.pixellogic.mode.PixelLogicHardcoreTimetrailMode;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIScreen;
 import de.mewel.pixellogic.mode.PixelLogicLevelMode;
@@ -34,7 +35,7 @@ public class PixelLogicGame extends Game implements PixelLogicListener {
         this.levelScreen = new PixelLogicUILevelScreen(assets, eventManager);
         activateScreen(this.levelScreen);
 
-        PixelLogicLevelMode mode = new PixelLogicCampaignMode();
+        PixelLogicLevelMode mode = new PixelLogicHardcoreTimetrailMode();
         mode.setup(assets, eventManager);
         mode.run();
     }
