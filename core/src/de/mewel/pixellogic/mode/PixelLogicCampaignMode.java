@@ -97,8 +97,7 @@ public class PixelLogicCampaignMode implements PixelLogicLevelMode, PixelLogicLi
         }
     }
 
-    @Override
-    public PixelLogicLevel next() {
+    private PixelLogicLevel next() {
         int currentLevelIndex = this.levels.indexOf(this.level);
         if (currentLevelIndex == -1) {
             return this.levels.get(0);

@@ -34,7 +34,7 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
     }
 
     private void updateLabel() {
-        BitmapFont labelFont = getAssets().getLevelFont(PixelLogicUIUtil.getBaseHeight());
+        BitmapFont labelFont = getAssets().getGameFont((PixelLogicUIUtil.getBaseHeight() / 3) * 2);
         if (this.label != null) {
             if (labelFont.equals(this.label.getStyle().font)) {
                 return;

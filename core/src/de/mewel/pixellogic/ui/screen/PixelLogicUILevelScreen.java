@@ -150,7 +150,7 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
             stage.addAction(delay);
         }
 
-        fpsLogger.log();
+        // fpsLogger.log();
 
         stage.act(delta);
         stage.draw();

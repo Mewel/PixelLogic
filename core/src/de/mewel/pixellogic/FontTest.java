@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -34,9 +35,9 @@ public class FontTest extends Game {
             this.stage = new Stage();
             int pos = 10;
 
-            /*FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ObelusCompact.ttf"));
+            FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/visitor2.ttf"));
 
-            for(int i = 16; i <= 64; i += 2) {
+            for(int i = 13; i <= 64; i += 13) {
                 FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
                 params.size = i;
                 params.color = Color.WHITE;
@@ -47,7 +48,7 @@ public class FontTest extends Game {
                 actor.setPosition(20, pos);
                 pos += i;
                 stage.addActor(actor);
-            }*/
+            }
 
             //PixelLogicAssets assets = new PixelLogicAssets();
             //assets.load();
@@ -69,6 +70,7 @@ public class FontTest extends Game {
             }
 */
 
+/*
             BitmapFont font = new BitmapFont(Gdx.files.internal("fonts/numbers.fnt"), true);
             font.getData().scale(5f);
 
@@ -76,6 +78,7 @@ public class FontTest extends Game {
             Label actor = new Label("21 36 11 999", style);
             actor.setPosition(0, 0);
             stage.addActor(actor);
+ */
         }
 
         @Override

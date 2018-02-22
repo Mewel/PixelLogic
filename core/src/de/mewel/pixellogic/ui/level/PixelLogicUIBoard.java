@@ -75,7 +75,7 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
                 pixel.setBounds(x, y, resolution.getGamePixelSize(), resolution.getGamePixelSize());
             }
         }
-
+        this.grid.update();
     }
 
 }

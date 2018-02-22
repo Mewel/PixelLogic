@@ -10,6 +10,4 @@ public interface PixelLogicLevelMode {
 
     void run();
 
-    PixelLogicLevel next();
-
 }

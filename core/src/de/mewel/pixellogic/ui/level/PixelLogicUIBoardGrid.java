@@ -70,13 +70,7 @@ public class PixelLogicUIBoardGrid extends Actor {
         batch.setColor(color);
     }
 
-    @Override
-    protected void sizeChanged() {
-        super.sizeChanged();
-        this.update();
-    }
-
-    protected void update() {
+    public void update() {
         this.resolution = PixelLogicUIUtil.get(level);
     }
 
