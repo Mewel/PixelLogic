@@ -63,8 +63,8 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
         this.levelUI = null;
         this.toolbar = new PixelLogicUILevelToolbar(getAssets(), getEventManager());
         this.stage.addActor(this.toolbar);
-
         // MENU
+
         this.menu = new PixelLogicUILevelMenu(getAssets(), getEventManager(), this);
 
         // STAGE
@@ -197,6 +197,12 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
     @Override
     public void hide() {
 
+    }
+
+    @Override
+    public void deactivate() {
+        Gdx.app.log("level screen", "deactivate");
+        this.stage.addAction(Actions.fadeOut(.5f));
     }
 
     @Override
