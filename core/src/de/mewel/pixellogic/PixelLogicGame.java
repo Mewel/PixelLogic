@@ -10,7 +10,7 @@ import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
 import de.mewel.pixellogic.event.PixelLogicTimeTrialFinishedEvent;
 import de.mewel.pixellogic.mode.PixelLogicHardcoreTimetrailMode;
 import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.ui.PixelLogicUIScreen;
+import de.mewel.pixellogic.ui.screen.PixelLogicUIScreen;
 import de.mewel.pixellogic.mode.PixelLogicLevelMode;
 import de.mewel.pixellogic.ui.screen.PixelLogicUITimeTrialFinishedScreen;
 import de.mewel.pixellogic.ui.screen.PixelLogicUILevelScreen;
@@ -45,9 +45,17 @@ public class PixelLogicGame extends Game implements PixelLogicListener {
         mode.run();
     }
 
-    private void activateScreen(PixelLogicUIScreen screen) {
+    private void activateScreen(final PixelLogicUIScreen screen) {
         if (this.activeScreen != null) {
-            this.activeScreen.deactivate();
+            this.activeScreen.deactivate(new Runnable() {
+                @Override
+                public void run() {
+                    activeScreen = screen;
+                    activeScreen.activate();
+                    setScreen(activeScreen);
+                }
+            });
+            return;
         }
         this.activeScreen = screen;
         this.activeScreen.activate();

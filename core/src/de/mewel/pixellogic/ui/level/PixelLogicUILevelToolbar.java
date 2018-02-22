@@ -120,7 +120,6 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
     public void handle(PixelLogicEvent event) {
         if (event instanceof PixelLogicTimerEvent) {
             PixelLogicTimerEvent timerEvent = (PixelLogicTimerEvent) event;
-            Gdx.app.log("toolbar", timerEvent.getStatus().toString());
             if (this.timerLabel == null) {
                 BitmapFont labelFont = getAssets().getGameFont((int) this.getHeight());
                 Label.LabelStyle style = new Label.LabelStyle(labelFont, Color.WHITE);
@@ -143,7 +142,6 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
         if (label == null) {
             return;
         }
-        Gdx.app.log("toolbar", "" + label.getPrefHeight());
         label.setPosition(getWidth() / 2 - label.getPrefWidth() / 2, getHeight() / 2 - label.getPrefHeight() / 2);
     }
 

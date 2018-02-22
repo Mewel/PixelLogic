@@ -33,7 +33,6 @@ public class PixelLogicEventManager {
 
     public void listen(PixelLogicListener listener) {
         this.listeners.add(listener);
-        Gdx.app.log("listeners: ", this.listeners.toString());
     }
 
     public void remove(PixelLogicListener listener) {

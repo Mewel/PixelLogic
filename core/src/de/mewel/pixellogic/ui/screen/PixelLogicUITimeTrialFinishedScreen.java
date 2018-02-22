@@ -4,52 +4,44 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.model.PixelLogicLevelStatus;
-import de.mewel.pixellogic.ui.PixelLogicUIScreen;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
+
 public class PixelLogicUITimeTrialFinishedScreen extends PixelLogicUIScreen {
-
-    private static Color BACKGROUND_COLOR = Color.valueOf("#FAFAFA");
-
-    private Stage stage;
 
     private Label resultLabel;
 
     public PixelLogicUITimeTrialFinishedScreen(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         super(assets, eventManager);
-
-        this.stage = new Stage();
-
         BitmapFont labelFont = getAssets().getGameFont(PixelLogicUIUtil.getBaseHeight() * 2);
-        Label.LabelStyle style = new Label.LabelStyle(labelFont, Color.WHITE);
+        Label.LabelStyle style = new Label.LabelStyle(labelFont, TEXT_COLOR);
         this.resultLabel = new Label("00:00", style);
-        this.stage.addActor(this.resultLabel);
+        getStage().addActor(this.resultLabel);
+        centerLabel(this.resultLabel);
+    }
+
+    private void centerLabel(Label label) {
+        if (label == null) {
+            return;
+        }
+        label.setPosition(getStage().getWidth() / 2 - label.getPrefWidth() / 2, getStage().getHeight() / 2 - label.getPrefHeight() / 2);
     }
 
     @Override
     public void activate() {
+        // this.resultLabel.setText();
+        centerLabel(this.resultLabel);
     }
 
     @Override
     public void show() {
 
-    }
-
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, BACKGROUND_COLOR.a);
-        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
-
-        stage.act(delta);
-        stage.draw();
     }
 
     @Override
