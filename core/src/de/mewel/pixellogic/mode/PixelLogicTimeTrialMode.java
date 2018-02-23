@@ -14,15 +14,9 @@ import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
-public class PixelLogicHardcoreTimetrailMode implements PixelLogicLevelMode, PixelLogicListener {
+public class PixelLogicTimeTrialMode implements PixelLogicLevelMode, PixelLogicListener {
 
-    private static int[] LEVEL_SIZE = new int[]{6, 7, 8};
-
-    private static int[] LEVEL_DIFFICULTY = new int[]{6, 7, 7};
-
-    private PixelLogicLevel level;
-
-    private PixelLogicAssets assets;
+    private PixelLogicTimeTrialModeOptions options;
 
     private PixelLogicEventManager eventManager;
 
@@ -30,9 +24,12 @@ public class PixelLogicHardcoreTimetrailMode implements PixelLogicLevelMode, Pix
 
     private long totalTime, startTime;
 
+    public PixelLogicTimeTrialMode(PixelLogicTimeTrialModeOptions options) {
+        this.options = options;
+    }
+
     @Override
     public void setup(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        this.assets = assets;
         this.eventManager = eventManager;
         this.eventManager.listen(this);
     }
@@ -45,28 +42,29 @@ public class PixelLogicHardcoreTimetrailMode implements PixelLogicLevelMode, Pix
     }
 
     private void runNext() {
-        if (++this.round >= 3) {
+        if (++this.round >= options.levelSize.length) {
             this.eventManager.fire(new PixelLogicTimeTrialFinishedEvent(this, this.totalTime));
             return;
         }
         Random random = new Random();
-        int offset = random.nextInt(this.round + 1);
+        int offset = random.nextInt(options.levelSizeOffset[this.round] + 1);
         boolean side = random.nextBoolean();
 
-        int rows = LEVEL_SIZE[this.round];
-        int cols = LEVEL_SIZE[this.round];
-        int difficulty = LEVEL_DIFFICULTY[this.round];
+        int rows = options.levelSize[this.round];
+        int cols = options.levelSize[this.round];
+        int minDifficulty = options.levelMinDifficulty[this.round];
+        int maxDifficulty = options.levelMaxDifficulty[this.round];
         rows += side ? offset : -offset;
         cols += side ? -offset : offset;
 
-        Boolean[][] randomLevelData = PixelLogicUtil.createRandomLevel(rows, cols, difficulty);
+        Boolean[][] randomLevelData = PixelLogicUtil.createRandomLevel(rows, cols, minDifficulty, maxDifficulty);
         PixelLogicLevel randomLevel = createLevel(randomLevelData);
         runLevel(randomLevel);
     }
 
     private PixelLogicLevel createLevel(Boolean[][] levelData) {
         Integer[][] imageData = getImageData(levelData);
-        return new PixelLogicLevel("hardcore", levelData, imageData);
+        return new PixelLogicLevel("#" + (this.round + 1), levelData, imageData);
     }
 
     private Integer[][] getImageData(Boolean[][] levelData) {
@@ -83,7 +81,6 @@ public class PixelLogicHardcoreTimetrailMode implements PixelLogicLevelMode, Pix
     }
 
     private void runLevel(PixelLogicLevel level) {
-        this.level = level;
         this.eventManager.fire(new PixelLogicNextLevelEvent(this, level));
     }
 

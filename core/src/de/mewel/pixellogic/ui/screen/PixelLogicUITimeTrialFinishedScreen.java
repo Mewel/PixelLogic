@@ -34,18 +34,14 @@ public class PixelLogicUITimeTrialFinishedScreen extends PixelLogicUIScreen {
     }
 
     @Override
-    public void activate() {
-        // this.resultLabel.setText();
+    public void activate(PixelLogicUIScreenData data) {
+        Long time = data.getLong("time");
+        this.resultLabel.setText(PixelLogicUIUtil.formatMilliseconds(time));
         centerLabel(this.resultLabel);
     }
 
     @Override
     public void show() {
-
-    }
-
-    @Override
-    public void resize(int i, int i1) {
 
     }
 
@@ -64,8 +60,4 @@ public class PixelLogicUITimeTrialFinishedScreen extends PixelLogicUIScreen {
 
     }
 
-    @Override
-    public void dispose() {
-
-    }
 }

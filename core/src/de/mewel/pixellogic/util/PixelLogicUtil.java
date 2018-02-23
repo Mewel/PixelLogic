@@ -183,12 +183,17 @@ public class PixelLogicUtil {
     }
 
     public static Boolean[][] createRandomLevel(int rows, int cols, int minComplexity) {
+        return createRandomLevel(rows, cols, minComplexity, -1);
+    }
+
+    public static Boolean[][] createRandomLevel(int rows, int cols, int minComplexity, int maxComplexity) {
         boolean found;
         Boolean[][] randomLevel;
         do {
             randomLevel = createRandomLevel(rows, cols);
             PixelLogicSolverResult result = PixelLogicComplexityAnalyzer.analyze(randomLevel);
-            found = result.getComplexity() >= minComplexity;
+            int complexity = result.getComplexity();
+            found = complexity >= minComplexity && (maxComplexity == -1 || complexity <= maxComplexity);
         } while (!found);
         return randomLevel;
     }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.List;
+import java.util.Locale;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelResolution;
@@ -100,6 +101,13 @@ public class PixelLogicUIUtil {
     public static int getLevelMaxHeight() {
         int screenHeight = Gdx.graphics.getHeight();
         return screenHeight - getToolbarHeight() - getToolbarPaddingTop();
+    }
+
+    public static String formatMilliseconds(Long time) {
+        long inSeconds = time / 1000;
+        long minutes = inSeconds / 60;
+        long seconds = inSeconds % 60;
+        return String.format(Locale.ROOT, "%02d:%02d", minutes, seconds);
     }
 
 }

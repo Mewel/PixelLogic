@@ -147,22 +147,15 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
 
     private void setTimer(long passedTime) {
         this.timerStart = System.currentTimeMillis() - passedTime;
-        updateTimerLabel();
+        this.timerLabel.setText(PixelLogicUIUtil.formatMilliseconds(System.currentTimeMillis() - this.timerStart));
         centerLabel(this.timerLabel);
-    }
-
-    private void updateTimerLabel() {
-        long passed = (System.currentTimeMillis() - this.timerStart) / 1000;
-        long minutes = passed / 60;
-        long seconds = passed % 60;
-        this.timerLabel.setText(String.format(Locale.ROOT, "%02d:%02d", minutes, seconds));
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
         if (this.timerLabel != null && this.timerRunning) {
-            updateTimerLabel();
+            this.timerLabel.setText(PixelLogicUIUtil.formatMilliseconds(System.currentTimeMillis() - this.timerStart));
         }
     }
 

@@ -8,10 +8,12 @@ import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
 import de.mewel.pixellogic.event.PixelLogicTimeTrialFinishedEvent;
-import de.mewel.pixellogic.mode.PixelLogicHardcoreTimetrailMode;
+import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
+import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIScreen;
 import de.mewel.pixellogic.mode.PixelLogicLevelMode;
+import de.mewel.pixellogic.ui.screen.PixelLogicUIScreenData;
 import de.mewel.pixellogic.ui.screen.PixelLogicUITimeTrialFinishedScreen;
 import de.mewel.pixellogic.ui.screen.PixelLogicUILevelScreen;
 
@@ -38,27 +40,27 @@ public class PixelLogicGame extends Game implements PixelLogicListener {
         this.levelScreen = new PixelLogicUILevelScreen(assets, eventManager);
         this.timeTrialFinishedScreen = new PixelLogicUITimeTrialFinishedScreen(assets, eventManager);
 
-        activateScreen(this.levelScreen);
+        activateScreen(this.levelScreen, null);
 
-        PixelLogicLevelMode mode = new PixelLogicHardcoreTimetrailMode();
+        PixelLogicLevelMode mode = new PixelLogicTimeTrialMode(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialNormalOptions());
         mode.setup(assets, eventManager);
         mode.run();
     }
 
-    private void activateScreen(final PixelLogicUIScreen screen) {
+    private void activateScreen(final PixelLogicUIScreen screen, final PixelLogicUIScreenData data) {
         if (this.activeScreen != null) {
             this.activeScreen.deactivate(new Runnable() {
                 @Override
                 public void run() {
                     activeScreen = screen;
-                    activeScreen.activate();
+                    activeScreen.activate(data);
                     setScreen(activeScreen);
                 }
             });
             return;
         }
         this.activeScreen = screen;
-        this.activeScreen.activate();
+        this.activeScreen.activate(data);
         this.setScreen(this.activeScreen);
     }
 
@@ -73,7 +75,9 @@ public class PixelLogicGame extends Game implements PixelLogicListener {
         }
         if (event instanceof PixelLogicTimeTrialFinishedEvent) {
             PixelLogicTimeTrialFinishedEvent finishedEvent = (PixelLogicTimeTrialFinishedEvent) event;
-            activateScreen(this.timeTrialFinishedScreen);
+            PixelLogicUIScreenData data = new PixelLogicUIScreenData();
+            data.put("time", finishedEvent.getTime());
+            activateScreen(this.timeTrialFinishedScreen, data);
         }
     }
 

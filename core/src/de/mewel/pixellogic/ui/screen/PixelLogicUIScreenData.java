@@ -15,6 +15,18 @@ public class PixelLogicUIScreenData {
         return data.get(key);
     }
 
+    public Long getLong(String key) {
+        return Long.valueOf(data.get(key));
+    }
+
+    public void put(String key, String value) {
+        this.data.put(key, value);
+    }
+
+    public void put(String key, Long value) {
+        this.data.put(key, value.toString());
+    }
+
     public Map<String, String> getData() {
         return data;
     }

@@ -68,23 +68,16 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
     }
 
     @Override
-    public void activate() {
+    public void activate(PixelLogicUIScreenData data) {
         this.levelStatus = null;
         this.updateBackgroundImage();
         Gdx.input.setInputProcessor(getStage());
         getStage().addAction(Actions.fadeIn(.5f));
     }
 
-    private void updateViewport(int width, int height) {
-        OrthographicCamera camera = new OrthographicCamera();
-        camera.setToOrtho(true);
-        getStage().setViewport(new ExtendViewport(width, height, camera));
-    }
-
     @Override
     public void resize(int width, int height) {
-        this.updateViewport(width, height);
-        this.getStage().getViewport().update(width, height);
+        super.resize(width, height);
         this.updateBounds();
         this.updateBackgroundImage();
     }

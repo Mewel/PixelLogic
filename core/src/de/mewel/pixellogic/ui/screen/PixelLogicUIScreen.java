@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
@@ -63,6 +65,18 @@ public abstract class PixelLogicUIScreen implements PixelLogicUIElement, Screen 
     @Override
     public void dispose() {
         this.getStage().dispose();
+    }
+
+    protected void updateViewport(int width, int height) {
+        OrthographicCamera camera = new OrthographicCamera();
+        camera.setToOrtho(true);
+        getStage().setViewport(new ExtendViewport(width, height, camera));
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        this.updateViewport(width, height);
+        this.getStage().getViewport().update(width, height);
     }
 
 }
