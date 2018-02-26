@@ -2,7 +2,7 @@ package de.mewel.pixellogic.mode;
 
 public class PixelLogicTimeTrialModeOptions {
 
-    public String prefix;
+    public String id;
 
     public int[] levelSize;
 
@@ -15,7 +15,7 @@ public class PixelLogicTimeTrialModeOptions {
     public static final class PixelLogicTimeTrialNormalOptions extends PixelLogicTimeTrialModeOptions {
 
         public PixelLogicTimeTrialNormalOptions() {
-            this.prefix = "time_trial_normal_";
+            this.id = "time_trial_normal";
             this.levelSize = new int[]{4, 5, 6, 7};
             this.levelSizeOffset = new int[]{0, 1, 1, 2};
             this.levelMinDifficulty = new int[]{3, 4, 4, 4};
@@ -27,7 +27,7 @@ public class PixelLogicTimeTrialModeOptions {
     public static final class PixelLogicTimeTrialHardcoreOptions extends PixelLogicTimeTrialModeOptions {
 
         public PixelLogicTimeTrialHardcoreOptions() {
-            this.prefix = "time_trial_hardcore_";
+            this.id = "time_trial_hardcore";
             this.levelSize = new int[]{6, 7, 8};
             this.levelSizeOffset = new int[]{0, 1, 2};
             this.levelMinDifficulty = new int[]{6, 7, 7};

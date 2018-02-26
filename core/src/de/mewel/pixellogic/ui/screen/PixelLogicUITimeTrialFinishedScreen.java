@@ -41,6 +41,12 @@ public class PixelLogicUITimeTrialFinishedScreen extends PixelLogicUIScreen {
     }
 
     @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+        centerLabel(this.resultLabel);
+    }
+
+    @Override
     public void show() {
 
     }

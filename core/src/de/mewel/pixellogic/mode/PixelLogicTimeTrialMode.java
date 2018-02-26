@@ -1,5 +1,10 @@
 package de.mewel.pixellogic.mode;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
+
+import java.time.Instant;
+import java.util.Date;
 import java.util.Random;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
@@ -43,7 +48,7 @@ public class PixelLogicTimeTrialMode implements PixelLogicLevelMode, PixelLogicL
 
     private void runNext() {
         if (++this.round >= options.levelSize.length) {
-            this.eventManager.fire(new PixelLogicTimeTrialFinishedEvent(this, this.totalTime));
+            onFinished();
             return;
         }
         Random random = new Random();
@@ -60,6 +65,14 @@ public class PixelLogicTimeTrialMode implements PixelLogicLevelMode, PixelLogicL
         Boolean[][] randomLevelData = PixelLogicUtil.createRandomLevel(rows, cols, minDifficulty, maxDifficulty);
         PixelLogicLevel randomLevel = createLevel(randomLevelData);
         runLevel(randomLevel);
+    }
+
+    private void onFinished() {
+        String id = this.options.id;
+        Preferences preferences = Gdx.app.getPreferences(id);
+        preferences.getString("highscore_1");
+
+        this.eventManager.fire(new PixelLogicTimeTrialFinishedEvent(this, this.totalTime));
     }
 
     private PixelLogicLevel createLevel(Boolean[][] levelData) {
@@ -100,6 +113,35 @@ public class PixelLogicTimeTrialMode implements PixelLogicLevelMode, PixelLogicL
                 this.eventManager.fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.stop, this.totalTime));
             }
         }
+    }
+
+    private static class Highscore {
+
+        public long time;
+
+        public long date;
+
+        public Highscore() {
+        }
+
+        public Highscore(long time) {
+            this.time = time;
+            this.date = new Date().getTime();
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(time) + "|" + String.valueOf(date);
+        }
+
+        public static Highscore of(String string) {
+            Highscore highscore = new Highscore();
+            String[] parts = string.split("|");
+            highscore.time = Long.valueOf(parts[0]);
+            highscore.date = Long.valueOf(parts[2]);
+            return highscore;
+        }
+
     }
 
 }

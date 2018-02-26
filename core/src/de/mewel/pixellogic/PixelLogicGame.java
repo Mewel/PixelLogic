@@ -16,6 +16,7 @@ import de.mewel.pixellogic.mode.PixelLogicLevelMode;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIScreenData;
 import de.mewel.pixellogic.ui.screen.PixelLogicUITimeTrialFinishedScreen;
 import de.mewel.pixellogic.ui.screen.PixelLogicUILevelScreen;
+import de.mewel.pixellogic.ui.screen.PixelLogicUITimeTrialScreen;
 
 public class PixelLogicGame extends Game implements PixelLogicListener {
 
@@ -26,6 +27,8 @@ public class PixelLogicGame extends Game implements PixelLogicListener {
     private PixelLogicUIScreen activeScreen;
 
     private PixelLogicUILevelScreen levelScreen;
+
+    private PixelLogicUITimeTrialScreen timeTrialScreen;
 
     private PixelLogicUITimeTrialFinishedScreen timeTrialFinishedScreen;
 
@@ -38,9 +41,10 @@ public class PixelLogicGame extends Game implements PixelLogicListener {
         this.assets.load();
 
         this.levelScreen = new PixelLogicUILevelScreen(assets, eventManager);
+        this.timeTrialScreen = new PixelLogicUITimeTrialScreen(assets, eventManager);
         this.timeTrialFinishedScreen = new PixelLogicUITimeTrialFinishedScreen(assets, eventManager);
 
-        activateScreen(this.levelScreen, null);
+        activateScreen(this.timeTrialScreen, null);
 
         PixelLogicLevelMode mode = new PixelLogicTimeTrialMode(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialNormalOptions());
         mode.setup(assets, eventManager);
