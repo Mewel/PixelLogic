@@ -56,6 +56,10 @@ public class PixelLogicUIUtil {
         return Math.max(BASE_SIZE, baseHeight);
     }
 
+    public static int getTextHeight() {
+        return (int) ((float)getBaseHeight() / 1.5f);
+    }
+
     public static Vector2 getLevelSize(PixelLogicLevel level) {
         PixelLogicUILevelResolution resolution = get(level);
         int infoSize = PixelLogicUIUtil.getInfoSizeFactor(level);
