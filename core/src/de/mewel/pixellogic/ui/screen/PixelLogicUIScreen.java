@@ -29,7 +29,9 @@ public abstract class PixelLogicUIScreen implements PixelLogicUIElement, Screen 
         this.stage = new Stage();
     }
 
-    public abstract void activate(PixelLogicUIScreenData data);
+    public void activate(PixelLogicUIScreenData data) {
+        Gdx.input.setInputProcessor(getStage());
+    };
 
     public void deactivate(Runnable after) {
         after.run();

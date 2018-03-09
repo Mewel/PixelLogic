@@ -1,12 +1,14 @@
 package de.mewel.pixellogic;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
+import de.mewel.pixellogic.event.PixelLogicStartTimeTrialModeEvent;
 import de.mewel.pixellogic.event.PixelLogicTimeTrialFinishedEvent;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
@@ -45,10 +47,6 @@ public class PixelLogicGame extends Game implements PixelLogicListener {
         this.timeTrialFinishedScreen = new PixelLogicUITimeTrialFinishedScreen(assets, eventManager);
 
         activateScreen(this.timeTrialScreen, null);
-
-        PixelLogicLevelMode mode = new PixelLogicTimeTrialMode(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialNormalOptions());
-        mode.setup(assets, eventManager);
-        mode.run();
     }
 
     private void activateScreen(final PixelLogicUIScreen screen, final PixelLogicUIScreenData data) {
@@ -76,6 +74,13 @@ public class PixelLogicGame extends Game implements PixelLogicListener {
             if (this.activeScreen == this.levelScreen) {
                 this.levelScreen.loadLevel(nextLevel);
             }
+        }
+        if(event instanceof PixelLogicStartTimeTrialModeEvent) {
+            PixelLogicStartTimeTrialModeEvent ttEvent = (PixelLogicStartTimeTrialModeEvent) event;
+            activateScreen(this.levelScreen, new PixelLogicUIScreenData());
+            PixelLogicLevelMode mode = new PixelLogicTimeTrialMode(ttEvent.getOptions());
+            mode.setup(getAssets(), getEventManager());
+            mode.run();
         }
         if (event instanceof PixelLogicTimeTrialFinishedEvent) {
             PixelLogicTimeTrialFinishedEvent finishedEvent = (PixelLogicTimeTrialFinishedEvent) event;

@@ -35,6 +35,7 @@ public class PixelLogicUITimeTrialFinishedScreen extends PixelLogicUIScreen {
 
     @Override
     public void activate(PixelLogicUIScreenData data) {
+        super.activate(data);
         Long time = data.getLong("time");
         this.resultLabel.setText(PixelLogicUIUtil.formatMilliseconds(time));
         centerLabel(this.resultLabel);

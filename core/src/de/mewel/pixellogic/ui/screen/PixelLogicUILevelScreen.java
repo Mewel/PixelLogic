@@ -69,9 +69,9 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
 
     @Override
     public void activate(PixelLogicUIScreenData data) {
+        super.activate(data);
         this.levelStatus = null;
         this.updateBackgroundImage();
-        Gdx.input.setInputProcessor(getStage());
         getStage().addAction(Actions.fadeIn(.5f));
     }
 

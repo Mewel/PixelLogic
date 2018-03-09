@@ -5,16 +5,19 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.event.PixelLogicStartTimeTrialModeEvent;
+import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
+import de.mewel.pixellogic.ui.component.PixelLogicUIHorizontalLine;
 
+import static de.mewel.pixellogic.asset.PixelLogicAssets.GAME_FONT_SIZE;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
 
 public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
@@ -25,14 +28,15 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
 
     public PixelLogicUITimeTrialScreen(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         super(assets, eventManager);
-        this.assetStore = new AssetStore(getAssets(), getEventManager());
         buildGUI();
     }
 
     protected void buildGUI() {
+        this.assetStore = new AssetStore(getAssets(), getEventManager());
+
         // labels
         Label descriptionLabel = new Label("Play infinite auto generated levels against the " +
-                "clock and try to beat your highscore.", assetStore.getNormalLabelStyle());
+                "clock and try to beat your highscore.", assetStore.getSmallLabelStyle());
         descriptionLabel.setWrap(true);
 
         // combine to VerticalGroup
@@ -47,13 +51,30 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
         Container<Label> labelContainer = new Container<Label>(descriptionLabel);
         labelContainer.width(getComponentWidth());
         this.root.addActor(labelContainer);
-        this.root.addActor(new Mode("NORMAL MODE", assetStore));
-        this.root.addActor(new Mode("HARD MODE", assetStore));
+        this.root.addActor(new Mode("NORMAL MODE", assetStore, new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
 
-        // ShapeRenderer
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                getEventManager().fire(new PixelLogicStartTimeTrialModeEvent(PixelLogicUITimeTrialScreen.this,
+                        new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialNormalOptions()));
+            }
+        }));
+        this.root.addActor(new Mode("HARD MODE", assetStore, new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
 
-        //this.root.add(normalHighscoreLabel).padBottom(padding / 2).left();
-        //this.root.add(normalTimeLabel).padBottom(padding / 2).right();
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                getEventManager().fire(new PixelLogicStartTimeTrialModeEvent(PixelLogicUITimeTrialScreen.this,
+                        new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions()));
+            }
+        }));
 
         getStage().addActor(this.root);
         this.root.layout();
@@ -69,11 +90,6 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
 
     protected void cleanGUI() {
         getStage().getRoot().removeActor(this.root);
-    }
-
-    @Override
-    public void activate(PixelLogicUIScreenData data) {
-
     }
 
     @Override
@@ -113,44 +129,45 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
 
     private static class Mode extends Container<VerticalGroup> {
 
-        public Mode(String name, AssetStore assetStore) {
+        public Mode(String name, AssetStore assetStore, InputListener inputListener) {
             super(new VerticalGroup());
 
             getActor().setFillParent(true);
             getActor().center();
             getActor().bottom();
             getActor().reverse();
-            getActor().space(10);
+            getActor().space(getPadding());
 
             Label normalHighscoreLabel = new Label("highscore", assetStore.getSmallLabelStyle());
             Label normalTimeLabel = new Label("time", assetStore.getSmallLabelStyle());
             Label header = new Label(name, assetStore.getNormalLabelStyle());
 
             PixelLogicUIButton button = new PixelLogicUIButton(assetStore.getAssets(), assetStore.getEventManager(), "PLAY");
-            button.addListener(new InputListener() {
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    return true;
-                }
-
-                @Override
-                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-
-                }
-            });
+            button.addListener(inputListener);
             button.setSize(getButtonWidth(), getButtonHeight());
             getActor().addActor(header);
             getActor().addActor(button);
 
             Table highscoreTable = new Table();
-            Container<Table> highscoreContainer = new Container<Table>(highscoreTable);
-            highscoreContainer.width(getComponentWidth());
             highscoreTable.setFillParent(true);
             //highscoreTable.setDebug(true);
+
+            Container<Table> highscoreContainer = new Container<Table>(highscoreTable);
+            highscoreContainer.width(getComponentWidth());
+
+            PixelLogicUIHorizontalLine line = new PixelLogicUIHorizontalLine(assetStore.getAssets(), assetStore.getEventManager());
+            line.setWidth(getComponentWidth());
+            line.setHeight(1);
+            line.setColor(TEXT_COLOR);
+            highscoreTable.add(line).colspan(2).expand();
+
+            highscoreTable.row();
+
             highscoreTable.add(normalHighscoreLabel).growX().left();
             highscoreTable.add(normalTimeLabel).right();
 
             getActor().addActor(highscoreContainer);
+            getActor().pack();
         }
 
     }
@@ -171,7 +188,7 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
             BitmapFont normalFont = getAssets().getGameFont(PixelLogicUIUtil.getTextHeight());
             this.normalLabelStyle = new Label.LabelStyle(normalFont, TEXT_COLOR);
 
-            BitmapFont smallFont = getAssets().getGameFont(PixelLogicUIUtil.getTextHeight() / 2);
+            BitmapFont smallFont = getAssets().getGameFont(PixelLogicUIUtil.getTextHeight() - GAME_FONT_SIZE);
             this.smallLabelStyle = new Label.LabelStyle(smallFont, TEXT_COLOR);
         }
 

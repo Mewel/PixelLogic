@@ -22,7 +22,7 @@ public class PixelLogicAssets {
 
     private static String GAME_FONT_PREFIX = "game_font_";
 
-    private static int GAME_FONT_SIZE = 13;
+    public static int GAME_FONT_SIZE = 13;
 
     private static int GAME_FONT_ITERATIONS = 7;
 
@@ -32,7 +32,7 @@ public class PixelLogicAssets {
 
     private static int FONT_ITERATION_END = 20;
 
-    private static int LEVEL_FONT_SIZE = 5;
+    public static int LEVEL_FONT_SIZE = 5;
 
     private static String LEVEL_DIRECTORY = "level";
 
@@ -104,6 +104,7 @@ public class PixelLogicAssets {
     public BitmapFont getGameFont(int size) {
         int fixedSize = (int) Math.ceil(size / GAME_FONT_SIZE) * GAME_FONT_SIZE;
         fixedSize = Math.min(fixedSize, GAME_FONT_SIZE * GAME_FONT_ITERATIONS);
+        fixedSize = Math.max(fixedSize, GAME_FONT_SIZE);
         return manager.get(GAME_FONT_PREFIX + fixedSize + ".ttf", BitmapFont.class);
     }
 
