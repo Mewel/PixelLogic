@@ -1,5 +1,6 @@
-package de.mewel.pixellogic.event;
+package de.mewel.pixellogic.ui.screen.event;
 
+import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.ui.screen.PixelLogicUITimeTrialScreen;
 

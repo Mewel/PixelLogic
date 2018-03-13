@@ -1,4 +1,6 @@
-package de.mewel.pixellogic.event;
+package de.mewel.pixellogic.ui.screen.event;
+
+import de.mewel.pixellogic.event.PixelLogicEvent;
 
 public class PixelLogicTimeTrialFinishedEvent extends PixelLogicEvent {
 

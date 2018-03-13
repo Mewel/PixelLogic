@@ -1,15 +1,14 @@
 package de.mewel.pixellogic.ui.screen;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
+import de.mewel.pixellogic.ui.screen.event.PixelLogicChangeScreenEvent;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
 
@@ -34,11 +33,23 @@ public class PixelLogicUITimeTrialFinishedScreen extends PixelLogicUIScreen {
     }
 
     @Override
-    public void activate(PixelLogicUIScreenData data) {
+    public void activate(final PixelLogicUIScreenData data) {
         super.activate(data);
         Long time = data.getLong("time");
         this.resultLabel.setText(PixelLogicUIUtil.formatMilliseconds(time));
         centerLabel(this.resultLabel);
+
+        this.getStage().addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                getEventManager().fire(new PixelLogicChangeScreenEvent(PixelLogicUITimeTrialFinishedScreen.this, data));
+            }
+        });
     }
 
     @Override

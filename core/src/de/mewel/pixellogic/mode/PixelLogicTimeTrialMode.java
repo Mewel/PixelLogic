@@ -3,7 +3,6 @@ package de.mewel.pixellogic.mode;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
-import java.time.Instant;
 import java.util.Date;
 import java.util.Random;
 
@@ -12,7 +11,7 @@ import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
-import de.mewel.pixellogic.event.PixelLogicTimeTrialFinishedEvent;
+import de.mewel.pixellogic.ui.screen.event.PixelLogicTimeTrialFinishedEvent;
 import de.mewel.pixellogic.event.PixelLogicTimerEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
