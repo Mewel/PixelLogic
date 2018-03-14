@@ -4,6 +4,8 @@ public class PixelLogicTimeTrialModeOptions {
 
     public String id;
 
+    public String name;
+
     public int[] levelSize;
 
     public int[] levelSizeOffset;
@@ -16,6 +18,7 @@ public class PixelLogicTimeTrialModeOptions {
 
         public PixelLogicTimeTrialNormalOptions() {
             this.id = "time_trial_normal";
+            this.name = "NORMAL MODE";
             this.levelSize = new int[]{4, 5, 6, 7};
             this.levelSizeOffset = new int[]{0, 1, 1, 2};
             this.levelMinDifficulty = new int[]{3, 4, 4, 4};
@@ -28,6 +31,7 @@ public class PixelLogicTimeTrialModeOptions {
 
         public PixelLogicTimeTrialHardcoreOptions() {
             this.id = "time_trial_hardcore";
+            this.name = "HARD MODE";
             this.levelSize = new int[]{6, 7, 8};
             this.levelSizeOffset = new int[]{0, 1, 2};
             this.levelMinDifficulty = new int[]{6, 7, 7};

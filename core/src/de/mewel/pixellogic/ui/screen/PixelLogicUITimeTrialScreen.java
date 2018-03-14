@@ -9,9 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 
+import java.util.List;
+
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.mode.PixelLogicLevelMode;
+import de.mewel.pixellogic.mode.PixelLogicTimeTrialHighscoreStore;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
@@ -30,6 +33,10 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
 
     public PixelLogicUITimeTrialScreen(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         super(assets, eventManager);
+
+        PixelLogicTimeTrialHighscoreStore.clear(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialNormalOptions().id);
+        PixelLogicTimeTrialHighscoreStore.clear(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions().id);
+
         buildGUI();
     }
 
@@ -53,41 +60,11 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
         Container<Label> labelContainer = new Container<Label>(descriptionLabel);
         labelContainer.width(getComponentWidth());
         this.root.addActor(labelContainer);
-        this.root.addActor(new Mode("NORMAL MODE", assetStore, new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                startTimeTrial(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialNormalOptions());
-            }
-        }));
-        this.root.addActor(new Mode("HARD MODE", assetStore, new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                startTimeTrial(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions());
-            }
-        }));
+        this.root.addActor(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialNormalOptions(), assetStore));
+        this.root.addActor(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions(), assetStore));
 
         getStage().addActor(this.root);
         this.root.layout();
-    }
-
-    private void startTimeTrial(PixelLogicTimeTrialModeOptions options) {
-        PixelLogicLevelMode mode = new PixelLogicTimeTrialMode(options);
-        mode.setup(getAssets(), getEventManager());
-        mode.run();
-        PixelLogicUIScreenData data = new PixelLogicUIScreenData();
-        data.put("screenId", "level");
-        data.put("options", options);
-        getEventManager().fire(new PixelLogicScreenChangeEvent(this, data));
     }
 
     public static int getPadding() {
@@ -104,7 +81,6 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
 
     @Override
     public void show() {
-
     }
 
     @Override
@@ -137,10 +113,13 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
         return getButtonHeight() * 4;
     }
 
-    private static class Mode extends Container<VerticalGroup> {
+    private static class TimeTrialModeUI extends Container<VerticalGroup> {
 
-        public Mode(String name, AssetStore assetStore, InputListener inputListener) {
+        private AssetStore assetStore;
+
+        public TimeTrialModeUI(final PixelLogicTimeTrialModeOptions options, AssetStore assetStore) {
             super(new VerticalGroup());
+            this.assetStore = assetStore;
 
             getActor().setFillParent(true);
             getActor().center();
@@ -150,10 +129,20 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
 
             Label normalHighscoreLabel = new Label("highscore", assetStore.getSmallLabelStyle());
             Label normalTimeLabel = new Label("time", assetStore.getSmallLabelStyle());
-            Label header = new Label(name, assetStore.getNormalLabelStyle());
+            Label header = new Label(options.name, assetStore.getNormalLabelStyle());
 
             PixelLogicUIButton button = new PixelLogicUIButton(assetStore.getAssets(), assetStore.getEventManager(), "PLAY");
-            button.addListener(inputListener);
+            button.addListener(new InputListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    return true;
+                }
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    startTimeTrial(options);
+                }
+            });
             button.setSize(getButtonWidth(), getButtonHeight());
             getActor().addActor(header);
             getActor().addActor(button);
@@ -161,6 +150,16 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
             Table highscoreTable = new Table();
             highscoreTable.setFillParent(true);
             //highscoreTable.setDebug(true);
+
+            List<PixelLogicTimeTrialHighscoreStore.Highscore> highscoreList = PixelLogicTimeTrialHighscoreStore.list(options.id);
+            for (int i = highscoreList.size() - 1; i >= 0; i--) {
+                PixelLogicTimeTrialHighscoreStore.Highscore highscore = highscoreList.get(i);
+                Label highscoreDate = new Label(String.valueOf(highscore.date), assetStore.getSmallLabelStyle());
+                Label highscoreTime = new Label(String.valueOf(highscore.time), assetStore.getSmallLabelStyle());
+                highscoreTable.add(highscoreDate).growX().left();
+                highscoreTable.add(highscoreTime).right();
+                highscoreTable.row();
+            }
 
             Container<Table> highscoreContainer = new Container<Table>(highscoreTable);
             highscoreContainer.width(getComponentWidth());
@@ -180,8 +179,17 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
             getActor().pack();
         }
 
-    }
+        private void startTimeTrial(PixelLogicTimeTrialModeOptions options) {
+            PixelLogicLevelMode mode = new PixelLogicTimeTrialMode(options);
+            mode.setup(assetStore.getAssets(), assetStore.getEventManager());
+            mode.run();
+            PixelLogicUIScreenData data = new PixelLogicUIScreenData();
+            data.put("screenId", "level");
+            data.put("options", options);
+            assetStore.getEventManager().fire(new PixelLogicScreenChangeEvent(this, data));
+        }
 
+    }
 
     private static class AssetStore {
 

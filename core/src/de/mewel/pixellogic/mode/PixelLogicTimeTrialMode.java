@@ -68,13 +68,12 @@ public class PixelLogicTimeTrialMode implements PixelLogicLevelMode, PixelLogicL
     }
 
     private void onFinished() {
-        String id = this.options.id;
-        Preferences preferences = Gdx.app.getPreferences(id);
-        preferences.getString("highscore_1");
-
         PixelLogicUIScreenData data = new PixelLogicUIScreenData();
         data.put("screenId", "timeTrialFinished");
+        String mode = this.options.id;
+        data.put("mode", mode);
         data.put("time", this.totalTime);
+        PixelLogicTimeTrialHighscoreStore.add(mode, this.totalTime);
         this.eventManager.fire(new PixelLogicScreenChangeEvent(this, data));
     }
 
@@ -116,35 +115,6 @@ public class PixelLogicTimeTrialMode implements PixelLogicLevelMode, PixelLogicL
                 this.eventManager.fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.stop, this.totalTime));
             }
         }
-    }
-
-    private static class Highscore {
-
-        public long time;
-
-        public long date;
-
-        public Highscore() {
-        }
-
-        public Highscore(long time) {
-            this.time = time;
-            this.date = new Date().getTime();
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(time) + "|" + String.valueOf(date);
-        }
-
-        public static Highscore of(String string) {
-            Highscore highscore = new Highscore();
-            String[] parts = string.split("|");
-            highscore.time = Long.valueOf(parts[0]);
-            highscore.date = Long.valueOf(parts[2]);
-            return highscore;
-        }
-
     }
 
 }
