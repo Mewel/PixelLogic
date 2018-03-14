@@ -11,11 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.ui.screen.event.PixelLogicStartTimeTrialModeEvent;
+import de.mewel.pixellogic.mode.PixelLogicLevelMode;
+import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIHorizontalLine;
+import de.mewel.pixellogic.ui.screen.event.PixelLogicScreenChangeEvent;
 
 import static de.mewel.pixellogic.asset.PixelLogicAssets.GAME_FONT_SIZE;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
@@ -59,8 +61,7 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                getEventManager().fire(new PixelLogicStartTimeTrialModeEvent(PixelLogicUITimeTrialScreen.this,
-                        new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialNormalOptions()));
+                startTimeTrial(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialNormalOptions());
             }
         }));
         this.root.addActor(new Mode("HARD MODE", assetStore, new InputListener() {
@@ -71,13 +72,22 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                getEventManager().fire(new PixelLogicStartTimeTrialModeEvent(PixelLogicUITimeTrialScreen.this,
-                        new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions()));
+                startTimeTrial(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions());
             }
         }));
 
         getStage().addActor(this.root);
         this.root.layout();
+    }
+
+    private void startTimeTrial(PixelLogicTimeTrialModeOptions options) {
+        PixelLogicLevelMode mode = new PixelLogicTimeTrialMode(options);
+        mode.setup(getAssets(), getEventManager());
+        mode.run();
+        PixelLogicUIScreenData data = new PixelLogicUIScreenData();
+        data.put("screenId", "level");
+        data.put("options", options);
+        getEventManager().fire(new PixelLogicScreenChangeEvent(this, data));
     }
 
     public static int getPadding() {

@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
-import de.mewel.pixellogic.ui.screen.event.PixelLogicChangeScreenEvent;
+import de.mewel.pixellogic.ui.screen.event.PixelLogicScreenChangeEvent;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
 
@@ -47,7 +47,7 @@ public class PixelLogicUITimeTrialFinishedScreen extends PixelLogicUIScreen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                getEventManager().fire(new PixelLogicChangeScreenEvent(PixelLogicUITimeTrialFinishedScreen.this, data));
+                getEventManager().fire(new PixelLogicScreenChangeEvent(PixelLogicUITimeTrialFinishedScreen.this, data));
             }
         });
     }

@@ -5,29 +5,29 @@ import java.util.Map;
 
 public class PixelLogicUIScreenData {
 
-    private Map<String, String> data;
+    private Map<String, Object> data;
 
     public PixelLogicUIScreenData() {
-        this.data = new HashMap<String, String>();
+        this.data = new HashMap<String, Object>();
     }
 
-    public String get(String key) {
+    public Object get(String key) {
         return data.get(key);
     }
 
-    public Long getLong(String key) {
-        return Long.valueOf(data.get(key));
+    public String getString(String key) {
+        return data.get(key).toString();
     }
 
-    public void put(String key, String value) {
+    public Long getLong(String key) {
+        return (Long) data.get(key);
+    }
+
+    public void put(String key, Object value) {
         this.data.put(key, value);
     }
 
-    public void put(String key, Long value) {
-        this.data.put(key, value.toString());
-    }
-
-    public Map<String, String> getData() {
+    public Map<String, Object> getData() {
         return data;
     }
 

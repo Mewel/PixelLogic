@@ -1,25 +1,20 @@
 package de.mewel.pixellogic.ui.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicListener;
+import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
@@ -27,6 +22,7 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelMenu;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelToolbar;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 
 public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
 
@@ -73,6 +69,12 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
         this.levelStatus = null;
         this.updateBackgroundImage();
         getStage().addAction(Actions.fadeIn(.5f));
+    }
+
+    @Override
+    public void deactivate(Runnable after) {
+        Action action = Actions.sequence(Actions.fadeOut(.5f), Actions.run(after));
+        this.getStage().addAction(action);
     }
 
     @Override
@@ -180,12 +182,6 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
     }
 
     @Override
-    public void deactivate(Runnable after) {
-        Action action = Actions.sequence(Actions.fadeOut(.5f), Actions.run(after));
-        this.getStage().addAction(action);
-    }
-
-    @Override
     public void dispose() {
         super.dispose();
         getEventManager().remove(this.screenListener);
@@ -251,6 +247,11 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
                 if (PixelLogicUserEvent.Type.TOOLBAR_MENU_CLICKED.equals(userEvent.getType())) {
                     screen.menu.show();
                 }
+            }
+            if (event instanceof PixelLogicNextLevelEvent) {
+                PixelLogicNextLevelEvent nextLevelEvent = (PixelLogicNextLevelEvent) event;
+                PixelLogicLevel nextLevel = nextLevelEvent.getNextLevel();
+                screen.loadLevel(nextLevel);
             }
         }
 

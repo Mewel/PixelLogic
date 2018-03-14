@@ -11,11 +11,12 @@ import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
-import de.mewel.pixellogic.ui.screen.event.PixelLogicTimeTrialFinishedEvent;
 import de.mewel.pixellogic.event.PixelLogicTimerEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
+import de.mewel.pixellogic.ui.screen.PixelLogicUIScreenData;
+import de.mewel.pixellogic.ui.screen.event.PixelLogicScreenChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicTimeTrialMode implements PixelLogicLevelMode, PixelLogicListener {
@@ -71,7 +72,10 @@ public class PixelLogicTimeTrialMode implements PixelLogicLevelMode, PixelLogicL
         Preferences preferences = Gdx.app.getPreferences(id);
         preferences.getString("highscore_1");
 
-        this.eventManager.fire(new PixelLogicTimeTrialFinishedEvent(this, this.totalTime));
+        PixelLogicUIScreenData data = new PixelLogicUIScreenData();
+        data.put("screenId", "timeTrialFinished");
+        data.put("time", this.totalTime);
+        this.eventManager.fire(new PixelLogicScreenChangeEvent(this, data));
     }
 
     private PixelLogicLevel createLevel(Boolean[][] levelData) {
