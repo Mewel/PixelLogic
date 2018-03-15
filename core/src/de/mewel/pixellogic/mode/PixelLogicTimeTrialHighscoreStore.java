@@ -41,7 +41,6 @@ public abstract class PixelLogicTimeTrialHighscoreStore {
             store(mode, highscoreList);
             return highscoreList.size();
         }
-        Gdx.app.log("add", list(mode).toString());
         return -1;
     }
 
@@ -98,9 +97,9 @@ public abstract class PixelLogicTimeTrialHighscoreStore {
                 return null;
             }
             Highscore highscore = new Highscore();
-            String[] parts = string.split("|");
+            String[] parts = string.split("\\|");
             highscore.time = Long.valueOf(parts[0]);
-            highscore.date = Long.valueOf(parts[2]);
+            highscore.date = Long.valueOf(parts[1]);
             return highscore;
         }
 
