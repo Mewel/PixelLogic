@@ -33,10 +33,11 @@ public class PixelLogicUITimeTrialFinishedScreen extends PixelLogicUIScreen {
     }
 
     @Override
-    public void activate(final PixelLogicUIScreenData data) {
-        super.activate(data);
-        final String mode = data.getString("mode");
-        final Long time = data.getLong("time");
+    public void activate(final PixelLogicUIScreenProperties properties) {
+        super.activate(properties);
+        final String mode = properties.getString("mode");
+        final Long time = properties.getLong("time");
+        final Integer rank = properties.getInt("rank");
         this.resultLabel.setText(PixelLogicUIUtil.formatMilliseconds(time));
         centerLabel(this.resultLabel);
 
@@ -48,10 +49,11 @@ public class PixelLogicUITimeTrialFinishedScreen extends PixelLogicUIScreen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                PixelLogicUIScreenData changeScreenData = new PixelLogicUIScreenData();
+                PixelLogicUIScreenProperties changeScreenData = new PixelLogicUIScreenProperties();
                 changeScreenData.put("screenId", "timeTrial");
                 changeScreenData.put("mode", mode);
                 changeScreenData.put("time", time);
+                changeScreenData.put("rank", rank);
                 getEventManager().fire(new PixelLogicScreenChangeEvent(PixelLogicUITimeTrialFinishedScreen.this, changeScreenData));
             }
         });

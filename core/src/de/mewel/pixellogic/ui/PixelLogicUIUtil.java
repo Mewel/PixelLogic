@@ -7,6 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,6 +21,8 @@ import de.mewel.pixellogic.util.PixelLogicUtil;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BASE_SIZE;
 
 public class PixelLogicUIUtil {
+
+    private static final DateFormat SDF = SimpleDateFormat.getDateInstance();
 
     public static Texture getWhiteTexture() {
         return getTexture(Color.WHITE);
@@ -57,7 +63,7 @@ public class PixelLogicUIUtil {
     }
 
     public static int getTextHeight() {
-        return (int) ((float)getBaseHeight() / 1.5f);
+        return (int) ((float) getBaseHeight() / 1.5f);
     }
 
     public static Vector2 getLevelSize(PixelLogicLevel level) {
@@ -105,6 +111,10 @@ public class PixelLogicUIUtil {
     public static int getLevelMaxHeight() {
         int screenHeight = Gdx.graphics.getHeight();
         return screenHeight - getToolbarHeight() - getToolbarPaddingTop();
+    }
+
+    public static String formatDate(Long milliseconds) {
+        return SDF.format(new Date(milliseconds));
     }
 
     public static String formatMilliseconds(Long time) {

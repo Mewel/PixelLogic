@@ -53,8 +53,8 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
         this.levelUI = null;
         this.toolbar = new PixelLogicUILevelToolbar(getAssets(), getEventManager());
         getStage().addActor(this.toolbar);
-        // MENU
 
+        // MENU
         this.menu = new PixelLogicUILevelMenu(getAssets(), getEventManager(), this);
 
         // STAGE
@@ -64,8 +64,8 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
     }
 
     @Override
-    public void activate(PixelLogicUIScreenData data) {
-        super.activate(data);
+    public void activate(PixelLogicUIScreenProperties properties) {
+        super.activate(properties);
         this.levelStatus = null;
         this.updateBackgroundImage();
         getStage().addAction(Actions.fadeIn(.5f));

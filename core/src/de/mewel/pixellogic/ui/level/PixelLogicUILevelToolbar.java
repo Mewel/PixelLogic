@@ -10,17 +10,15 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
-import java.util.Locale;
-
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicTimerEvent;
-import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 
 public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements PixelLogicListener {
 
@@ -29,6 +27,8 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
     private PixelLogicUILevelMenuButton menuButton;
 
     private PixelLogicUILevelSwitcher switcher;
+
+    private InputListener menuButtonListener, switcherListener;
 
     private PixelLogicLevel level;
 
@@ -51,7 +51,7 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
         this.icons = new Texture(Gdx.files.internal("gui/level/toolbar.png"));
 
         this.menuButton = new PixelLogicUILevelMenuButton(this.icons);
-        this.menuButton.addListener(new InputListener() {
+        this.menuButtonListener = new InputListener() {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -59,10 +59,9 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
                 return super.touchDown(event, x, y, pointer, button);
             }
 
-        });
-
+        };
         this.switcher = new PixelLogicUILevelSwitcher(getAssets(), getEventManager(), this.icons);
-        this.switcher.addListener(new InputListener() {
+        this.switcherListener = new InputListener() {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -70,7 +69,7 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
                 return super.touchDown(event, x, y, pointer, button);
             }
 
-        });
+        };
 
         this.addActor(this.menuButton);
         this.addActor(this.switcher);
@@ -84,10 +83,17 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
         this.level = event.getLevel();
         this.menuButton.addAction(Actions.fadeIn(.3f));
         this.switcher.addAction(Actions.fadeIn(.3f));
+
+        this.menuButton.addListener(this.menuButtonListener);
+        this.switcher.addListener(this.switcherListener);
     }
 
     @Override
     public void onLevelSolved(PixelLogicLevelStatusChangeEvent event) {
+        // rm toolbar listeners
+        this.menuButton.removeListener(menuButtonListener);
+        this.switcher.removeListener(switcherListener);
+
         // fade out toolbar elements
         this.menuButton.addAction(Actions.fadeOut(.3f));
         this.switcher.addAction(Actions.fadeOut(.3f));
@@ -106,7 +112,7 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
         this.solvedLabel.addAction(Actions.sequence(Actions.delay(.3f), Actions.fadeIn(.3f)));
 
         // clock
-        if(this.timerLabel != null) {
+        if (this.timerLabel != null) {
             this.timerLabel.addAction(Actions.fadeOut(.3f));
         }
     }

@@ -1,6 +1,7 @@
 package de.mewel.pixellogic.ui.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -23,7 +24,9 @@ import de.mewel.pixellogic.ui.component.PixelLogicUIHorizontalLine;
 import de.mewel.pixellogic.ui.screen.event.PixelLogicScreenChangeEvent;
 
 import static de.mewel.pixellogic.asset.PixelLogicAssets.GAME_FONT_SIZE;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.LINE_COMPLETE_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_LIGHT_COLOR;
 
 public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
 
@@ -34,18 +37,20 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
     public PixelLogicUITimeTrialScreen(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         super(assets, eventManager);
 
-        PixelLogicTimeTrialHighscoreStore.clear(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialNormalOptions().id);
-        PixelLogicTimeTrialHighscoreStore.clear(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions().id);
+        //PixelLogicTimeTrialHighscoreStore.clear(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialNormalOptions().id);
+        //PixelLogicTimeTrialHighscoreStore.clear(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions().id);
 
         buildGUI();
     }
 
     protected void buildGUI() {
-        this.assetStore = new AssetStore(getAssets(), getEventManager());
+        this.assetStore = new AssetStore(getAssets(), getEventManager(), getProperties());
+
+        Gdx.app.log("screen", "build gui");
 
         // labels
-        Label descriptionLabel = new Label("Play infinite auto generated levels against the " +
-                "clock and try to beat your highscore.", assetStore.getSmallLabelStyle());
+        Label descriptionLabel = assetStore.getSmallLabel("Play infinite auto generated levels against the " +
+                "clock and try to beat your highscore.", TEXT_COLOR);
         descriptionLabel.setWrap(true);
 
         // combine to VerticalGroup
@@ -55,7 +60,7 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
         this.root.bottom();
         this.root.reverse();
         this.root.pad(getPadding());
-        this.root.space(getPadding() * 2);
+        this.root.space(getPadding() * 2.5f);
 
         Container<Label> labelContainer = new Container<Label>(descriptionLabel);
         labelContainer.width(getComponentWidth());
@@ -68,7 +73,7 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
     }
 
     public static int getPadding() {
-        return Gdx.graphics.getWidth() / 18;
+        return Gdx.graphics.getHeight() / 24;
     }
 
     public static int getComponentWidth() {
@@ -96,6 +101,11 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
     @Override
     public void hide() {
 
+    }
+
+    @Override
+    public void activate(PixelLogicUIScreenProperties properties) {
+        super.activate(properties);
     }
 
     @Override
@@ -127,11 +137,10 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
             getActor().reverse();
             getActor().space(getPadding());
 
-            Label normalHighscoreLabel = new Label("highscore", assetStore.getSmallLabelStyle());
-            Label normalTimeLabel = new Label("time", assetStore.getSmallLabelStyle());
-            Label header = new Label(options.name, assetStore.getNormalLabelStyle());
+            Label normalHighscoreLabel = assetStore.getSmallLabel("highscore", TEXT_LIGHT_COLOR);
+            Label normalTimeLabel = assetStore.getSmallLabel("time", TEXT_LIGHT_COLOR);
 
-            PixelLogicUIButton button = new PixelLogicUIButton(assetStore.getAssets(), assetStore.getEventManager(), "PLAY");
+            PixelLogicUIButton button = new PixelLogicUIButton(assetStore.getAssets(), assetStore.getEventManager(), options.name);
             button.addListener(new InputListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -144,7 +153,6 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
                 }
             });
             button.setSize(getButtonWidth(), getButtonHeight());
-            getActor().addActor(header);
             getActor().addActor(button);
 
             Table highscoreTable = new Table();
@@ -152,12 +160,19 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
             //highscoreTable.setDebug(true);
 
             List<PixelLogicTimeTrialHighscoreStore.Highscore> highscoreList = PixelLogicTimeTrialHighscoreStore.list(options.id);
-            for (int i = highscoreList.size() - 1; i >= 0; i--) {
-                PixelLogicTimeTrialHighscoreStore.Highscore highscore = highscoreList.get(i);
-                Label highscoreDate = new Label(String.valueOf(highscore.date), assetStore.getSmallLabelStyle());
-                Label highscoreTime = new Label(String.valueOf(highscore.time), assetStore.getSmallLabelStyle());
-                highscoreTable.add(highscoreDate).growX().left();
-                highscoreTable.add(highscoreTime).right();
+            if (!highscoreList.isEmpty()) {
+                for (int i = highscoreList.size() - 1; i >= 0; i--) {
+                    Integer rank = assetStore.getProperties().getInt("rank");
+                    Color color = rank == null || rank == -1 || rank != i ? TEXT_COLOR : LINE_COMPLETE_COLOR;
+                    PixelLogicTimeTrialHighscoreStore.Highscore highscore = highscoreList.get(i);
+                    Label highscoreDate = assetStore.getSmallLabel(PixelLogicUIUtil.formatDate(highscore.date), color);
+                    Label highscoreTime = assetStore.getSmallLabel(PixelLogicUIUtil.formatMilliseconds(highscore.time), color);
+                    highscoreTable.add(highscoreDate).growX().left();
+                    highscoreTable.add(highscoreTime).right();
+                    highscoreTable.row();
+                }
+            } else {
+                highscoreTable.add(assetStore.getSmallLabel("no games played", TEXT_COLOR)).center();
                 highscoreTable.row();
             }
 
@@ -167,7 +182,7 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
             PixelLogicUIHorizontalLine line = new PixelLogicUIHorizontalLine(assetStore.getAssets(), assetStore.getEventManager());
             line.setWidth(getComponentWidth());
             line.setHeight(1);
-            line.setColor(TEXT_COLOR);
+            line.setColor(TEXT_LIGHT_COLOR);
             highscoreTable.add(line).colspan(2).expand();
 
             highscoreTable.row();
@@ -183,7 +198,7 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
             PixelLogicLevelMode mode = new PixelLogicTimeTrialMode(options);
             mode.setup(assetStore.getAssets(), assetStore.getEventManager());
             mode.run();
-            PixelLogicUIScreenData data = new PixelLogicUIScreenData();
+            PixelLogicUIScreenProperties data = new PixelLogicUIScreenProperties();
             data.put("screenId", "level");
             data.put("options", options);
             assetStore.getEventManager().fire(new PixelLogicScreenChangeEvent(this, data));
@@ -197,17 +212,17 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
 
         private PixelLogicEventManager eventManager;
 
-        private Label.LabelStyle normalLabelStyle, smallLabelStyle;
+        private PixelLogicUIScreenProperties properties;
 
-        private AssetStore(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
+        private BitmapFont normalFont, smallFont;
+
+        private AssetStore(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicUIScreenProperties properties) {
             this.assets = assets;
             this.eventManager = eventManager;
+            this.properties = properties;
 
-            BitmapFont normalFont = getAssets().getGameFont(PixelLogicUIUtil.getTextHeight());
-            this.normalLabelStyle = new Label.LabelStyle(normalFont, TEXT_COLOR);
-
-            BitmapFont smallFont = getAssets().getGameFont(PixelLogicUIUtil.getTextHeight() - GAME_FONT_SIZE);
-            this.smallLabelStyle = new Label.LabelStyle(smallFont, TEXT_COLOR);
+            this.normalFont = getAssets().getGameFont(PixelLogicUIUtil.getTextHeight());
+            this.smallFont = getAssets().getGameFont(PixelLogicUIUtil.getTextHeight() - GAME_FONT_SIZE);
         }
 
         public PixelLogicAssets getAssets() {
@@ -218,12 +233,18 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
             return eventManager;
         }
 
-        public Label.LabelStyle getNormalLabelStyle() {
-            return normalLabelStyle;
+        public PixelLogicUIScreenProperties getProperties() {
+            return properties;
         }
 
-        public Label.LabelStyle getSmallLabelStyle() {
-            return smallLabelStyle;
+        public Label getNormalLabel(String text, Color color) {
+            Label.LabelStyle style = new Label.LabelStyle(this.normalFont, color);
+            return new Label(text, style);
+        }
+
+        public Label getSmallLabel(String text, Color color) {
+            Label.LabelStyle style = new Label.LabelStyle(this.smallFont, color);
+            return new Label(text, style);
         }
 
     }

@@ -12,6 +12,7 @@ public abstract class PixelLogicUIConstants {
     public static Color LINE_COLOR = Color.valueOf("#F5DA81");
     public static Color LINE_COMPLETE_COLOR = Color.valueOf("#FF8000");
     public static Color TEXT_COLOR = Color.valueOf("#424242");
+    public static Color TEXT_LIGHT_COLOR = Color.valueOf("#A2A2A2");
     public static Color GRID_COLOR = Color.valueOf("#8DBEEA");
 
     public static Color TOOLBAR_SWITCHER_ACTIVE_COLOR = Color.WHITE;

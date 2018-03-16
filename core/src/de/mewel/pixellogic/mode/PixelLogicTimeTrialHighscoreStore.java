@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -16,32 +18,24 @@ public abstract class PixelLogicTimeTrialHighscoreStore {
      *
      * @param mode the mode which was played
      * @param time the time reached
-     * @return the new highscore position (starting at 1 for the first place) or -1 if its not a new score
+     * @return the new highscore position (starting at 0 for the first place) or -1 if its not a new score
      */
     public static int add(String mode, Long time) {
         List<Highscore> highscoreList = list(mode);
-        for (int i = 0; i < highscoreList.size(); i++) {
-            Highscore highscore = highscoreList.get(i);
-            if (highscore.time > time) {
-                Highscore newHighscore = new Highscore(time);
-                List<Highscore> newHighscoreList = new ArrayList<Highscore>();
-                for (int j = 0; i < highscoreList.size(); j++) {
-                    if (i == j) {
-                        highscoreList.add(newHighscore);
-                        continue;
-                    }
-                    newHighscoreList.add(highscoreList.get(i < j ? j : j - 1));
-                }
-                store(mode, newHighscoreList);
-                return i + 1;
+        Highscore newHighscore = new Highscore(time);
+        highscoreList.add(newHighscore);
+        Collections.sort(highscoreList, new Comparator<Highscore>() {
+            @Override
+            public int compare(Highscore h1, Highscore h2) {
+                return h1.time == h2.time ? 0 : (h1.time > h2.time ? 1 : -1);
             }
-        }
-        if(highscoreList.size() < MAX_ENTRIES) {
-            highscoreList.add(new Highscore(time));
+        });
+        highscoreList = highscoreList.subList(0, Math.min(highscoreList.size(), 5));
+        int rank = highscoreList.indexOf(newHighscore);
+        if (rank >= 0) {
             store(mode, highscoreList);
-            return highscoreList.size();
         }
-        return -1;
+        return rank;
     }
 
     public static List<Highscore> list(String mode) {

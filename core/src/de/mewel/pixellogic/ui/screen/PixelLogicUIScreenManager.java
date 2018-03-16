@@ -48,7 +48,7 @@ public class PixelLogicUIScreenManager implements PixelLogicListener {
         }
     }
 
-    public void activate(final PixelLogicUIScreen screen, final PixelLogicUIScreenData data) {
+    public void activate(final PixelLogicUIScreen screen, final PixelLogicUIScreenProperties data) {
         if (this.activeScreen != null) {
             this.activeScreen.deactivate(new Runnable() {
                 @Override

@@ -1,9 +1,7 @@
 package de.mewel.pixellogic.mode;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 
-import java.util.Date;
 import java.util.Random;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
@@ -15,7 +13,7 @@ import de.mewel.pixellogic.event.PixelLogicTimerEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
-import de.mewel.pixellogic.ui.screen.PixelLogicUIScreenData;
+import de.mewel.pixellogic.ui.screen.PixelLogicUIScreenProperties;
 import de.mewel.pixellogic.ui.screen.event.PixelLogicScreenChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
@@ -37,6 +35,11 @@ public class PixelLogicTimeTrialMode implements PixelLogicLevelMode, PixelLogicL
     public void setup(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         this.eventManager = eventManager;
         this.eventManager.listen(this);
+    }
+
+    @Override
+    public void dispose() {
+        this.eventManager.remove(this);
     }
 
     @Override
@@ -68,12 +71,13 @@ public class PixelLogicTimeTrialMode implements PixelLogicLevelMode, PixelLogicL
     }
 
     private void onFinished() {
-        PixelLogicUIScreenData data = new PixelLogicUIScreenData();
+        PixelLogicUIScreenProperties data = new PixelLogicUIScreenProperties();
         data.put("screenId", "timeTrialFinished");
         String mode = this.options.id;
         data.put("mode", mode);
         data.put("time", this.totalTime);
-        PixelLogicTimeTrialHighscoreStore.add(mode, this.totalTime);
+        int rank = PixelLogicTimeTrialHighscoreStore.add(mode, this.totalTime);
+        data.put("rank", rank);
         this.eventManager.fire(new PixelLogicScreenChangeEvent(this, data));
     }
 
@@ -113,6 +117,12 @@ public class PixelLogicTimeTrialMode implements PixelLogicLevelMode, PixelLogicL
             if (PixelLogicLevelStatus.finished.equals(changeEvent.getStatus())) {
                 this.totalTime += System.currentTimeMillis() - this.startTime;
                 this.eventManager.fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.stop, this.totalTime));
+            }
+        }
+        if (event instanceof PixelLogicScreenChangeEvent) {
+            PixelLogicScreenChangeEvent screenChangeEvent = (PixelLogicScreenChangeEvent) event;
+            if (!screenChangeEvent.getScreenId().equals("level")) {
+                this.dispose();
             }
         }
     }

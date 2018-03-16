@@ -3,11 +3,11 @@ package de.mewel.pixellogic.ui.screen;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PixelLogicUIScreenData {
+public class PixelLogicUIScreenProperties {
 
     private Map<String, Object> data;
 
-    public PixelLogicUIScreenData() {
+    public PixelLogicUIScreenProperties() {
         this.data = new HashMap<String, Object>();
     }
 
@@ -23,12 +23,21 @@ public class PixelLogicUIScreenData {
         return (Long) data.get(key);
     }
 
+    public Integer getInt(String key) {
+        return (Integer) data.get(key);
+    }
+
     public void put(String key, Object value) {
         this.data.put(key, value);
     }
 
     public Map<String, Object> getData() {
         return data;
+    }
+
+    @Override
+    public String toString() {
+        return data.toString();
     }
 
 }

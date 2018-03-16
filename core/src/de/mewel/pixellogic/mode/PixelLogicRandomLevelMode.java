@@ -40,6 +40,11 @@ public class PixelLogicRandomLevelMode implements PixelLogicLevelMode, PixelLogi
     }
 
     @Override
+    public void dispose() {
+        this.eventManager.remove(this);
+    }
+
+    @Override
     public void run() {
         loadNextLevel();
     }

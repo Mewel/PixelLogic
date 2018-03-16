@@ -23,15 +23,19 @@ public abstract class PixelLogicUIScreen implements PixelLogicUIElement, Screen 
 
     private PixelLogicEventManager eventManager;
 
+    private PixelLogicUIScreenProperties properties;
+
     public PixelLogicUIScreen(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         this.assets = assets;
         this.eventManager = eventManager;
         this.stage = new Stage();
+        this.properties = new PixelLogicUIScreenProperties();
     }
 
-    public void activate(PixelLogicUIScreenData data) {
+    public void activate(PixelLogicUIScreenProperties properties) {
+        this.properties = properties != null ? properties : new PixelLogicUIScreenProperties();
         Gdx.input.setInputProcessor(getStage());
-    };
+    }
 
     public void deactivate(Runnable after) {
         after.run();
@@ -45,6 +49,10 @@ public abstract class PixelLogicUIScreen implements PixelLogicUIElement, Screen 
     @Override
     public PixelLogicEventManager getEventManager() {
         return eventManager;
+    }
+
+    public PixelLogicUIScreenProperties getProperties() {
+        return properties;
     }
 
     @Override

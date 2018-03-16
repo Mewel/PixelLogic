@@ -8,6 +8,8 @@ public interface PixelLogicLevelMode {
 
     void setup(PixelLogicAssets assets, PixelLogicEventManager eventManager);
 
+    void dispose();
+
     void run();
 
 }

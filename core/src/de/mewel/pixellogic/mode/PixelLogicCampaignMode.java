@@ -38,6 +38,11 @@ public class PixelLogicCampaignMode implements PixelLogicLevelMode, PixelLogicLi
         this.preferences = Gdx.app.getPreferences("campaign_preferences");
     }
 
+    @Override
+    public void dispose() {
+        this.eventManager.remove(this);
+    }
+
     public void run() {
         String levelName = this.preferences.getString("levelName");
         if (levelName != null) {
