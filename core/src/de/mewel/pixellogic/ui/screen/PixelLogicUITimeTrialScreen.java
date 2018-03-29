@@ -3,6 +3,7 @@ package de.mewel.pixellogic.ui.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 
 import java.util.List;
+import java.util.Random;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
@@ -24,6 +26,8 @@ import de.mewel.pixellogic.ui.component.PixelLogicUIHorizontalLine;
 import de.mewel.pixellogic.ui.screen.event.PixelLogicScreenChangeEvent;
 
 import static de.mewel.pixellogic.asset.PixelLogicAssets.GAME_FONT_SIZE;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.GRID_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.LINE_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.LINE_COMPLETE_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_LIGHT_COLOR;
@@ -37,16 +41,14 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
     public PixelLogicUITimeTrialScreen(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         super(assets, eventManager);
 
-        //PixelLogicTimeTrialHighscoreStore.clear(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialNormalOptions().id);
-        //PixelLogicTimeTrialHighscoreStore.clear(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions().id);
+        // PixelLogicTimeTrialHighscoreStore.clear(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialNormalOptions().id);
+        // PixelLogicTimeTrialHighscoreStore.clear(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions().id);
 
         buildGUI();
     }
 
     protected void buildGUI() {
         this.assetStore = new AssetStore(getAssets(), getEventManager(), getProperties());
-
-        Gdx.app.log("screen", "build gui");
 
         // labels
         Label descriptionLabel = assetStore.getSmallLabel("Play infinite auto generated levels against the " +
@@ -81,6 +83,9 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
     }
 
     protected void cleanGUI() {
+        for (Actor actor : getStage().getRoot().getChildren()) {
+            actor.clear();
+        }
         getStage().getRoot().removeActor(this.root);
     }
 
@@ -106,6 +111,12 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
     @Override
     public void activate(PixelLogicUIScreenProperties properties) {
         super.activate(properties);
+    }
+
+    @Override
+    public void deactivate(Runnable after) {
+        this.cleanGUI();
+        super.deactivate(after);
     }
 
     @Override
@@ -161,9 +172,11 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
 
             List<PixelLogicTimeTrialHighscoreStore.Highscore> highscoreList = PixelLogicTimeTrialHighscoreStore.list(options.id);
             if (!highscoreList.isEmpty()) {
+                final Integer rank = assetStore.getProperties().getInt("rank");
+                final String mode = assetStore.getProperties().getString("mode");
+                boolean lastRankInvalid = rank == null || rank == -1 || mode == null || !mode.equals(options.id);
                 for (int i = highscoreList.size() - 1; i >= 0; i--) {
-                    Integer rank = assetStore.getProperties().getInt("rank");
-                    Color color = rank == null || rank == -1 || rank != i ? TEXT_COLOR : LINE_COMPLETE_COLOR;
+                    Color color = lastRankInvalid || rank != i ? TEXT_COLOR : LINE_COLOR;
                     PixelLogicTimeTrialHighscoreStore.Highscore highscore = highscoreList.get(i);
                     Label highscoreDate = assetStore.getSmallLabel(PixelLogicUIUtil.formatDate(highscore.date), color);
                     Label highscoreTime = assetStore.getSmallLabel(PixelLogicUIUtil.formatMilliseconds(highscore.time), color);

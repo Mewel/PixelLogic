@@ -16,7 +16,8 @@ public class PixelLogicUIScreenProperties {
     }
 
     public String getString(String key) {
-        return data.get(key).toString();
+        Object result = data.get(key);
+        return result != null ? result.toString() : null;
     }
 
     public Long getLong(String key) {
