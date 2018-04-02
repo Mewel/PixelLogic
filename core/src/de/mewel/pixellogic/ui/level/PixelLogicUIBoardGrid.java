@@ -8,9 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
-import de.mewel.pixellogic.model.PixelLogicLevel;
 
 public class PixelLogicUIBoardGrid extends Actor {
 

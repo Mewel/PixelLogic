@@ -68,11 +68,16 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
         super.activate(properties);
         this.levelStatus = null;
         this.updateBackgroundImage();
+        this.menu.activate(properties);
         getStage().addAction(Actions.fadeIn(.5f));
     }
 
     @Override
     public void deactivate(Runnable after) {
+        if(!PixelLogicLevelStatus.destroyed.equals(this.levelStatus)) {
+            this.destroyLevel();
+        }
+        this.menu.deactivate();
         Action action = Actions.sequence(Actions.fadeOut(.5f), Actions.run(after));
         this.getStage().addAction(action);
     }
@@ -244,7 +249,7 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
         public void handle(PixelLogicEvent event) {
             if (event instanceof PixelLogicUserEvent) {
                 PixelLogicUserEvent userEvent = (PixelLogicUserEvent) event;
-                if (PixelLogicUserEvent.Type.TOOLBAR_MENU_CLICKED.equals(userEvent.getType())) {
+                if (PixelLogicUserEvent.Type.LEVEL_MENU_CLICKED.equals(userEvent.getType())) {
                     screen.menu.show();
                 }
             }

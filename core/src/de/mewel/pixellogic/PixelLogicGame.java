@@ -4,9 +4,10 @@ import com.badlogic.gdx.Game;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.ui.screen.PixelLogicUIScreenManager;
-import de.mewel.pixellogic.ui.screen.PixelLogicUITimeTrialFinishedScreen;
 import de.mewel.pixellogic.ui.screen.PixelLogicUILevelScreen;
+import de.mewel.pixellogic.ui.screen.PixelLogicUIScreenManager;
+import de.mewel.pixellogic.ui.screen.PixelLogicUIScreenProperties;
+import de.mewel.pixellogic.ui.screen.PixelLogicUITimeTrialFinishedScreen;
 import de.mewel.pixellogic.ui.screen.PixelLogicUITimeTrialScreen;
 
 public class PixelLogicGame extends Game {
@@ -34,7 +35,7 @@ public class PixelLogicGame extends Game {
         this.screenManager.add("timeTrial", timeTrialScreen);
         this.screenManager.add("timeTrialFinished", timeTrialFinishedScreen);
 
-        this.screenManager.activate(timeTrialScreen, null);
+        this.screenManager.activate(timeTrialScreen, new PixelLogicUIScreenProperties());
     }
 
     @Override

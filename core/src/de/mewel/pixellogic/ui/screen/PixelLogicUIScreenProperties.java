@@ -36,6 +36,10 @@ public class PixelLogicUIScreenProperties {
         return data;
     }
 
+    public boolean has(String key) {
+        return this.data.containsKey(key);
+    }
+
     @Override
     public String toString() {
         return data.toString();

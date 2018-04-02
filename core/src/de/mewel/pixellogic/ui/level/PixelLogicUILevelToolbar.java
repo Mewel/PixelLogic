@@ -55,7 +55,7 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                getEventManager().fire(new PixelLogicUserEvent(PixelLogicUILevelToolbar.this, PixelLogicUserEvent.Type.TOOLBAR_MENU_CLICKED));
+                getEventManager().fire(new PixelLogicUserEvent(PixelLogicUILevelToolbar.this, PixelLogicUserEvent.Type.LEVEL_MENU_CLICKED));
                 return super.touchDown(event, x, y, pointer, button);
             }
 
@@ -119,7 +119,13 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
 
     @Override
     public void onLevelBeforeDestroyed(PixelLogicLevelStatusChangeEvent event) {
-        this.solvedLabel.addAction(Actions.fadeOut(.4f));
+        this.timerRunning = false;
+        if (this.solvedLabel != null) {
+            this.solvedLabel.addAction(Actions.fadeOut(.4f));
+        }
+        if(this.timerLabel != null) {
+            this.timerLabel.addAction(Actions.fadeOut(.4f));
+        }
     }
 
     @Override
@@ -138,7 +144,11 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
                 this.timerLabel.addAction(Actions.fadeIn(.3f));
                 setTimer(timerEvent.getTime());
             }
-            if (timerEvent.getStatus().equals(PixelLogicTimerEvent.Status.stop)) {
+            if (timerEvent.getStatus().equals(PixelLogicTimerEvent.Status.resume)) {
+                this.timerRunning = true;
+                setTimer(timerEvent.getTime());
+            }
+            if (timerEvent.getStatus().equals(PixelLogicTimerEvent.Status.stop) || timerEvent.getStatus().equals(PixelLogicTimerEvent.Status.pause)) {
                 this.timerRunning = false;
             }
         }

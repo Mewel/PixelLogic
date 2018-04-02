@@ -21,7 +21,7 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
     public PixelLogicUIButton(PixelLogicAssets assets, PixelLogicEventManager eventManager, String text) {
         super(assets, eventManager);
         this.text = text;
-        this.background = new PixelLogicUIColoredSurface(PixelLogicUIConstants.LINE_COLOR);
+        this.background = new PixelLogicUIColoredSurface(PixelLogicUIConstants.LINE_COMPLETE_COLOR);
         this.addActor(this.background);
         this.updateLabel();
     }
@@ -30,6 +30,11 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
     protected void sizeChanged() {
         super.sizeChanged();
         this.background.setSize(this.getWidth(), this.getHeight());
+        updateLabel();
+    }
+
+    public void setText(String text) {
+        this.text = text;
         updateLabel();
     }
 

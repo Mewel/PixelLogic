@@ -10,10 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.ui.level.event.PixelLogicLevelSwitcherChangedEvent;
 import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelSwitcherChangedEvent;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BASE_SIZE;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TOOLBAR_SWITCHER_ACTIVE_COLOR;
@@ -110,10 +110,6 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
                                         swappingAnimationStarted = false;
                                         penColor = fillPixel ? TOOLBAR_SWITCHER_ACTIVE_COLOR : PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
                                         xColor = !fillPixel ? TOOLBAR_SWITCHER_ACTIVE_COLOR : PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
-                                        getEventManager().fire(
-                                                new PixelLogicLevelSwitcherChangedEvent(
-                                                        PixelLogicUILevelSwitcher.this, fillPixel
-                                                ));
                                     }
                                 }
                     )));
@@ -128,6 +124,7 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
         }
         this.swappingAnimationActivated = true;
         this.fillPixel = !this.fillPixel;
+        getEventManager().fire(new PixelLogicLevelSwitcherChangedEvent(PixelLogicUILevelSwitcher.this, fillPixel));
     }
 
     private static class Marker extends Actor {

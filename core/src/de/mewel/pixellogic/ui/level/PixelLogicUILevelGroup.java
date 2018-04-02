@@ -2,10 +2,10 @@ package de.mewel.pixellogic.ui.level;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeAdapter;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeListener;
-import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 
 public abstract class PixelLogicUILevelGroup extends PixelLogicUIGroup implements PixelLogicLevelStatusChangeListener {
 

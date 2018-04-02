@@ -1,7 +1,5 @@
 package de.mewel.pixellogic.event;
 
-import com.badlogic.gdx.Gdx;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;

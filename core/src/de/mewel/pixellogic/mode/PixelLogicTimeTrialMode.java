@@ -1,7 +1,5 @@
 package de.mewel.pixellogic.mode;
 
-import com.badlogic.gdx.Gdx;
-
 import java.util.Random;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
@@ -10,11 +8,13 @@ import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
 import de.mewel.pixellogic.event.PixelLogicTimerEvent;
+import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIScreenProperties;
 import de.mewel.pixellogic.ui.screen.event.PixelLogicScreenChangeEvent;
+import de.mewel.pixellogic.util.PixelLogicStopWatch;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicTimeTrialMode implements PixelLogicLevelMode, PixelLogicListener {
@@ -25,10 +25,11 @@ public class PixelLogicTimeTrialMode implements PixelLogicLevelMode, PixelLogicL
 
     private int round;
 
-    private long totalTime, startTime;
+    private PixelLogicStopWatch stopWatch;
 
     public PixelLogicTimeTrialMode(PixelLogicTimeTrialModeOptions options) {
         this.options = options;
+        this.stopWatch = new PixelLogicStopWatch();
     }
 
     @Override
@@ -45,7 +46,6 @@ public class PixelLogicTimeTrialMode implements PixelLogicLevelMode, PixelLogicL
     @Override
     public void run() {
         this.round = -1;
-        this.totalTime = 0;
         runNext();
     }
 
@@ -71,12 +71,13 @@ public class PixelLogicTimeTrialMode implements PixelLogicLevelMode, PixelLogicL
     }
 
     private void onFinished() {
+        this.stopWatch.stop();
         PixelLogicUIScreenProperties data = new PixelLogicUIScreenProperties();
         data.put("screenId", "timeTrialFinished");
         String mode = this.options.id;
         data.put("mode", mode);
-        data.put("time", this.totalTime);
-        int rank = PixelLogicTimeTrialHighscoreStore.add(mode, this.totalTime);
+        data.put("time", this.stopWatch.elapsed());
+        int rank = PixelLogicTimeTrialHighscoreStore.add(mode, this.stopWatch.elapsed());
         data.put("rank", rank);
         this.eventManager.fire(new PixelLogicScreenChangeEvent(this, data));
     }
@@ -111,18 +112,29 @@ public class PixelLogicTimeTrialMode implements PixelLogicLevelMode, PixelLogicL
                 runNext();
             }
             if (PixelLogicLevelStatus.playable.equals(changeEvent.getStatus())) {
-                this.startTime = System.currentTimeMillis();
-                this.eventManager.fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.start, this.totalTime));
+                long elapsed = this.stopWatch.startOrResume();
+                this.eventManager.fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.start, elapsed));
             }
             if (PixelLogicLevelStatus.finished.equals(changeEvent.getStatus())) {
-                this.totalTime += System.currentTimeMillis() - this.startTime;
-                this.eventManager.fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.stop, this.totalTime));
+                long elapsed = this.stopWatch.pause();
+                this.eventManager.fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.stop, elapsed));
             }
         }
         if (event instanceof PixelLogicScreenChangeEvent) {
             PixelLogicScreenChangeEvent screenChangeEvent = (PixelLogicScreenChangeEvent) event;
             if (!screenChangeEvent.getScreenId().equals("level")) {
                 this.dispose();
+            }
+        }
+        if (event instanceof PixelLogicUserEvent) {
+            PixelLogicUserEvent userEvent = (PixelLogicUserEvent) event;
+            if (PixelLogicUserEvent.Type.LEVEL_MENU_CLICKED.equals(userEvent.getType())) {
+                long elapsed = this.stopWatch.pause();
+                this.eventManager.fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.pause, elapsed));
+            }
+            if (PixelLogicUserEvent.Type.LEVEL_MENU_CLOSED.equals(userEvent.getType())) {
+                long elapsed = this.stopWatch.resume();
+                this.eventManager.fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.resume, elapsed));
             }
         }
     }

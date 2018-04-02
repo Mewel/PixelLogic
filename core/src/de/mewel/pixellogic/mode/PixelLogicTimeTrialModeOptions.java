@@ -35,9 +35,23 @@ public class PixelLogicTimeTrialModeOptions {
             this.levelSize = new int[]{6, 7, 8};
             this.levelSizeOffset = new int[]{0, 1, 2};
             this.levelMinDifficulty = new int[]{6, 7, 7};
+            this.levelMaxDifficulty = new int[]{8, 9, 9};
+        }
+
+    }
+
+    public static final class PixelLogicTimeTrialInsaneOptions extends PixelLogicTimeTrialModeOptions {
+
+        public PixelLogicTimeTrialInsaneOptions() {
+            this.id = "time_trial_insane";
+            this.name = "INSANE MODE";
+            this.levelSize = new int[]{9, 10};
+            this.levelSizeOffset = new int[]{2, 2};
+            this.levelMinDifficulty = new int[]{8, 9};
             this.levelMaxDifficulty = new int[]{-1, -1, -1};
         }
 
     }
+
 
 }

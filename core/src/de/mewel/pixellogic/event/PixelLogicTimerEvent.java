@@ -3,7 +3,7 @@ package de.mewel.pixellogic.event;
 public class PixelLogicTimerEvent extends PixelLogicEvent {
 
     public enum Status {
-        start, stop, reset
+        start, stop, pause, resume, reset
     }
 
     private Status status;

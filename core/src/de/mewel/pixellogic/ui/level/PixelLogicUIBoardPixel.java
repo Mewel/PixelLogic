@@ -7,9 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
-import de.mewel.pixellogic.ui.PixelLogicUIUtil;
-import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.model.PixelLogicLevelStatus;
+import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.PIXEL_BLOCKED_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.PIXEL_EMPTY_COLOR;

@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.util;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
 import java.util.ArrayList;
@@ -8,7 +7,6 @@ import java.util.List;
 import java.util.Random;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 
 public class PixelLogicUtil {
 

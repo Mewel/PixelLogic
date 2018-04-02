@@ -1,7 +1,6 @@
 package de.mewel.pixellogic.model;
 
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import java.util.List;
 

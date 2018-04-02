@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
@@ -46,11 +45,15 @@ public abstract class PixelLogicUIModal extends PixelLogicUIGroup {
             public void run() {
                 PixelLogicUIModal modal = PixelLogicUIModal.this;
                 modal.parent.removeActor(modal);
+                afterClose();
             }
         })));
     }
 
     protected abstract void buildContent(Table content);
+
+    protected void afterClose() {
+    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
@@ -71,7 +74,7 @@ public abstract class PixelLogicUIModal extends PixelLogicUIGroup {
         this.fadeInDuration = fadeInDuration;
     }
 
-    public Group getContent() {
+    public Table getContent() {
         return content;
     }
 

@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.ui.component;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -33,6 +34,7 @@ public class PixelLogicUIColoredSurface extends Actor {
 
     @Override
     public void clear() {
+        Gdx.app.log("PixelLogicUIColoredSurface", "dispose");
         texture.dispose();
         super.clear();
     }
