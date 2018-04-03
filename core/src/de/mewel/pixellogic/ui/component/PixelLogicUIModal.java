@@ -25,7 +25,7 @@ public abstract class PixelLogicUIModal extends PixelLogicUIGroup {
     public PixelLogicUIModal(PixelLogicAssets assets, PixelLogicEventManager eventManager, Group parent) {
         super(assets, eventManager);
         this.parent = parent;
-        this.backdrop = new PixelLogicUIColoredSurface(new Color(0f, 0f, 0f, .8f));
+        this.backdrop = new PixelLogicUIColoredSurface(assets, eventManager, new Color(0f, 0f, 0f, .6f));
         this.addActor(backdrop);
         this.content = new Table();
         this.addActor(content);

@@ -21,7 +21,7 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
     public PixelLogicUIButton(PixelLogicAssets assets, PixelLogicEventManager eventManager, String text) {
         super(assets, eventManager);
         this.text = text;
-        this.background = new PixelLogicUIColoredSurface(PixelLogicUIConstants.LINE_COMPLETE_COLOR);
+        this.background = new PixelLogicUIColoredSurface(assets, eventManager, PixelLogicUIConstants.LINE_COMPLETE_COLOR);
         this.addActor(this.background);
         this.updateLabel();
     }

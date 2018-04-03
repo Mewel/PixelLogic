@@ -8,24 +8,17 @@ import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
-import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
 
-public class PixelLogicRandomLevelMode implements PixelLogicLevelMode, PixelLogicListener {
+public class PixelLogicRandomLevelMode extends PixelLogicLevelMode {
 
     private PixelLogicLevelCollection collection;
 
     private List<Integer> played;
-
-    private PixelLogicLevel level;
-
-    private PixelLogicAssets assets;
-
-    private PixelLogicEventManager eventManager;
 
     public PixelLogicRandomLevelMode(PixelLogicLevelCollection collection) {
         this.collection = collection;
@@ -33,15 +26,8 @@ public class PixelLogicRandomLevelMode implements PixelLogicLevelMode, PixelLogi
 
     @Override
     public void setup(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        this.assets = assets;
-        this.eventManager = eventManager;
+        super.setup(assets, eventManager);
         this.played = new ArrayList<Integer>();
-        this.eventManager.listen(this);
-    }
-
-    @Override
-    public void dispose() {
-        this.eventManager.remove(this);
     }
 
     @Override
@@ -55,8 +41,7 @@ public class PixelLogicRandomLevelMode implements PixelLogicLevelMode, PixelLogi
             // TODO handle no more level's
             return;
         }
-        this.level = level;
-        this.eventManager.fire(new PixelLogicNextLevelEvent(this, level));
+        runLevel(level);
     }
 
     public PixelLogicLevel next() {

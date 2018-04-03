@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +39,11 @@ public class PixelLogicAssets {
 
     private AssetManager manager;
 
+    private ShapeRenderer shapeRenderer;
+
     public PixelLogicAssets() {
         manager = new AssetManager();
+        shapeRenderer = new ShapeRenderer();
     }
 
     public void load() {
@@ -140,6 +144,10 @@ public class PixelLogicAssets {
         return manager;
     }
 
+    public ShapeRenderer getShapeRenderer() {
+        return shapeRenderer;
+    }
+
     private List<FileHandle> getLevelHandles() {
         List<FileHandle> handles = new ArrayList<FileHandle>();
         FileHandle levelFolder = Gdx.files.internal(LEVEL_DIRECTORY);
@@ -157,5 +165,7 @@ public class PixelLogicAssets {
 
     public void dispose() {
         this.manager.dispose();
+        this.shapeRenderer.dispose();
     }
+
 }

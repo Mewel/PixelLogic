@@ -47,11 +47,10 @@ public class PixelLogicTimeTrialModeOptions {
             this.name = "INSANE MODE";
             this.levelSize = new int[]{9, 10};
             this.levelSizeOffset = new int[]{2, 2};
-            this.levelMinDifficulty = new int[]{8, 9};
+            this.levelMinDifficulty = new int[]{13, 9};
             this.levelMaxDifficulty = new int[]{-1, -1, -1};
         }
 
     }
-
 
 }

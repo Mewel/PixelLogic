@@ -10,14 +10,13 @@ import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
-import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
 
-public class PixelLogicCampaignMode implements PixelLogicLevelMode, PixelLogicListener {
+public class PixelLogicCampaignMode extends PixelLogicLevelMode {
 
     private List<PixelLogicLevel> levels;
 
@@ -25,22 +24,11 @@ public class PixelLogicCampaignMode implements PixelLogicLevelMode, PixelLogicLi
 
     private Preferences preferences;
 
-    private PixelLogicAssets assets;
-
-    private PixelLogicEventManager eventManager;
-
     @Override
     public void setup(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        this.assets = assets;
-        this.eventManager = eventManager;
+        super.setup(assets, eventManager);
         this.loadLevels();
-        this.eventManager.listen(this);
         this.preferences = Gdx.app.getPreferences("campaign_preferences");
-    }
-
-    @Override
-    public void dispose() {
-        this.eventManager.remove(this);
     }
 
     public void run() {
@@ -70,11 +58,6 @@ public class PixelLogicCampaignMode implements PixelLogicLevelMode, PixelLogicLi
         this.preferences.remove("pixels");
         this.preferences.flush();
         runLevel(level);
-    }
-
-    private void runLevel(PixelLogicLevel level) {
-        this.level = level;
-        this.eventManager.fire(new PixelLogicNextLevelEvent(this, level));
     }
 
     private PixelLogicLevel findLevel(String name) {
@@ -121,16 +104,16 @@ public class PixelLogicCampaignMode implements PixelLogicLevelMode, PixelLogicLi
         levels = new ArrayList<PixelLogicLevel>();
 
         // load tutorial level's
-        levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("3x3")));
-        levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("4x4")));
-        levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("5x5")));
-        levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("6x6")));
-        levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("7x7")));
-        levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("8x8")));
-        levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("9x9")));
-        levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("10x10")));
-        // levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("11x11")));
-        levels.addAll(PixelLogicLevelLoader.load(assets.getLevelCollection("12x12")));
+        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("3x3")));
+        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("4x4")));
+        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("5x5")));
+        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("6x6")));
+        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("7x7")));
+        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("8x8")));
+        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("9x9")));
+        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("10x10")));
+        // levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("11x11")));
+        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("12x12")));
     }
 
 }

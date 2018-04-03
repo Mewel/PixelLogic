@@ -13,8 +13,10 @@ public class PixelLogicUIActor extends Actor implements PixelLogicUIElement {
 
     public PixelLogicUIActor(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         this.assets = assets;
+        this.eventManager = eventManager;
     }
 
+    @Override
     public PixelLogicAssets getAssets() {
         return assets;
     }
@@ -23,4 +25,5 @@ public class PixelLogicUIActor extends Actor implements PixelLogicUIElement {
     public PixelLogicEventManager getEventManager() {
         return eventManager;
     }
+
 }
