@@ -28,10 +28,10 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         super(assets, eventManager, screen.getStage().getRoot());
         this.screen = screen;
         this.backButtonScreenId = null;
+        buildContent();
     }
 
-    @Override
-    protected void buildContent(Table content) {
+    protected void buildContent() {
 
         // solve level
         this.solveLevelButton = new PixelLogicUIButton(getAssets(), getEventManager(), "solve level");

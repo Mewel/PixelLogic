@@ -1,11 +1,16 @@
 package de.mewel.pixellogic.mode;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.async.AsyncTask;
+
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
+import de.mewel.pixellogic.event.PixelLogicLoadNextLevelEvent;
 import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
 import de.mewel.pixellogic.event.PixelLogicTimerEvent;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
@@ -21,7 +26,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
 
     private PixelLogicTimeTrialModeOptions options;
 
-    private int round;
+    private AtomicInteger round;
 
     private PixelLogicStopWatch stopWatch;
 
@@ -37,29 +42,46 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
 
     @Override
     public void run() {
-        this.round = -1;
+        this.round = new AtomicInteger(-1);
+        final PixelLogicUIScreenProperties data = new PixelLogicUIScreenProperties();
+        data.put("screenId", "level");
+        data.put("options", options);
+        data.put("menu_back_id", "timeTrial");
+        getEventManager().fire(new PixelLogicScreenChangeEvent(this, data));
         runNext();
     }
 
     private void runNext() {
-        if (++this.round >= options.levelSize.length) {
+        final int rountNumber = round.incrementAndGet();
+        if (rountNumber >= options.levelSize.length) {
             onFinished();
             return;
         }
-        Random random = new Random();
-        int offset = random.nextInt(options.levelSizeOffset[this.round] + 1);
-        boolean side = random.nextBoolean();
+        getEventManager().fire(new PixelLogicLoadNextLevelEvent(this));
+        new Thread() {
+            @Override
+            public void run() {
+                Random random = new Random();
+                int offset = random.nextInt(options.levelSizeOffset[rountNumber] + 1);
+                boolean side = random.nextBoolean();
 
-        int rows = options.levelSize[this.round];
-        int cols = options.levelSize[this.round];
-        int minDifficulty = options.levelMinDifficulty[this.round];
-        int maxDifficulty = options.levelMaxDifficulty[this.round];
-        rows += side ? offset : -offset;
-        cols += side ? -offset : offset;
+                int rows = options.levelSize[rountNumber];
+                int cols = options.levelSize[rountNumber];
+                int minDifficulty = options.levelMinDifficulty[rountNumber];
+                int maxDifficulty = options.levelMaxDifficulty[rountNumber];
+                rows += side ? offset : -offset;
+                cols += side ? -offset : offset;
 
-        Boolean[][] randomLevelData = PixelLogicUtil.createRandomLevel(rows, cols, minDifficulty, maxDifficulty);
-        this.level = createLevel(randomLevelData);
-        // runLevel(randomLevel);
+                Boolean[][] randomLevelData = PixelLogicUtil.createRandomLevel(rows, cols, minDifficulty, maxDifficulty);
+                final PixelLogicLevel level = createLevel(randomLevelData);
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        runLevel(level);
+                    }
+                });
+            }
+        }.start();
     }
 
     private void onFinished() {
@@ -76,7 +98,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
 
     private PixelLogicLevel createLevel(Boolean[][] levelData) {
         Integer[][] imageData = getImageData(levelData);
-        return new PixelLogicLevel("#" + (this.round + 1), levelData, imageData);
+        return new PixelLogicLevel("#" + (this.round.get() + 1), levelData, imageData);
     }
 
     private Integer[][] getImageData(Boolean[][] levelData) {

@@ -17,13 +17,14 @@ public class PixelLogicUILoadingModal extends PixelLogicUIModal {
     public PixelLogicUILoadingModal(String message, PixelLogicAssets assets, PixelLogicEventManager eventManager, Stage stage) {
         super(assets, eventManager, stage.getRoot());
         this.message = message;
+        buildContent();
     }
 
-    @Override
-    protected void buildContent(Table content) {
+    protected void buildContent() {
         BitmapFont gameFont = getAssets().getGameFont(PixelLogicUIUtil.getTextHeight());
         Label.LabelStyle style = new Label.LabelStyle(gameFont, Color.WHITE);
-        content.add(new Label(message, style));
+        Label label = new Label(this.message, style);
+        getContent().add(label);
     }
 
 }

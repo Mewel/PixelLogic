@@ -30,7 +30,6 @@ public abstract class PixelLogicUIModal extends PixelLogicUIGroup {
         this.content = new Table();
         this.addActor(content);
         this.fadeInDuration = .2f;
-        buildContent(this.content);
     }
 
     public void show() {
@@ -49,8 +48,6 @@ public abstract class PixelLogicUIModal extends PixelLogicUIGroup {
             }
         })));
     }
-
-    protected abstract void buildContent(Table content);
 
     protected void afterClose() {
     }

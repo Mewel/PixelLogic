@@ -14,11 +14,13 @@ import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
+import de.mewel.pixellogic.event.PixelLogicLoadNextLevelEvent;
 import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
+import de.mewel.pixellogic.ui.component.PixelLogicUILoadingModal;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelMenu;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelToolbar;
@@ -40,6 +42,8 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
 
     private ScreenListener screenListener;
 
+    private PixelLogicUILoadingModal loadingModal;
+
     private FPSLogger fpsLogger = new FPSLogger();
 
     public PixelLogicUILevelScreen(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
@@ -54,8 +58,9 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
         this.toolbar = new PixelLogicUILevelToolbar(getAssets(), getEventManager());
         getStage().addActor(this.toolbar);
 
-        // MENU
+        // MODAL's
         this.menu = new PixelLogicUILevelMenu(getAssets(), getEventManager(), this);
+        this.loadingModal = new PixelLogicUILoadingModal("loading next level...", getAssets(), getEventManager(), getStage());
 
         // STAGE
         this.screenListener = new ScreenListener(this);
@@ -65,6 +70,7 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
 
     @Override
     public void activate(PixelLogicUIScreenProperties properties) {
+        Gdx.app.log("lvl screen", "activate");
         super.activate(properties);
         this.levelStatus = null;
         this.updateBackgroundImage();
@@ -213,8 +219,9 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
             this.levelUI.setPosition((int) x, (int) y);
         }
 
-        // menu
+        // modal's
         this.menu.setBounds(0, 0, screenWidth, screenHeight);
+        this.loadingModal.setBounds(0, 0, screenWidth, screenHeight);
     }
 
     private void updateBackgroundImage() {
@@ -253,7 +260,12 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
                     screen.menu.show();
                 }
             }
+            if(event instanceof PixelLogicLoadNextLevelEvent) {
+                Gdx.app.log("screen", "next level");
+                screen.loadingModal.show();
+            }
             if (event instanceof PixelLogicNextLevelEvent) {
+                screen.loadingModal.close();
                 PixelLogicNextLevelEvent nextLevelEvent = (PixelLogicNextLevelEvent) event;
                 PixelLogicLevel nextLevel = nextLevelEvent.getNextLevel();
                 screen.loadLevel(nextLevel);
