@@ -56,7 +56,6 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
         // LEVEL
         this.levelUI = null;
         this.toolbar = new PixelLogicUILevelToolbar(getAssets(), getEventManager());
-        getStage().addActor(this.toolbar);
 
         // MODAL's
         this.menu = new PixelLogicUILevelMenu(getAssets(), getEventManager(), this);
@@ -96,6 +95,12 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
     }
 
     public void loadLevel(PixelLogicLevel level) {
+        // toolbar
+        getStage().addActor(this.toolbar);
+        this.toolbar.getColor().a = .0f;
+        this.toolbar.addAction(Actions.fadeIn(.4f));
+
+        // level
         this.levelUI = new PixelLogicUILevel(getAssets(), getEventManager());
         this.levelUI.getColor().a = .0f;
         this.levelUI.load(level);
@@ -117,7 +122,21 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
 
     public void destroyLevel() {
         changeLevelStatus(PixelLogicLevelStatus.beforeDestroyed);
-        Action fadeOutAction = Actions.sequence(Actions.fadeOut(.4f), Actions.run(new Runnable() {
+
+        // toolbar
+        Action fadeOutToolbarAction = Actions.sequence(Actions.fadeOut(.4f), Actions.run(new Runnable() {
+            @Override
+            public void run() {
+                if(toolbar == null) {
+                    return;
+                }
+                toolbar.remove();
+            }
+        }));
+        this.toolbar.addAction(fadeOutToolbarAction);
+
+        // level
+        Action fadeOutLevelAction = Actions.sequence(Actions.fadeOut(.4f), Actions.run(new Runnable() {
             @Override
             public void run() {
                 if (levelUI != null) {
@@ -127,7 +146,7 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
                 }
             }
         }));
-        this.levelUI.addAction(fadeOutAction);
+        this.levelUI.addAction(fadeOutLevelAction);
     }
 
     @Override
