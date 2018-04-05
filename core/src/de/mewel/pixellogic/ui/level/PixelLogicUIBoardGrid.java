@@ -63,24 +63,22 @@ public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
         renderer.setProjectionMatrix(batch.getProjectionMatrix());
         renderer.setTransformMatrix(batch.getTransformMatrix());
         renderer.setColor(new Color(color.r, color.g, color.b, color.a * parentAlpha));
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
 
         Integer gridY = GRID.get(level.getRows());
         if (gridY != null) {
             for (int y = gridY; y < level.getRows(); y += gridY) {
-                renderer.begin(ShapeRenderer.ShapeType.Filled);
                 renderer.box(getX(), getY() + (combined * y) - spaceSize, 0, xWidth, spaceSize, 0f);
-                renderer.end();
             }
         }
         Integer gridX = GRID.get(level.getColumns());
         if (gridX != null) {
             for (int x = gridX; x < level.getColumns(); x += gridX) {
-                renderer.begin(ShapeRenderer.ShapeType.Filled);
                 renderer.box(getX() + (combined * x) - spaceSize, getY(), 0, spaceSize, yWidth, 0f);
-                renderer.end();
             }
         }
 
+        renderer.end();
         Gdx.gl.glDisable(GL30.GL_BLEND);
         batch.begin();
     }
