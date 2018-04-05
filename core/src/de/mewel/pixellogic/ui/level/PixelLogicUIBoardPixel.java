@@ -7,20 +7,21 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
+import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
+import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.PIXEL_BLOCKED_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.PIXEL_EMPTY_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.PIXEL_FILLED_COLOR;
 
-class PixelLogicUIBoardPixel extends Actor {
+class PixelLogicUIBoardPixel extends PixelLogicUIColoredSurface {
 
     private PixelLogicLevel level;
     private int row, col;
-
-    private Texture texture;
 
     private PixelLogicLevelStatus levelStatus;
 
@@ -28,13 +29,13 @@ class PixelLogicUIBoardPixel extends Actor {
 
     private boolean solvedAnimationStarted;
 
-    public PixelLogicUIBoardPixel(PixelLogicLevel level, int row, int col) {
+    public PixelLogicUIBoardPixel(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicLevel level, int row, int col) {
+        super(assets, eventManager);
         this.level = level;
         this.row = row;
         this.col = col;
         this.solvedAnimationStarted = this.solved = false;
         this.levelStatus = null;
-        this.texture = PixelLogicUIUtil.getWhiteTexture();
     }
 
     public void updateLevelStatus(PixelLogicLevelStatus status) {
@@ -42,15 +43,6 @@ class PixelLogicUIBoardPixel extends Actor {
         if(PixelLogicLevelStatus.solved.equals(this.levelStatus)) {
             this.solved = true;
         }
-    }
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        Color color = getColor();
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-        batch.draw(texture, getX(), getY(), getWidth() * getScaleX(),
-                getHeight() * getScaleY());
-        batch.setColor(color);
     }
 
     @Override
@@ -88,12 +80,6 @@ class PixelLogicUIBoardPixel extends Actor {
             }
             solvedAnimationStarted = true;
         }
-    }
-
-    @Override
-    public void clear() {
-        super.clear();
-        this.texture.dispose();
     }
 
 }

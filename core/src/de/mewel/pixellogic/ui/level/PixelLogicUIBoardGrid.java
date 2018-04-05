@@ -1,24 +1,28 @@
 package de.mewel.pixellogic.ui.level;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.ui.PixelLogicUIActor;
 import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
-public class PixelLogicUIBoardGrid extends Actor {
+public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
 
     private static Map<Integer, Integer> GRID;
 
     private PixelLogicLevel level;
-
-    private Texture gridTexture;
 
     private PixelLogicUILevelResolution resolution;
 
@@ -37,10 +41,10 @@ public class PixelLogicUIBoardGrid extends Actor {
         GRID.put(16, 4);
     }
 
-    public PixelLogicUIBoardGrid(PixelLogicLevel level) {
+    public PixelLogicUIBoardGrid(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicLevel level) {
+        super(assets, eventManager);
         this.level = level;
         this.setColor(PixelLogicUIConstants.GRID_COLOR);
-        this.gridTexture = PixelLogicUIUtil.getWhiteTexture();
         this.update();
     }
 
@@ -52,32 +56,37 @@ public class PixelLogicUIBoardGrid extends Actor {
         int xWidth = combined * level.getColumns() - spaceSize;
         int yWidth = combined * level.getRows() - spaceSize;
 
+        batch.end();
+        Gdx.gl.glEnable(GL30.GL_BLEND);
         Color color = getColor();
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+        ShapeRenderer renderer = this.getAssets().getShapeRenderer();
+        renderer.setProjectionMatrix(batch.getProjectionMatrix());
+        renderer.setTransformMatrix(batch.getTransformMatrix());
+        renderer.setColor(new Color(color.r, color.g, color.b, color.a * parentAlpha));
 
         Integer gridY = GRID.get(level.getRows());
         if (gridY != null) {
             for (int y = gridY; y < level.getRows(); y += gridY) {
-                batch.draw(gridTexture, getX(), getY() + (combined * y) - spaceSize, xWidth, spaceSize);
+                renderer.begin(ShapeRenderer.ShapeType.Filled);
+                renderer.box(getX(), getY() + (combined * y) - spaceSize, 0, xWidth, spaceSize, 0f);
+                renderer.end();
             }
         }
         Integer gridX = GRID.get(level.getColumns());
         if (gridX != null) {
             for (int x = gridX; x < level.getColumns(); x += gridX) {
-                batch.draw(gridTexture, getX() + (combined * x) - spaceSize, getY(), spaceSize, yWidth);
+                renderer.begin(ShapeRenderer.ShapeType.Filled);
+                renderer.box(getX() + (combined * x) - spaceSize, getY(), 0, spaceSize, yWidth, 0f);
+                renderer.end();
             }
         }
-        batch.setColor(color);
+
+        Gdx.gl.glDisable(GL30.GL_BLEND);
+        batch.begin();
     }
 
     public void update() {
         this.resolution = PixelLogicUIUtil.get(level);
-    }
-
-    @Override
-    public void clear() {
-        super.clear();
-        this.gridTexture.dispose();
     }
 
 }

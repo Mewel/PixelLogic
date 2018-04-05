@@ -14,9 +14,8 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 public class PixelLogicUIColoredSurface extends PixelLogicUIActor {
 
-    public PixelLogicUIColoredSurface(PixelLogicAssets assets, PixelLogicEventManager eventManager, Color surfaceColor) {
+    public PixelLogicUIColoredSurface(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         super(assets, eventManager);
-        this.setColor(surfaceColor);
     }
 
     @Override
