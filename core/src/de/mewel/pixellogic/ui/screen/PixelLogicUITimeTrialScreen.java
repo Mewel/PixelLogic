@@ -41,6 +41,7 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
         this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialNormalOptions(), this));
         this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions(), this));
         this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialInsaneOptions(), this));
+        this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialEpicOptions(), this));
 
         /*for(TimeTrialModeUI mode : this.modes) {
             PixelLogicTimeTrialHighscoreStore.clear(mode.options.id);

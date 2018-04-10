@@ -176,7 +176,7 @@ public class PixelLogicUtil {
                 }
             }
             valid = isSolvable(level);
-        } while(!valid);
+        } while (!valid);
         return level;
     }
 
@@ -185,15 +185,51 @@ public class PixelLogicUtil {
     }
 
     public static Boolean[][] createRandomLevel(int rows, int cols, int minComplexity, int maxComplexity) {
-        boolean found;
-        Boolean[][] randomLevel;
-        do {
-            randomLevel = createRandomLevel(rows, cols);
-            PixelLogicSolverResult result = PixelLogicComplexityAnalyzer.analyze(randomLevel);
-            int complexity = result.getComplexity();
-            found = complexity >= minComplexity && (maxComplexity == -1 || complexity <= maxComplexity);
-        } while (!found);
+        Boolean[][] randomLevel = createRandomLevel(rows, cols);
+        PixelLogicSolverResult result = PixelLogicComplexityAnalyzer.analyze(randomLevel);
+        int complexity = result.getComplexity();
+        boolean found = complexity >= minComplexity && (maxComplexity == -1 || complexity <= maxComplexity);
+        int variations = rows * cols / 8;
+        while (!found) {
+            Boolean[][] newLevel = alterLevel(randomLevel, variations);
+            result = PixelLogicComplexityAnalyzer.analyze(newLevel);
+            int newComplexity = result.getComplexity();
+            found = newComplexity >= minComplexity && (maxComplexity == -1 || newComplexity <= maxComplexity);
+            if(found || newComplexity == complexity ||
+                    (newComplexity > complexity && newComplexity < minComplexity) ||
+                    (newComplexity < complexity && maxComplexity != -1 && newComplexity > maxComplexity)) {
+                randomLevel = newLevel;
+                complexity = newComplexity;
+            }
+        }
         return randomLevel;
+    }
+
+    private static Boolean[][] alterLevel(Boolean[][] level, int variations) {
+        Random random = new Random();
+        Boolean[][] newLevel = cloneLevel(level);
+        boolean valid;
+        do {
+            for (int i = 0; i < variations; i++) {
+                int row = random.nextInt(newLevel.length);
+                int col = random.nextInt(newLevel[0].length);
+                newLevel[row][col] = random.nextBoolean();
+            }
+            valid = isSolvable(newLevel);
+        } while (!valid);
+        return newLevel;
+    }
+
+    public static Boolean[][] cloneLevel(Boolean[][] level) {
+        int rows = level.length;
+        int cols = level[0].length;
+        Boolean[][] newLevel = new Boolean[rows][cols];
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                newLevel[row][col] = level[row][col];
+            }
+        }
+        return newLevel;
     }
 
     public static Boolean[][] sampleLevel() {

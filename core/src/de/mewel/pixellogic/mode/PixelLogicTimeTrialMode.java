@@ -52,8 +52,8 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     }
 
     private void runNext() {
-        final int rountNumber = round.incrementAndGet();
-        if (rountNumber >= options.levelSize.length) {
+        final int roundNumber = round.incrementAndGet();
+        if (roundNumber >= options.levelSize.length) {
             onFinished();
             return;
         }
@@ -62,13 +62,15 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
             @Override
             public void run() {
                 Random random = new Random();
-                int offset = random.nextInt(options.levelSizeOffset[rountNumber] + 1);
+                int offset = random.nextInt(options.levelSizeOffset[roundNumber] + 1);
                 boolean side = random.nextBoolean();
 
-                int rows = options.levelSize[rountNumber];
-                int cols = options.levelSize[rountNumber];
-                int minDifficulty = options.levelMinDifficulty[rountNumber];
-                int maxDifficulty = options.levelMaxDifficulty[rountNumber];
+                int rows = options.levelSizeXY == null ? options.levelSize[roundNumber] :
+                        options.levelSizeXY[roundNumber * 2 + 1];
+                int cols = options.levelSizeXY == null ? options.levelSize[roundNumber] :
+                        options.levelSizeXY[roundNumber * 2];
+                int minDifficulty = options.levelMinDifficulty[roundNumber];
+                int maxDifficulty = options.levelMaxDifficulty[roundNumber];
                 rows += side ? offset : -offset;
                 cols += side ? -offset : offset;
 

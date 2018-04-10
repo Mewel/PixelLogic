@@ -8,6 +8,8 @@ public class PixelLogicTimeTrialModeOptions {
 
     public int[] levelSize;
 
+    public int[] levelSizeXY;
+
     public int[] levelSizeOffset;
 
     public int[] levelMinDifficulty;
@@ -49,6 +51,20 @@ public class PixelLogicTimeTrialModeOptions {
             this.levelSizeOffset = new int[]{2, 2};
             this.levelMinDifficulty = new int[]{9, 10};
             this.levelMaxDifficulty = new int[]{-1, -1, -1};
+        }
+
+    }
+
+    public static final class PixelLogicTimeTrialEpicOptions extends PixelLogicTimeTrialModeOptions {
+
+        public PixelLogicTimeTrialEpicOptions() {
+            this.id = "time_trial_epic";
+            this.name = "EPIC MODE";
+            this.levelSize = new int[]{0};
+            this.levelSizeXY = new int[]{12, 16};
+            this.levelSizeOffset = new int[]{0};
+            this.levelMinDifficulty = new int[]{6};
+            this.levelMaxDifficulty = new int[]{8};
         }
 
     }
