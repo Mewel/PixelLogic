@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelResolution;
 import de.mewel.pixellogic.util.PixelLogicUtil;
@@ -34,21 +35,28 @@ public class PixelLogicUIUtil {
         return new Texture(linePixmap);
     }
 
-    public static int getInfoSizeFactor(PixelLogicLevel level) {
+    /**
+     * Calculates the maximum numbers of both info sidebars.
+     *
+     * @param level the level
+     * @return [0] = max numbers on the rows; [1] = max numbers on the columns
+     */
+    public static int[] getMaxInfoNumbers(PixelLogicLevel level) {
         List<List<Integer>> rowData = PixelLogicUtil.getRowData(level.getLevelData());
         List<List<Integer>> colData = PixelLogicUtil.getColumnData(level.getLevelData());
-        int maxNumbers = 1;
+        int maxRowNumbers = 1;
+        int maxColNumbers = 1;
         for (List<Integer> row : rowData) {
-            if (row.size() > maxNumbers) {
-                maxNumbers = row.size();
+            if (row.size() > maxRowNumbers) {
+                maxRowNumbers = row.size();
             }
         }
         for (List<Integer> column : colData) {
-            if (column.size() > maxNumbers) {
-                maxNumbers = column.size();
+            if (column.size() > maxColNumbers) {
+                maxColNumbers = column.size();
             }
         }
-        return (int) Math.ceil(maxNumbers / 2d);
+        return new int[] {maxRowNumbers, maxColNumbers};
     }
 
     public static int getBaseHeight() {
@@ -65,37 +73,8 @@ public class PixelLogicUIUtil {
         return (int) ((float) getBaseHeight() / 1.5f);
     }
 
-    public static Vector2 getLevelSize(PixelLogicLevel level) {
-        PixelLogicUILevelResolution resolution = get(level);
-        int infoSize = PixelLogicUIUtil.getInfoSizeFactor(level);
-        float x = (level.getColumns() + infoSize) * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
-        float y = (level.getRows() + infoSize) * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
-        return new Vector2(x, y);
-    }
-
-    public static Vector2 getBoardSize(PixelLogicLevel level) {
-        PixelLogicUILevelResolution resolution = get(level);
-        float x = level.getColumns() * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
-        float y = level.getRows() * resolution.getGamePixelSizeCombined() - resolution.getGameSpaceSize();
-        return new Vector2(x, y);
-    }
-
     public static PixelLogicUILevelResolution get(PixelLogicLevel level) {
-        int size = PixelLogicUIUtil.getInfoSizeFactor(level);
-        int columns = level.getColumns() + size;
-        int rows = level.getRows() + size;
-
-        float levelWidth = Gdx.graphics.getWidth();
-        float levelHeight = getLevelMaxHeight();
-
-        float pixelPerColumn = MathUtils.floor(levelWidth / (float) columns);
-        float pixelPerRow = MathUtils.floor(levelHeight / (float) rows);
-
-        float maxPixel = Math.min(pixelPerColumn, pixelPerRow);
-        float spaceSize = MathUtils.floor(maxPixel / 17);
-        float pixelSize = maxPixel - spaceSize;
-
-        return new PixelLogicUILevelResolution((int) pixelSize, (int) spaceSize);
+        return new PixelLogicUILevelResolution(level);
     }
 
     public static int getToolbarHeight() {

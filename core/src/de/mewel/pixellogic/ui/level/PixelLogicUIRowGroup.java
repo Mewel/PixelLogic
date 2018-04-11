@@ -48,11 +48,10 @@ public class PixelLogicUIRowGroup extends PixelLogicUILevelGroup {
             return;
         }
         PixelLogicUILevelResolution resolution = PixelLogicUIUtil.get(level);
-        int scale = PixelLogicUIUtil.getInfoSizeFactor(level);
         for (int i = 0; i < this.getChildren().size; i++) {
             Actor actor = this.getChildren().get(i);
             float y = resolution.getGamePixelSizeCombined() * i;
-            actor.setBounds(getX(), y, (resolution.getGamePixelSize()) * scale, (resolution.getGamePixelSize()));
+            actor.setBounds(getX(), y, getWidth(), resolution.getGamePixelSize());
         }
     }
 

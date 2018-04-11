@@ -113,10 +113,15 @@ public class PixelLogicAssets {
     }
 
     public BitmapFont getLevelFont(int size) {
+        int fixedSize = getFixedLevelFontSize(size);
+        return manager.get(LEVEL_FONT_PREFIX + fixedSize + ".fnt", BitmapFont.class);
+    }
+
+    public static int getFixedLevelFontSize(int size) {
         int fixedSize = (int) Math.ceil(size / LEVEL_FONT_SIZE) * LEVEL_FONT_SIZE;
         fixedSize = Math.max(fixedSize, FONT_ITERATION_START * LEVEL_FONT_SIZE);
         fixedSize = Math.min(fixedSize, FONT_ITERATION_END * LEVEL_FONT_SIZE);
-        return manager.get(LEVEL_FONT_PREFIX + fixedSize + ".fnt", BitmapFont.class);
+        return fixedSize;
     }
 
     public PixelLogicLevelCollection getLevelCollection(String name) {

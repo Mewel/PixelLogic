@@ -48,11 +48,10 @@ public class PixelLogicUIColumnGroup extends PixelLogicUILevelGroup {
             return;
         }
         PixelLogicUILevelResolution resolution = PixelLogicUIUtil.get(level);
-        int scale = PixelLogicUIUtil.getInfoSizeFactor(level);
         for (int i = 0; i < this.getChildren().size; i++) {
             Actor actor = this.getChildren().get(i);
             float x = resolution.getGamePixelSizeCombined() * i;
-            actor.setBounds(x, getY(), (resolution.getGamePixelSize()), (resolution.getGamePixelSize()) * scale);
+            actor.setBounds(x, getY(), resolution.getGamePixelSize(), getHeight());
         }
     }
 

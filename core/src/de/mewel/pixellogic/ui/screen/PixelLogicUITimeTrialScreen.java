@@ -3,8 +3,6 @@ package de.mewel.pixellogic.ui.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -67,15 +65,22 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
             root.addActor(mode);
         }
         ScrollPane scrollPane = new ScrollPane(root);
+        getStage().addActor(scrollPane);
         scrollPane.setScrollingDisabled(true, false);
         scrollPane.setClamp(true);
         scrollPane.setOverscroll(false, false);
         scrollPane.setFillParent(true);
-        scrollPane.scrollTo(0, 0, 0, 0);
-        scrollPane.updateVisualScroll();
 
-        getStage().addActor(scrollPane);
-        root.layout();
+        Gdx.app.log("scroll max y", ""+scrollPane.getMaxY());
+        Gdx.app.log("scroll y", ""+scrollPane.getScrollY());
+        Gdx.app.log("scroll vis y", ""+scrollPane.getVisualScrollY());
+        scrollPane.layout();
+        scrollPane.setScrollPercentY(100);
+        scrollPane.updateVisualScroll();
+        Gdx.app.log("scroll max y", ""+scrollPane.getMaxY());
+        Gdx.app.log("scroll y", ""+scrollPane.getScrollY());
+        Gdx.app.log("scroll vis y", ""+scrollPane.getVisualScrollY());
+
     }
 
     private Label getDescriptionLabel() {
@@ -166,18 +171,12 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
             getActor().reverse();
             getActor().space(getPadding());
 
-            this.button = new PixelLogicUIButton(screen.getAssets(), screen.getEventManager(), options.name);
-            this.button.addListener(new InputListener() {
+            this.button = new PixelLogicUIButton(screen.getAssets(), screen.getEventManager(), options.name) {
                 @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    return true;
-                }
-
-                @Override
-                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                public void onClick() {
                     startTimeTrial(options);
                 }
-            });
+            };
             this.button.setSize(getButtonWidth(), getButtonHeight());
             getActor().addActor(this.button);
 

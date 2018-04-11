@@ -37,6 +37,8 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         this.levelListener = new LevelListener(this);
         this.level = null;
         this.status = null;
+
+        this.setDebug(true);
     }
 
     public void load(PixelLogicLevel level) {
@@ -54,7 +56,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
     public void resize() {
         updateSpritePosition();
-        Vector2 size = PixelLogicUIUtil.getLevelSize(level);
+        Vector2 size = PixelLogicUIUtil.get(level).getLevelSize();
         this.setSize(size.x, size.y);
     }
 
@@ -94,18 +96,22 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
             return;
         }
         PixelLogicUILevelResolution resolution = PixelLogicUIUtil.get(level);
-        int scaleFactor = PixelLogicUIUtil.getInfoSizeFactor(level);
-        int offset = resolution.getGamePixelSizeCombined() * scaleFactor;
-        Vector2 boardSize = PixelLogicUIUtil.getBoardSize(level);
+        int rowInfoWidth = resolution.getRowInfoWidth();
+        int rowInfoHeight = resolution.getColumnInfoHeight();
+        Vector2 boardSize = resolution.getBoardSize();
+
+        int space = resolution.getGameSpaceSize() * 2;
+        int boardOffsetX = rowInfoWidth + space;
+        int boardOffsetY = rowInfoHeight + space;
         if (this.board != null) {
-            this.board.setPosition(offset, offset);
+            this.board.setPosition(boardOffsetX, boardOffsetY);
             this.board.setSize(boardSize.x, boardSize.y);
         }
         if (this.rowGroup != null) {
-            this.rowGroup.setBounds(0, offset, offset, boardSize.y);
+            this.rowGroup.setBounds(0, boardOffsetY, rowInfoWidth , boardSize.y);
         }
         if (this.columnGroup != null) {
-            this.columnGroup.setBounds(offset, 0, boardSize.x, offset);
+            this.columnGroup.setBounds(boardOffsetX, 0, boardSize.x, rowInfoHeight);
         }
     }
 

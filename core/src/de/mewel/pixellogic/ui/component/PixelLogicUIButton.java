@@ -2,6 +2,8 @@ package de.mewel.pixellogic.ui.component;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
@@ -18,6 +20,8 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
 
     private PixelLogicUIColoredSurface background;
 
+    private ButtonListener listener;
+
     public PixelLogicUIButton(PixelLogicAssets assets, PixelLogicEventManager eventManager, String text) {
         super(assets, eventManager);
         this.text = text;
@@ -25,6 +29,7 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
         this.background.setColor(PixelLogicUIConstants.LINE_COMPLETE_COLOR);
         this.addActor(this.background);
         this.updateLabel();
+        this.addListener(this.listener = new ButtonListener());
     }
 
     @Override
@@ -63,7 +68,37 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
     @Override
     public void clear() {
         this.background.clear();
+        this.removeListener(this.listener);
         super.clear();
+    }
+
+    public void onClick() {
+        // not implemented
+    }
+
+    private class ButtonListener extends InputListener {
+
+        private boolean dragged = false;
+
+        @Override
+        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            this.dragged = false;
+            return true;
+        }
+
+        @Override
+        public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            if (!dragged) {
+                onClick();
+            }
+        }
+
+        @Override
+        public void touchDragged(InputEvent event, float x, float y, int pointer) {
+            super.touchDragged(event, x, y, pointer);
+            this.dragged = true;
+        }
+
     }
 
 }

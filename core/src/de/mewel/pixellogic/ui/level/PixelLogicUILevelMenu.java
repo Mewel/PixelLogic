@@ -34,42 +34,40 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
     protected void buildContent() {
 
         // solve level
-        this.solveLevelButton = new PixelLogicUIButton(getAssets(), getEventManager(), "solve level");
-        this.solveLevelButton.addListener(new MenuCloseListener() {
+        this.solveLevelButton = new PixelLogicUIButton(getAssets(), getEventManager(), "solve level") {
             @Override
-            void afterClose(InputEvent event, float x, float y, int pointer, int button) {
+            public void onClick() {
+                close();
                 PixelLogicUtil.solveLevel(PixelLogicUILevelMenu.this.screen.getLevel());
             }
-        });
+        };
 
         // reset level
-        this.resetLevelButton = new PixelLogicUIButton(getAssets(), getEventManager(), "reset level");
-        this.resetLevelButton.addListener(new MenuCloseListener() {
+        this.resetLevelButton = new PixelLogicUIButton(getAssets(), getEventManager(), "reset level") {
             @Override
-            void afterClose(InputEvent event, float x, float y, int pointer, int button) {
-                PixelLogicUILevelMenu.this.screen.resetLevel();
+            public void onClick() {
+                close();
+                screen.resetLevel();
             }
-        });
+        };
 
         // continue
-        this.continueButton = new PixelLogicUIButton(getAssets(), getEventManager(), "continue");
-        this.continueButton.addListener(new MenuCloseListener());
+        this.continueButton = new PixelLogicUIButton(getAssets(), getEventManager(), "continue") {
+            @Override
+            public void onClick() {
+                close();
+            }
+        };
 
         // back
-        this.backButton = new PixelLogicUIButton(getAssets(), getEventManager(), "back to menu");
-        this.backButton.addListener(new MenuCloseListener() {
+        this.backButton = new PixelLogicUIButton(getAssets(), getEventManager(), "back to menu") {
             @Override
-            public void afterClose(InputEvent event, float x, float y, int pointer, int button) {
-                if (backButtonScreenId == null) {
-                    Gdx.app.log("level menu", "pushing back button without screen id, this should never happen!");
-                    return;
-                }
-                PixelLogicUIScreenProperties data = new PixelLogicUIScreenProperties();
-                data.put("screenId", backButtonScreenId);
-                data.put("backButton", true);
-                getEventManager().fire(new PixelLogicScreenChangeEvent(PixelLogicUILevelMenu.this, data));
+            public void onClick() {
+                close();
+                back();
             }
-        });
+        };
+
     }
 
     public void activate(PixelLogicUIScreenProperties properties) {
@@ -102,6 +100,17 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         return getButtonHeight() * 4;
     }
 
+    private void back() {
+        if (backButtonScreenId == null) {
+            Gdx.app.log("level menu", "pushing back button without screen id, this should never happen!");
+            return;
+        }
+        PixelLogicUIScreenProperties data = new PixelLogicUIScreenProperties();
+        data.put("screenId", backButtonScreenId);
+        data.put("backButton", true);
+        getEventManager().fire(new PixelLogicScreenChangeEvent(PixelLogicUILevelMenu.this, data));
+    }
+
     @Override
     protected void afterClose() {
         getEventManager().fire(new PixelLogicUserEvent(this, PixelLogicUserEvent.Type.LEVEL_MENU_CLOSED));
@@ -121,24 +130,6 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         this.resetLevelButton.setSize(buttonWidth, buttonHeight);
         this.continueButton.setSize(buttonWidth, buttonHeight);
         this.backButton.setSize(buttonWidth, buttonHeight);
-    }
-
-    private class MenuCloseListener extends InputListener {
-
-        @Override
-        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            return true;
-        }
-
-        @Override
-        public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-            PixelLogicUILevelMenu.this.close();
-            afterClose(event, x, y, pointer, button);
-        }
-
-        void afterClose(InputEvent event, float x, float y, int pointer, int button) {
-        }
-
     }
 
 }
