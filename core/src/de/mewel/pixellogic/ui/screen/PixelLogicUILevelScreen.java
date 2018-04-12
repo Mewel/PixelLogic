@@ -169,7 +169,7 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
             getStage().addAction(delay);
         }
 
-        fpsLogger.log();
+        // fpsLogger.log();
     }
 
     private void onSolved() {
