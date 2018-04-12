@@ -24,24 +24,25 @@ public class PixelLogicUILevelResolution {
     }
 
     private void build() {
-        int[] numbers = PixelLogicUIUtil.getMaxInfoNumbers(level);
         int rows = level.getRows();
         int columns = level.getColumns();
-
         float maxWidth = Gdx.graphics.getWidth();
         float maxHeight = PixelLogicUIUtil.getLevelMaxHeight();
 
-        float rowInfoWidth = 0;
-        float colInfoHeight = 0;
+        float basePixel = Math.min(maxWidth, maxHeight) / Math.max(rows, columns);
+        int baseFontSize = PixelLogicAssets.getFixedLevelFontSize((int) (basePixel / 4f));
 
-        float pixelPerColumn = MathUtils.floor(maxWidth - rowInfoWidth / (float) columns);
-        float pixelPerRow = MathUtils.floor(maxHeight - colInfoHeight / (float) rows);
+        int[] numbers = PixelLogicUIUtil.getMaxInfoNumbers(level);
+        int maxRowWidth = Math.max((int)(baseFontSize * numbers[0] * 1.3f), (int)basePixel);
+        int maxColHeight = Math.max((int)(baseFontSize * numbers[1] * 1.4f), (int)basePixel);
 
+        float pixelPerColumn = MathUtils.floor((maxWidth - maxRowWidth) / (float) columns);
+        float pixelPerRow = MathUtils.floor((maxHeight - maxColHeight) / (float) rows);
         float maxPixel = Math.min(pixelPerColumn, pixelPerRow);
 
         this.gameSpaceSize = MathUtils.floor(maxPixel / 17);
         this.gamePixelSize = (int) maxPixel - this.gameSpaceSize;
-        this.fontSize = PixelLogicAssets.getFixedLevelFontSize(this.gamePixelSize / 3);
+        this.fontSize = baseFontSize;
     }
 
     public int getGamePixelSize() {

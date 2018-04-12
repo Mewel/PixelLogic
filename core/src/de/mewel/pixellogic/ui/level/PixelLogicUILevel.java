@@ -37,8 +37,6 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         this.levelListener = new LevelListener(this);
         this.level = null;
         this.status = null;
-
-        this.setDebug(true);
     }
 
     public void load(PixelLogicLevel level) {
