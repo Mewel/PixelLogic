@@ -74,7 +74,9 @@ public class PixelLogicUIUtil {
     }
 
     public static PixelLogicUILevelResolution get(PixelLogicLevel level) {
-        return new PixelLogicUILevelResolution(level);
+        int maxWidth = Gdx.graphics.getWidth();
+        int maxHeight = PixelLogicUIUtil.getLevelMaxHeight();
+        return new PixelLogicUILevelResolution(level, maxWidth, maxHeight);
     }
 
     public static int getToolbarHeight() {

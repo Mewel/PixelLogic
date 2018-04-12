@@ -51,7 +51,7 @@ public class PixelLogicUIColumnGroup extends PixelLogicUILevelGroup {
         for (int i = 0; i < this.getChildren().size; i++) {
             Actor actor = this.getChildren().get(i);
             float x = resolution.getGamePixelSizeCombined() * i;
-            actor.setBounds(x, getY(), resolution.getGamePixelSize(), getHeight());
+            actor.setBounds(x, 0, resolution.getGamePixelSize(), getHeight());
         }
     }
 

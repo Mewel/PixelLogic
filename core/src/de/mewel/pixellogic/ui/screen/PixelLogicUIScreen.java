@@ -80,7 +80,7 @@ public abstract class PixelLogicUIScreen implements PixelLogicUIElement, Screen 
 
     protected void updateViewport(int width, int height) {
         OrthographicCamera camera = new OrthographicCamera();
-        camera.setToOrtho(true);
+        camera.setToOrtho(false);
         getStage().setViewport(new ExtendViewport(width, height, camera));
     }
 

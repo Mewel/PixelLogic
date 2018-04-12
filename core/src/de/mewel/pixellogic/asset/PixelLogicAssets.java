@@ -86,7 +86,6 @@ public class PixelLogicAssets {
             FreetypeFontLoader.FreeTypeFontLoaderParameter gameFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
             gameFont.fontFileName = path;
             gameFont.fontParameters.color = Color.WHITE;
-            gameFont.fontParameters.flip = true;
             gameFont.fontParameters.size = i;
             manager.load(assetName, BitmapFont.class, gameFont);
             Gdx.app.log("assets", "font " + assetName + " loaded");
@@ -98,7 +97,6 @@ public class PixelLogicAssets {
             String assetName = prefix + (i * LEVEL_FONT_SIZE) + ".fnt";
             PixelLogicBitmapFontLoader.PixelLogicBitmapFontLoaderParameters params = new PixelLogicBitmapFontLoader.PixelLogicBitmapFontLoaderParameters();
             params.fileName = path;
-            params.flip = true;
             params.scale = i;
             manager.load(assetName, BitmapFont.class, params);
             Gdx.app.log("assets", "font " + assetName + " loaded");

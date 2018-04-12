@@ -100,16 +100,22 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
         int space = resolution.getGameSpaceSize() * 2;
         int boardOffsetX = rowInfoWidth + space;
-        int boardOffsetY = rowInfoHeight + space;
         if (this.board != null) {
-            this.board.setPosition(boardOffsetX, boardOffsetY);
             this.board.setSize(boardSize.x, boardSize.y);
+            if(!this.isSolved()) {
+                this.board.setPosition(boardOffsetX, 0);
+            } else {
+                float x = this.getWidth() / 2f - this.board.getWidth() / 2f;
+                float y = this.getHeight() / 2f - this.board.getHeight() / 2f;
+                this.board.setPosition(x, y);
+            }
         }
         if (this.rowGroup != null) {
-            this.rowGroup.setBounds(0, boardOffsetY, rowInfoWidth , boardSize.y);
+            this.rowGroup.setBounds(0, 0, rowInfoWidth , boardSize.y);
         }
         if (this.columnGroup != null) {
-            this.columnGroup.setBounds(boardOffsetX, 0, boardSize.x, rowInfoHeight);
+            float boardOffsetY = boardSize.y + space;
+            this.columnGroup.setBounds(boardOffsetX, boardOffsetY, boardSize.x, rowInfoHeight);
         }
     }
 

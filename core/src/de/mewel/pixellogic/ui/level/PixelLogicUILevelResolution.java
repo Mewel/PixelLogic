@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.ui.level;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
@@ -18,28 +17,26 @@ public class PixelLogicUILevelResolution {
 
     private int fontSize;
 
-    public PixelLogicUILevelResolution(PixelLogicLevel level) {
+    public PixelLogicUILevelResolution(PixelLogicLevel level, int width, int height) {
         this.level = level;
-        build();
+        build(width, height);
     }
 
-    private void build() {
+    private void build(int width, int height) {
         int rows = level.getRows();
         int columns = level.getColumns();
-        float maxWidth = Gdx.graphics.getWidth();
-        float maxHeight = PixelLogicUIUtil.getLevelMaxHeight();
 
-        int basePixel = (int)(Math.min(maxWidth, maxHeight) / Math.max(rows, columns));
+        int basePixel = Math.min(width, height) / Math.max(rows, columns);
         int basePixelSpace = MathUtils.floor(basePixel / 17f);
         int basePixelCombined = basePixel + basePixelSpace;
         int baseFontSize = PixelLogicAssets.getFixedLevelFontSize((int) (basePixelCombined / 4f));
 
         int[] numbers = PixelLogicUIUtil.getMaxInfoNumbers(level);
-        int maxRowWidth = Math.max((int)(baseFontSize * numbers[0] * 1.3f), (int)basePixelCombined) + basePixelSpace * 2;
-        int maxColHeight = Math.max((int)(baseFontSize * numbers[1] * 1.4f), (int)basePixelCombined) + basePixelSpace * 2;
+        int maxRowWidth = Math.max((int)(baseFontSize * numbers[0] * 1.3f), basePixelCombined) + basePixelSpace * 2;
+        int maxColHeight = Math.max((int)(baseFontSize * numbers[1] * 1.4f), basePixelCombined) + basePixelSpace * 2;
 
-        float pixelPerColumn = MathUtils.floor((maxWidth - maxRowWidth) / (float) columns);
-        float pixelPerRow = MathUtils.floor((maxHeight - maxColHeight) / (float) rows);
+        float pixelPerColumn = MathUtils.floor((width - maxRowWidth) / (float) columns);
+        float pixelPerRow = MathUtils.floor((height - maxColHeight) / (float) rows);
         float maxPixel = Math.min(pixelPerColumn, pixelPerRow);
 
         this.gameSpaceSize = MathUtils.floor(maxPixel / 17);

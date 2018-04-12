@@ -38,8 +38,6 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
         super(assets, eventManager);
         this.penSprite = new Sprite(icons, 0, 0, BASE_SIZE, BASE_SIZE);
         this.xSprite = new Sprite(icons, BASE_SIZE, 0, BASE_SIZE, BASE_SIZE);
-        this.penSprite.flip(false, true);
-        this.xSprite.flip(false, true);
         this.penColor = PixelLogicUIConstants.TOOLBAR_SWITCHER_ACTIVE_COLOR;
         this.xColor = PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
 

@@ -72,7 +72,10 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
 
     public void activate(PixelLogicUIScreenProperties properties) {
         int padding = PixelLogicUIUtil.getBaseHeight() / 2;
-        getContent().add(this.continueButton).padBottom(padding * 2);
+
+        getContent().add(this.solveLevelButton).padBottom(padding);
+        getContent().row();
+        getContent().add(this.resetLevelButton).padBottom(padding);
         getContent().row();
 
         this.backButtonScreenId = properties.getString("menu_back_id");
@@ -80,10 +83,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
             getContent().add(this.backButton).padBottom(padding);
             getContent().row();
         }
-
-        getContent().add(this.resetLevelButton).padBottom(padding);
-        getContent().row();
-        getContent().add(this.solveLevelButton).padBottom(padding);
+        getContent().add(this.continueButton).padTop(padding);
 
         this.updateButtonSize();
     }

@@ -3,6 +3,8 @@ package de.mewel.pixellogic.ui.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -55,7 +57,6 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
         VerticalGroup root = new VerticalGroup();
         root.center();
         root.bottom();
-        root.reverse();
         root.pad(getPadding());
         root.space(getPadding() * 2.5f);
 
@@ -70,21 +71,10 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
         scrollPane.setClamp(true);
         scrollPane.setOverscroll(false, false);
         scrollPane.setFillParent(true);
-
-        Gdx.app.log("scroll max y", ""+scrollPane.getMaxY());
-        Gdx.app.log("scroll y", ""+scrollPane.getScrollY());
-        Gdx.app.log("scroll vis y", ""+scrollPane.getVisualScrollY());
-        scrollPane.layout();
-        scrollPane.setScrollPercentY(100);
-        scrollPane.updateVisualScroll();
-        Gdx.app.log("scroll max y", ""+scrollPane.getMaxY());
-        Gdx.app.log("scroll y", ""+scrollPane.getScrollY());
-        Gdx.app.log("scroll vis y", ""+scrollPane.getVisualScrollY());
-
     }
 
     private Label getDescriptionLabel() {
-        Label descriptionLabel = this.getSmallLabel("Play infinite auto generated levels against the " +
+        Label descriptionLabel = this.getLabel("Play infinite auto generated levels against the " +
                 "clock and try to beat your highscore.", TEXT_COLOR);
         descriptionLabel.setWrap(true);
         return descriptionLabel;
@@ -117,18 +107,21 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
     @Override
     public void activate(PixelLogicUIScreenProperties properties) {
         super.activate(properties);
+        getStage().getRoot().getColor().a = 0f;
+        getStage().addAction(Actions.fadeIn(.2f));
     }
 
     @Override
     public void deactivate(Runnable after) {
-        super.deactivate(after);
+        Action action = Actions.sequence(Actions.fadeOut(.2f), Actions.run(after));
+        this.getStage().addAction(action);
     }
 
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
         this.labelContainer.width(getComponentWidth());
-        this.labelContainer.setActor(getDescriptionLabel());
+        this.labelContainer.getActor().setStyle(getLabelStyle(TEXT_COLOR));
         for (TimeTrialModeUI mode : this.modes) {
             mode.resize();
         }
@@ -142,10 +135,14 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
         return getButtonHeight() * 4;
     }
 
-    public Label getSmallLabel(String text, Color color) {
-        BitmapFont font = getAssets().getGameFont(PixelLogicUIUtil.getTextHeight() - GAME_FONT_SIZE);
-        Label.LabelStyle style = new Label.LabelStyle(font, color);
+    public Label getLabel(String text, Color color) {
+        Label.LabelStyle style = getLabelStyle(color);
         return new Label(text, style);
+    }
+
+    private Label.LabelStyle getLabelStyle(Color color) {
+        BitmapFont font = getAssets().getGameFont(PixelLogicUIUtil.getTextHeight() - GAME_FONT_SIZE);
+        return new Label.LabelStyle(font, color);
     }
 
     private static class TimeTrialModeUI extends Container<VerticalGroup> {
@@ -168,7 +165,6 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
             getActor().setFillParent(true);
             getActor().center();
             getActor().bottom();
-            getActor().reverse();
             getActor().space(getPadding());
 
             this.button = new PixelLogicUIButton(screen.getAssets(), screen.getEventManager(), options.name) {
@@ -200,23 +196,15 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
         public void updateHighscoreTable() {
             this.highscoreTable.clearChildren();
             List<PixelLogicTimeTrialHighscoreStore.Highscore> highscoreList = PixelLogicTimeTrialHighscoreStore.list(options.id);
-            if (!highscoreList.isEmpty()) {
-                final Integer rank = screen.getProperties().getInt("rank");
-                final String mode = screen.getProperties().getString("mode");
-                boolean lastRankInvalid = rank == null || rank == -1 || mode == null || !mode.equals(options.id);
-                for (int i = highscoreList.size() - 1; i >= 0; i--) {
-                    Color color = lastRankInvalid || rank != i ? TEXT_COLOR : GRID_COLOR;
-                    PixelLogicTimeTrialHighscoreStore.Highscore highscore = highscoreList.get(i);
-                    Label highscoreDate = screen.getSmallLabel(PixelLogicUIUtil.formatDate(highscore.date), color);
-                    Label highscoreTime = screen.getSmallLabel(PixelLogicUIUtil.formatMilliseconds(highscore.time), color);
-                    highscoreTable.add(highscoreDate).growX().left();
-                    highscoreTable.add(highscoreTime).right();
-                    highscoreTable.row();
-                }
-            } else {
-                highscoreTable.add(screen.getSmallLabel("no games played", TEXT_COLOR)).colspan(2).center();
-                highscoreTable.row();
-            }
+
+            // header
+            Label normalHighscoreLabel = screen.getLabel("highscore", TEXT_LIGHT_COLOR);
+            Label normalTimeLabel = screen.getLabel("time", TEXT_LIGHT_COLOR);
+            highscoreTable.add(normalHighscoreLabel).growX().left();
+            highscoreTable.add(normalTimeLabel).right();
+            highscoreTable.row();
+
+            // line
             PixelLogicUIColoredSurface line = new PixelLogicUIColoredSurface(screen.getAssets(), screen.getEventManager());
             line.setColor(TEXT_LIGHT_COLOR);
             line.setWidth(getComponentWidth());
@@ -224,10 +212,24 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
             highscoreTable.add(line).colspan(2).expand();
             highscoreTable.row();
 
-            Label normalHighscoreLabel = screen.getSmallLabel("highscore", TEXT_LIGHT_COLOR);
-            Label normalTimeLabel = screen.getSmallLabel("time", TEXT_LIGHT_COLOR);
-            highscoreTable.add(normalHighscoreLabel).growX().left();
-            highscoreTable.add(normalTimeLabel).right();
+            // score
+            if (!highscoreList.isEmpty()) {
+                final Integer rank = screen.getProperties().getInt("rank");
+                final String mode = screen.getProperties().getString("mode");
+                boolean lastRankInvalid = rank == null || rank == -1 || mode == null || !mode.equals(options.id);
+                for (int i = 0; i < highscoreList.size(); i++) {
+                    Color color = lastRankInvalid || rank != i ? TEXT_COLOR : GRID_COLOR;
+                    PixelLogicTimeTrialHighscoreStore.Highscore highscore = highscoreList.get(i);
+                    Label highscoreDate = screen.getLabel(PixelLogicUIUtil.formatDate(highscore.date), color);
+                    Label highscoreTime = screen.getLabel(PixelLogicUIUtil.formatMilliseconds(highscore.time), color);
+                    highscoreTable.add(highscoreDate).growX().left();
+                    highscoreTable.add(highscoreTime).right();
+                    highscoreTable.row();
+                }
+            } else {
+                highscoreTable.add(screen.getLabel("no games played", TEXT_COLOR)).colspan(2).center();
+                highscoreTable.row();
+            }
         }
 
         private void startTimeTrial(final PixelLogicTimeTrialModeOptions options) {

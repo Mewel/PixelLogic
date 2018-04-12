@@ -169,7 +169,7 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
             getStage().addAction(delay);
         }
 
-        // fpsLogger.log();
+        fpsLogger.log();
     }
 
     private void onSolved() {
@@ -227,14 +227,14 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
 
         // toolbar
         int toolbarHeight = PixelLogicUIUtil.getToolbarHeight();
-        this.toolbar.setBounds(0, screenHeight - toolbarHeight, screenWidth, toolbarHeight);
+        this.toolbar.setBounds(0, 0, screenWidth, toolbarHeight);
 
         // level
         if (this.levelUI != null) {
             int levelMaxHeight = PixelLogicUIUtil.getLevelMaxHeight();
             this.levelUI.resize();
             float x = screenWidth / 2f - this.levelUI.getWidth() / 2f;
-            float y = levelMaxHeight / 2f - this.levelUI.getHeight() / 2f;
+            float y = levelMaxHeight / 2f - this.levelUI.getHeight() / 2f + toolbarHeight;
             this.levelUI.setPosition((int) x, (int) y);
         }
 

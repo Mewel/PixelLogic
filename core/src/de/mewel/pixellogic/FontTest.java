@@ -35,7 +35,6 @@ public class FontTest extends Game {
                 FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
                 params.size = i;
                 params.color = Color.WHITE;
-                params.flip = true;
                 BitmapFont font = generator.generateFont(params);
                 Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
                 Label actor = new Label(i + ": test 1234567890", style);

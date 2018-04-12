@@ -17,7 +17,6 @@ public class PixelLogicUILevelMenuButton extends Actor {
 
     public PixelLogicUILevelMenuButton(Texture icons) {
         this.sprite = new Sprite(icons, BASE_SIZE * 2, 0, BASE_SIZE, BASE_SIZE);
-        this.sprite.flip(false, true);
     }
 
     @Override
