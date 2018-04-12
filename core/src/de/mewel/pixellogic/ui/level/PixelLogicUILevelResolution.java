@@ -29,12 +29,14 @@ public class PixelLogicUILevelResolution {
         float maxWidth = Gdx.graphics.getWidth();
         float maxHeight = PixelLogicUIUtil.getLevelMaxHeight();
 
-        float basePixel = Math.min(maxWidth, maxHeight) / Math.max(rows, columns);
-        int baseFontSize = PixelLogicAssets.getFixedLevelFontSize((int) (basePixel / 4f));
+        int basePixel = (int)(Math.min(maxWidth, maxHeight) / Math.max(rows, columns));
+        int basePixelSpace = MathUtils.floor(basePixel / 17f);
+        int basePixelCombined = basePixel + basePixelSpace;
+        int baseFontSize = PixelLogicAssets.getFixedLevelFontSize((int) (basePixelCombined / 4f));
 
         int[] numbers = PixelLogicUIUtil.getMaxInfoNumbers(level);
-        int maxRowWidth = Math.max((int)(baseFontSize * numbers[0] * 1.3f), (int)basePixel);
-        int maxColHeight = Math.max((int)(baseFontSize * numbers[1] * 1.4f), (int)basePixel);
+        int maxRowWidth = Math.max((int)(baseFontSize * numbers[0] * 1.3f), (int)basePixelCombined) + basePixelSpace * 2;
+        int maxColHeight = Math.max((int)(baseFontSize * numbers[1] * 1.4f), (int)basePixelCombined) + basePixelSpace * 2;
 
         float pixelPerColumn = MathUtils.floor((maxWidth - maxRowWidth) / (float) columns);
         float pixelPerRow = MathUtils.floor((maxHeight - maxColHeight) / (float) rows);
