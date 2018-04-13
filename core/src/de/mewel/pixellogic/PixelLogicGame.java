@@ -2,8 +2,10 @@ package de.mewel.pixellogic;
 
 import com.badlogic.gdx.Game;
 
+import de.mewel.pixellogic.achievements.PixelLogicAchievements;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.ui.screen.PixelLogicScreenId;
 import de.mewel.pixellogic.ui.screen.PixelLogicUILevelScreen;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIScreenManager;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIScreenProperties;
@@ -18,6 +20,8 @@ public class PixelLogicGame extends Game {
 
     private PixelLogicUIScreenManager screenManager;
 
+    private PixelLogicAchievements achievements;
+
     @Override
     public void create() {
         this.eventManager = new PixelLogicEventManager();
@@ -25,15 +29,17 @@ public class PixelLogicGame extends Game {
         this.assets = new PixelLogicAssets();
         this.assets.load();
 
+        this.achievements = new PixelLogicAchievements(eventManager);
+
         this.screenManager = new PixelLogicUIScreenManager(this, assets, eventManager);
 
         PixelLogicUILevelScreen levelScreen = new PixelLogicUILevelScreen(assets, eventManager);
         PixelLogicUITimeTrialScreen timeTrialScreen = new PixelLogicUITimeTrialScreen(assets, eventManager);
         PixelLogicUITimeTrialFinishedScreen timeTrialFinishedScreen = new PixelLogicUITimeTrialFinishedScreen(assets, eventManager);
 
-        this.screenManager.add("level", levelScreen);
-        this.screenManager.add("timeTrial", timeTrialScreen);
-        this.screenManager.add("timeTrialFinished", timeTrialFinishedScreen);
+        this.screenManager.add(PixelLogicScreenId.level, levelScreen);
+        this.screenManager.add(PixelLogicScreenId.timeTrial, timeTrialScreen);
+        this.screenManager.add(PixelLogicScreenId.timeTrialFinished, timeTrialFinishedScreen);
 
         this.screenManager.activate(timeTrialScreen, new PixelLogicUIScreenProperties());
     }
@@ -46,8 +52,11 @@ public class PixelLogicGame extends Game {
         if (this.eventManager != null) {
             this.eventManager.dispose();
         }
-        if(this.screenManager != null) {
+        if (this.screenManager != null) {
             this.screenManager.dispose();
+        }
+        if (this.achievements != null) {
+            this.achievements.dispose();
         }
         super.dispose();
     }

@@ -45,4 +45,12 @@ public class PixelLogicUIScreenProperties {
         return data.toString();
     }
 
+    public <T> T get(String key, Class<T> type) {
+        Object o = get(key);
+        if (o == null) {
+            return null;
+        }
+        return type.isInstance(o) ? (T) o : null;
+    }
+
 }

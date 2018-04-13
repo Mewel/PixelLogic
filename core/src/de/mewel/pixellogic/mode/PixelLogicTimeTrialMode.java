@@ -1,7 +1,6 @@
 package de.mewel.pixellogic.mode;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.async.AsyncTask;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -9,14 +8,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicLoadNextLevelEvent;
-import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
 import de.mewel.pixellogic.event.PixelLogicTimerEvent;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
+import de.mewel.pixellogic.ui.screen.PixelLogicScreenId;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIScreenProperties;
 import de.mewel.pixellogic.ui.screen.event.PixelLogicScreenChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicStopWatch;
@@ -44,9 +42,9 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     public void run() {
         this.round = new AtomicInteger(-1);
         final PixelLogicUIScreenProperties data = new PixelLogicUIScreenProperties();
-        data.put("screenId", "level");
+        data.put("screenId", PixelLogicScreenId.level);
         data.put("options", options);
-        data.put("menu_back_id", "timeTrial");
+        data.put("menuBackId", PixelLogicScreenId.timeTrial);
         getEventManager().fire(new PixelLogicScreenChangeEvent(this, data));
         runNext();
     }
@@ -89,7 +87,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     private void onFinished() {
         this.stopWatch.stop();
         PixelLogicUIScreenProperties data = new PixelLogicUIScreenProperties();
-        data.put("screenId", "timeTrialFinished");
+        data.put("screenId", PixelLogicScreenId.timeTrialFinished);
         String mode = this.options.id;
         data.put("mode", mode);
         data.put("time", this.stopWatch.elapsed());
@@ -134,7 +132,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
         }
         if (event instanceof PixelLogicScreenChangeEvent) {
             PixelLogicScreenChangeEvent screenChangeEvent = (PixelLogicScreenChangeEvent) event;
-            if (!screenChangeEvent.getScreenId().equals("level")) {
+            if (!screenChangeEvent.getScreenId().equals(PixelLogicScreenId.level)) {
                 this.dispose();
             }
         }

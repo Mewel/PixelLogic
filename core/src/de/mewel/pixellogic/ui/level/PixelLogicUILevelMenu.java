@@ -11,6 +11,7 @@ import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIModal;
+import de.mewel.pixellogic.ui.screen.PixelLogicScreenId;
 import de.mewel.pixellogic.ui.screen.PixelLogicUILevelScreen;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIScreenProperties;
 import de.mewel.pixellogic.ui.screen.event.PixelLogicScreenChangeEvent;
@@ -22,7 +23,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
 
     private PixelLogicUIButton solveLevelButton, resetLevelButton, continueButton, backButton;
 
-    private String backButtonScreenId;
+    private PixelLogicScreenId backButtonScreenId;
 
     public PixelLogicUILevelMenu(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicUILevelScreen screen) {
         super(assets, eventManager, screen.getStage().getRoot());
@@ -78,7 +79,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         getContent().add(this.resetLevelButton).padBottom(padding);
         getContent().row();
 
-        this.backButtonScreenId = properties.getString("menu_back_id");
+        this.backButtonScreenId = properties.get("menuBackId", PixelLogicScreenId.class);
         if (this.backButtonScreenId != null) {
             getContent().add(this.backButton).padBottom(padding);
             getContent().row();

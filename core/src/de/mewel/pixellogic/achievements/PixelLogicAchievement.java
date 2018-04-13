@@ -1,8 +1,5 @@
 package de.mewel.pixellogic.achievements;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
@@ -22,21 +19,17 @@ public abstract class PixelLogicAchievement {
 
     abstract boolean check(PixelLogicEvent event);
 
-    public void fireAchieved() {
-
-    }
-
-    public void load() {
-        Preferences achievements = Gdx.app.getPreferences("achievements");
-        this.done = achievements.getBoolean(getId() + "_done");
-    }
-
     public String getId() {
         try {
             return Arrays.toString(getName().getBytes("UTF-8")).replaceAll("\\D+", "_");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("Achievements: Couldn't get id of " + getName());
         }
+    }
+
+    public void achieved() {
+        this.done = true;
+
     }
 
     boolean isDone() {

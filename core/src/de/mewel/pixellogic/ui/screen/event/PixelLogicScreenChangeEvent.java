@@ -1,6 +1,7 @@
 package de.mewel.pixellogic.ui.screen.event;
 
 import de.mewel.pixellogic.event.PixelLogicEvent;
+import de.mewel.pixellogic.ui.screen.PixelLogicScreenId;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIScreenProperties;
 
 public class PixelLogicScreenChangeEvent extends PixelLogicEvent {
@@ -16,8 +17,8 @@ public class PixelLogicScreenChangeEvent extends PixelLogicEvent {
         return this.data;
     }
 
-    public String getScreenId() {
-        return this.data.getString("screenId");
+    public PixelLogicScreenId getScreenId() {
+        return this.data.get("screenId", PixelLogicScreenId.class);
     }
 
 }

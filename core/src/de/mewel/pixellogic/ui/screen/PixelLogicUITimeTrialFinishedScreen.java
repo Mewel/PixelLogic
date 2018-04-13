@@ -50,7 +50,7 @@ public class PixelLogicUITimeTrialFinishedScreen extends PixelLogicUIScreen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 PixelLogicUIScreenProperties changeScreenData = new PixelLogicUIScreenProperties();
-                changeScreenData.put("screenId", "timeTrial");
+                changeScreenData.put("screenId", PixelLogicScreenId.timeTrial);
                 changeScreenData.put("mode", mode);
                 changeScreenData.put("time", time);
                 changeScreenData.put("rank", rank);

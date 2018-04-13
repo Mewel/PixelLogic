@@ -12,7 +12,7 @@ import de.mewel.pixellogic.ui.screen.event.PixelLogicScreenChangeEvent;
 
 public class PixelLogicUIScreenManager implements PixelLogicListener {
 
-    private Map<String, PixelLogicUIScreen> screenMap;
+    private Map<PixelLogicScreenId, PixelLogicUIScreen> screenMap;
 
     private PixelLogicUIScreen activeScreen;
 
@@ -26,12 +26,12 @@ public class PixelLogicUIScreenManager implements PixelLogicListener {
         this.game = game;
         this.assets = assets;
         this.eventManager = eventManager;
-        this.screenMap = new HashMap<String, PixelLogicUIScreen>();
+        this.screenMap = new HashMap<PixelLogicScreenId, PixelLogicUIScreen>();
         this.activeScreen = null;
         this.eventManager.listen(this);
     }
 
-    public void add(String id, PixelLogicUIScreen screen) {
+    public void add(PixelLogicScreenId id, PixelLogicUIScreen screen) {
         this.screenMap.put(id, screen);
     }
 
@@ -39,9 +39,9 @@ public class PixelLogicUIScreenManager implements PixelLogicListener {
     public void handle(PixelLogicEvent event) {
         if (event instanceof PixelLogicScreenChangeEvent) {
             PixelLogicScreenChangeEvent screenChangeEvent = (PixelLogicScreenChangeEvent) event;
-            String screenId = screenChangeEvent.getScreenId();
+            PixelLogicScreenId screenId = screenChangeEvent.getScreenId();
             PixelLogicUIScreen screen = this.screenMap.get(screenId);
-            if(screen == null) {
+            if (screen == null) {
                 throw new RuntimeException("Unable to find screen " + screenId);
             }
             activate(screen, screenChangeEvent.getData());
