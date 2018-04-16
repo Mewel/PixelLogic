@@ -283,4 +283,15 @@ public class PixelLogicUtil {
         level.setPixels(solvedLevel);
     }
 
+    public static String toString(Boolean[][] levelData) {
+        StringBuilder builder = new StringBuilder();
+        for (int row = 0; row < levelData.length; row++) {
+            for (int col = 0; col < levelData[0].length; col++) {
+                builder.append(levelData[row][col] == null ? "-" : (levelData[row][col] ? "x" : "o"));
+            }
+            builder.append("\n");
+        }
+        return builder.toString();
+    }
+
 }
