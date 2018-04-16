@@ -13,9 +13,9 @@ public abstract class PixelLogicAchievement {
         this.done = false;
     }
 
-    abstract String getName();
+    public abstract String getName();
 
-    abstract String getDescription();
+    public abstract String getDescription();
 
     abstract boolean check(PixelLogicEvent event);
 
@@ -29,7 +29,6 @@ public abstract class PixelLogicAchievement {
 
     public void achieved() {
         this.done = true;
-
     }
 
     boolean isDone() {

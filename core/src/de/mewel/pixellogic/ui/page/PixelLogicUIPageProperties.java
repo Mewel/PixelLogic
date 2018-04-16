@@ -1,13 +1,13 @@
-package de.mewel.pixellogic.ui.screen;
+package de.mewel.pixellogic.ui.page;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class PixelLogicUIScreenProperties {
+public class PixelLogicUIPageProperties {
 
     private Map<String, Object> data;
 
-    public PixelLogicUIScreenProperties() {
+    public PixelLogicUIPageProperties() {
         this.data = new HashMap<String, Object>();
     }
 

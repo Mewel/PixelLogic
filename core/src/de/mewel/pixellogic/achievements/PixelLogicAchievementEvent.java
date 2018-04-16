@@ -2,7 +2,7 @@ package de.mewel.pixellogic.achievements;
 
 import de.mewel.pixellogic.event.PixelLogicEvent;
 
-class PixelLogicAchievementEvent extends PixelLogicEvent {
+public class PixelLogicAchievementEvent extends PixelLogicEvent {
 
     private PixelLogicAchievement achievement;
 

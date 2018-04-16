@@ -1,4 +1,4 @@
-package de.mewel.pixellogic.ui.screen;
+package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -26,7 +26,7 @@ import de.mewel.pixellogic.ui.level.PixelLogicUILevelMenu;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelToolbar;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 
-public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
+public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
     private PixelLogicUILevel levelUI;
 
@@ -46,7 +46,7 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
 
     private FPSLogger fpsLogger = new FPSLogger();
 
-    public PixelLogicUILevelScreen(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
+    public PixelLogicUILevelPage(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         super(assets, eventManager);
 
         // BACKGROUND
@@ -68,7 +68,7 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
     }
 
     @Override
-    public void activate(PixelLogicUIScreenProperties properties) {
+    public void activate(PixelLogicUIPageProperties properties) {
         Gdx.app.log("lvl screen", "activate");
         super.activate(properties);
         this.levelStatus = null;
@@ -150,11 +150,6 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
     }
 
     @Override
-    public void show() {
-
-    }
-
-    @Override
     public void render(float delta) {
         super.render(delta);
 
@@ -196,19 +191,6 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
 
     public PixelLogicLevelStatus getLevelStatus() {
         return this.levelStatus;
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-
     }
 
     @Override
@@ -257,9 +239,9 @@ public class PixelLogicUILevelScreen extends PixelLogicUIScreen {
 
     private static class ScreenListener extends InputListener implements PixelLogicListener {
 
-        private PixelLogicUILevelScreen screen;
+        private PixelLogicUILevelPage screen;
 
-        ScreenListener(PixelLogicUILevelScreen screen) {
+        ScreenListener(PixelLogicUILevelPage screen) {
             this.screen = screen;
         }
 

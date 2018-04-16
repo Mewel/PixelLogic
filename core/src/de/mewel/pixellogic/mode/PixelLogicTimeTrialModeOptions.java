@@ -64,7 +64,7 @@ public class PixelLogicTimeTrialModeOptions {
             this.levelSizeXY = new int[]{12, 16};
             this.levelSizeOffset = new int[]{0};
             this.levelMinDifficulty = new int[]{6};
-            this.levelMaxDifficulty = new int[]{8};
+            this.levelMaxDifficulty = new int[]{9};
         }
 
     }

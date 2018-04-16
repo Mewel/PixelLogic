@@ -21,6 +21,8 @@ public class PixelLogicAchievements implements PixelLogicListener {
         this.achievements = new ArrayList<PixelLogicAchievement>();
         eventManager.listen(this);
         register();
+
+        clearAll();
     }
 
     protected void register() {
@@ -60,6 +62,12 @@ public class PixelLogicAchievements implements PixelLogicListener {
 
     public void dispose() {
         this.eventManager.remove(this);
+    }
+
+    public void clearAll() {
+        Preferences preferences = Gdx.app.getPreferences("achievements");
+        preferences.clear();
+        preferences.flush();
     }
 
 }

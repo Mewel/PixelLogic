@@ -1,9 +1,6 @@
 package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
@@ -11,21 +8,21 @@ import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIModal;
-import de.mewel.pixellogic.ui.screen.PixelLogicScreenId;
-import de.mewel.pixellogic.ui.screen.PixelLogicUILevelScreen;
-import de.mewel.pixellogic.ui.screen.PixelLogicUIScreenProperties;
-import de.mewel.pixellogic.ui.screen.event.PixelLogicScreenChangeEvent;
+import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
+import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
+import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
+import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicUILevelMenu extends PixelLogicUIModal {
 
-    private PixelLogicUILevelScreen screen;
+    private PixelLogicUILevelPage screen;
 
     private PixelLogicUIButton solveLevelButton, resetLevelButton, continueButton, backButton;
 
-    private PixelLogicScreenId backButtonScreenId;
+    private PixelLogicUIPageId backButtonScreenId;
 
-    public PixelLogicUILevelMenu(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicUILevelScreen screen) {
+    public PixelLogicUILevelMenu(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicUILevelPage screen) {
         super(assets, eventManager, screen.getStage().getRoot());
         this.screen = screen;
         this.backButtonScreenId = null;
@@ -71,7 +68,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
 
     }
 
-    public void activate(PixelLogicUIScreenProperties properties) {
+    public void activate(PixelLogicUIPageProperties properties) {
         int padding = PixelLogicUIUtil.getBaseHeight() / 2;
 
         getContent().add(this.solveLevelButton).padBottom(padding);
@@ -79,7 +76,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         getContent().add(this.resetLevelButton).padBottom(padding);
         getContent().row();
 
-        this.backButtonScreenId = properties.get("menuBackId", PixelLogicScreenId.class);
+        this.backButtonScreenId = properties.get("menuBackId", PixelLogicUIPageId.class);
         if (this.backButtonScreenId != null) {
             getContent().add(this.backButton).padBottom(padding);
             getContent().row();
@@ -106,10 +103,10 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
             Gdx.app.log("level menu", "pushing back button without screen id, this should never happen!");
             return;
         }
-        PixelLogicUIScreenProperties data = new PixelLogicUIScreenProperties();
-        data.put("screenId", backButtonScreenId);
+        PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
+        data.put("pageId", backButtonScreenId);
         data.put("backButton", true);
-        getEventManager().fire(new PixelLogicScreenChangeEvent(PixelLogicUILevelMenu.this, data));
+        getEventManager().fire(new PixelLogicUIPageChangeEvent(PixelLogicUILevelMenu.this, data));
     }
 
     @Override

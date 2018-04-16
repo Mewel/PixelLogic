@@ -1,4 +1,4 @@
-package de.mewel.pixellogic.ui.screen;
+package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -28,13 +28,13 @@ import static de.mewel.pixellogic.ui.PixelLogicUIConstants.GRID_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_LIGHT_COLOR;
 
-public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
+public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
 
     private List<TimeTrialModeUI> modes;
 
     private Container<Label> labelContainer;
 
-    public PixelLogicUITimeTrialScreen(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
+    public PixelLogicUITimeTrialPage(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         super(assets, eventManager);
 
         this.modes = new ArrayList<TimeTrialModeUI>();
@@ -89,23 +89,7 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
     }
 
     @Override
-    public void show() {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-    }
-
-    @Override
-    public void activate(PixelLogicUIScreenProperties properties) {
+    public void activate(PixelLogicUIPageProperties properties) {
         super.activate(properties);
         getStage().getRoot().getColor().a = 0f;
         getStage().addAction(Actions.fadeIn(.2f));
@@ -149,7 +133,7 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
 
         private PixelLogicTimeTrialModeOptions options;
 
-        private PixelLogicUITimeTrialScreen screen;
+        private PixelLogicUITimeTrialPage screen;
 
         PixelLogicUIButton button;
 
@@ -157,7 +141,7 @@ public class PixelLogicUITimeTrialScreen extends PixelLogicUIScreen {
 
         private Container<Table> highscoreContainer;
 
-        public TimeTrialModeUI(final PixelLogicTimeTrialModeOptions options, PixelLogicUITimeTrialScreen screen) {
+        public TimeTrialModeUI(final PixelLogicTimeTrialModeOptions options, PixelLogicUITimeTrialPage screen) {
             super(new VerticalGroup());
             this.screen = screen;
             this.options = options;

@@ -14,9 +14,9 @@ import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
-import de.mewel.pixellogic.ui.screen.PixelLogicScreenId;
-import de.mewel.pixellogic.ui.screen.PixelLogicUIScreenProperties;
-import de.mewel.pixellogic.ui.screen.event.PixelLogicScreenChangeEvent;
+import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
+import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
+import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicStopWatch;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
@@ -41,11 +41,11 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     @Override
     public void run() {
         this.round = new AtomicInteger(-1);
-        final PixelLogicUIScreenProperties data = new PixelLogicUIScreenProperties();
-        data.put("screenId", PixelLogicScreenId.level);
+        final PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
+        data.put("pageId", PixelLogicUIPageId.level);
         data.put("options", options);
-        data.put("menuBackId", PixelLogicScreenId.timeTrial);
-        getEventManager().fire(new PixelLogicScreenChangeEvent(this, data));
+        data.put("menuBackId", PixelLogicUIPageId.timeTrial);
+        getEventManager().fire(new PixelLogicUIPageChangeEvent(this, data));
         runNext();
     }
 
@@ -86,14 +86,14 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
 
     private void onFinished() {
         this.stopWatch.stop();
-        PixelLogicUIScreenProperties data = new PixelLogicUIScreenProperties();
-        data.put("screenId", PixelLogicScreenId.timeTrialFinished);
+        PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
+        data.put("pageId", PixelLogicUIPageId.timeTrialFinished);
         String mode = this.options.id;
         data.put("mode", mode);
         data.put("time", this.stopWatch.elapsed());
         int rank = PixelLogicTimeTrialHighscoreStore.add(mode, this.stopWatch.elapsed());
         data.put("rank", rank);
-        this.getEventManager().fire(new PixelLogicScreenChangeEvent(this, data));
+        this.getEventManager().fire(new PixelLogicUIPageChangeEvent(this, data));
     }
 
     private PixelLogicLevel createLevel(Boolean[][] levelData) {
@@ -130,9 +130,9 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
                 this.getEventManager().fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.stop, elapsed));
             }
         }
-        if (event instanceof PixelLogicScreenChangeEvent) {
-            PixelLogicScreenChangeEvent screenChangeEvent = (PixelLogicScreenChangeEvent) event;
-            if (!screenChangeEvent.getScreenId().equals(PixelLogicScreenId.level)) {
+        if (event instanceof PixelLogicUIPageChangeEvent) {
+            PixelLogicUIPageChangeEvent screenChangeEvent = (PixelLogicUIPageChangeEvent) event;
+            if (!screenChangeEvent.getPageId().equals(PixelLogicUIPageId.level)) {
                 this.dispose();
             }
         }

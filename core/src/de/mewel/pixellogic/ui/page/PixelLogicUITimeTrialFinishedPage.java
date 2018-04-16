@@ -1,4 +1,4 @@
-package de.mewel.pixellogic.ui.screen;
+package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -8,15 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
-import de.mewel.pixellogic.ui.screen.event.PixelLogicScreenChangeEvent;
+import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
 
-public class PixelLogicUITimeTrialFinishedScreen extends PixelLogicUIScreen {
+public class PixelLogicUITimeTrialFinishedPage extends PixelLogicUIPage {
 
     private Label resultLabel;
 
-    public PixelLogicUITimeTrialFinishedScreen(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
+    public PixelLogicUITimeTrialFinishedPage(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         super(assets, eventManager);
         BitmapFont labelFont = getAssets().getGameFont(PixelLogicUIUtil.getBaseHeight() * 2);
         Label.LabelStyle style = new Label.LabelStyle(labelFont, TEXT_COLOR);
@@ -33,7 +33,7 @@ public class PixelLogicUITimeTrialFinishedScreen extends PixelLogicUIScreen {
     }
 
     @Override
-    public void activate(final PixelLogicUIScreenProperties properties) {
+    public void activate(final PixelLogicUIPageProperties properties) {
         super.activate(properties);
         final String mode = properties.getString("mode");
         final Long time = properties.getLong("time");
@@ -49,12 +49,12 @@ public class PixelLogicUITimeTrialFinishedScreen extends PixelLogicUIScreen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                PixelLogicUIScreenProperties changeScreenData = new PixelLogicUIScreenProperties();
-                changeScreenData.put("screenId", PixelLogicScreenId.timeTrial);
+                PixelLogicUIPageProperties changeScreenData = new PixelLogicUIPageProperties();
+                changeScreenData.put("pageId", PixelLogicUIPageId.timeTrial);
                 changeScreenData.put("mode", mode);
                 changeScreenData.put("time", time);
                 changeScreenData.put("rank", rank);
-                getEventManager().fire(new PixelLogicScreenChangeEvent(PixelLogicUITimeTrialFinishedScreen.this, changeScreenData));
+                getEventManager().fire(new PixelLogicUIPageChangeEvent(PixelLogicUITimeTrialFinishedPage.this, changeScreenData));
             }
         });
     }
@@ -63,26 +63,6 @@ public class PixelLogicUITimeTrialFinishedScreen extends PixelLogicUIScreen {
     public void resize(int width, int height) {
         super.resize(width, height);
         centerLabel(this.resultLabel);
-    }
-
-    @Override
-    public void show() {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
     }
 
 }
