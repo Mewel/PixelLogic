@@ -272,14 +272,14 @@ public class PixelLogicUtil {
     public static boolean isSolvable(Boolean[][] levelData) {
         List<List<Integer>> rowData = PixelLogicUtil.getRowData(levelData);
         List<List<Integer>> colData = PixelLogicUtil.getColumnData(levelData);
-        Boolean[][] solvedLevel = new PixelLogicSolver().solve(rowData, colData).getLevel();
+        Boolean[][] solvedLevel = new PixelLogicSolver2().solve(rowData, colData).getLevel();
         return isValid(solvedLevel);
     }
 
     public static void solveLevel(PixelLogicLevel level) {
         List<List<Integer>> rowData = PixelLogicUtil.getRowData(level.getLevelData());
         List<List<Integer>> colData = PixelLogicUtil.getColumnData(level.getLevelData());
-        Boolean[][] solvedLevel = new PixelLogicSolver().solve(rowData, colData).getLevel();
+        Boolean[][] solvedLevel = new PixelLogicSolver2().solve(rowData, colData).getLevel();
         level.setPixels(solvedLevel);
     }
 

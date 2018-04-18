@@ -6,22 +6,41 @@ import de.mewel.pixellogic.model.PixelLogicLevel;
 
 public class PixelLogicUtilTest {
 
+    public static void main(String[] args) throws Exception {
+        new PixelLogicUtilTest().solveSpeedTest();
+    }
+
     @Test
     public void createRandomLevelSpeedTest() throws Exception {
         long sTime = System.currentTimeMillis();
-        for (int i = 0; i < 5000; i++) {
-            PixelLogicUtil.createRandomLevel(5, 5, 5, 6);
+        for (int i = 0; i < 50; i++) {
+            PixelLogicUtil.createRandomLevel(16, 12, 7, 9);
         }
         System.out.println(System.currentTimeMillis() - sTime + "ms");
     }
 
     @Test
     public void solveSpeedTest() throws Exception {
-        PixelLogicRawLevelFormat pixelLogicRawLevelFormat = PixelLogicRawLevelFormat.ofNON(getPuzzle16());
+        PixelLogicRawLevelFormat pixelLogicRawLevelFormat = PixelLogicRawLevelFormat.ofNON(getPuzzle6());
         System.out.println("Puzzle successfully parsed. Start solving...");
+
+        long sTime = System.currentTimeMillis();
         PixelLogicSolverResult result = new PixelLogicSolver().solve(pixelLogicRawLevelFormat.getRows(), pixelLogicRawLevelFormat.getColumns());
         System.out.println("Puzzle solved. Check if puzzle is valid...");
         System.out.println("valid: " + PixelLogicUtil.isValid(result.getLevel()));
+        System.out.println("took: " + (System.currentTimeMillis() - sTime) + "ms");
+        System.out.println("complexity: " + result.getComplexity());
+
+        System.out.println(PixelLogicUtil.toString(result.getLevel()));
+
+        sTime = System.currentTimeMillis();
+        System.out.println("Start second solver...");
+        result = new PixelLogicSolver2().solve(pixelLogicRawLevelFormat.getRows(), pixelLogicRawLevelFormat.getColumns());
+        System.out.println("Puzzle solved. Check if puzzle is valid...");
+        System.out.println("valid: " + PixelLogicUtil.isValid(result.getLevel()));
+        System.out.println("took: " + (System.currentTimeMillis() - sTime) + "ms");
+        System.out.println("complexity: " + result.getComplexity());
+
         System.out.println(PixelLogicUtil.toString(result.getLevel()));
     }
 
@@ -51,6 +70,59 @@ public class PixelLogicUtilTest {
                 "7\n" +
                 "1,3\n" +
                 "2,1";
+    }
+
+    private String getPuzzle6() {
+        return "catalogue \"webpbn.com #6\"\n" +
+                "title \"Scardy Cat\"\n" +
+                "by \"Jan Wolter\"\n" +
+                "copyright \"&copy; Copyright 2004 by Jan Wolter\"\n" +
+                "width 20\n" +
+                "height 20\n" +
+                "\n" +
+                "rows\n" +
+                "2\n" +
+                "2\n" +
+                "1\n" +
+                "1\n" +
+                "1,3\n" +
+                "2,5\n" +
+                "1,7,1,1\n" +
+                "1,8,2,2\n" +
+                "1,9,5\n" +
+                "2,16\n" +
+                "1,17\n" +
+                "7,11\n" +
+                "5,5,3\n" +
+                "5,4\n" +
+                "3,3\n" +
+                "2,2\n" +
+                "2,1\n" +
+                "1,1\n" +
+                "2,2\n" +
+                "2,2\n" +
+                "\n" +
+                "columns\n" +
+                "5\n" +
+                "5,3\n" +
+                "2,3,4\n" +
+                "1,7,2\n" +
+                "8\n" +
+                "9\n" +
+                "9\n" +
+                "8\n" +
+                "7\n" +
+                "8\n" +
+                "9\n" +
+                "10\n" +
+                "13\n" +
+                "6,2\n" +
+                "4\n" +
+                "6\n" +
+                "6\n" +
+                "5\n" +
+                "6\n" +
+                "6\n";
     }
 
     private String getPuzzle16() {

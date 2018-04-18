@@ -26,7 +26,7 @@ public abstract class PixelLogicComplexityAnalyzer {
     public static PixelLogicSolverResult analyze(Boolean[][] levelData) {
         List<List<Integer>> rowData = PixelLogicUtil.getRowData(levelData);
         List<List<Integer>> colData = PixelLogicUtil.getColumnData(levelData);
-        return new PixelLogicSolver().solve(rowData, colData);
+        return new PixelLogicSolver2().solve(rowData, colData);
     }
 
 }
