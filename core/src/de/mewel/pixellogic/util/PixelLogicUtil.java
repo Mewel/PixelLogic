@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.util;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
 import java.util.ArrayList;
@@ -229,6 +230,7 @@ public class PixelLogicUtil {
                 complexity = newComplexity;
             }
         }
+        Gdx.app.log("crl", "" + complexity);
         return randomLevel;
     }
 

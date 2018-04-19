@@ -1,7 +1,9 @@
 package de.mewel.pixellogic.ui.component;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -78,25 +80,20 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
 
     private class ButtonListener extends InputListener {
 
-        private boolean dragged = false;
+        private Vector2 start;
 
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            this.dragged = false;
+            this.start = new Vector2(x, y);
             return true;
         }
 
         @Override
         public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-            if (!dragged) {
+            int maxDragUntilCancel = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) / 20;
+            if (start.dst(new Vector2(x, y)) < maxDragUntilCancel) {
                 onClick();
             }
-        }
-
-        @Override
-        public void touchDragged(InputEvent event, float x, float y, int pointer) {
-            super.touchDragged(event, x, y, pointer);
-            this.dragged = true;
         }
 
     }

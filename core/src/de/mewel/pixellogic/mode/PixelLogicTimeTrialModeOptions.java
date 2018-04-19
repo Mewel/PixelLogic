@@ -23,7 +23,7 @@ public class PixelLogicTimeTrialModeOptions {
             this.name = "NORMAL MODE";
             this.levelSize = new int[]{4, 5, 6, 7};
             this.levelSizeOffset = new int[]{0, 1, 1, 2};
-            this.levelMinDifficulty = new int[]{3, 4, 4, 4};
+            this.levelMinDifficulty = new int[]{3, 4, 4, 5};
             this.levelMaxDifficulty = new int[]{4, 5, 5, 5};
         }
 

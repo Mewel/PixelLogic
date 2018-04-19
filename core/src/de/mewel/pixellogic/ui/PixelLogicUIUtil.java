@@ -90,7 +90,7 @@ public class PixelLogicUIUtil {
 
     public static int getLevelMaxHeight() {
         int screenHeight = Gdx.graphics.getHeight();
-        return screenHeight - getToolbarHeight() - getToolbarPaddingTop();
+        return screenHeight - (getToolbarHeight() + getToolbarPaddingTop());
     }
 
     public static String formatDate(Long milliseconds) {

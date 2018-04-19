@@ -24,7 +24,7 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
 
         // achievements
         this.achievements = new PixelLogicAchievements(eventManager);
-        this.achievementLayer = new PixelLogicUIAchievementLayer(assets, eventManager);
+        //this.achievementLayer = new PixelLogicUIAchievementLayer(assets, eventManager);
 
         // page
         this.pageLayer = new PixelLogicUIPageLayer(assets, eventManager);
@@ -38,7 +38,7 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
 
         // add
         this.add(this.pageLayer);
-        this.add(this.achievementLayer);
+        //this.add(this.achievementLayer);
     }
 
     @Override
@@ -47,9 +47,9 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
         if (this.pageLayer != null) {
             this.pageLayer.dispose();
         }
-        if (this.achievementLayer != null) {
+        /*if (this.achievementLayer != null) {
             this.achievementLayer.dispose();
-        }
+        }*/
         if (this.achievements != null) {
             this.achievements.dispose();
         }

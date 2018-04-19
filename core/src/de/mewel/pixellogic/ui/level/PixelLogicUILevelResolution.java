@@ -9,6 +9,8 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 public class PixelLogicUILevelResolution {
 
+    private static float PIXEL_SPACE_RELATION = 17f;
+
     private PixelLogicLevel level;
 
     private int gamePixelSize;
@@ -27,20 +29,20 @@ public class PixelLogicUILevelResolution {
         int columns = level.getColumns();
 
         int basePixel = Math.min(width, height) / Math.max(rows, columns);
-        int basePixelSpace = MathUtils.floor(basePixel / 17f);
+        int basePixelSpace = MathUtils.floor(basePixel / PIXEL_SPACE_RELATION);
         int basePixelCombined = basePixel + basePixelSpace;
         int baseFontSize = PixelLogicAssets.getFixedLevelFontSize((int) (basePixelCombined / 4f));
 
         int[] numbers = PixelLogicUIUtil.getMaxInfoNumbers(level);
-        int maxRowWidth = Math.max((int)(baseFontSize * numbers[0] * 1.3f), basePixelCombined) + basePixelSpace * 2;
-        int maxColHeight = Math.max((int)(baseFontSize * numbers[1] * 1.4f), basePixelCombined) + basePixelSpace * 2;
+        int rowInfoWidth = Math.max((int)(baseFontSize * numbers[0] * 1.3f), basePixelCombined) + basePixelSpace * 2;
+        int colInfoHeight = Math.max((int)(baseFontSize * numbers[1] * 1.4f), basePixelCombined) + basePixelSpace * 2;
 
-        float pixelPerColumn = MathUtils.floor((width - maxRowWidth) / (float) columns);
-        float pixelPerRow = MathUtils.floor((height - maxColHeight) / (float) rows);
-        float maxPixel = Math.min(pixelPerColumn, pixelPerRow);
+        float pixelPerColumn = MathUtils.floor((width - rowInfoWidth) / (float) columns);
+        float pixelPerRow = MathUtils.floor((height - colInfoHeight) / (float) rows);
+        int maxPixel = MathUtils.floor(Math.min(pixelPerColumn, pixelPerRow));
 
-        this.gameSpaceSize = MathUtils.floor(maxPixel / 17);
-        this.gamePixelSize = (int) maxPixel - this.gameSpaceSize;
+        this.gameSpaceSize = MathUtils.floor(maxPixel / PIXEL_SPACE_RELATION);
+        this.gamePixelSize = maxPixel - this.gameSpaceSize;
         this.fontSize = baseFontSize;
     }
 

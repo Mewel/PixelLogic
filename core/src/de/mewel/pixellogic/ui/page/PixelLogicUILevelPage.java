@@ -25,6 +25,7 @@ import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelMenu;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelToolbar;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
+import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
@@ -209,6 +210,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
         // toolbar
         int toolbarHeight = PixelLogicUIUtil.getToolbarHeight();
+        int toolbarHeightAndPadding = toolbarHeight + PixelLogicUIUtil.getToolbarPaddingTop();
         this.toolbar.setBounds(0, 0, screenWidth, toolbarHeight);
 
         // level
@@ -216,7 +218,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
             int levelMaxHeight = PixelLogicUIUtil.getLevelMaxHeight();
             this.levelUI.resize();
             float x = screenWidth / 2f - this.levelUI.getWidth() / 2f;
-            float y = levelMaxHeight / 2f - this.levelUI.getHeight() / 2f + toolbarHeight;
+            float y = levelMaxHeight / 2f - this.levelUI.getHeight() / 2f + toolbarHeightAndPadding;
             this.levelUI.setPosition((int) x, (int) y);
         }
 
