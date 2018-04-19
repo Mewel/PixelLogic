@@ -1,13 +1,30 @@
 package de.mewel.pixellogic.util;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
-import de.mewel.pixellogic.model.PixelLogicLevel;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PixelLogicUtilTest {
 
     public static void main(String[] args) throws Exception {
         new PixelLogicUtilTest().solveSpeedTest();
+    }
+
+    @Test
+    public void isSolved() throws Exception {
+        List<Integer> numbers = new ArrayList<Integer>();
+        numbers.add(1);
+        assertFalse(PixelLogicUtil.isSolved(new Boolean[]{null, null}, numbers));
+        assertTrue(PixelLogicUtil.isSolved(new Boolean[]{true, null}, numbers));
+        assertTrue(PixelLogicUtil.isSolved(new Boolean[]{false, true}, numbers));
+        numbers.add(2);
+        assertTrue(PixelLogicUtil.isSolved(new Boolean[]{false, true, false, false, true, true}, numbers));
+        assertTrue(PixelLogicUtil.isSolved(new Boolean[]{false, true, false, false, true, true, false}, numbers));
+        assertFalse(PixelLogicUtil.isSolved(new Boolean[]{false, false, false, false, true, false, false}, numbers));
     }
 
     @Test
@@ -21,9 +38,9 @@ public class PixelLogicUtilTest {
 
     @Test
     public void solveSpeedTest() throws Exception {
-        PixelLogicRawLevelFormat pixelLogicRawLevelFormat = PixelLogicRawLevelFormat.ofNON(getPuzzle6());
+        PixelLogicRawLevelFormat pixelLogicRawLevelFormat = PixelLogicRawLevelFormat.ofNON(getPuzzle16());
         System.out.println("Puzzle successfully parsed. Start solving...");
-
+/*
         long sTime = System.currentTimeMillis();
         PixelLogicSolverResult result = new PixelLogicSolver().solve(pixelLogicRawLevelFormat.getRows(), pixelLogicRawLevelFormat.getColumns());
         System.out.println("Puzzle solved. Check if puzzle is valid...");
@@ -32,16 +49,16 @@ public class PixelLogicUtilTest {
         System.out.println("complexity: " + result.getComplexity());
 
         System.out.println(PixelLogicUtil.toString(result.getLevel()));
-
-        sTime = System.currentTimeMillis();
+*/
+        long sTime2 = System.currentTimeMillis();
         System.out.println("Start second solver...");
-        result = new PixelLogicSolver2().solve(pixelLogicRawLevelFormat.getRows(), pixelLogicRawLevelFormat.getColumns());
+        PixelLogicSolverResult result2 = new PixelLogicSolver().solve(pixelLogicRawLevelFormat.getRows(), pixelLogicRawLevelFormat.getColumns());
         System.out.println("Puzzle solved. Check if puzzle is valid...");
-        System.out.println("valid: " + PixelLogicUtil.isValid(result.getLevel()));
-        System.out.println("took: " + (System.currentTimeMillis() - sTime) + "ms");
-        System.out.println("complexity: " + result.getComplexity());
+        System.out.println("valid: " + PixelLogicUtil.isValid(result2.getLevel()));
+        System.out.println("took: " + (System.currentTimeMillis() - sTime2) + "ms");
+        System.out.println("complexity: " + result2.getComplexity());
 
-        System.out.println(PixelLogicUtil.toString(result.getLevel()));
+        System.out.println(PixelLogicUtil.toString(result2.getLevel()));
     }
 
     private String getPuzzle1() {

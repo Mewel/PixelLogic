@@ -93,8 +93,35 @@ public class PixelLogicUtil {
         if (line == null) {
             return false;
         }
-        List<Integer> connectedPixels = getConnectedPixel(line);
-        return compareNumberLists(connectedPixels, numbers);
+        int numberIndex = 0;
+        Integer number = numberIndex < numbers.size() ? numbers.get(numberIndex) : null;
+        int connected = -1;
+        for(Boolean pixel : line) {
+            if(pixel == null || !pixel) {
+                if(number == null || connected == -1) {
+                    continue;
+                }
+                if(connected != number) {
+                    return false;
+                }
+                connected = -1;
+                number = ++numberIndex < numbers.size() ? numbers.get(numberIndex) : null;
+            } else {
+                if(number == null) {
+                    return false;
+                }
+                if(connected == -1) {
+                    connected = 0;
+                }
+                if(++connected > number) {
+                    return false;
+                }
+            }
+        }
+        if(number != null && number == connected) {
+            numberIndex++;
+        }
+        return numberIndex == numbers.size();
     }
 
     public static boolean isValid(Boolean[][] level) {
@@ -272,14 +299,14 @@ public class PixelLogicUtil {
     public static boolean isSolvable(Boolean[][] levelData) {
         List<List<Integer>> rowData = PixelLogicUtil.getRowData(levelData);
         List<List<Integer>> colData = PixelLogicUtil.getColumnData(levelData);
-        Boolean[][] solvedLevel = new PixelLogicSolver2().solve(rowData, colData).getLevel();
+        Boolean[][] solvedLevel = new PixelLogicSolver().solve(rowData, colData).getLevel();
         return isValid(solvedLevel);
     }
 
     public static void solveLevel(PixelLogicLevel level) {
         List<List<Integer>> rowData = PixelLogicUtil.getRowData(level.getLevelData());
         List<List<Integer>> colData = PixelLogicUtil.getColumnData(level.getLevelData());
-        Boolean[][] solvedLevel = new PixelLogicSolver2().solve(rowData, colData).getLevel();
+        Boolean[][] solvedLevel = new PixelLogicSolver().solve(rowData, colData).getLevel();
         level.setPixels(solvedLevel);
     }
 

@@ -18,7 +18,7 @@ public class PixelLogicSolverTest {
         Boolean[][] level = PixelLogicUtil.sampleLevel();
         List<List<Integer>> rowData = PixelLogicUtil.getRowData(level);
         List<List<Integer>> colData = PixelLogicUtil.getColumnData(level);
-        Boolean[][] solvedLevel = new PixelLogicSolver().solve(rowData, colData).getLevel();
+        Boolean[][] solvedLevel = new PixelLogicSolverOld().solve(rowData, colData).getLevel();
         assertTrue("level should be valid", PixelLogicUtil.isValid(solvedLevel));
         assertArrayEquals("level should be equals", level, solvedLevel);
 
@@ -26,13 +26,13 @@ public class PixelLogicSolverTest {
         level = PixelLogicUtil.invalidSampleLevel();
         rowData = PixelLogicUtil.getRowData(level);
         colData = PixelLogicUtil.getColumnData(level);
-        solvedLevel = new PixelLogicSolver().solve(rowData, colData).getLevel();
+        solvedLevel = new PixelLogicSolverOld().solve(rowData, colData).getLevel();
         assertFalse("level should be invalid", PixelLogicUtil.isValid(solvedLevel));
     }
 
     @Test
     public void solveLine() {
-        PixelLogicSolver solver = new PixelLogicSolver();
+        PixelLogicSolverOld solver = new PixelLogicSolverOld();
 
         Boolean[] line;
 
