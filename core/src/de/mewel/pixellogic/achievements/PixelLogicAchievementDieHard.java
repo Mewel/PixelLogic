@@ -1,7 +1,10 @@
 package de.mewel.pixellogic.achievements;
 
 import de.mewel.pixellogic.event.PixelLogicEvent;
+import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
+import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
+import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 
 public class PixelLogicAchievementDieHard extends PixelLogicAchievement {
@@ -22,13 +25,16 @@ public class PixelLogicAchievementDieHard extends PixelLogicAchievement {
             return false;
         }
         PixelLogicUIPageChangeEvent screenChangeEvent = (PixelLogicUIPageChangeEvent) event;
-        if (PixelLogicUIPageId.timeTrialFinished.equals(screenChangeEvent.getPageId())) {
-            final Long time = screenChangeEvent.getData().getLong("time");
-            if (time < 240000) {
-                return true;
-            }
+        if (!(PixelLogicUIPageId.timeTrialFinished.equals(screenChangeEvent.getPageId()))) {
+            return false;
         }
-        return false;
+        PixelLogicUIPageProperties properties = screenChangeEvent.getData();
+        String mode = properties.getString("mode");
+        if (!PixelLogicTimeTrialModeOptions.Modes.time_trial_hardcore.name().equals(mode)) {
+            return false;
+        }
+        final Long time = properties.getLong("time");
+        return time <= 240000;
     }
 
 }

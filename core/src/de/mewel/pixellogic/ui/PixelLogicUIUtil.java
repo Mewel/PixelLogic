@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
@@ -71,6 +72,14 @@ public class PixelLogicUIUtil {
 
     public static int getTextHeight() {
         return (int) ((float) getBaseHeight() / 1.5f);
+    }
+
+    public static BitmapFont getAppFont(PixelLogicAssets assets) {
+        return assets.getGameFont(PixelLogicUIUtil.getTextHeight());
+    }
+
+    public static BitmapFont getSmallAppFont(PixelLogicAssets assets) {
+        return assets.getGameFont(PixelLogicUIUtil.getTextHeight() - PixelLogicAssets.GAME_FONT_SIZE);
     }
 
     public static PixelLogicUILevelResolution get(PixelLogicLevel level) {

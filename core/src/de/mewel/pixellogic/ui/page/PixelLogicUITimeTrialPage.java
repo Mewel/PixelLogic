@@ -23,7 +23,6 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 
-import static de.mewel.pixellogic.asset.PixelLogicAssets.GAME_FONT_SIZE;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.GRID_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_LIGHT_COLOR;
@@ -125,7 +124,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
     }
 
     private Label.LabelStyle getLabelStyle(Color color) {
-        BitmapFont font = getAssets().getGameFont(PixelLogicUIUtil.getTextHeight() - GAME_FONT_SIZE);
+        BitmapFont font = PixelLogicUIUtil.getSmallAppFont(getAssets());
         return new Label.LabelStyle(font, color);
     }
 

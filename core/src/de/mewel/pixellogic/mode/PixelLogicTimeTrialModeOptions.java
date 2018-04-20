@@ -2,6 +2,10 @@ package de.mewel.pixellogic.mode;
 
 public class PixelLogicTimeTrialModeOptions {
 
+    public enum Modes {
+        time_trial_normal, time_trial_hardcore, time_trial_insane, time_trial_epic
+    }
+
     public String id;
 
     public String name;
@@ -19,7 +23,7 @@ public class PixelLogicTimeTrialModeOptions {
     public static final class PixelLogicTimeTrialNormalOptions extends PixelLogicTimeTrialModeOptions {
 
         public PixelLogicTimeTrialNormalOptions() {
-            this.id = "time_trial_normal";
+            this.id = Modes.time_trial_normal.name();
             this.name = "NORMAL MODE";
             this.levelSize = new int[]{4, 5, 6, 7};
             this.levelSizeOffset = new int[]{0, 1, 1, 2};
@@ -32,7 +36,7 @@ public class PixelLogicTimeTrialModeOptions {
     public static final class PixelLogicTimeTrialHardcoreOptions extends PixelLogicTimeTrialModeOptions {
 
         public PixelLogicTimeTrialHardcoreOptions() {
-            this.id = "time_trial_hardcore";
+            this.id = Modes.time_trial_hardcore.name();
             this.name = "HARD MODE";
             this.levelSize = new int[]{6, 7, 8};
             this.levelSizeOffset = new int[]{0, 1, 2};
@@ -45,7 +49,7 @@ public class PixelLogicTimeTrialModeOptions {
     public static final class PixelLogicTimeTrialInsaneOptions extends PixelLogicTimeTrialModeOptions {
 
         public PixelLogicTimeTrialInsaneOptions() {
-            this.id = "time_trial_insane";
+            this.id = Modes.time_trial_insane.name();
             this.name = "INSANE MODE";
             this.levelSize = new int[]{9, 10};
             this.levelSizeOffset = new int[]{2, 2};
@@ -58,7 +62,7 @@ public class PixelLogicTimeTrialModeOptions {
     public static final class PixelLogicTimeTrialEpicOptions extends PixelLogicTimeTrialModeOptions {
 
         public PixelLogicTimeTrialEpicOptions() {
-            this.id = "time_trial_epic";
+            this.id = Modes.time_trial_epic.name();
             this.name = "EPIC MODE";
             this.levelSize = new int[]{0};
             this.levelSizeXY = new int[]{12, 16};

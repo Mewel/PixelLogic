@@ -2,11 +2,15 @@ package de.mewel.pixellogic.ui.layer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -21,6 +25,7 @@ import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
+import de.mewel.pixellogic.ui.page.PixelLogicUITimeTrialPage;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
 
@@ -55,6 +60,8 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
             PixelLogicAchievementEvent achievementEvent = (PixelLogicAchievementEvent) event;
             PixelLogicAchievement achievement = achievementEvent.getAchievement();
             this.achievements.add(achievement);
+
+            Gdx.app.log("achievment layer", "added " + achievement);
         }
     }
 
@@ -69,14 +76,23 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
             this.achievementBlock.setDescription(this.currentDisplayedAchievment.getDescription());
 
 
-
             // this.achievementBlock.addAction(Actions.));
         }
     }
 
     @Override
     public void resize(int width, int height) {
-        this.achievementBlock.setSize(width - (width / 17), height / 10);
+        this.updateViewport(width, height);
+        int padding = width / 64;
+        this.stage.getViewport().update(width, height);
+        this.achievementBlock.setSize(width - (padding * 2), height / 10);
+        this.achievementBlock.setPosition(padding, padding);
+    }
+
+    private void updateViewport(int width, int height) {
+        OrthographicCamera camera = new OrthographicCamera();
+        camera.setToOrtho(false);
+        stage.setViewport(new ExtendViewport(width, height, camera));
     }
 
     @Override
@@ -98,7 +114,9 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
 
         private PixelLogicUIColoredSurface background;
 
-        private Table container;
+        private VerticalGroup container;
+
+        private Container descriptionContainer;
 
         private Label header, description;
 
@@ -111,44 +129,62 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
             this.background.setColor(Color.TAN);
             this.addActor(this.background);
 
-            this.container = new Table();
+            this.container = new VerticalGroup();
+            this.container.left();
+            //this.container.top();
+            this.container.pad(getPadding());
+            this.container.setFillParent(true);
 
             this.headerText = "";
             this.descriptionText = "";
             updateHeader();
             updateDescription();
 
-            container.add(this.header);
-            container.row();
-            container.add(this.description);
+            this.header = new Label("HARD", getHeaderStyle());
+            this.description = new Label("tesxt dasdas dasd as", getDescriptionStyle());
+
+            //this.descriptionContainer = new Container<Label>(description);
+            //description.setFillParent(true);
+            //description.setPosition(0, 0);
+            //description.setDebug(true);
+            //this.descriptionContainer.setDebug(true);
+
+
+            container.addActor(this.header);
+            container.addActor(this.description);
 
             this.addActor(this.container);
+
+            container.setDebug(true);
         }
 
         private Label.LabelStyle getHeaderStyle() {
-            BitmapFont labelFont = getAssets().getGameFont((int) (PixelLogicUIUtil.getTextHeight() * 1.3f));
+            BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets());
             return new Label.LabelStyle(labelFont, TEXT_COLOR);
         }
 
         private Label.LabelStyle getDescriptionStyle() {
-            BitmapFont labelFont = getAssets().getGameFont(PixelLogicUIUtil.getTextHeight());
+            BitmapFont labelFont = PixelLogicUIUtil.getSmallAppFont(getAssets());
             return new Label.LabelStyle(labelFont, TEXT_COLOR);
         }
 
         @Override
         protected void sizeChanged() {
             super.sizeChanged();
+            this.container.pad(getPadding());
             this.background.setSize(this.getWidth(), this.getHeight());
-            updateHeader();
-            updateDescription();
+            //this.descriptionContainer.setWidth(getWidth());
+            //updateHeader();
+            //updateDescription();
         }
 
         private void updateHeader() {
-            this.header = updateLabel(this.header, this.headerText, getHeaderStyle());
+            //this.header = updateLabel(this.header, this.headerText, getHeaderStyle());
         }
 
         private void updateDescription() {
-            this.description = updateLabel(this.description, this.descriptionText, getDescriptionStyle());
+            //this.description = updateLabel(this.description, this.descriptionText, getDescriptionStyle());
+            //this.description.setWrap(true);
         }
 
         private Label updateLabel(Label label, String text, Label.LabelStyle style) {
@@ -156,23 +192,25 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
                 if (style.font.equals(label.getStyle().font)) {
                     return label;
                 }
-                this.removeActor(label);
+                //this.removeActor(label);
+                return label;
             }
-            label = new Label(text, style);
-            this.addActor(label);
-            return label;
+            return new Label(text, style);
         }
 
         private void setHeader(String text) {
-            this.header.setText(text);
-            updateHeader();
+            //this.header.setText(text);
+            //updateHeader();
         }
 
         private void setDescription(String text) {
-            this.description.setText(text);
-            updateDescription();
+            //this.description.setText(text);
+            //updateDescription();
         }
 
+        public float getPadding() {
+            return Gdx.graphics.getWidth() / 32;
+        }
     }
 
 }
