@@ -230,7 +230,7 @@ public class PixelLogicUtil {
                 complexity = newComplexity;
             }
         }
-        Gdx.app.log("crl", "" + complexity);
+        //Gdx.app.log("crl", "" + complexity);
         return randomLevel;
     }
 
@@ -301,15 +301,19 @@ public class PixelLogicUtil {
     public static boolean isSolvable(Boolean[][] levelData) {
         List<List<Integer>> rowData = PixelLogicUtil.getRowData(levelData);
         List<List<Integer>> colData = PixelLogicUtil.getColumnData(levelData);
-        Boolean[][] solvedLevel = new PixelLogicSolver().solve(rowData, colData).getLevel();
+        Boolean[][] solvedLevel = solve(rowData, colData).getLevel();
         return isValid(solvedLevel);
     }
 
     public static void solveLevel(PixelLogicLevel level) {
         List<List<Integer>> rowData = PixelLogicUtil.getRowData(level.getLevelData());
         List<List<Integer>> colData = PixelLogicUtil.getColumnData(level.getLevelData());
-        Boolean[][] solvedLevel = new PixelLogicSolver().solve(rowData, colData).getLevel();
+        Boolean[][] solvedLevel = solve(rowData, colData).getLevel();
         level.setPixels(solvedLevel);
+    }
+
+    public static PixelLogicSolverResult solve(List<List<Integer>> rowData, List<List<Integer>> colData) {
+        return new PixelLogicSolver().solve(rowData, colData);
     }
 
     public static String toString(Boolean[][] levelData) {

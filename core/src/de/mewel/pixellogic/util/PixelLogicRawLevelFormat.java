@@ -28,7 +28,7 @@ public class PixelLogicRawLevelFormat {
      * @return the pixel logic format
      */
     public static PixelLogicRawLevelFormat ofNON(String data) {
-        String[] lines = data.split(System.getProperty("line.separator"));
+        String[] lines = data.split("\n");
         boolean parseRows = false;
         boolean parseColumns = false;
         List<List<Integer>> rows = new ArrayList<List<Integer>>();

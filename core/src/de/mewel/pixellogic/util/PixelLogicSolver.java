@@ -56,7 +56,7 @@ public class PixelLogicSolver {
             }
             complexity++;
         }
-        return complexity / (lines.size() / 2);
+        return complexity / lines.size();
     }
 
     private List<Pixel> solveLine(Line line) {
@@ -90,7 +90,7 @@ public class PixelLogicSolver {
                 newLine[index] = true;
                 newFilledPixel++;
             }
-            if (PixelLogicUtil.isSolved(newLine, line.numbers)) {
+            if (newFilledPixel == line.requiredPixels && PixelLogicUtil.isSolved(newLine, line.numbers)) {
                 lines.add(newLine);
             } else if (index + 1 < booleanLine.length) {
                 lines.addAll(bruteForceLine(line, newLine, index + 1, newFilledPixel));

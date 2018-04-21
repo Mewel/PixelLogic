@@ -31,14 +31,21 @@ public class PixelLogicUtilTest {
     public void createRandomLevelSpeedTest() throws Exception {
         long sTime = System.currentTimeMillis();
         for (int i = 0; i < 50; i++) {
-            PixelLogicUtil.createRandomLevel(16, 12, 7, 9);
+            Boolean[][] randomLevel = PixelLogicUtil.createRandomLevel(9, 9, 9, -1);
+
+            List<List<Integer>> rowData = PixelLogicUtil.getRowData(randomLevel);
+            List<List<Integer>> colData = PixelLogicUtil.getColumnData(randomLevel);
+
+            System.out.println("new: " + new PixelLogicSolver().solve(rowData, colData).getComplexity());
+            System.out.println("old: " + new PixelLogicSolverOld().solve(rowData, colData).getComplexity());
+            System.out.println("------");
         }
         System.out.println(System.currentTimeMillis() - sTime + "ms");
     }
 
     @Test
     public void solveSpeedTest() throws Exception {
-        PixelLogicRawLevelFormat pixelLogicRawLevelFormat = PixelLogicRawLevelFormat.ofNON(getPuzzle16());
+        PixelLogicRawLevelFormat pixelLogicRawLevelFormat = PixelLogicRawLevelFormat.ofNON(getPuzzle6());
         System.out.println("Puzzle successfully parsed. Start solving...");
 /*
         long sTime = System.currentTimeMillis();
