@@ -67,8 +67,8 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
                         options.levelSizeXY[roundNumber * 2 + 1];
                 int cols = options.levelSizeXY == null ? options.levelSize[roundNumber] :
                         options.levelSizeXY[roundNumber * 2];
-                int minDifficulty = options.levelMinDifficulty[roundNumber];
-                int maxDifficulty = options.levelMaxDifficulty[roundNumber];
+                float minDifficulty = options.levelMinDifficulty[roundNumber];
+                float maxDifficulty = options.levelMaxDifficulty[roundNumber];
                 rows += side ? offset : -offset;
                 cols += side ? -offset : offset;
 

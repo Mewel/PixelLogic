@@ -4,14 +4,14 @@ public class PixelLogicSolverResult {
 
     private Boolean[][] level;
 
-    private int complexity;
+    private float complexity;
 
-    public PixelLogicSolverResult(Boolean[][] level, int complexity) {
+    public PixelLogicSolverResult(Boolean[][] level, float complexity) {
         this.level = level;
         this.complexity = complexity;
     }
 
-    public int getComplexity() {
+    public float getComplexity() {
         return complexity;
     }
 

@@ -33,7 +33,7 @@ public class PixelLogicSolver {
         for (Line line : lines.values()) {
             solveQueue.offer(line.id, line);
         }
-        int complexity = solve(lines, solveQueue);
+        float complexity = solve(lines, solveQueue);
         Boolean[][] level = new Boolean[rows][cols];
         for (int row = 0; row < rows; row++) {
             level[row] = lines.get("r" + row).toBooleanLine();
@@ -41,7 +41,7 @@ public class PixelLogicSolver {
         return new PixelLogicSolverResult(level, complexity);
     }
 
-    private int solve(Map<String, Line> lines, ArrayMergingDeque<String, Line> solveQueue) {
+    private float solve(Map<String, Line> lines, ArrayMergingDeque<String, Line> solveQueue) {
         int complexity = 0;
         while (!solveQueue.isEmpty()) {
             Line line = solveQueue.poll();
@@ -56,10 +56,10 @@ public class PixelLogicSolver {
             }
             complexity++;
         }
-        return complexity / lines.size();
+        return (float)complexity / (float)lines.size();
     }
 
-    private List<Pixel> solveLine(Line line) {
+    public List<Pixel> solveLine(Line line) {
         if (line.solved) {
             return new ArrayList<Pixel>();
         }
@@ -139,15 +139,15 @@ public class PixelLogicSolver {
         return copy;
     }
 
-    private static class Line {
+    static class Line {
 
         String id;
 
         List<Integer> numbers;
 
-        int requiredPixels;
-
         List<Pixel> pixels;
+
+        int requiredPixels;
 
         boolean solved;
 
@@ -160,7 +160,7 @@ public class PixelLogicSolver {
         }
 
         boolean isFullyFilled() {
-            return getAmountOfFilledPixels() >= PixelLogicUtil.countPixel(numbers);
+            return getAmountOfFilledPixels() >= this.requiredPixels;
         }
 
         int getAmountOfFilledPixels() {
@@ -193,7 +193,7 @@ public class PixelLogicSolver {
             return line;
         }
 
-        public List<Pixel> update(Boolean[] line) {
+        List<Pixel> update(Boolean[] line) {
             List<Pixel> dirtyPixels = new ArrayList<Pixel>();
             for (int i = 0; i < line.length; i++) {
                 Boolean b = line[i];
@@ -225,7 +225,7 @@ public class PixelLogicSolver {
 
     }
 
-    private static class Pixel {
+    static class Pixel {
 
         int row, col;
 
@@ -236,10 +236,6 @@ public class PixelLogicSolver {
             this.row = row;
             this.col = col;
             this.value = 0;
-        }
-
-        void set(byte value) {
-            this.value = value;
         }
 
     }

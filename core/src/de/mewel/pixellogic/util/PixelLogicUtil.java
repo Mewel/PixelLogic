@@ -208,20 +208,20 @@ public class PixelLogicUtil {
         return level;
     }
 
-    public static Boolean[][] createRandomLevel(int rows, int cols, int minComplexity) {
+    public static Boolean[][] createRandomLevel(int rows, int cols, float minComplexity) {
         return createRandomLevel(rows, cols, minComplexity, -1);
     }
 
-    public static Boolean[][] createRandomLevel(int rows, int cols, int minComplexity, int maxComplexity) {
+    public static Boolean[][] createRandomLevel(int rows, int cols, float minComplexity, float maxComplexity) {
         Boolean[][] randomLevel = createRandomLevel(rows, cols);
         PixelLogicSolverResult result = PixelLogicComplexityAnalyzer.analyze(randomLevel);
-        int complexity = result.getComplexity();
+        float complexity = result.getComplexity();
         boolean found = complexity >= minComplexity && (maxComplexity == -1 || complexity <= maxComplexity);
         int variations = rows * cols / 8;
         while (!found) {
             Boolean[][] newLevel = alterLevel(randomLevel, variations);
             result = PixelLogicComplexityAnalyzer.analyze(newLevel);
-            int newComplexity = result.getComplexity();
+            float newComplexity = result.getComplexity();
             found = newComplexity >= minComplexity && (maxComplexity == -1 || newComplexity <= maxComplexity);
             if(found || newComplexity == complexity ||
                     (newComplexity > complexity && newComplexity < minComplexity) ||

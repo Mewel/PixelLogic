@@ -15,7 +15,7 @@ public class PixelLogicComplexityAnalyzerResult {
         this.result = result;
     }
 
-    public int getComplexity() {
+    public float getComplexity() {
         return result.getComplexity();
     }
 

@@ -31,7 +31,7 @@ public class PixelLogicUtilTest {
     public void createRandomLevelSpeedTest() throws Exception {
         long sTime = System.currentTimeMillis();
         for (int i = 0; i < 50; i++) {
-            Boolean[][] randomLevel = PixelLogicUtil.createRandomLevel(9, 9, 9, -1);
+            Boolean[][] randomLevel = PixelLogicUtil.createRandomLevel(9, 9, 4f, -1);
 
             List<List<Integer>> rowData = PixelLogicUtil.getRowData(randomLevel);
             List<List<Integer>> colData = PixelLogicUtil.getColumnData(randomLevel);
