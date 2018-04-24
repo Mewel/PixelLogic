@@ -45,8 +45,11 @@ public class PixelLogicSolver {
         int complexity = 0;
         while (!solveQueue.isEmpty()) {
             Line line = solveQueue.poll();
-            boolean isLineARow = line.isRow();
+            if(!line.hasChangePotential()) {
+                continue;
+            }
             List<Pixel> dirtyPixels = solveLine(line);
+            boolean isLineARow = line.isRow();
             for (Pixel dirtyPixel : dirtyPixels) {
                 String key = isLineARow ? "c" + dirtyPixel.col : "r" + dirtyPixel.row;
                 Line dirtyLine = lines.get(key);
@@ -160,13 +163,13 @@ public class PixelLogicSolver {
         }
 
         boolean isFullyFilled() {
-            return getAmountOfFilledPixels() >= this.requiredPixels;
+            return getAmountOf((byte) 2) >= this.requiredPixels;
         }
 
-        int getAmountOfFilledPixels() {
+        int getAmountOf(byte type) {
             int amount = 0;
             for (Pixel pixel : pixels) {
-                if (pixel.value == 2) {
+                if (pixel.value == type) {
                     amount++;
                 }
             }
@@ -221,6 +224,12 @@ public class PixelLogicSolver {
         @Override
         public boolean equals(Object obj) {
             return obj != null && obj instanceof Line && id.equals(((Line) obj).id);
+        }
+
+        public boolean hasChangePotential() {
+            /*int freePixel = getAmountOf((byte) 0);
+            return this.requiredPixels * 2 > freePixel;*/
+            return true;
         }
 
     }

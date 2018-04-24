@@ -3,8 +3,6 @@ package de.mewel.pixellogic.util;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -40,11 +38,11 @@ public class PixelLogicSolverTest {
         // easy test's
         line = buildLine(2, 1);
         solver.solveLine(line);
-        assertTrue("there shouldn't be any changes", line.getAmountOfFilledPixels() == 0);
+        assertTrue("there shouldn't be any changes", line.getAmountOf((byte) 2) == 0);
 
         line = buildLine(3, 2);
         solver.solveLine(line);
-        assertTrue("there shouldn't be any changes", line.getAmountOfFilledPixels() == 1);
+        assertTrue("there shouldn't be any changes", line.getAmountOf((byte) 2) == 1);
         assertArrayEquals(new Boolean[]{null, true, null}, line.toBooleanLine());
 
         // complex test
