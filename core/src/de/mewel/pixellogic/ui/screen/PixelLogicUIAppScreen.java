@@ -41,7 +41,7 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
         this.add(this.pageLayer);
         this.add(this.achievementLayer);
 
-        // achievements.fireAchieved(new PixelLogicAchievementDieHard());
+        achievements.fireAchieved(new PixelLogicAchievementDieHard());
     }
 
     @Override

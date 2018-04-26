@@ -2,7 +2,10 @@ package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
@@ -10,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +23,13 @@ import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialHighscoreStore;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
+import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.APP_BACKGROUND;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BLOCK_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.GRID_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_LIGHT_COLOR;
@@ -57,7 +64,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
         root.center();
         root.bottom();
         root.pad(getPadding());
-        root.space(getPadding() * 2.5f);
+        root.space(getPadding() * 1.5f);
 
         this.labelContainer = new Container<Label>(descriptionLabel);
         root.addActor(this.labelContainer);
@@ -140,8 +147,11 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
 
         private Container<Table> highscoreContainer;
 
+        private PixelLogicUIColoredSurface background;
+
         public TimeTrialModeUI(final PixelLogicTimeTrialModeOptions options, PixelLogicUITimeTrialPage screen) {
             super(new VerticalGroup());
+
             this.screen = screen;
             this.options = options;
 
@@ -167,10 +177,16 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
 
             getActor().addActor(this.highscoreContainer);
             getActor().pack();
+
+            Texture whiteTexture = PixelLogicUIUtil.getTexture(BLOCK_COLOR);
+            Sprite s = new Sprite(whiteTexture);
+            this.setBackground(new SpriteDrawable(s));
         }
 
         public void resize() {
             this.width(getComponentWidth());
+            float padding = getPadding() / 2;
+            this.pad(padding, 0, padding, padding * 2);
             this.highscoreContainer.width(getComponentWidth());
             updateHighscoreTable();
             this.button.setSize(getButtonWidth(), getButtonHeight());

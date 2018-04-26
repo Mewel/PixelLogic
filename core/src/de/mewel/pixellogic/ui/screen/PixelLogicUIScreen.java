@@ -7,11 +7,10 @@ import com.badlogic.gdx.graphics.GL30;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIElement;
 
 public abstract class PixelLogicUIScreen implements Screen, PixelLogicUIElement {
-
-    protected final static Color BACKGROUND_COLOR = Color.valueOf("#FAFAFA");
 
     private PixelLogicAssets assets;
 
@@ -28,7 +27,8 @@ public abstract class PixelLogicUIScreen implements Screen, PixelLogicUIElement 
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, BACKGROUND_COLOR.a);
+        Color b = PixelLogicUIConstants.APP_BACKGROUND;
+        Gdx.gl.glClearColor(b.r, b.g, b.b, b.a);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
     }

@@ -131,31 +131,27 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
 
             this.container = new VerticalGroup();
             this.container.left();
-            //this.container.top();
+            this.container.top();
+            this.container.grow();
             this.container.pad(getPadding());
             this.container.setFillParent(true);
 
-            this.headerText = "";
-            this.descriptionText = "";
+            this.headerText = null;
+            this.descriptionText = null;
             updateHeader();
             updateDescription();
 
-            this.header = new Label("HARD", getHeaderStyle());
-            this.description = new Label("tesxt dasdas dasd as", getDescriptionStyle());
-
-            //this.descriptionContainer = new Container<Label>(description);
-            //description.setFillParent(true);
-            //description.setPosition(0, 0);
-            //description.setDebug(true);
-            //this.descriptionContainer.setDebug(true);
-
+            this.header = new Label("HEADER", getHeaderStyle());
+            this.description = new Label("description", getDescriptionStyle());
 
             container.addActor(this.header);
             container.addActor(this.description);
 
             this.addActor(this.container);
 
-            container.setDebug(true);
+            /*container.setDebug(true);
+            this.header.setDebug(true);
+            this.description.setDebug(true);*/
         }
 
         private Label.LabelStyle getHeaderStyle() {
@@ -174,11 +170,16 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
             this.container.pad(getPadding());
             this.background.setSize(this.getWidth(), this.getHeight());
             //this.descriptionContainer.setWidth(getWidth());
-            //updateHeader();
+            updateHeader();
             //updateDescription();
         }
 
         private void updateHeader() {
+            if(this.header != null && this.headerText != null) {
+                Gdx.app.log("l", this.headerText);
+                this.header.setText(this.headerText);
+            }
+
             //this.header = updateLabel(this.header, this.headerText, getHeaderStyle());
         }
 
@@ -199,13 +200,15 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         }
 
         private void setHeader(String text) {
-            //this.header.setText(text);
-            //updateHeader();
+            if(this.header != null) {
+                this.header.setText(text);
+            }
         }
 
         private void setDescription(String text) {
-            //this.description.setText(text);
-            //updateDescription();
+            if(this.description != null) {
+                this.description.setText(text);
+            }
         }
 
         public float getPadding() {
