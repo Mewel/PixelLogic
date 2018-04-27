@@ -16,7 +16,7 @@ public class PixelLogicAchievementDieHard extends PixelLogicAchievement {
 
     @Override
     public String getDescription() {
-        return "Beat the Hard Mode in Time Trials in under 4 minutes.";
+        return "Beat the Time Trial Hard Mode in under 4 minutes.";
     }
 
     @Override

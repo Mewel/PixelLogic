@@ -6,14 +6,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 import de.mewel.pixellogic.achievements.PixelLogicAchievement;
@@ -25,9 +22,11 @@ import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
-import de.mewel.pixellogic.ui.page.PixelLogicUITimeTrialPage;
 
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.PIXEL_BLOCKED_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.PIXEL_FILLED_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_LIGHT_COLOR;
 
 public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLogicListener {
 
@@ -51,6 +50,7 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
 
         this.stage = new Stage();
         this.achievementBlock = new AchievementBlock(assets, eventManager);
+
         this.stage.addActor(this.achievementBlock);
     }
 
@@ -60,6 +60,9 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
             PixelLogicAchievementEvent achievementEvent = (PixelLogicAchievementEvent) event;
             PixelLogicAchievement achievement = achievementEvent.getAchievement();
             this.achievements.add(achievement);
+
+            int padding = Gdx.graphics.getWidth() / 64;
+            this.achievementBlock.addAction(Actions.moveTo(padding, padding, .2f));
 
             Gdx.app.log("achievment layer", "added " + achievement);
         }
@@ -72,9 +75,8 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
             this.stage.draw();
         } else if (!this.achievements.isEmpty()) {
             this.currentDisplayedAchievment = this.achievements.poll();
-            this.achievementBlock.setHeader(this.currentDisplayedAchievment.getName());
-            this.achievementBlock.setDescription(this.currentDisplayedAchievment.getDescription());
-
+            this.achievementBlock.setAchievement(this.currentDisplayedAchievment.getName(),
+                    this.currentDisplayedAchievment.getDescription());
 
             // this.achievementBlock.addAction(Actions.));
         }
@@ -83,10 +85,15 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
     @Override
     public void resize(int width, int height) {
         this.updateViewport(width, height);
-        int padding = width / 64;
         this.stage.getViewport().update(width, height);
+        int padding = width / 64;
         this.achievementBlock.setSize(width - (padding * 2), height / 10);
-        this.achievementBlock.setPosition(padding, padding);
+
+        if(this.currentDisplayedAchievment != null) {
+            this.achievementBlock.setPosition(padding, padding);
+        } else {
+            this.achievementBlock.setPosition(padding, -this.achievementBlock.getHeight());
+        }
     }
 
     private void updateViewport(int width, int height) {
@@ -116,8 +123,6 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
 
         private VerticalGroup container;
 
-        private Container descriptionContainer;
-
         private Label header, description;
 
         private String headerText, descriptionText;
@@ -126,93 +131,61 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
             super(assets, eventManager);
 
             this.background = new PixelLogicUIColoredSurface(assets, eventManager);
-            this.background.setColor(Color.TAN);
+            this.background.setColor(PIXEL_BLOCKED_COLOR);
             this.addActor(this.background);
 
             this.container = new VerticalGroup();
             this.container.left();
             this.container.top();
             this.container.grow();
-            this.container.pad(getPadding());
             this.container.setFillParent(true);
 
             this.headerText = null;
             this.descriptionText = null;
-            updateHeader();
-            updateDescription();
-
-            this.header = new Label("HEADER", getHeaderStyle());
-            this.description = new Label("description", getDescriptionStyle());
-
-            container.addActor(this.header);
-            container.addActor(this.description);
 
             this.addActor(this.container);
-
-            /*container.setDebug(true);
-            this.header.setDebug(true);
-            this.description.setDebug(true);*/
         }
 
         private Label.LabelStyle getHeaderStyle() {
             BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets());
-            return new Label.LabelStyle(labelFont, TEXT_COLOR);
+            return new Label.LabelStyle(labelFont, Color.WHITE);
         }
 
         private Label.LabelStyle getDescriptionStyle() {
             BitmapFont labelFont = PixelLogicUIUtil.getSmallAppFont(getAssets());
-            return new Label.LabelStyle(labelFont, TEXT_COLOR);
+            return new Label.LabelStyle(labelFont, Color.WHITE);
         }
 
         @Override
         protected void sizeChanged() {
             super.sizeChanged();
-            this.container.pad(getPadding());
             this.background.setSize(this.getWidth(), this.getHeight());
-            //this.descriptionContainer.setWidth(getWidth());
-            updateHeader();
-            //updateDescription();
+            this.updateContainer();
         }
 
-        private void updateHeader() {
-            if(this.header != null && this.headerText != null) {
-                Gdx.app.log("l", this.headerText);
-                this.header.setText(this.headerText);
+        protected void updateContainer() {
+            this.container.clearChildren();
+            this.container.pad(getPadding());
+
+            if(this.headerText != null) {
+                this.header = new Label(this.headerText, getHeaderStyle());
+                this.container.addActor(this.header);
             }
-
-            //this.header = updateLabel(this.header, this.headerText, getHeaderStyle());
-        }
-
-        private void updateDescription() {
-            //this.description = updateLabel(this.description, this.descriptionText, getDescriptionStyle());
-            //this.description.setWrap(true);
-        }
-
-        private Label updateLabel(Label label, String text, Label.LabelStyle style) {
-            if (label != null) {
-                if (style.font.equals(label.getStyle().font)) {
-                    return label;
-                }
-                //this.removeActor(label);
-                return label;
-            }
-            return new Label(text, style);
-        }
-
-        private void setHeader(String text) {
-            if(this.header != null) {
-                this.header.setText(text);
+            if(this.descriptionText != null) {
+                this.description = new Label(this.descriptionText, getDescriptionStyle());
+                this.description.setWrap(true);
+                this.container.addActor(description);
             }
         }
 
-        private void setDescription(String text) {
-            if(this.description != null) {
-                this.description.setText(text);
-            }
+        private void setAchievement(String header, String description) {
+            this.headerText = header;
+            this.descriptionText = description;
+            this.updateContainer();
         }
 
         public float getPadding() {
-            return Gdx.graphics.getWidth() / 32;
+            return Gdx.graphics.getWidth() / 72;
         }
     }
 
