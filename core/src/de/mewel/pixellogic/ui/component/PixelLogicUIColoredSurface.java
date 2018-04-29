@@ -14,8 +14,20 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 public class PixelLogicUIColoredSurface extends PixelLogicUIActor {
 
+    int borderWidth;
+
+    Color borderColor;
+
     public PixelLogicUIColoredSurface(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         super(assets, eventManager);
+        this.borderWidth = 0;
+        this.borderColor = null;
+    }
+
+    public PixelLogicUIColoredSurface setBorder(int width, Color color) {
+        this.borderWidth = width;
+        this.borderColor = color;
+        return this;
     }
 
     @Override
@@ -27,11 +39,24 @@ public class PixelLogicUIColoredSurface extends PixelLogicUIActor {
         ShapeRenderer renderer = this.getAssets().getShapeRenderer();
         renderer.setProjectionMatrix(batch.getProjectionMatrix());
         renderer.setTransformMatrix(batch.getTransformMatrix());
-        renderer.setColor(new Color(color.r, color.g, color.b, color.a * parentAlpha));
         renderer.translate(getX(), getY(), 0);
+
+        // render surface
+        renderer.setColor(new Color(color.r, color.g, color.b, color.a * parentAlpha));
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.box(0f, 0f, 0, getWidth(), getHeight(), 0f);
         renderer.end();
+
+        // render border
+        if (this.borderColor != null && this.borderWidth != 0) {
+            renderer.setColor(new Color(borderColor.r, borderColor.g, borderColor.b, borderColor.a * parentAlpha));
+            renderer.begin(ShapeRenderer.ShapeType.Line);
+            for (int i = 0; i < borderWidth; i++) {
+                renderer.box(0f + i, 0f + i, 0, getWidth() - (2 * i), getHeight() - (2 * i), 0f);
+            }
+            renderer.end();
+        }
+
         Gdx.gl.glDisable(GL30.GL_BLEND);
         batch.begin();
     }

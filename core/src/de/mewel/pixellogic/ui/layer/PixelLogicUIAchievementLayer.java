@@ -4,8 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -60,10 +64,6 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
             PixelLogicAchievementEvent achievementEvent = (PixelLogicAchievementEvent) event;
             PixelLogicAchievement achievement = achievementEvent.getAchievement();
             this.achievements.add(achievement);
-
-            int padding = Gdx.graphics.getWidth() / 64;
-            this.achievementBlock.addAction(Actions.moveTo(padding, padding, .2f));
-
             Gdx.app.log("achievment layer", "added " + achievement);
         }
     }
@@ -74,26 +74,44 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
             this.stage.act(delta);
             this.stage.draw();
         } else if (!this.achievements.isEmpty()) {
-            this.currentDisplayedAchievment = this.achievements.poll();
-            this.achievementBlock.setAchievement(this.currentDisplayedAchievment.getName(),
-                    this.currentDisplayedAchievment.getDescription());
-
-            // this.achievementBlock.addAction(Actions.));
+            next();
         }
+    }
+
+    private void next() {
+        this.currentDisplayedAchievment = this.achievements.poll();
+        this.achievementBlock.setAchievement(this.currentDisplayedAchievment.getName(),
+                this.currentDisplayedAchievment.getDescription());
+        int padding = getPadding();
+        MoveToAction moveIn = Actions.moveTo(padding, padding, .2f);
+        DelayAction delay = Actions.delay(7f);
+        MoveToAction moveOut = Actions.moveTo(padding, -this.achievementBlock.getHeight(), .2f);
+        RunnableAction onEnd = Actions.run(new Runnable() {
+            @Override
+            public void run() {
+                PixelLogicUIAchievementLayer.this.currentDisplayedAchievment = null;
+            }
+        });
+        Action sequenceAction = Actions.sequence(moveIn, delay, moveOut, onEnd);
+        this.achievementBlock.addAction(sequenceAction);
     }
 
     @Override
     public void resize(int width, int height) {
         this.updateViewport(width, height);
         this.stage.getViewport().update(width, height);
-        int padding = width / 64;
+        int padding = getPadding();
         this.achievementBlock.setSize(width - (padding * 2), height / 10);
 
-        if(this.currentDisplayedAchievment != null) {
+        if (this.currentDisplayedAchievment != null) {
             this.achievementBlock.setPosition(padding, padding);
         } else {
             this.achievementBlock.setPosition(padding, -this.achievementBlock.getHeight());
         }
+    }
+
+    private int getPadding() {
+        return Gdx.graphics.getWidth() / 64;
     }
 
     private void updateViewport(int width, int height) {
@@ -131,7 +149,10 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
             super(assets, eventManager);
 
             this.background = new PixelLogicUIColoredSurface(assets, eventManager);
-            this.background.setColor(PIXEL_BLOCKED_COLOR);
+            Color bgColor = PIXEL_BLOCKED_COLOR;
+            this.background.setColor(bgColor);
+            this.background.setBorder(1, new Color(bgColor).mul(.5f));
+
             this.addActor(this.background);
 
             this.container = new VerticalGroup();
@@ -167,11 +188,11 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
             this.container.clearChildren();
             this.container.pad(getPadding());
 
-            if(this.headerText != null) {
+            if (this.headerText != null) {
                 this.header = new Label(this.headerText, getHeaderStyle());
                 this.container.addActor(this.header);
             }
-            if(this.descriptionText != null) {
+            if (this.descriptionText != null) {
                 this.description = new Label(this.descriptionText, getDescriptionStyle());
                 this.description.setWrap(true);
                 this.container.addActor(description);

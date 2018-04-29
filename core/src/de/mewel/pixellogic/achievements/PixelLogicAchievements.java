@@ -20,14 +20,21 @@ public class PixelLogicAchievements implements PixelLogicListener {
         this.eventManager = eventManager;
         this.achievements = new ArrayList<PixelLogicAchievement>();
         eventManager.listen(this);
-        register();
 
         clearAll();
+        register();
     }
 
     protected void register() {
         Preferences preferences = Gdx.app.getPreferences("achievements");
-        this.achievements.add(new PixelLogicAchievementDieHard());
+
+        // add
+        this.achievements.add(new PixelLogicAchievementEasyMode());
+        this.achievements.add(new PixelLogicAchievementHardMode());
+        this.achievements.add(new PixelLogicAchievementInsaneMode());
+        this.achievements.add(new PixelLogicAchievementEpicMode());
+
+        // set if done
         for (PixelLogicAchievement achievement : this.achievements) {
             boolean done = preferences.getBoolean(getDoneKey(achievement));
             if (done) {

@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.ui.screen;
 
-import de.mewel.pixellogic.achievements.PixelLogicAchievementDieHard;
 import de.mewel.pixellogic.achievements.PixelLogicAchievements;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
@@ -40,8 +39,6 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
         // add
         this.add(this.pageLayer);
         this.add(this.achievementLayer);
-
-        achievements.fireAchieved(new PixelLogicAchievementDieHard());
     }
 
     @Override

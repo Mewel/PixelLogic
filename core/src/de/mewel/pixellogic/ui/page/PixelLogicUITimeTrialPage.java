@@ -3,7 +3,6 @@ package de.mewel.pixellogic.ui.page;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -23,12 +22,10 @@ import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialHighscoreStore;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
-import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.APP_BACKGROUND;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BLOCK_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.GRID_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
@@ -44,7 +41,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
         super(assets, eventManager);
 
         this.modes = new ArrayList<TimeTrialModeUI>();
-        this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialNormalOptions(), this));
+        this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialEasyOptions(), this));
         this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions(), this));
         this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialInsaneOptions(), this));
         this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialEpicOptions(), this));

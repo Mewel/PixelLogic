@@ -3,7 +3,7 @@ package de.mewel.pixellogic.mode;
 public class PixelLogicTimeTrialModeOptions {
 
     public enum Modes {
-        time_trial_normal, time_trial_hardcore, time_trial_insane, time_trial_epic
+        time_trial_easy, time_trial_hardcore, time_trial_insane, time_trial_epic
     }
 
     public String id;
@@ -20,11 +20,11 @@ public class PixelLogicTimeTrialModeOptions {
 
     public float[] levelMaxDifficulty;
 
-    public static final class PixelLogicTimeTrialNormalOptions extends PixelLogicTimeTrialModeOptions {
+    public static final class PixelLogicTimeTrialEasyOptions extends PixelLogicTimeTrialModeOptions {
 
-        public PixelLogicTimeTrialNormalOptions() {
-            this.id = Modes.time_trial_normal.name();
-            this.name = "NORMAL MODE";
+        public PixelLogicTimeTrialEasyOptions() {
+            this.id = Modes.time_trial_easy.name();
+            this.name = "EASY MODE";
             this.levelSize = new int[]{4, 5, 6, 7};
             this.levelSizeOffset = new int[]{0, 1, 1, 2};
             this.levelMinDifficulty = new float[]{1.5f, 1.7f, 1.9f, 2.1f};

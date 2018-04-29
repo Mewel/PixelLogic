@@ -29,7 +29,7 @@ public class PixelLogicAssets {
 
     private static String LEVEL_FONT_PREFIX = "level_font_";
 
-    private static int FONT_ITERATION_START = 2;
+    private static int FONT_ITERATION_START = 3;
 
     private static int FONT_ITERATION_END = 20;
 
