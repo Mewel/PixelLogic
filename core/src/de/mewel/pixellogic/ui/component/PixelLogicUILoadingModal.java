@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
@@ -21,7 +20,7 @@ public class PixelLogicUILoadingModal extends PixelLogicUIModal {
     }
 
     protected void buildContent() {
-        BitmapFont gameFont = PixelLogicUIUtil.getAppFont(getAssets());
+        BitmapFont gameFont = PixelLogicUIUtil.getAppFont(getAssets(), 1);
         Label.LabelStyle style = new Label.LabelStyle(gameFont, Color.WHITE);
         Label label = new Label(this.message, style);
         getContent().add(label);

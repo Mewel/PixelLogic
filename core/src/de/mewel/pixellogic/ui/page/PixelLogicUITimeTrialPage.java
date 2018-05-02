@@ -128,7 +128,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
     }
 
     private Label.LabelStyle getLabelStyle(Color color) {
-        BitmapFont font = PixelLogicUIUtil.getSmallAppFont(getAssets());
+        BitmapFont font = PixelLogicUIUtil.getAppFont(getAssets(), 0);
         return new Label.LabelStyle(font, color);
     }
 

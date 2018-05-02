@@ -29,10 +29,6 @@ public class PixelLogicAssets {
 
     private static String LEVEL_FONT_PREFIX = "level_font_";
 
-    private static int FONT_ITERATION_START = 3;
-
-    private static int FONT_ITERATION_END = 20;
-
     public static int LEVEL_FONT_SIZE = 5;
 
     private static String LEVEL_DIRECTORY = "level";
@@ -93,7 +89,7 @@ public class PixelLogicAssets {
     }
 
     protected void loadBitmapFont(String path, String prefix) {
-        for (int i = FONT_ITERATION_START; i <= FONT_ITERATION_END; i++) {
+        for (int i = getLevelFontIterationStart(); i <= getLevelFontIterationEnd(); i++) {
             String assetName = prefix + (i * LEVEL_FONT_SIZE) + ".fnt";
             PixelLogicBitmapFontLoader.PixelLogicBitmapFontLoaderParameters params = new PixelLogicBitmapFontLoader.PixelLogicBitmapFontLoaderParameters();
             params.fileName = path;
@@ -115,10 +111,18 @@ public class PixelLogicAssets {
         return manager.get(LEVEL_FONT_PREFIX + fixedSize + ".fnt", BitmapFont.class);
     }
 
+    public static int getLevelFontIterationStart() {
+        return Math.max(2, (int) (3 * Gdx.app.getGraphics().getDensity()));
+    }
+
+    public static int getLevelFontIterationEnd() {
+        return getLevelFontIterationStart() * 10;
+    }
+
     public static int getFixedLevelFontSize(int size) {
         int fixedSize = (int) Math.ceil(size / LEVEL_FONT_SIZE) * LEVEL_FONT_SIZE;
-        fixedSize = Math.max(fixedSize, FONT_ITERATION_START * LEVEL_FONT_SIZE);
-        fixedSize = Math.min(fixedSize, FONT_ITERATION_END * LEVEL_FONT_SIZE);
+        fixedSize = Math.max(fixedSize, getLevelFontIterationStart() * LEVEL_FONT_SIZE);
+        fixedSize = Math.min(fixedSize, getLevelFontIterationEnd() * LEVEL_FONT_SIZE);
         return fixedSize;
     }
 

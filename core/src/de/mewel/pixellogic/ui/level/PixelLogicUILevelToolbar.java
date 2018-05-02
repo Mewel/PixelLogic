@@ -100,7 +100,7 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
 
         // display solved text
         if (this.solvedLabel == null) {
-            BitmapFont labelFont = getAssets().getGameFont((int) this.getHeight());
+            BitmapFont labelFont = getToolbarFont();
             Label.LabelStyle style = new Label.LabelStyle(labelFont, Color.WHITE);
             this.solvedLabel = new Label(level.getName(), style);
             this.addActor(this.solvedLabel);
@@ -115,6 +115,10 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
         if (this.timerLabel != null) {
             this.timerLabel.addAction(Actions.fadeOut(.3f));
         }
+    }
+
+    private BitmapFont getToolbarFont() {
+        return getAssets().getGameFont((int) this.getHeight());
     }
 
     @Override
@@ -133,7 +137,7 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
         if (event instanceof PixelLogicTimerEvent) {
             PixelLogicTimerEvent timerEvent = (PixelLogicTimerEvent) event;
             if (this.timerLabel == null) {
-                BitmapFont labelFont = getAssets().getGameFont((int) this.getHeight());
+                BitmapFont labelFont = getToolbarFont();
                 Label.LabelStyle style = new Label.LabelStyle(labelFont, Color.WHITE);
                 this.timerLabel = new Label("00:00", style);
                 this.addActor(this.timerLabel);

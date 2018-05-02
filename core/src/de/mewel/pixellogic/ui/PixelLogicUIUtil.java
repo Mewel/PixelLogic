@@ -57,7 +57,7 @@ public class PixelLogicUIUtil {
                 maxColNumbers = column.size();
             }
         }
-        return new int[] {maxRowNumbers, maxColNumbers};
+        return new int[]{maxRowNumbers, maxColNumbers};
     }
 
     public static int getBaseHeight() {
@@ -70,16 +70,9 @@ public class PixelLogicUIUtil {
         return Math.max(BASE_SIZE, baseHeight);
     }
 
-    public static int getTextHeight() {
-        return (int) ((float) getBaseHeight() / 1.5f);
-    }
-
-    public static BitmapFont getAppFont(PixelLogicAssets assets) {
-        return assets.getGameFont(PixelLogicUIUtil.getTextHeight());
-    }
-
-    public static BitmapFont getSmallAppFont(PixelLogicAssets assets) {
-        return assets.getGameFont(PixelLogicUIUtil.getTextHeight() - PixelLogicAssets.GAME_FONT_SIZE);
+    public static BitmapFont getAppFont(PixelLogicAssets assets, int size) {
+        float fontSize = getBaseHeight() / 1.5f * Gdx.graphics.getDensity() + size * PixelLogicAssets.GAME_FONT_SIZE;
+        return assets.getGameFont((int) fontSize);
     }
 
     public static PixelLogicUILevelResolution get(PixelLogicLevel level) {

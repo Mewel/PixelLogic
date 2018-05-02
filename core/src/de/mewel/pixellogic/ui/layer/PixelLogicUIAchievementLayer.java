@@ -28,9 +28,6 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.PIXEL_BLOCKED_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.PIXEL_FILLED_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_LIGHT_COLOR;
 
 public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLogicListener {
 
@@ -168,12 +165,12 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         }
 
         private Label.LabelStyle getHeaderStyle() {
-            BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets());
+            BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 1);
             return new Label.LabelStyle(labelFont, Color.WHITE);
         }
 
         private Label.LabelStyle getDescriptionStyle() {
-            BitmapFont labelFont = PixelLogicUIUtil.getSmallAppFont(getAssets());
+            BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 0);
             return new Label.LabelStyle(labelFont, Color.WHITE);
         }
 

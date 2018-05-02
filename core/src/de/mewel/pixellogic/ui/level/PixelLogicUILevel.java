@@ -11,12 +11,12 @@ import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
-import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelSwitcherChangedEvent;
+import de.mewel.pixellogic.ui.level.event.PixelLogicUserChangedBoardEvent;
 
 public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
@@ -49,7 +49,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
             return;
         }
         this.level.reset();
-        this.getEventManager().fire(new PixelLogicUserEvent(this, PixelLogicUserEvent.Type.BOARD_CHANGED));
+        this.getEventManager().fire(new PixelLogicUserChangedBoardEvent(this, level));
     }
 
     public void resize() {
@@ -102,7 +102,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         int boardOffsetX = rowInfoWidth + space;
         if (this.board != null) {
             this.board.setSize(boardSize.x, boardSize.y);
-            if(!this.isSolved()) {
+            if (!this.isSolved()) {
                 this.board.setPosition(boardOffsetX, 0);
             } else {
                 float x = this.getWidth() / 2f - this.board.getWidth() / 2f;
@@ -111,7 +111,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
             }
         }
         if (this.rowGroup != null) {
-            this.rowGroup.setBounds(0, 0, rowInfoWidth , boardSize.y);
+            this.rowGroup.setBounds(0, 0, rowInfoWidth, boardSize.y);
         }
         if (this.columnGroup != null) {
             float boardOffsetY = boardSize.y + space;
@@ -167,7 +167,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
             Boolean currentPixel = gui.level.get((int) pixel.y, (int) pixel.x);
             boolean selected = button != 1 && this.selectedPixelType;
             UserAction.Type action = currentPixel == null ? (selected ? UserAction.Type.FILL : UserAction.Type.BLOCK) : UserAction.Type.EMPTY;
-            this.userAction = new UserAction(gui.getEventManager(), action, pixel, selected);
+            this.userAction = new UserAction(gui, action, pixel, selected);
             drawPixel(pixel);
             return true;
         }
@@ -208,7 +208,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
             EMPTY, FILL, BLOCK
         }
 
-        private PixelLogicEventManager eventManager;
+        private PixelLogicUILevel levelUI;
 
         private Type type;
 
@@ -220,8 +220,8 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
         private Boolean horizontal;
 
-        UserAction(PixelLogicEventManager eventManager, Type type, Vector2 startPixel, boolean selectedPixelType) {
-            this.eventManager = eventManager;
+        UserAction(PixelLogicUILevel levelUI, Type type, Vector2 startPixel, boolean selectedPixelType) {
+            this.levelUI = levelUI;
             this.startPixel = startPixel;
             this.type = type;
             this.selectedPixelType = selectedPixelType;
@@ -287,7 +287,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         private void draw(int row, int col, PixelLogicLevel level, Type type) {
             Boolean pixelValue = Type.EMPTY.equals(type) ? null : Type.FILL.equals(type);
             level.set(row, col, pixelValue);
-            eventManager.fire(new PixelLogicUserEvent(this, PixelLogicUserEvent.Type.BOARD_CHANGED));
+            levelUI.getEventManager().fire(new PixelLogicUserChangedBoardEvent(levelUI, level, row, col, pixelValue));
         }
 
     }
