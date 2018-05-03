@@ -33,6 +33,7 @@ public class PixelLogicAchievements implements PixelLogicListener {
         this.achievements.add(new PixelLogicAchievementHardMode());
         this.achievements.add(new PixelLogicAchievementInsaneMode());
         this.achievements.add(new PixelLogicAchievementEpicMode());
+        this.achievements.add(new PixelLogicAchievementNoBlock());
 
         // set if done
         for (PixelLogicAchievement achievement : this.achievements) {

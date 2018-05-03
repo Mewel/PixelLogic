@@ -59,6 +59,13 @@ public class PixelLogicLevel {
         return new Color(this.image[row][col]);
     }
 
+    /**
+     * Checks if this pixel is neither filled nor empty.
+     *
+     * @param row the row to check
+     * @param col the column to check
+     * @return true if the pixel is empty
+     */
     public boolean isEmpty(int row, int col) {
         return pixels[row][col] == null;
     }
@@ -96,6 +103,25 @@ public class PixelLogicLevel {
                 boolean required = levelData[row][col];
                 Boolean pixel = pixels[row][col];
                 if ((required && (pixel == null || !pixel)) || (!required && (pixel != null && pixel))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks if this level has neither filled nor blocked pixel's.
+     *
+     * @return true if the level is virgin
+     */
+    public boolean isEmpty() {
+        if (this.levelData == null) {
+            return true;
+        }
+        for (int row = 0; row < this.rows; row++) {
+            for (int col = 0; col < this.cols; col++) {
+                if (!isEmpty(row, col)) {
                     return false;
                 }
             }
