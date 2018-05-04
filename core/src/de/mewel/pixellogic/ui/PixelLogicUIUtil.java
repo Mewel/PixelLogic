@@ -71,7 +71,8 @@ public class PixelLogicUIUtil {
     }
 
     public static BitmapFont getAppFont(PixelLogicAssets assets, int size) {
-        float fontSize = getBaseHeight() / 1.5f * Gdx.graphics.getDensity() + size * PixelLogicAssets.GAME_FONT_SIZE;
+        float baseSize = Gdx.graphics.getHeight() * 0.05f;
+        float fontSize = baseSize + (size * (baseSize / 3));
         return assets.getGameFont((int) fontSize);
     }
 

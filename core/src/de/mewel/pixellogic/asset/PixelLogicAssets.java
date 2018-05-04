@@ -112,7 +112,7 @@ public class PixelLogicAssets {
     }
 
     public static int getLevelFontIterationStart() {
-        return Math.max(2, (int) (3 * Gdx.app.getGraphics().getDensity()));
+        return Math.max(2, (int) (2 * Gdx.app.getGraphics().getDensity()));
     }
 
     public static int getLevelFontIterationEnd() {
