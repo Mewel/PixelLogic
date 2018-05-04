@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.ui.level;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
@@ -40,6 +41,18 @@ public class PixelLogicUILevelResolution {
         float pixelPerColumn = MathUtils.floor((width - rowInfoWidth) / (float) columns);
         float pixelPerRow = MathUtils.floor((height - colInfoHeight) / (float) rows);
         int maxPixel = MathUtils.floor(Math.min(pixelPerColumn, pixelPerRow));
+
+        while(rowInfoWidth < maxPixel || colInfoHeight < maxPixel) {
+            if (rowInfoWidth < maxPixel) {
+                rowInfoWidth = maxPixel;
+                pixelPerColumn = MathUtils.floor((width - rowInfoWidth) / (float) columns);
+            }
+            if (colInfoHeight < maxPixel) {
+                colInfoHeight = maxPixel;
+                pixelPerRow = MathUtils.floor((height - colInfoHeight) / (float) rows);
+            }
+            maxPixel = MathUtils.floor(Math.min(pixelPerColumn, pixelPerRow));
+        }
 
         this.gameSpaceSize = MathUtils.floor(maxPixel / PIXEL_SPACE_RELATION);
         this.gamePixelSize = maxPixel - this.gameSpaceSize;

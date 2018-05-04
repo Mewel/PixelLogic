@@ -5,11 +5,10 @@ import com.badlogic.gdx.Game;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
-import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
-import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
+import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIAppScreen;
 
-public class PixelLogicGame extends Game {
+public class LevelTest extends Game {
 
     private PixelLogicAssets assets;
 
@@ -25,8 +24,24 @@ public class PixelLogicGame extends Game {
         this.assets.load();
 
         this.appScreen = new PixelLogicUIAppScreen(assets, eventManager);
-        this.appScreen.setPage(PixelLogicUIPageId.timeTrial, new PixelLogicUIPageProperties());
         this.setScreen(this.appScreen);
+
+        final PixelLogicTimeTrialMode mode = new PixelLogicTimeTrialMode(new TestOptions());
+        mode.setup(assets, eventManager);
+        mode.run();
+    }
+
+    public static final class TestOptions extends PixelLogicTimeTrialModeOptions {
+
+        public TestOptions() {
+            this.id = Modes.time_trial_hardcore.name();
+            this.name = "HARD MODE";
+            this.levelSize = new int[]{8};
+            this.levelSizeOffset = new int[]{3};
+            this.levelMinDifficulty = new float[]{2.5f};
+            this.levelMaxDifficulty = new float[]{3.5f};
+        }
+
     }
 
     @Override
@@ -38,7 +53,7 @@ public class PixelLogicGame extends Game {
             this.eventManager.dispose();
         }
         super.dispose();
-}
+    }
 
     public PixelLogicAssets getAssets() {
         return assets;
@@ -47,5 +62,4 @@ public class PixelLogicGame extends Game {
     public PixelLogicEventManager getEventManager() {
         return eventManager;
     }
-
 }

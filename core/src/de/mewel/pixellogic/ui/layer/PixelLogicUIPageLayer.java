@@ -36,6 +36,10 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer, PixelLogicListe
         this.pageMap.put(id, screen);
     }
 
+    public PixelLogicUIPage get(PixelLogicUIPageId id) {
+        return this.pageMap.get(id);
+    }
+
     @Override
     public void handle(PixelLogicEvent event) {
         if (event instanceof PixelLogicUIPageChangeEvent) {

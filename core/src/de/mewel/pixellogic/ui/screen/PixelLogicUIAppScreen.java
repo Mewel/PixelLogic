@@ -6,6 +6,7 @@ import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.layer.PixelLogicUIAchievementLayer;
 import de.mewel.pixellogic.ui.layer.PixelLogicUIPageLayer;
 import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
+import de.mewel.pixellogic.ui.page.PixelLogicUIPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.ui.page.PixelLogicUITimeTrialFinishedPage;
@@ -34,11 +35,15 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
         this.pageLayer.add(PixelLogicUIPageId.level, levelScreen);
         this.pageLayer.add(PixelLogicUIPageId.timeTrial, timeTrialScreen);
         this.pageLayer.add(PixelLogicUIPageId.timeTrialFinished, timeTrialFinishedScreen);
-        this.pageLayer.activate(timeTrialScreen, new PixelLogicUIPageProperties());
 
         // add
         this.add(this.pageLayer);
         this.add(this.achievementLayer);
+    }
+
+    public void setPage(PixelLogicUIPageId pageId, PixelLogicUIPageProperties properties) {
+        PixelLogicUIPage page = this.pageLayer.get(pageId);
+        this.pageLayer.activate(page, properties);
     }
 
     @Override

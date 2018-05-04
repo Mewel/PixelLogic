@@ -30,11 +30,7 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
 
     private boolean fillPixel;
 
-    private boolean swappingAnimationActivated;
-
-    private boolean swappingAnimationStarted;
-
-    public PixelLogicUILevelSwitcher(PixelLogicAssets assets, PixelLogicEventManager eventManager, Texture icons) {
+    PixelLogicUILevelSwitcher(PixelLogicAssets assets, PixelLogicEventManager eventManager, Texture icons) {
         super(assets, eventManager);
         this.penSprite = new Sprite(icons, 0, 0, BASE_SIZE, BASE_SIZE);
         this.xSprite = new Sprite(icons, BASE_SIZE, 0, BASE_SIZE, BASE_SIZE);
@@ -42,8 +38,6 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
         this.xColor = PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
 
         this.fillPixel = true;
-        this.swappingAnimationActivated = false;
-        this.swappingAnimationStarted = false;
 
         this.background = PixelLogicUIUtil.getTexture(Color.LIGHT_GRAY);
         this.marker = new Marker();
@@ -91,38 +85,26 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
         super.clear();
     }
 
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-        if (this.swappingAnimationActivated) {
-            this.penColor = PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
-            this.xColor = PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
-            float x = this.fillPixel ? 0 : this.getWidth() - this.marker.getWidth();
-            this.marker.addAction(Actions.sequence(
-                    Actions.moveTo(x, 0, 0.1f),
-                    Actions.color(TOOLBAR_SWITCHER_ACTIVE_COLOR, 0.05f),
-                    Actions.color(Color.ORANGE, 0.1f),
-                    Actions.run(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        swappingAnimationStarted = false;
-                                        penColor = fillPixel ? TOOLBAR_SWITCHER_ACTIVE_COLOR : PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
-                                        xColor = !fillPixel ? TOOLBAR_SWITCHER_ACTIVE_COLOR : PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
-                                    }
-                                }
-                    )));
-            this.swappingAnimationActivated = false;
-            this.swappingAnimationStarted = true;
-        }
-    }
-
     public void swap() {
-        if (this.swappingAnimationStarted) {
-            return;
-        }
-        this.swappingAnimationActivated = true;
         this.fillPixel = !this.fillPixel;
         getEventManager().fire(new PixelLogicLevelSwitcherChangedEvent(PixelLogicUILevelSwitcher.this, fillPixel));
+
+        // animate
+        this.penColor = PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
+        this.xColor = PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
+        float x = this.fillPixel ? 0 : this.getWidth() - this.marker.getWidth();
+        this.marker.addAction(Actions.sequence(
+                Actions.moveTo(x, 0, 0.1f),
+                Actions.color(TOOLBAR_SWITCHER_ACTIVE_COLOR, 0.05f),
+                Actions.color(Color.ORANGE, 0.1f),
+                Actions.run(new Runnable() {
+                                @Override
+                                public void run() {
+                                    penColor = fillPixel ? TOOLBAR_SWITCHER_ACTIVE_COLOR : PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
+                                    xColor = !fillPixel ? TOOLBAR_SWITCHER_ACTIVE_COLOR : PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
+                                }
+                            }
+                )));
     }
 
     private static class Marker extends Actor {

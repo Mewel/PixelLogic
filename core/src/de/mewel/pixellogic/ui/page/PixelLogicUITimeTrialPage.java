@@ -144,8 +144,6 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
 
         private Container<Table> highscoreContainer;
 
-        private PixelLogicUIColoredSurface background;
-
         public TimeTrialModeUI(final PixelLogicTimeTrialModeOptions options, PixelLogicUITimeTrialPage screen) {
             super(new VerticalGroup());
 

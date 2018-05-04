@@ -8,11 +8,11 @@ import de.mewel.pixellogic.ui.level.event.PixelLogicUserChangedBoardEvent;
 
 public class PixelLogicAchievementNoBlock extends PixelLogicAchievement {
 
-    public Boolean isThePuzzelBigEnough;
+    private Boolean isThePuzzelBigEnough;
 
-    public Boolean blocked;
+    private Boolean blocked;
 
-    public PixelLogicAchievementNoBlock() {
+    PixelLogicAchievementNoBlock() {
         this.isThePuzzelBigEnough = null;
         this.blocked = null;
     }
@@ -24,7 +24,7 @@ public class PixelLogicAchievementNoBlock extends PixelLogicAchievement {
 
     @Override
     public String getDescription() {
-        return "Solve a 6x6 or bigger puzzle without blocking a single cell.";
+        return "Solve a 6x6 or bigger puzzle without blocking a single pixel.";
     }
 
     @Override
