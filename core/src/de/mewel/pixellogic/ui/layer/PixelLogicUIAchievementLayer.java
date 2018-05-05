@@ -98,8 +98,7 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         this.updateViewport(width, height);
         this.stage.getViewport().update(width, height);
         int padding = getPadding();
-        this.achievementBlock.setSize(width - (padding * 2), height / 10);
-
+        this.achievementBlock.setWidth(width - (padding * 2));
         if (this.currentDisplayedAchievment != null) {
             this.achievementBlock.setPosition(padding, padding);
         } else {
@@ -165,7 +164,7 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         }
 
         private Label.LabelStyle getHeaderStyle() {
-            BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 1);
+            BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 2);
             return new Label.LabelStyle(labelFont, Color.WHITE);
         }
 
@@ -178,7 +177,6 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         protected void sizeChanged() {
             super.sizeChanged();
             this.background.setSize(this.getWidth(), this.getHeight());
-            this.updateContainer();
         }
 
         protected void updateContainer() {
@@ -187,13 +185,27 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
 
             if (this.headerText != null) {
                 this.header = new Label(this.headerText, getHeaderStyle());
+                this.header.setWrap(true);
                 this.container.addActor(this.header);
+                fixLabelHeight(this.header);
             }
             if (this.descriptionText != null) {
                 this.description = new Label(this.descriptionText, getDescriptionStyle());
                 this.description.setWrap(true);
                 this.container.addActor(description);
+                fixLabelHeight(this.description);
             }
+            if(header != null && description != null) {
+                updateHeight();
+            }
+        }
+
+        private void updateHeight() {
+            float bestHeight = header.getPrefHeight() + description.getPrefHeight() + getPadding() * 2f;
+            float minHeight = Gdx.graphics.getHeight() / 10f;
+            float height = Math.max(minHeight, bestHeight);
+            this.setY(-height);
+            this.setHeight(height);
         }
 
         private void setAchievement(String header, String description) {
@@ -205,6 +217,11 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         public float getPadding() {
             return Gdx.graphics.getWidth() / 72;
         }
+
+        private void fixLabelHeight(Label label) {
+            PixelLogicUIUtil.fixLabelHeight(label, this.getWidth() - (getPadding() * 2));
+        }
+
     }
 
 }

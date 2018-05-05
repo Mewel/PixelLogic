@@ -20,7 +20,7 @@ public class PixelLogicUILoadingModal extends PixelLogicUIModal {
     }
 
     protected void buildContent() {
-        BitmapFont gameFont = PixelLogicUIUtil.getAppFont(getAssets(), 1);
+        BitmapFont gameFont = PixelLogicUIUtil.getAppFont(getAssets(), 2);
         Label.LabelStyle style = new Label.LabelStyle(gameFont, Color.WHITE);
         Label label = new Label(this.message, style);
         getContent().add(label);

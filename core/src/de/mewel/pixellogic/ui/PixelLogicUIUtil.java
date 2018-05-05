@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -70,9 +71,16 @@ public class PixelLogicUIUtil {
         return Math.max(BASE_SIZE, baseHeight);
     }
 
+    public static void fixLabelHeight(Label label, float width) {
+        label.pack();
+        label.setWidth(width);
+        label.pack();
+        label.setWidth(width);
+    }
+
     public static BitmapFont getAppFont(PixelLogicAssets assets, int size) {
         float baseSize = Gdx.graphics.getHeight() * 0.05f;
-        float fontSize = baseSize + (size * (baseSize / 3));
+        float fontSize = baseSize + (size * (baseSize / 6));
         return assets.getGameFont((int) fontSize);
     }
 
