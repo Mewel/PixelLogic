@@ -14,6 +14,7 @@ import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
+import de.mewel.pixellogic.ui.level.event.PixelLogicUserChangedBoardEvent;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
@@ -145,6 +146,13 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
             if (PixelLogicUserEvent.Type.LEVEL_MENU_CLOSED.equals(userEvent.getType())) {
                 long elapsed = this.stopWatch.resume();
                 this.getEventManager().fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.resume, elapsed));
+            }
+        }
+        if(event instanceof PixelLogicUserChangedBoardEvent) {
+            PixelLogicUserChangedBoardEvent changedBoardEvent = (PixelLogicUserChangedBoardEvent) event;
+            if(changedBoardEvent.getLevel().isFilled()) {
+                // activate secret level
+
             }
         }
     }

@@ -130,6 +130,25 @@ public class PixelLogicLevel {
     }
 
     /**
+     * Checks if all pixel in this level are filled
+     *
+     * @return true if everything is filled
+     */
+    public boolean isFilled() {
+        if (this.levelData == null) {
+            return false;
+        }
+        for (int row = 0; row < this.rows; row++) {
+            for (int col = 0; col < this.cols; col++) {
+                if (isEmpty(row, col) || isBlocked(row, col)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * Checks if a row is complete. This does not say if its correctly solved, just that all
      * numbers are entered.
      *
