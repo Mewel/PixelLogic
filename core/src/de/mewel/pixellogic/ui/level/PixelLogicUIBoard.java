@@ -28,7 +28,7 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
         this.addActor(this.grid);
         for (int row = 0; row < level.getRows(); row++) {
             for (int col = 0; col < level.getColumns(); col++) {
-                PixelLogicUIBoardPixel pixel = new PixelLogicUIBoardPixel(getAssets(), getEventManager(), level, row, col);
+                PixelLogicUIBoardPixel pixel = new PixelLogicUIBoardPixel(getAssets(), getEventManager(), row, col);
                 this.pixels[row][col] = pixel;
                 this.addActor(pixel);
             }
@@ -40,20 +40,6 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
     @Override
     public void onLevelSolved(PixelLogicLevelStatusChangeEvent event) {
         this.grid.addAction(Actions.fadeOut(.2f));
-    }
-
-    @Override
-    public void onLevelDestroyed(PixelLogicLevelStatusChangeEvent event) {
-
-    }
-
-    @Override
-    public void onLevelChange(PixelLogicLevelStatusChangeEvent event) {
-        for (int row = 0; row < level.getRows(); row++) {
-            for (int col = 0; col < level.getColumns(); col++) {
-                this.pixels[row][col].updateLevelStatus(event.getStatus());
-            }
-        }
     }
 
     @Override
@@ -76,6 +62,18 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
             }
         }
         this.grid.update();
+    }
+
+    public void setPixel(int row, int col, Boolean value) {
+        this.pixels[row][col].set(value);
+    }
+
+    public PixelLogicLevel getLevel() {
+        return this.level;
+    }
+
+    public PixelLogicUIBoardPixel[][] getPixels() {
+        return pixels;
     }
 
 }

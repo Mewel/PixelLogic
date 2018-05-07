@@ -28,11 +28,6 @@ public class PixelLogicUIRowGroup extends PixelLogicUILevelGroup {
     }
 
     @Override
-    public void onLevelSolved(PixelLogicLevelStatusChangeEvent event) {
-        this.addAction(Actions.fadeOut(0.4f));
-    }
-
-    @Override
     public void onLevelDestroyed(PixelLogicLevelStatusChangeEvent event) {
         this.level = null;
     }

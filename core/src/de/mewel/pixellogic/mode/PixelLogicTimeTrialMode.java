@@ -152,7 +152,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
             PixelLogicUserChangedBoardEvent changedBoardEvent = (PixelLogicUserChangedBoardEvent) event;
             if(changedBoardEvent.getLevel().isFilled()) {
                 // activate secret level
-
+                Gdx.app.log("m", "start secret lvl");
             }
         }
     }

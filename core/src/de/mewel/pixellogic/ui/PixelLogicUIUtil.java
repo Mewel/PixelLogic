@@ -71,17 +71,13 @@ public class PixelLogicUIUtil {
         return Math.max(BASE_SIZE, baseHeight);
     }
 
-    public static void fixLabelHeight(Label label, float width) {
-        label.pack();
-        label.setWidth(width);
-        label.pack();
-        label.setWidth(width);
+    public static float getAppFontHeight(int size) {
+        float baseSize = getBaseHeight() * 0.5f;
+        return baseSize + (size * (baseSize / 6));
     }
 
     public static BitmapFont getAppFont(PixelLogicAssets assets, int size) {
-        float baseSize = Gdx.graphics.getHeight() * 0.05f;
-        float fontSize = baseSize + (size * (baseSize / 6));
-        return assets.getGameFont((int) fontSize);
+        return assets.getGameFont((int) getAppFontHeight(size));
     }
 
     public static PixelLogicUILevelResolution get(PixelLogicLevel level) {
@@ -102,6 +98,13 @@ public class PixelLogicUIUtil {
     public static int getLevelMaxHeight() {
         int screenHeight = Gdx.graphics.getHeight();
         return screenHeight - (getToolbarHeight() + getToolbarPaddingTop());
+    }
+
+    public static void fixLabelHeight(Label label, float width) {
+        label.pack();
+        label.setWidth(width);
+        label.pack();
+        label.setWidth(width);
     }
 
     public static String formatDate(Long milliseconds) {

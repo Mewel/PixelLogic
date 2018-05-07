@@ -14,6 +14,7 @@ import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
+import de.mewel.pixellogic.ui.level.animation.PixelLogicUIBoardSolvedAnimation;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelSwitcherChangedEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicUserChangedBoardEvent;
@@ -127,6 +128,21 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         float y = this.getHeight() / 2f - this.board.getHeight() / 2f;
         sequenceAction.addAction(Actions.moveTo(x, y, 0.2f));
         this.board.addAction(sequenceAction);
+
+        // run solve animation
+        new PixelLogicUIBoardSolvedAnimation(this).execute();
+    }
+
+    public PixelLogicUIBoard getBoard() {
+        return board;
+    }
+
+    public PixelLogicUIRowGroup getRowGroup() {
+        return rowGroup;
+    }
+
+    public PixelLogicUIColumnGroup getColumnGroup() {
+        return columnGroup;
     }
 
     private static class LevelListener extends InputListener implements PixelLogicListener {
@@ -286,7 +302,12 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
         private void draw(int row, int col, PixelLogicLevel level, Type type) {
             Boolean pixelValue = Type.EMPTY.equals(type) ? null : Type.FILL.equals(type);
+            Boolean oldValue = level.get(row, col);
+            if (pixelValue == oldValue) {
+                return;
+            }
             level.set(row, col, pixelValue);
+            levelUI.getBoard().setPixel(row, col, pixelValue);
             levelUI.getEventManager().fire(new PixelLogicUserChangedBoardEvent(levelUI, level, row, col, pixelValue));
         }
 
