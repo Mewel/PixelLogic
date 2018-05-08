@@ -13,6 +13,9 @@ import de.mewel.pixellogic.event.PixelLogicTimerEvent;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
+import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
+import de.mewel.pixellogic.ui.level.animation.PixelLogicUIBoardSolvedAnimation;
+import de.mewel.pixellogic.ui.level.animation.PixelLogicUISecretLevelStartAnimation;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicUserChangedBoardEvent;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
@@ -23,6 +26,8 @@ import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
 
+    private PixelLogicUILevel levelUI;
+
     private PixelLogicTimeTrialModeOptions options;
 
     private AtomicInteger round;
@@ -32,6 +37,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     public PixelLogicTimeTrialMode(PixelLogicTimeTrialModeOptions options) {
         this.options = options;
         this.stopWatch = new PixelLogicStopWatch();
+        this.levelUI = null;
     }
 
     @Override
@@ -41,7 +47,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
 
     @Override
     public void run() {
-        this.round = new AtomicInteger(-1);
+        this.round = new AtomicInteger(0);
         final PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
         data.put("pageId", PixelLogicUIPageId.level);
         data.put("options", options);
@@ -51,7 +57,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     }
 
     private void runNext() {
-        final int roundNumber = round.incrementAndGet();
+        final int roundNumber = round.getAndIncrement();
         if (roundNumber >= options.levelSize.length) {
             onFinished();
             return;
@@ -119,6 +125,9 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     public void handle(PixelLogicEvent event) {
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
+            if (PixelLogicLevelStatus.loaded.equals(changeEvent.getStatus())) {
+                this.levelUI = changeEvent.getSource().getLevelUI();
+            }
             if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus())) {
                 runNext();
             }
@@ -148,11 +157,12 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
                 this.getEventManager().fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.resume, elapsed));
             }
         }
-        if(event instanceof PixelLogicUserChangedBoardEvent) {
+        if (this.levelUI != null && event instanceof PixelLogicUserChangedBoardEvent) {
             PixelLogicUserChangedBoardEvent changedBoardEvent = (PixelLogicUserChangedBoardEvent) event;
-            if(changedBoardEvent.getLevel().isFilled()) {
+            if (changedBoardEvent.getLevel().isFilled()) {
                 // activate secret level
                 Gdx.app.log("m", "start secret lvl");
+                new PixelLogicUISecretLevelStartAnimation(this.levelUI).execute();
             }
         }
     }

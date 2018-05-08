@@ -121,14 +121,6 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
     }
 
     private void startSolveAnimation() {
-        // center board
-        SequenceAction sequenceAction = new SequenceAction();
-        sequenceAction.addAction(Actions.delay(0.2f));
-        float x = this.getWidth() / 2f - this.board.getWidth() / 2f;
-        float y = this.getHeight() / 2f - this.board.getHeight() / 2f;
-        sequenceAction.addAction(Actions.moveTo(x, y, 0.2f));
-        this.board.addAction(sequenceAction);
-
         // run solve animation
         new PixelLogicUIBoardSolvedAnimation(this).execute();
     }

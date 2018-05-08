@@ -1,5 +1,8 @@
 package de.mewel.pixellogic.ui.level.animation;
 
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoardPixel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIColumnGroup;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
@@ -14,6 +17,9 @@ public abstract class PixelLogicUILevelAnimation {
     }
 
     public void execute() {
+        centerBoard();
+        this.levelUI.getBoard().getGrid().addAction(Actions.fadeOut(.2f));
+
         PixelLogicUIBoardPixel[][] pixels = this.levelUI.getBoard().getPixels();
         for (int row = 0; row < pixels.length; row++) {
             for (int col = 0; col < pixels[0].length; col++) {
@@ -32,6 +38,15 @@ public abstract class PixelLogicUILevelAnimation {
 
     public PixelLogicUILevel getLevelUI() {
         return levelUI;
+    }
+
+    protected void centerBoard() {
+        SequenceAction sequenceAction = new SequenceAction();
+        sequenceAction.addAction(Actions.delay(0.2f));
+        float x = levelUI.getWidth() / 2f - levelUI.getBoard().getWidth() / 2f;
+        float y = levelUI.getHeight() / 2f - levelUI.getBoard().getHeight() / 2f;
+        sequenceAction.addAction(Actions.moveTo(x, y, 0.2f));
+        levelUI.getBoard().addAction(sequenceAction);
     }
 
 }

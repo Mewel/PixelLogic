@@ -38,11 +38,6 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
     }
 
     @Override
-    public void onLevelSolved(PixelLogicLevelStatusChangeEvent event) {
-        this.grid.addAction(Actions.fadeOut(.2f));
-    }
-
-    @Override
     protected void sizeChanged() {
         super.sizeChanged();
         this.updateChildrenBounds();
@@ -70,6 +65,10 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
 
     public PixelLogicLevel getLevel() {
         return this.level;
+    }
+
+    public PixelLogicUIBoardGrid getGrid() {
+        return grid;
     }
 
     public PixelLogicUIBoardPixel[][] getPixels() {

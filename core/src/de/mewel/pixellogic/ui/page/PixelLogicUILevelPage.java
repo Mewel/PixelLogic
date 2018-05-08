@@ -190,6 +190,10 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         return this.levelUI.getLevel();
     }
 
+    public PixelLogicUILevel getLevelUI() {
+        return this.levelUI;
+    }
+
     public PixelLogicLevelStatus getLevelStatus() {
         return this.levelStatus;
     }

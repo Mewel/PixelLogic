@@ -11,8 +11,8 @@ public class PixelLogicLevelStatusChangeEvent extends PixelLogicEvent {
 
     private PixelLogicLevelStatus status;
 
-    public PixelLogicLevelStatusChangeEvent(PixelLogicUILevelPage screen, PixelLogicLevel level, PixelLogicLevelStatus status) {
-        super(screen);
+    public PixelLogicLevelStatusChangeEvent(PixelLogicUILevelPage source, PixelLogicLevel level, PixelLogicLevelStatus status) {
+        super(source);
         this.level = level;
         this.status = status;
     }
