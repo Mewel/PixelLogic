@@ -38,7 +38,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
     private Container<Label> labelContainer;
 
     public PixelLogicUITimeTrialPage(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager);
+        super(assets, eventManager, PixelLogicUIPageId.timeTrial);
 
         this.modes = new ArrayList<TimeTrialModeUI>();
         this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialEasyOptions(), this));

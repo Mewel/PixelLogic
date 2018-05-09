@@ -46,6 +46,14 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
         this.pageLayer.activate(page, properties);
     }
 
+    public PixelLogicUIPage getPage(PixelLogicUIPageId pageId) {
+        return this.pageLayer.get(pageId);
+    }
+
+    public boolean isActive(PixelLogicUIPageId pageId) {
+        return this.pageLayer.isActive(pageId);
+    }
+
     @Override
     public void dispose() {
         super.dispose();

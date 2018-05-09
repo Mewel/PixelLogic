@@ -9,11 +9,12 @@ import de.mewel.pixellogic.ui.level.PixelLogicUIBoardPixel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIColumnGroup;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIRowGroup;
+import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 
 public class PixelLogicUIBoardSolvedAnimation extends PixelLogicUILevelAnimation {
 
-    public PixelLogicUIBoardSolvedAnimation(PixelLogicUILevel levelUI) {
-        super(levelUI);
+    public PixelLogicUIBoardSolvedAnimation(PixelLogicUILevelPage levelPage) {
+        super(levelPage);
     }
 
     @Override

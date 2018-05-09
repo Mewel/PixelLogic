@@ -78,16 +78,6 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
         this.getEventManager().listen(this);
     }
 
-    @Override
-    public void onLevelLoad(PixelLogicLevelStatusChangeEvent event) {
-        show(event.getLevel());
-    }
-
-    @Override
-    public void onLevelSolved(PixelLogicLevelStatusChangeEvent event) {
-        solve();
-    }
-
     public void show(PixelLogicLevel level) {
         this.level = level;
         this.menuButton.addAction(Actions.fadeIn(.3f));
@@ -127,6 +117,16 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
 
     private BitmapFont getToolbarFont() {
         return getAssets().getGameFont((int) this.getHeight());
+    }
+
+    @Override
+    public void onLevelLoad(PixelLogicLevelStatusChangeEvent event) {
+        show(event.getLevel());
+    }
+
+    @Override
+    public void onLevelSolved(PixelLogicLevelStatusChangeEvent event) {
+        solve();
     }
 
     @Override

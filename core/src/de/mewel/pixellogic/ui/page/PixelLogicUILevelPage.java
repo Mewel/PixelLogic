@@ -24,8 +24,8 @@ import de.mewel.pixellogic.ui.component.PixelLogicUILoadingModal;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelMenu;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelToolbar;
+import de.mewel.pixellogic.ui.level.animation.PixelLogicUIBoardSolvedAnimation;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
-import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
@@ -48,7 +48,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     private FPSLogger fpsLogger = new FPSLogger();
 
     public PixelLogicUILevelPage(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager);
+        super(assets, eventManager, PixelLogicUIPageId.level);
 
         // BACKGROUND
         this.backgroundTexture = new Texture(Gdx.files.internal("background/level_1.jpg"));
@@ -80,7 +80,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
     @Override
     public void deactivate(Runnable after) {
-        if(!PixelLogicLevelStatus.destroyed.equals(this.levelStatus)) {
+        if (!PixelLogicLevelStatus.destroyed.equals(this.levelStatus)) {
             this.destroyLevel();
         }
         this.menu.deactivate();
@@ -128,7 +128,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         Action fadeOutToolbarAction = Actions.sequence(Actions.fadeOut(.4f), Actions.run(new Runnable() {
             @Override
             public void run() {
-                if(toolbar == null) {
+                if (toolbar == null) {
                     return;
                 }
                 toolbar.remove();
@@ -170,6 +170,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
     private void onSolved() {
         changeLevelStatus(PixelLogicLevelStatus.solved);
+        new PixelLogicUIBoardSolvedAnimation(this).execute();
         this.getStage().addAction(Actions.sequence(
                 Actions.delay(.3f),
                 Actions.run(new Runnable() {
@@ -192,6 +193,10 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
     public PixelLogicUILevel getLevelUI() {
         return this.levelUI;
+    }
+
+    public PixelLogicUILevelToolbar getToolbar() {
+        return toolbar;
     }
 
     public PixelLogicLevelStatus getLevelStatus() {
@@ -267,7 +272,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
                     screen.menu.show();
                 }
             }
-            if(event instanceof PixelLogicLoadNextLevelEvent) {
+            if (event instanceof PixelLogicLoadNextLevelEvent) {
                 Gdx.app.log("screen", "next level");
                 screen.loadingModal.show();
             }

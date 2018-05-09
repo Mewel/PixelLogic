@@ -18,25 +18,26 @@ public class PixelLogicGame extends Game {
 
     private PixelLogicUIAppScreen appScreen;
 
+    private PixelLogicGameController controller;
+
     @Override
     public void create() {
         this.eventManager = new PixelLogicEventManager();
 
         this.assets = new PixelLogicAssets();
         this.assets.load();
-
         this.appScreen = new PixelLogicUIAppScreen(assets, eventManager);
-        this.appScreen.setPage(PixelLogicUIPageId.timeTrial, new PixelLogicUIPageProperties());
-
-        /*PixelLogicCampaignMode cm = new PixelLogicCampaignMode();
-        cm.setup(getAssets(), getEventManager());
-        cm.run();*/
-
         this.setScreen(this.appScreen);
+
+        this.controller = new PixelLogicGameController(assets, eventManager, appScreen);
+        this.controller.run();
     }
 
     @Override
     public void dispose() {
+        if (this.controller != null) {
+            this.controller.dispose();
+        }
         if (this.assets != null) {
             this.assets.dispose();
         }
@@ -44,7 +45,7 @@ public class PixelLogicGame extends Game {
             this.eventManager.dispose();
         }
         super.dispose();
-}
+    }
 
     public PixelLogicAssets getAssets() {
         return assets;

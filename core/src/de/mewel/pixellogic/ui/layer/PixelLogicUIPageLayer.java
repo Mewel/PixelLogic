@@ -40,6 +40,10 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer, PixelLogicListe
         return this.pageMap.get(id);
     }
 
+    public boolean isActive(PixelLogicUIPageId id) {
+        return this.activePage != null && activePage.getPageId().equals(id);
+    }
+
     @Override
     public void handle(PixelLogicEvent event) {
         if (event instanceof PixelLogicUIPageChangeEvent) {

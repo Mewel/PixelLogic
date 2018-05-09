@@ -6,13 +6,13 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoardPixel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIColumnGroup;
-import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIRowGroup;
+import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 
 public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUILevelAnimation {
 
-    public PixelLogicUISecretLevelStartAnimation(PixelLogicUILevel levelUI) {
-        super(levelUI);
+    public PixelLogicUISecretLevelStartAnimation(PixelLogicUILevelPage levelPage) {
+        super(levelPage);
     }
 
     @Override

@@ -17,7 +17,7 @@ public class PixelLogicUITimeTrialFinishedPage extends PixelLogicUIPage {
     private Label resultLabel;
 
     public PixelLogicUITimeTrialFinishedPage(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager);
+        super(assets, eventManager, PixelLogicUIPageId.timeTrialFinished);
         BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 10);
         Label.LabelStyle style = new Label.LabelStyle(labelFont, TEXT_COLOR);
         this.resultLabel = new Label("00:00", style);

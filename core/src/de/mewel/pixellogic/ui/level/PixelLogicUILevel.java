@@ -12,7 +12,6 @@ import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
-import de.mewel.pixellogic.ui.level.animation.PixelLogicUIBoardSolvedAnimation;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelSwitcherChangedEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicUserChangedBoardEvent;
@@ -117,11 +116,6 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         }
     }
 
-    private void startSolveAnimation() {
-        // run solve animation
-        new PixelLogicUIBoardSolvedAnimation(this).execute();
-    }
-
     public PixelLogicUIBoard getBoard() {
         return board;
     }
@@ -154,9 +148,6 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
             if (event instanceof PixelLogicLevelStatusChangeEvent) {
                 PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
                 gui.status = changeEvent.getStatus();
-                if (PixelLogicLevelStatus.solved.equals(gui.status)) {
-                    gui.startSolveAnimation();
-                }
             }
         }
 

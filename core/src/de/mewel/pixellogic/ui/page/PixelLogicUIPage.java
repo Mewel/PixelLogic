@@ -17,15 +17,18 @@ public abstract class PixelLogicUIPage implements PixelLogicUIElement {
 
     private Stage stage;
 
+    private PixelLogicUIPageId pageId;
+
     private PixelLogicAssets assets;
 
     private PixelLogicEventManager eventManager;
 
     private PixelLogicUIPageProperties properties;
 
-    public PixelLogicUIPage(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
+    public PixelLogicUIPage(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicUIPageId pageId) {
         this.assets = assets;
         this.eventManager = eventManager;
+        this.pageId = pageId;
         this.stage = new Stage();
         this.properties = new PixelLogicUIPageProperties();
     }
@@ -51,6 +54,10 @@ public abstract class PixelLogicUIPage implements PixelLogicUIElement {
 
     public PixelLogicUIPageProperties getProperties() {
         return properties;
+    }
+
+    public PixelLogicUIPageId getPageId() {
+        return pageId;
     }
 
     public void render(float delta) {
