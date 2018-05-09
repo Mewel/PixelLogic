@@ -80,7 +80,16 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
 
     @Override
     public void onLevelLoad(PixelLogicLevelStatusChangeEvent event) {
-        this.level = event.getLevel();
+        show(event.getLevel());
+    }
+
+    @Override
+    public void onLevelSolved(PixelLogicLevelStatusChangeEvent event) {
+        solve();
+    }
+
+    public void show(PixelLogicLevel level) {
+        this.level = level;
         this.menuButton.addAction(Actions.fadeIn(.3f));
         this.switcher.addAction(Actions.fadeIn(.3f));
 
@@ -88,8 +97,7 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
         this.switcher.addListener(this.switcherListener);
     }
 
-    @Override
-    public void onLevelSolved(PixelLogicLevelStatusChangeEvent event) {
+    public void solve() {
         // rm toolbar listeners
         this.menuButton.removeListener(menuButtonListener);
         this.switcher.removeListener(switcherListener);
@@ -127,7 +135,7 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
         if (this.solvedLabel != null) {
             this.solvedLabel.addAction(Actions.fadeOut(.4f));
         }
-        if(this.timerLabel != null) {
+        if (this.timerLabel != null) {
             this.timerLabel.addAction(Actions.fadeOut(.4f));
         }
     }

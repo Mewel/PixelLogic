@@ -72,7 +72,7 @@ public abstract class PixelLogicLevelLoader {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int pixel = pixmap.getPixel(x + srcX, y + srcY);
-                imageData[y][x] = pixel;
+                imageData[height - 1 - y][x] = pixel;
             }
         }
         return imageData;

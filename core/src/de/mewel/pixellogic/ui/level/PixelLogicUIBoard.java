@@ -21,23 +21,6 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
     }
 
     @Override
-    public void onLevelLoad(PixelLogicLevelStatusChangeEvent event) {
-        this.level = event.getLevel();
-        this.pixels = new PixelLogicUIBoardPixel[level.getRows()][level.getColumns()];
-        this.grid = new PixelLogicUIBoardGrid(getAssets(), getEventManager(), this.level);
-        this.addActor(this.grid);
-        for (int row = 0; row < level.getRows(); row++) {
-            for (int col = 0; col < level.getColumns(); col++) {
-                PixelLogicUIBoardPixel pixel = new PixelLogicUIBoardPixel(getAssets(), getEventManager(), row, col);
-                this.pixels[row][col] = pixel;
-                this.addActor(pixel);
-            }
-        }
-        this.addAction(Actions.fadeIn(2f));
-        this.updateChildrenBounds();
-    }
-
-    @Override
     protected void sizeChanged() {
         super.sizeChanged();
         this.updateChildrenBounds();
@@ -62,6 +45,35 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
     public void setPixel(int row, int col, Boolean value) {
         this.pixels[row][col].set(value);
     }
+
+    public void load(PixelLogicLevel level) {
+        this.level = level;
+        this.pixels = new PixelLogicUIBoardPixel[level.getRows()][level.getColumns()];
+        this.grid = new PixelLogicUIBoardGrid(getAssets(), getEventManager(), this.level);
+        this.addActor(this.grid);
+        for (int row = 0; row < level.getRows(); row++) {
+            for (int col = 0; col < level.getColumns(); col++) {
+                PixelLogicUIBoardPixel pixel = new PixelLogicUIBoardPixel(getAssets(), getEventManager(), row, col);
+                pixel.set(level.get(row, col));
+                this.pixels[row][col] = pixel;
+                this.addActor(pixel);
+            }
+        }
+        this.addAction(Actions.fadeIn(2f));
+        this.updateChildrenBounds();
+    }
+
+    public void clear() {
+        if (this.level == null) {
+            return;
+        }
+        for (int row = 0; row < this.pixels.length; row++) {
+            for (int col = 0; col < this.pixels[0].length; col++) {
+                this.pixels[row][col].set(null);
+            }
+        }
+    }
+
 
     public PixelLogicLevel getLevel() {
         return this.level;

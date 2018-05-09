@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.mode.PixelLogicCampaignMode;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
@@ -26,6 +27,11 @@ public class PixelLogicGame extends Game {
 
         this.appScreen = new PixelLogicUIAppScreen(assets, eventManager);
         this.appScreen.setPage(PixelLogicUIPageId.timeTrial, new PixelLogicUIPageProperties());
+
+        /*PixelLogicCampaignMode cm = new PixelLogicCampaignMode();
+        cm.setup(getAssets(), getEventManager());
+        cm.run();*/
+
         this.setScreen(this.appScreen);
     }
 

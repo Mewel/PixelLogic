@@ -4,8 +4,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
@@ -42,7 +40,22 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
     public void load(PixelLogicLevel level) {
         this.level = level;
-        initSprites();
+
+        // BOARD
+        this.board = new PixelLogicUIBoard(getAssets(), getEventManager());
+        addActor(this.board);
+        this.board.addListener(this.levelListener);
+        this.getEventManager().listen(this.levelListener);
+        this.board.load(getLevel());
+
+        // LINES
+        this.rowGroup = new PixelLogicUIRowGroup(getAssets(), getEventManager());
+        addActor(this.rowGroup);
+
+        this.columnGroup = new PixelLogicUIColumnGroup(getAssets(), getEventManager());
+        addActor(this.columnGroup);
+
+        updateSpritePosition();
     }
 
     public void resetLevel() {
@@ -50,6 +63,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
             return;
         }
         this.level.reset();
+        this.board.clear();
         this.getEventManager().fire(new PixelLogicUserChangedBoardEvent(this, level));
     }
 
@@ -71,23 +85,6 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
     public PixelLogicLevel getLevel() {
         return this.level;
-    }
-
-    private void initSprites() {
-        // BOARD
-        this.board = new PixelLogicUIBoard(getAssets(), getEventManager());
-        addActor(this.board);
-        this.board.addListener(this.levelListener);
-        this.getEventManager().listen(this.levelListener);
-
-        // LINES
-        this.rowGroup = new PixelLogicUIRowGroup(getAssets(), getEventManager());
-        addActor(this.rowGroup);
-
-        this.columnGroup = new PixelLogicUIColumnGroup(getAssets(), getEventManager());
-        addActor(this.columnGroup);
-
-        updateSpritePosition();
     }
 
     private void updateSpritePosition() {

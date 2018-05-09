@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.ui.level.animation;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 

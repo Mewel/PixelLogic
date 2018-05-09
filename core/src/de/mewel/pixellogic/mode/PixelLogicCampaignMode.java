@@ -21,8 +21,6 @@ public class PixelLogicCampaignMode extends PixelLogicLevelMode {
 
     private List<PixelLogicLevel> levels;
 
-    private PixelLogicLevel level;
-
     private Preferences preferences;
 
     @Override
@@ -45,7 +43,7 @@ public class PixelLogicCampaignMode extends PixelLogicLevelMode {
                 return;
             }
         }
-        runLevel(this.levels.get(0));
+        loadNextLevel();
     }
 
     private void loadNextLevel() {
@@ -54,11 +52,25 @@ public class PixelLogicCampaignMode extends PixelLogicLevelMode {
             // TODO handle no more level's
             return;
         }
-        this.level = level;
-        this.preferences.putString("levelName", this.level.getName());
+        this.preferences.putString("levelName", level.getName());
         this.preferences.remove("pixels");
         this.preferences.flush();
         runLevel(level);
+    }
+
+    private PixelLogicLevel next() {
+        int currentLevelIndex = this.levels.indexOf(this.level);
+        if (currentLevelIndex == -1) {
+            return this.levels.get(0);
+        }
+        int nextLevelIndex = currentLevelIndex + 1;
+        if (nextLevelIndex >= this.levels.size()) {
+            for (PixelLogicLevel level : this.levels) {
+                level.reset();
+            }
+            return this.levels.get(0);
+        }
+        return this.levels.get(nextLevelIndex);
     }
 
     private PixelLogicLevel findLevel(String name) {
@@ -82,21 +94,6 @@ public class PixelLogicCampaignMode extends PixelLogicLevelMode {
             this.preferences.putString("pixels", changedBoardEvent.getLevel().toPixelString());
             this.preferences.flush();
         }
-    }
-
-    private PixelLogicLevel next() {
-        int currentLevelIndex = this.levels.indexOf(this.level);
-        if (currentLevelIndex == -1) {
-            return this.levels.get(0);
-        }
-        int nextLevelIndex = currentLevelIndex + 1;
-        if (nextLevelIndex >= this.levels.size()) {
-            for (PixelLogicLevel level : this.levels) {
-                level.reset();
-            }
-            return this.levels.get(0);
-        }
-        return this.levels.get(nextLevelIndex);
     }
 
     private void loadLevels() {
