@@ -1,7 +1,6 @@
 package de.mewel.pixellogic.achievements;
 
 import de.mewel.pixellogic.event.PixelLogicEvent;
-import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;

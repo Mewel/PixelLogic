@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.event.PixelLogicEvent;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
@@ -25,8 +23,8 @@ public class PixelLogicRandomLevelMode extends PixelLogicLevelMode {
     }
 
     @Override
-    public void setup(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super.setup(assets, eventManager);
+    public void setup(PixelLogicGlobal global) {
+        super.setup(global);
         this.played = new ArrayList<Integer>();
     }
 

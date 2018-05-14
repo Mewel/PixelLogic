@@ -17,8 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialHighscoreStore;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
@@ -37,8 +36,8 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
 
     private Container<Label> labelContainer;
 
-    public PixelLogicUITimeTrialPage(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager, PixelLogicUIPageId.timeTrial);
+    public PixelLogicUITimeTrialPage(PixelLogicGlobal global) {
+        super(global, PixelLogicUIPageId.timeTrial);
 
         this.modes = new ArrayList<TimeTrialModeUI>();
         this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialEasyOptions(), this));
@@ -136,7 +135,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
 
         private PixelLogicTimeTrialModeOptions options;
 
-        private PixelLogicUITimeTrialPage screen;
+        private PixelLogicUITimeTrialPage page;
 
         PixelLogicUIButton button;
 
@@ -144,10 +143,10 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
 
         private Container<Table> highscoreContainer;
 
-        public TimeTrialModeUI(final PixelLogicTimeTrialModeOptions options, PixelLogicUITimeTrialPage screen) {
+        public TimeTrialModeUI(final PixelLogicTimeTrialModeOptions options, PixelLogicUITimeTrialPage page) {
             super(new VerticalGroup());
 
-            this.screen = screen;
+            this.page = page;
             this.options = options;
 
             getActor().setFillParent(true);
@@ -155,7 +154,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
             getActor().bottom();
             getActor().space(getPadding());
 
-            this.button = new PixelLogicUIButton(screen.getAssets(), screen.getEventManager(), options.name) {
+            this.button = new PixelLogicUIButton(page.getAssets(), page.getEventManager(), options.name) {
                 @Override
                 public void onClick() {
                     startTimeTrial(options);
@@ -192,14 +191,14 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
             List<PixelLogicTimeTrialHighscoreStore.Highscore> highscoreList = PixelLogicTimeTrialHighscoreStore.list(options.id);
 
             // header
-            Label normalHighscoreLabel = screen.getLabel("highscore", TEXT_LIGHT_COLOR);
-            Label normalTimeLabel = screen.getLabel("time", TEXT_LIGHT_COLOR);
+            Label normalHighscoreLabel = page.getLabel("highscore", TEXT_LIGHT_COLOR);
+            Label normalTimeLabel = page.getLabel("time", TEXT_LIGHT_COLOR);
             highscoreTable.add(normalHighscoreLabel).growX().left();
             highscoreTable.add(normalTimeLabel).right();
             highscoreTable.row();
 
             // line
-            PixelLogicUIColoredSurface line = new PixelLogicUIColoredSurface(screen.getAssets(), screen.getEventManager());
+            PixelLogicUIColoredSurface line = new PixelLogicUIColoredSurface(page.getAssets(), page.getEventManager());
             line.setColor(TEXT_LIGHT_COLOR);
             line.setWidth(getComponentWidth());
             line.setHeight(1);
@@ -208,27 +207,27 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
 
             // score
             if (!highscoreList.isEmpty()) {
-                final Integer rank = screen.getProperties().getInt("rank");
-                final String mode = screen.getProperties().getString("mode");
+                final Integer rank = page.getProperties().getInt("rank");
+                final String mode = page.getProperties().getString("mode");
                 boolean lastRankInvalid = rank == null || rank == -1 || mode == null || !mode.equals(options.id);
                 for (int i = 0; i < highscoreList.size(); i++) {
                     Color color = lastRankInvalid || rank != i ? TEXT_COLOR : GRID_COLOR;
                     PixelLogicTimeTrialHighscoreStore.Highscore highscore = highscoreList.get(i);
-                    Label highscoreDate = screen.getLabel(PixelLogicUIUtil.formatDate(highscore.date), color);
-                    Label highscoreTime = screen.getLabel(PixelLogicUIUtil.formatMilliseconds(highscore.time), color);
+                    Label highscoreDate = page.getLabel(PixelLogicUIUtil.formatDate(highscore.date), color);
+                    Label highscoreTime = page.getLabel(PixelLogicUIUtil.formatMilliseconds(highscore.time), color);
                     highscoreTable.add(highscoreDate).growX().left();
                     highscoreTable.add(highscoreTime).right();
                     highscoreTable.row();
                 }
             } else {
-                highscoreTable.add(screen.getLabel("no games played", TEXT_COLOR)).colspan(2).center();
+                highscoreTable.add(page.getLabel("no games played", TEXT_COLOR)).colspan(2).center();
                 highscoreTable.row();
             }
         }
 
         private void startTimeTrial(final PixelLogicTimeTrialModeOptions options) {
             final PixelLogicTimeTrialMode mode = new PixelLogicTimeTrialMode(options);
-            mode.setup(screen.getAssets(), screen.getEventManager());
+            mode.setup(page.getGlobal());
             mode.run();
         }
 

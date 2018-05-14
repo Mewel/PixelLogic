@@ -1,8 +1,7 @@
 package de.mewel.pixellogic.ui.screen;
 
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.achievements.PixelLogicAchievements;
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.layer.PixelLogicUIAchievementLayer;
 import de.mewel.pixellogic.ui.layer.PixelLogicUIPageLayer;
 import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
@@ -20,18 +19,18 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
 
     private PixelLogicAchievements achievements;
 
-    public PixelLogicUIAppScreen(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager);
+    public PixelLogicUIAppScreen(PixelLogicGlobal global) {
+        super(global.getAssets(), global.getEventManager());
 
         // achievements
-        this.achievements = new PixelLogicAchievements(eventManager);
-        this.achievementLayer = new PixelLogicUIAchievementLayer(assets, eventManager);
+        this.achievements = new PixelLogicAchievements(getEventManager());
+        this.achievementLayer = new PixelLogicUIAchievementLayer(getAssets(), getEventManager());
 
         // page
-        this.pageLayer = new PixelLogicUIPageLayer(assets, eventManager);
-        PixelLogicUILevelPage levelScreen = new PixelLogicUILevelPage(assets, eventManager);
-        PixelLogicUITimeTrialPage timeTrialScreen = new PixelLogicUITimeTrialPage(assets, eventManager);
-        PixelLogicUITimeTrialFinishedPage timeTrialFinishedScreen = new PixelLogicUITimeTrialFinishedPage(assets, eventManager);
+        this.pageLayer = new PixelLogicUIPageLayer(getAssets(), getEventManager());
+        PixelLogicUILevelPage levelScreen = new PixelLogicUILevelPage(global);
+        PixelLogicUITimeTrialPage timeTrialScreen = new PixelLogicUITimeTrialPage(global);
+        PixelLogicUITimeTrialFinishedPage timeTrialFinishedScreen = new PixelLogicUITimeTrialFinishedPage(global);
         this.pageLayer.add(PixelLogicUIPageId.level, levelScreen);
         this.pageLayer.add(PixelLogicUIPageId.timeTrial, timeTrialScreen);
         this.pageLayer.add(PixelLogicUIPageId.timeTrialFinished, timeTrialFinishedScreen);
@@ -67,4 +66,5 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
             this.achievements.dispose();
         }
     }
+
 }

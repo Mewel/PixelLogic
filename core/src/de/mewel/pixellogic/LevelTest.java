@@ -8,7 +8,7 @@ import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIAppScreen;
 
-public class LevelTest extends Game {
+public class LevelTest extends Game implements PixelLogicGlobal {
 
     private PixelLogicAssets assets;
 
@@ -23,11 +23,11 @@ public class LevelTest extends Game {
         this.assets = new PixelLogicAssets();
         this.assets.load();
 
-        this.appScreen = new PixelLogicUIAppScreen(assets, eventManager);
+        this.appScreen = new PixelLogicUIAppScreen(this);
         this.setScreen(this.appScreen);
 
         final PixelLogicTimeTrialMode mode = new PixelLogicTimeTrialMode(new TestOptions());
-        mode.setup(assets, eventManager);
+        mode.setup(this);
         mode.run();
     }
 
@@ -62,4 +62,10 @@ public class LevelTest extends Game {
     public PixelLogicEventManager getEventManager() {
         return eventManager;
     }
+
+    @Override
+    public PixelLogicUIAppScreen getAppScreen() {
+        return appScreen;
+    }
+
 }

@@ -1,24 +1,23 @@
 package de.mewel.pixellogic.mode;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.event.PixelLogicEvent;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicLoadNextLevelEvent;
-import de.mewel.pixellogic.event.PixelLogicStartSecretLevelEvent;
 import de.mewel.pixellogic.event.PixelLogicTimerEvent;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
-import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
-import de.mewel.pixellogic.ui.level.animation.PixelLogicUIBoardSolvedAnimation;
 import de.mewel.pixellogic.ui.level.animation.PixelLogicUISecretLevelStartAnimation;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicUserChangedBoardEvent;
+import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
@@ -39,8 +38,8 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     }
 
     @Override
-    public void setup(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super.setup(assets, eventManager);
+    public void setup(PixelLogicGlobal global) {
+        super.setup(global);
     }
 
     @Override
@@ -119,6 +118,19 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
         return imageData;
     }
 
+    private void startSecretLevel() {
+        PixelLogicUILevelPage page = (PixelLogicUILevelPage) getAppScreen().getPage(PixelLogicUIPageId.level);
+        float executionTime = new PixelLogicUISecretLevelStartAnimation(page).execute();
+        page.getToolbar().addAction(Actions.fadeOut(.2f));
+        SequenceAction awaitAction = Actions.sequence(Actions.delay(executionTime), Actions.run(new Runnable() {
+            @Override
+            public void run() {
+                Gdx.app.log("gc", "do it");
+            }
+        }));
+        page.getStage().addAction(awaitAction);
+    }
+
     @Override
     public void handle(PixelLogicEvent event) {
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
@@ -155,7 +167,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
         if (event instanceof PixelLogicUserChangedBoardEvent) {
             PixelLogicUserChangedBoardEvent changedBoardEvent = (PixelLogicUserChangedBoardEvent) event;
             if (changedBoardEvent.getLevel().isFilled()) {
-                this.getEventManager().fire(new PixelLogicStartSecretLevelEvent(this));
+                startSecretLevel();
             }
         }
     }

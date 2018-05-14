@@ -1,7 +1,6 @@
 package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;

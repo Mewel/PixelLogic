@@ -10,9 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.event.PixelLogicEvent;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicLoadNextLevelEvent;
 import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
@@ -47,8 +46,8 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
     private FPSLogger fpsLogger = new FPSLogger();
 
-    public PixelLogicUILevelPage(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager, PixelLogicUIPageId.level);
+    public PixelLogicUILevelPage(PixelLogicGlobal global) {
+        super(global, PixelLogicUIPageId.level);
 
         // BACKGROUND
         this.backgroundTexture = new Texture(Gdx.files.internal("background/level_1.jpg"));

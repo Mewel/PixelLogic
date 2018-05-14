@@ -6,11 +6,8 @@ import com.badlogic.gdx.Preferences;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.event.PixelLogicEvent;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.event.PixelLogicListener;
-import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
@@ -24,8 +21,8 @@ public class PixelLogicCampaignMode extends PixelLogicLevelMode {
     private Preferences preferences;
 
     @Override
-    public void setup(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super.setup(assets, eventManager);
+    public void setup(PixelLogicGlobal global) {
+        super.setup(global);
         this.loadLevels();
         this.preferences = Gdx.app.getPreferences("campaign_preferences");
     }

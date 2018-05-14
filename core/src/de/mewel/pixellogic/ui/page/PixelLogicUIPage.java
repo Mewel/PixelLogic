@@ -1,14 +1,12 @@
 package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIElement;
@@ -19,15 +17,12 @@ public abstract class PixelLogicUIPage implements PixelLogicUIElement {
 
     private PixelLogicUIPageId pageId;
 
-    private PixelLogicAssets assets;
-
-    private PixelLogicEventManager eventManager;
-
     private PixelLogicUIPageProperties properties;
 
-    public PixelLogicUIPage(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicUIPageId pageId) {
-        this.assets = assets;
-        this.eventManager = eventManager;
+    private PixelLogicGlobal global;
+
+    public PixelLogicUIPage(PixelLogicGlobal global, PixelLogicUIPageId pageId) {
+        this.global = global;
         this.pageId = pageId;
         this.stage = new Stage();
         this.properties = new PixelLogicUIPageProperties();
@@ -42,14 +37,18 @@ public abstract class PixelLogicUIPage implements PixelLogicUIElement {
         after.run();
     }
 
+    public PixelLogicGlobal getGlobal() {
+        return global;
+    }
+
     @Override
     public PixelLogicAssets getAssets() {
-        return assets;
+        return global.getAssets();
     }
 
     @Override
     public PixelLogicEventManager getEventManager() {
-        return eventManager;
+        return global.getEventManager();
     }
 
     public PixelLogicUIPageProperties getProperties() {

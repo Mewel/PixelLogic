@@ -8,9 +8,10 @@ import de.mewel.pixellogic.ui.level.PixelLogicUIColumnGroup;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIRowGroup;
 import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
-import de.mewel.pixellogic.ui.page.PixelLogicUIPage;
 
 public abstract class PixelLogicUILevelAnimation {
+
+    protected static final float FADE_OUT_TIME = .4f;
 
     private PixelLogicUILevelPage page;
 
@@ -22,27 +23,34 @@ public abstract class PixelLogicUILevelAnimation {
         return page.getLevelUI();
     }
 
-    public void execute() {
-        centerBoard();
+    /**
+     * Executes the animation.
+     *
+     * @return the total execution time.
+     */
+    public float execute() {
+        float executionTime = 0f;
+        executionTime = Math.max(centerBoard(), executionTime);
         getLevelUI().getBoard().getGrid().addAction(Actions.fadeOut(.2f));
 
         PixelLogicUIBoardPixel[][] pixels = getLevelUI().getBoard().getPixels();
         for (int row = 0; row < pixels.length; row++) {
             for (int col = 0; col < pixels[0].length; col++) {
-                animatePixel(pixels[row][col]);
+                executionTime = Math.max(animatePixel(pixels[row][col]), executionTime);
             }
         }
-        animateRowGroup(getLevelUI().getRowGroup());
-        animateColumnGroup(getLevelUI().getColumnGroup());
+        executionTime = Math.max(animateRowGroup(getLevelUI().getRowGroup()), executionTime);
+        executionTime = Math.max(animateColumnGroup(getLevelUI().getColumnGroup()), executionTime);
+        return executionTime;
     }
 
-    protected abstract void animatePixel(PixelLogicUIBoardPixel pixel);
+    protected abstract float animatePixel(PixelLogicUIBoardPixel pixel);
 
-    protected abstract void animateRowGroup(PixelLogicUIRowGroup group);
+    protected abstract float animateRowGroup(PixelLogicUIRowGroup group);
 
-    protected abstract void animateColumnGroup(PixelLogicUIColumnGroup group);
+    protected abstract float animateColumnGroup(PixelLogicUIColumnGroup group);
 
-    protected void centerBoard() {
+    protected float centerBoard() {
         SequenceAction sequenceAction = new SequenceAction();
         sequenceAction.addAction(Actions.delay(0.2f));
         PixelLogicUILevel levelUI = getLevelUI();
@@ -50,6 +58,7 @@ public abstract class PixelLogicUILevelAnimation {
         float y = levelUI.getHeight() / 2f - levelUI.getBoard().getHeight() / 2f;
         sequenceAction.addAction(Actions.moveTo(x, y, 0.2f));
         levelUI.getBoard().addAction(sequenceAction);
+        return .4f;
     }
 
 }

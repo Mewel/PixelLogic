@@ -5,8 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 
@@ -16,8 +15,8 @@ public class PixelLogicUITimeTrialFinishedPage extends PixelLogicUIPage {
 
     private Label resultLabel;
 
-    public PixelLogicUITimeTrialFinishedPage(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager, PixelLogicUIPageId.timeTrialFinished);
+    public PixelLogicUITimeTrialFinishedPage(PixelLogicGlobal global) {
+        super(global, PixelLogicUIPageId.timeTrialFinished);
         BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 10);
         Label.LabelStyle style = new Label.LabelStyle(labelFont, TEXT_COLOR);
         this.resultLabel = new Label("00:00", style);

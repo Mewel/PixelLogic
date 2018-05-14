@@ -1,24 +1,21 @@
 package de.mewel.pixellogic.mode;
 
-import com.badlogic.gdx.Gdx;
-
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.ui.screen.PixelLogicUIAppScreen;
 
 public abstract class PixelLogicLevelMode implements PixelLogicListener {
 
     protected PixelLogicLevel level;
 
-    private PixelLogicAssets assets;
+    private PixelLogicGlobal global;
 
-    private PixelLogicEventManager eventManager;
-
-    public void setup(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        this.assets = assets;
-        this.eventManager = eventManager;
+    public void setup(PixelLogicGlobal global) {
+        this.global = global;
         this.getEventManager().listen(this);
     }
 
@@ -38,11 +35,15 @@ public abstract class PixelLogicLevelMode implements PixelLogicListener {
     }
 
     public PixelLogicEventManager getEventManager() {
-        return eventManager;
+        return global.getEventManager();
     }
 
     public PixelLogicAssets getAssets() {
-        return assets;
+        return global.getAssets();
+    }
+
+    public PixelLogicUIAppScreen getAppScreen() {
+        return global.getAppScreen();
     }
 
 }

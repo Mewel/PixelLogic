@@ -6,7 +6,6 @@ import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
-import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 
 public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
 

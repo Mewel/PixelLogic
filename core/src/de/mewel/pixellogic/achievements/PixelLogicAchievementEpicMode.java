@@ -33,7 +33,7 @@ public class PixelLogicAchievementEpicMode extends PixelLogicAchievement {
             return false;
         }
         final Long time = properties.getLong("time");
-        return time <= 1080000;
+        return time <= 540000;
     }
 
 }

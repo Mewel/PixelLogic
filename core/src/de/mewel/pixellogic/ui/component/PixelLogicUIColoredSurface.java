@@ -3,14 +3,12 @@ package de.mewel.pixellogic.ui.component;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIActor;
-import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 public class PixelLogicUIColoredSurface extends PixelLogicUIActor {
 

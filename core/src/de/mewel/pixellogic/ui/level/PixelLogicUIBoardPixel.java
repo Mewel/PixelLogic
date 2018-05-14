@@ -2,8 +2,6 @@ package de.mewel.pixellogic.ui.level;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.PIXEL_BLOCKED_COLOR;

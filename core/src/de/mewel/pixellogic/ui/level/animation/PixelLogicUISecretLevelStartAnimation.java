@@ -16,26 +16,29 @@ public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUILevelAnim
     }
 
     @Override
-    protected void animatePixel(PixelLogicUIBoardPixel pixel) {
+    protected float animatePixel(PixelLogicUIBoardPixel pixel) {
         PixelLogicLevel level = getLevelUI().getLevel();
         int row = pixel.getRow();
         int col = pixel.getCol();
         int pos = find(row, col, level.getRows(), level.getColumns());
-        float delayPerPixel = 2f / (level.getRows() * level.getColumns());
+        float delayPerPixel = 1.5f / (level.getRows() * level.getColumns());
         SequenceAction sequenceAction = new SequenceAction();
-        sequenceAction.addAction(Actions.delay(delayPerPixel * pos));
-        sequenceAction.addAction(Actions.fadeOut(0.4f));
+        sequenceAction.addAction(Actions.delay(.3f + (delayPerPixel * pos)));
+        sequenceAction.addAction(Actions.fadeOut(.3f));
         pixel.addAction(sequenceAction);
+        return .3f + (delayPerPixel * pos) + .3f;
     }
 
     @Override
-    protected void animateRowGroup(PixelLogicUIRowGroup group) {
-        group.addAction(Actions.fadeOut(0.4f));
+    protected float animateRowGroup(PixelLogicUIRowGroup group) {
+        group.addAction(Actions.fadeOut(FADE_OUT_TIME));
+        return FADE_OUT_TIME;
     }
 
     @Override
-    protected void animateColumnGroup(PixelLogicUIColumnGroup group) {
-        group.addAction(Actions.fadeOut(0.4f));
+    protected float animateColumnGroup(PixelLogicUIColumnGroup group) {
+        group.addAction(Actions.fadeOut(FADE_OUT_TIME));
+        return FADE_OUT_TIME;
     }
 
     protected int find(int row, int col, int rows, int cols) {
