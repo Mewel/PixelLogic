@@ -56,12 +56,6 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
     @Override
     public void dispose() {
         super.dispose();
-        if (this.pageLayer != null) {
-            this.pageLayer.dispose();
-        }
-        if (this.achievementLayer != null) {
-            this.achievementLayer.dispose();
-        }
         if (this.achievements != null) {
             this.achievements.dispose();
         }
