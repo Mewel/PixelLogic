@@ -18,7 +18,7 @@ public class PixelLogicUIPageChangeEvent extends PixelLogicEvent {
     }
 
     public PixelLogicUIPageId getPageId() {
-        return this.data.get("pageId", PixelLogicUIPageId.class);
+        return this.data.get("pageId");
     }
 
 }

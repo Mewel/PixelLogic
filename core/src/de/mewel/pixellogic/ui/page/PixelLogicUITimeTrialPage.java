@@ -188,7 +188,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
 
         public void updateHighscoreTable() {
             this.highscoreTable.clearChildren();
-            List<PixelLogicTimeTrialHighscoreStore.Highscore> highscoreList = PixelLogicTimeTrialHighscoreStore.list(options.id);
+            List<PixelLogicTimeTrialHighscoreStore.Highscore> highscoreList = PixelLogicTimeTrialHighscoreStore.list(options.id.name());
 
             // header
             Label normalHighscoreLabel = page.getLabel("highscore", TEXT_LIGHT_COLOR);
@@ -208,7 +208,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
             // score
             if (!highscoreList.isEmpty()) {
                 final Integer rank = page.getProperties().getInt("rank");
-                final String mode = page.getProperties().getString("mode");
+                final PixelLogicTimeTrialModeOptions.Mode mode = page.getProperties().get("mode");
                 boolean lastRankInvalid = rank == null || rank == -1 || mode == null || !mode.equals(options.id);
                 for (int i = 0; i < highscoreList.size(); i++) {
                     Color color = lastRankInvalid || rank != i ? TEXT_COLOR : GRID_COLOR;

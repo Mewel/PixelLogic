@@ -11,10 +11,6 @@ public class PixelLogicUIPageProperties {
         this.data = new HashMap<String, Object>();
     }
 
-    public Object get(String key) {
-        return data.get(key);
-    }
-
     public String getString(String key) {
         Object result = data.get(key);
         return result != null ? result.toString() : null;
@@ -45,12 +41,12 @@ public class PixelLogicUIPageProperties {
         return data.toString();
     }
 
-    public <T> T get(String key, Class<T> type) {
-        Object o = get(key);
+    public <T> T get(String key) {
+        Object o = data.get(key);
         if (o == null) {
             return null;
         }
-        return type.isInstance(o) ? (T) o : null;
+        return (T) o;
     }
 
 }

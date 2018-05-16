@@ -34,7 +34,7 @@ public class LevelTest extends Game implements PixelLogicGlobal {
     public static final class TestOptions extends PixelLogicTimeTrialModeOptions {
 
         public TestOptions() {
-            this.id = Modes.time_trial_hardcore.name();
+            this.id = Mode.time_trial_hardcore;
             this.name = "HARD MODE";
             this.levelSize = new int[]{8};
             this.levelSizeOffset = new int[]{3};

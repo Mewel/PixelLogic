@@ -6,6 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
+import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
+import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 
@@ -34,7 +36,7 @@ public class PixelLogicUITimeTrialFinishedPage extends PixelLogicUIPage {
     @Override
     public void activate(final PixelLogicUIPageProperties properties) {
         super.activate(properties);
-        final String mode = properties.getString("mode");
+        final PixelLogicTimeTrialModeOptions.Mode mode = properties.get("mode");
         final Long time = properties.getLong("time");
         final Integer rank = properties.getInt("rank");
         this.resultLabel.setText(PixelLogicUIUtil.formatMilliseconds(time));

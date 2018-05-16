@@ -28,8 +28,8 @@ public class PixelLogicAchievementEpicMode extends PixelLogicAchievement {
             return false;
         }
         PixelLogicUIPageProperties properties = screenChangeEvent.getData();
-        String mode = properties.getString("mode");
-        if (!PixelLogicTimeTrialModeOptions.Modes.time_trial_epic.name().equals(mode)) {
+        final PixelLogicTimeTrialModeOptions.Mode mode = properties.get("mode");
+        if (!PixelLogicTimeTrialModeOptions.Mode.time_trial_epic.equals(mode)) {
             return false;
         }
         final Long time = properties.getLong("time");

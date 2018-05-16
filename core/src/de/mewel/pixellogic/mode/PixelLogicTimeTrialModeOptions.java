@@ -2,11 +2,11 @@ package de.mewel.pixellogic.mode;
 
 public class PixelLogicTimeTrialModeOptions {
 
-    public enum Modes {
+    public enum Mode {
         time_trial_easy, time_trial_hardcore, time_trial_insane, time_trial_epic
     }
 
-    public String id;
+    public Mode id;
 
     public String name;
 
@@ -23,7 +23,7 @@ public class PixelLogicTimeTrialModeOptions {
     public static final class PixelLogicTimeTrialEasyOptions extends PixelLogicTimeTrialModeOptions {
 
         public PixelLogicTimeTrialEasyOptions() {
-            this.id = Modes.time_trial_easy.name();
+            this.id = Mode.time_trial_easy;
             this.name = "EASY MODE";
             this.levelSize = new int[]{4, 5, 6, 7};
             this.levelSizeOffset = new int[]{0, 1, 1, 2};
@@ -36,7 +36,7 @@ public class PixelLogicTimeTrialModeOptions {
     public static final class PixelLogicTimeTrialHardcoreOptions extends PixelLogicTimeTrialModeOptions {
 
         public PixelLogicTimeTrialHardcoreOptions() {
-            this.id = Modes.time_trial_hardcore.name();
+            this.id = Mode.time_trial_hardcore;
             this.name = "HARD MODE";
             this.levelSize = new int[]{6, 7, 8};
             this.levelSizeOffset = new int[]{0, 1, 2};
@@ -49,7 +49,7 @@ public class PixelLogicTimeTrialModeOptions {
     public static final class PixelLogicTimeTrialInsaneOptions extends PixelLogicTimeTrialModeOptions {
 
         public PixelLogicTimeTrialInsaneOptions() {
-            this.id = Modes.time_trial_insane.name();
+            this.id = Mode.time_trial_insane;
             this.name = "INSANE MODE";
             this.levelSize = new int[]{9, 10};
             this.levelSizeOffset = new int[]{2, 2};
@@ -62,7 +62,7 @@ public class PixelLogicTimeTrialModeOptions {
     public static final class PixelLogicTimeTrialEpicOptions extends PixelLogicTimeTrialModeOptions {
 
         public PixelLogicTimeTrialEpicOptions() {
-            this.id = Modes.time_trial_epic.name();
+            this.id = Mode.time_trial_epic;
             this.name = "EPIC MODE";
             this.levelSize = new int[]{0};
             this.levelSizeXY = new int[]{12, 16};

@@ -32,9 +32,12 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
 
     private PixelLogicStopWatch stopWatch;
 
+    private boolean playSecretLevel;
+
     public PixelLogicTimeTrialMode(PixelLogicTimeTrialModeOptions options) {
         this.options = options;
         this.stopWatch = new PixelLogicStopWatch();
+        this.playSecretLevel = false;
     }
 
     @Override
@@ -88,14 +91,17 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
         }.start();
     }
 
+    private void runSecretLevel() {
+
+    }
+
     private void onFinished() {
         this.stopWatch.stop();
         PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
         data.put("pageId", PixelLogicUIPageId.timeTrialFinished);
-        String mode = this.options.id;
-        data.put("mode", mode);
+        data.put("mode", this.options.id);
         data.put("time", this.stopWatch.elapsed());
-        int rank = PixelLogicTimeTrialHighscoreStore.add(mode, this.stopWatch.elapsed());
+        int rank = PixelLogicTimeTrialHighscoreStore.add(this.options.id.name(), this.stopWatch.elapsed());
         data.put("rank", rank);
         this.getEventManager().fire(new PixelLogicUIPageChangeEvent(this, data));
     }
@@ -119,13 +125,14 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     }
 
     private void startSecretLevel() {
-        PixelLogicUILevelPage page = (PixelLogicUILevelPage) getAppScreen().getPage(PixelLogicUIPageId.level);
+        final PixelLogicUILevelPage page = (PixelLogicUILevelPage) getAppScreen().getPage(PixelLogicUIPageId.level);
         float executionTime = new PixelLogicUISecretLevelStartAnimation(page).execute();
         page.getToolbar().addAction(Actions.fadeOut(.2f));
         SequenceAction awaitAction = Actions.sequence(Actions.delay(executionTime), Actions.run(new Runnable() {
             @Override
             public void run() {
-                Gdx.app.log("gc", "do it");
+                playSecretLevel = true;
+                page.destroyLevel();
             }
         }));
         page.getStage().addAction(awaitAction);
@@ -136,7 +143,11 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
             if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus())) {
-                runNext();
+                if(!playSecretLevel) {
+                    runNext();
+                } else {
+                    runSecretLevel();
+                }
             }
             if (PixelLogicLevelStatus.playable.equals(changeEvent.getStatus())) {
                 long elapsed = this.stopWatch.startOrResume();
@@ -166,7 +177,8 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
         }
         if (event instanceof PixelLogicUserChangedBoardEvent) {
             PixelLogicUserChangedBoardEvent changedBoardEvent = (PixelLogicUserChangedBoardEvent) event;
-            if (changedBoardEvent.getLevel().isFilled()) {
+            if (!PixelLogicTimeTrialModeOptions.Mode.time_trial_easy.equals(options.id) &&
+                    changedBoardEvent.getLevel().isFilled()) {
                 startSecretLevel();
             }
         }

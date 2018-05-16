@@ -76,7 +76,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         getContent().add(this.resetLevelButton).padBottom(padding);
         getContent().row();
 
-        this.backButtonScreenId = properties.get("menuBackId", PixelLogicUIPageId.class);
+        this.backButtonScreenId = properties.get("menuBackId");
         if (this.backButtonScreenId != null) {
             getContent().add(this.backButton).padBottom(padding);
             getContent().row();

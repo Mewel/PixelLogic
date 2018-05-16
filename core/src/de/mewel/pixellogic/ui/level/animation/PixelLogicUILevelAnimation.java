@@ -19,6 +19,10 @@ public abstract class PixelLogicUILevelAnimation {
         this.page = levelPage;
     }
 
+    public PixelLogicUILevelPage getPage() {
+        return page;
+    }
+
     public PixelLogicUILevel getLevelUI() {
         return page.getLevelUI();
     }

@@ -1,9 +1,11 @@
 package de.mewel.pixellogic.ui.level.animation;
 
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.ui.level.PixelLogicUIBoard;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoardPixel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIColumnGroup;
 import de.mewel.pixellogic.ui.level.PixelLogicUIRowGroup;
@@ -13,6 +15,16 @@ public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUILevelAnim
 
     public PixelLogicUISecretLevelStartAnimation(PixelLogicUILevelPage levelPage) {
         super(levelPage);
+    }
+
+    @Override
+    public float execute() {
+        float time = super.execute();
+        getLevelUI();
+        PixelLogicUIBoard board = getLevelUI().getBoard();
+        board.addAction(Actions.moveTo(-board.getWidth(), -board.getHeight(), time));
+        board.addAction(Actions.scaleBy(2, 2, time));
+        return time;
     }
 
     @Override
