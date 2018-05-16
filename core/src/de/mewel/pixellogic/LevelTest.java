@@ -1,9 +1,13 @@
 package de.mewel.pixellogic;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.event.PixelLogicListener;
+import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIAppScreen;
@@ -29,6 +33,15 @@ public class LevelTest extends Game implements PixelLogicGlobal {
         final PixelLogicTimeTrialMode mode = new PixelLogicTimeTrialMode(new TestOptions());
         mode.setup(this);
         mode.run();
+
+        eventManager.listen(new PixelLogicListener() {
+            @Override
+            public void handle(PixelLogicEvent event) {
+                if(event instanceof PixelLogicNextLevelEvent) {
+                    Gdx.app.log("lvl", ((PixelLogicNextLevelEvent) event).getNextLevel().toString());
+                }
+            }
+        });
     }
 
     public static final class TestOptions extends PixelLogicTimeTrialModeOptions {
@@ -36,10 +49,10 @@ public class LevelTest extends Game implements PixelLogicGlobal {
         public TestOptions() {
             this.id = Mode.time_trial_hardcore;
             this.name = "HARD MODE";
-            this.levelSize = new int[]{8};
-            this.levelSizeOffset = new int[]{3};
-            this.levelMinDifficulty = new float[]{2.5f};
-            this.levelMaxDifficulty = new float[]{3.5f};
+            this.levelSize = new int[]{10};
+            this.levelSizeOffset = new int[]{0};
+            this.levelMinDifficulty = new float[]{6f};
+            this.levelMaxDifficulty = new float[]{15f};
         }
 
     }

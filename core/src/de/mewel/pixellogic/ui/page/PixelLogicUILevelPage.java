@@ -249,16 +249,16 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
     private static class ScreenListener extends InputListener implements PixelLogicListener {
 
-        private PixelLogicUILevelPage screen;
+        private PixelLogicUILevelPage page;
 
-        ScreenListener(PixelLogicUILevelPage screen) {
-            this.screen = screen;
+        ScreenListener(PixelLogicUILevelPage page) {
+            this.page = page;
         }
 
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            if (PixelLogicLevelStatus.finished.equals(this.screen.getLevelStatus())) {
-                this.screen.destroyLevel();
+            if (PixelLogicLevelStatus.finished.equals(this.page.getLevelStatus())) {
+                this.page.destroyLevel();
             }
             return super.touchDown(event, x, y, pointer, button);
         }
@@ -268,18 +268,18 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
             if (event instanceof PixelLogicUserEvent) {
                 PixelLogicUserEvent userEvent = (PixelLogicUserEvent) event;
                 if (PixelLogicUserEvent.Type.LEVEL_MENU_CLICKED.equals(userEvent.getType())) {
-                    screen.menu.show();
+                    page.menu.show();
                 }
             }
             if (event instanceof PixelLogicLoadNextLevelEvent) {
                 Gdx.app.log("screen", "next level");
-                screen.loadingModal.show();
+                page.loadingModal.show();
             }
             if (event instanceof PixelLogicNextLevelEvent) {
-                screen.loadingModal.close();
+                page.loadingModal.close();
                 PixelLogicNextLevelEvent nextLevelEvent = (PixelLogicNextLevelEvent) event;
                 PixelLogicLevel nextLevel = nextLevelEvent.getNextLevel();
-                screen.loadLevel(nextLevel);
+                page.loadLevel(nextLevel);
             }
         }
 

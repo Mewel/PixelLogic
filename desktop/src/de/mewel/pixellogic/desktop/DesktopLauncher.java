@@ -4,6 +4,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 import de.mewel.pixellogic.FontTest;
+import de.mewel.pixellogic.LevelTest;
 import de.mewel.pixellogic.PixelLogicGame;
 
 public class DesktopLauncher {

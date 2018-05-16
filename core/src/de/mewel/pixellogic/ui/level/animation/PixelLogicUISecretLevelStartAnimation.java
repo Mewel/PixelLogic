@@ -3,6 +3,7 @@ package de.mewel.pixellogic.ui.level.animation;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.utils.Align;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoard;
@@ -13,6 +14,8 @@ import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 
 public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUILevelAnimation {
 
+    private static final float DELAY = .3f;
+
     public PixelLogicUISecretLevelStartAnimation(PixelLogicUILevelPage levelPage) {
         super(levelPage);
     }
@@ -22,8 +25,12 @@ public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUILevelAnim
         float time = super.execute();
         getLevelUI();
         PixelLogicUIBoard board = getLevelUI().getBoard();
-        board.addAction(Actions.moveTo(-board.getWidth(), -board.getHeight(), time));
-        board.addAction(Actions.scaleBy(2, 2, time));
+        board.setOrigin(Align.center);
+        SequenceAction sequence = Actions.sequence(Actions.delay(DELAY), Actions.parallel(
+                Actions.rotateBy(360, time),
+                Actions.scaleBy(2, 2, time)
+        ));
+        board.addAction(sequence);
         return time;
     }
 
@@ -35,10 +42,10 @@ public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUILevelAnim
         int pos = find(row, col, level.getRows(), level.getColumns());
         float delayPerPixel = 1.5f / (level.getRows() * level.getColumns());
         SequenceAction sequenceAction = new SequenceAction();
-        sequenceAction.addAction(Actions.delay(.3f + (delayPerPixel * pos)));
+        sequenceAction.addAction(Actions.delay(DELAY + (delayPerPixel * pos)));
         sequenceAction.addAction(Actions.fadeOut(.3f));
         pixel.addAction(sequenceAction);
-        return .3f + (delayPerPixel * pos) + .3f;
+        return DELAY + (delayPerPixel * pos) + .3f;
     }
 
     @Override
