@@ -85,6 +85,7 @@ public abstract class PixelLogicUIPage implements PixelLogicUIElement {
     public void resize(int width, int height) {
         this.updateViewport(width, height);
         this.getStage().getViewport().update(width, height);
+        this.getStage().getRoot().setBounds(0, 0, width, height);
     }
 
 }

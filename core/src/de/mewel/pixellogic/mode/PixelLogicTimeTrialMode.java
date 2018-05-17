@@ -1,6 +1,9 @@
 package de.mewel.pixellogic.mode;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
@@ -14,6 +17,7 @@ import de.mewel.pixellogic.event.PixelLogicTimerEvent;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
+import de.mewel.pixellogic.ui.level.PixelLogicUISecretLevelIntroModal;
 import de.mewel.pixellogic.ui.level.animation.PixelLogicUISecretLevelStartAnimation;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicUserChangedBoardEvent;
@@ -92,7 +96,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     }
 
     private void runSecretLevel() {
-
+        Gdx.app.log("ttm", "run secret level");
     }
 
     private void onFinished() {
@@ -125,17 +129,36 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     }
 
     private void startSecretLevel() {
+        Gdx.input.setInputProcessor(null);
         final PixelLogicUILevelPage page = (PixelLogicUILevelPage) getAppScreen().getPage(PixelLogicUIPageId.level);
+        final Stage stage = page.getStage();
         float executionTime = new PixelLogicUISecretLevelStartAnimation(page).execute();
         page.getToolbar().addAction(Actions.fadeOut(.2f));
         SequenceAction awaitAction = Actions.sequence(Actions.delay(executionTime), Actions.run(new Runnable() {
             @Override
             public void run() {
                 playSecretLevel = true;
-                page.destroyLevel();
+                final PixelLogicUISecretLevelIntroModal secretLevelIntroModal = new PixelLogicUISecretLevelIntroModal(getAssets(), getEventManager(), stage) {
+                    @Override
+                    protected void afterClose() {
+                        super.afterClose();
+                        this.clear();
+                        page.destroyLevel();
+                    }
+                };
+                secretLevelIntroModal.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                secretLevelIntroModal.show();
+                secretLevelIntroModal.addListener(new InputListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        secretLevelIntroModal.close();
+                        return true;
+                    }
+                });
+                Gdx.input.setInputProcessor(stage);
             }
         }));
-        page.getStage().addAction(awaitAction);
+        stage.addAction(awaitAction);
     }
 
     @Override
