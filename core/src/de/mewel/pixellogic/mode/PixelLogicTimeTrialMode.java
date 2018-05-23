@@ -55,6 +55,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
         final PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
         data.put("pageId", PixelLogicUIPageId.level);
         data.put("options", options);
+        data.put("mode", options.id);
         data.put("menuBackId", PixelLogicUIPageId.timeTrial);
         getEventManager().fire(new PixelLogicUIPageChangeEvent(this, data));
         runNext();
@@ -200,7 +201,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
         }
         if (event instanceof PixelLogicUserChangedBoardEvent) {
             PixelLogicUserChangedBoardEvent changedBoardEvent = (PixelLogicUserChangedBoardEvent) event;
-            if (!PixelLogicTimeTrialModeOptions.Mode.time_trial_easy.equals(options.id) &&
+            if (PixelLogicTimeTrialModeOptions.Mode.time_trial_hardcore.equals(options.id) &&
                     changedBoardEvent.getLevel().isFilled()) {
                 startSecretLevel();
             }

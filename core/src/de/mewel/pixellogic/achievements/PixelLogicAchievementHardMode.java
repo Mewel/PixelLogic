@@ -23,11 +23,11 @@ public class PixelLogicAchievementHardMode extends PixelLogicAchievement {
         if (!(event instanceof PixelLogicUIPageChangeEvent)) {
             return false;
         }
-        PixelLogicUIPageChangeEvent screenChangeEvent = (PixelLogicUIPageChangeEvent) event;
-        if (!(PixelLogicUIPageId.timeTrialFinished.equals(screenChangeEvent.getPageId()))) {
+        PixelLogicUIPageChangeEvent pageChangeEvent = (PixelLogicUIPageChangeEvent) event;
+        if (!(PixelLogicUIPageId.timeTrialFinished.equals(pageChangeEvent.getPageId()))) {
             return false;
         }
-        PixelLogicUIPageProperties properties = screenChangeEvent.getData();
+        PixelLogicUIPageProperties properties = pageChangeEvent.getData();
         final PixelLogicTimeTrialModeOptions.Mode mode = properties.get("mode");
         if (!PixelLogicTimeTrialModeOptions.Mode.time_trial_hardcore.equals(mode)) {
             return false;
