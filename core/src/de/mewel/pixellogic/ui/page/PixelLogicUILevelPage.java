@@ -19,7 +19,7 @@ import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
-import de.mewel.pixellogic.ui.component.PixelLogicUILoadingModal;
+import de.mewel.pixellogic.ui.component.PixelLogicUIMessageModal;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelMenu;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelToolbar;
@@ -42,7 +42,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
     private ScreenListener screenListener;
 
-    private PixelLogicUILoadingModal loadingModal;
+    private PixelLogicUIMessageModal loadingModal;
 
     private FPSLogger fpsLogger = new FPSLogger();
 
@@ -59,7 +59,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
         // MODAL's
         this.menu = new PixelLogicUILevelMenu(getAssets(), getEventManager(), this);
-        this.loadingModal = new PixelLogicUILoadingModal("loading next level...", getAssets(), getEventManager(), getStage());
+        this.loadingModal = new PixelLogicUIMessageModal("loading next level...", getAssets(), getEventManager(), getStage());
 
         // STAGE
         this.screenListener = new ScreenListener(this);

@@ -15,7 +15,7 @@ public class DesktopLauncher {
         config.useGL30 = true;
         config.width = 360;
         config.height = 590;
-        new LwjglApplication(new PixelLogicGame(), config);
+        new LwjglApplication(new LevelTest(), config);
 /*
         config.width = 360;
         config.height = 990;

@@ -13,11 +13,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicLoadNextLevelEvent;
+import de.mewel.pixellogic.event.PixelLogicSecretLevelStart;
 import de.mewel.pixellogic.event.PixelLogicTimerEvent;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
-import de.mewel.pixellogic.ui.level.PixelLogicUISecretLevelIntroModal;
+import de.mewel.pixellogic.ui.component.PixelLogicUIMessageModal;
 import de.mewel.pixellogic.ui.level.animation.PixelLogicUISecretLevelStartAnimation;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicUserChangedBoardEvent;
@@ -139,7 +140,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
             @Override
             public void run() {
                 playSecretLevel = true;
-                final PixelLogicUISecretLevelIntroModal secretLevelIntroModal = new PixelLogicUISecretLevelIntroModal(getAssets(), getEventManager(), stage) {
+                final PixelLogicUIMessageModal secretLevelIntroModal = new PixelLogicUIMessageModal("secret level", getAssets(), getEventManager(), stage) {
                     @Override
                     protected void afterClose() {
                         super.afterClose();
@@ -157,6 +158,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
                     }
                 });
                 Gdx.input.setInputProcessor(stage);
+                getEventManager().fire(new PixelLogicSecretLevelStart(PixelLogicTimeTrialMode.this));
             }
         }));
         stage.addAction(awaitAction);
@@ -167,7 +169,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
             if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus())) {
-                if(!playSecretLevel) {
+                if (!playSecretLevel) {
                     runNext();
                 } else {
                     runSecretLevel();
@@ -202,7 +204,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
         if (event instanceof PixelLogicUserChangedBoardEvent) {
             PixelLogicUserChangedBoardEvent changedBoardEvent = (PixelLogicUserChangedBoardEvent) event;
             if (PixelLogicTimeTrialModeOptions.Mode.time_trial_hardcore.equals(options.id) &&
-                    changedBoardEvent.getLevel().isFilled()) {
+                    changedBoardEvent.getLevel().isBlocked()) {
                 startSecretLevel();
             }
         }

@@ -9,11 +9,11 @@ import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
-public class PixelLogicUILoadingModal extends PixelLogicUIModal {
+public class PixelLogicUIMessageModal extends PixelLogicUIModal {
 
     private String message;
 
-    public PixelLogicUILoadingModal(String message, PixelLogicAssets assets, PixelLogicEventManager eventManager, Stage stage) {
+    public PixelLogicUIMessageModal(String message, PixelLogicAssets assets, PixelLogicEventManager eventManager, Stage stage) {
         super(assets, eventManager, stage.getRoot());
         this.message = message;
         buildContent();

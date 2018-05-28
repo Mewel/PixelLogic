@@ -51,7 +51,7 @@ public class LevelTest extends Game implements PixelLogicGlobal {
             this.name = "HARD MODE";
             this.levelSize = new int[]{10};
             this.levelSizeOffset = new int[]{0};
-            this.levelMinDifficulty = new float[]{6f};
+            this.levelMinDifficulty = new float[]{5.8f};
             this.levelMaxDifficulty = new float[]{15f};
         }
 
