@@ -10,6 +10,7 @@ import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIElement;
+import de.mewel.pixellogic.ui.screen.PixelLogicUIAppScreen;
 
 public abstract class PixelLogicUIPage implements PixelLogicUIElement {
 
@@ -49,6 +50,10 @@ public abstract class PixelLogicUIPage implements PixelLogicUIElement {
     @Override
     public PixelLogicEventManager getEventManager() {
         return global.getEventManager();
+    }
+
+    public PixelLogicUIAppScreen getAppScreen() {
+        return global.getAppScreen();
     }
 
     public PixelLogicUIPageProperties getProperties() {

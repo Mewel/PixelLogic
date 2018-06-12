@@ -1,10 +1,12 @@
 package de.mewel.pixellogic.ui.level;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -22,9 +24,9 @@ import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 
 public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements PixelLogicListener {
 
-    private Texture icons, backgroundTexture;
+    private Texture backgroundTexture;
 
-    private PixelLogicUILevelMenuButton menuButton;
+    private MenuButton menuButton;
 
     private PixelLogicUILevelSwitcher switcher;
 
@@ -48,9 +50,8 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
         this.timerStart = 0;
         this.timerRunning = false;
         this.backgroundTexture = PixelLogicUIUtil.getTexture(Color.BLACK);
-        this.icons = new Texture(Gdx.files.internal("gui/level/toolbar.png"));
 
-        this.menuButton = new PixelLogicUILevelMenuButton(this.icons);
+        this.menuButton = new MenuButton(getAssets().getIcon(2));
         this.menuButtonListener = new InputListener() {
 
             @Override
@@ -60,7 +61,7 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
             }
 
         };
-        this.switcher = new PixelLogicUILevelSwitcher(getAssets(), getEventManager(), this.icons);
+        this.switcher = new PixelLogicUILevelSwitcher(getAssets(), getEventManager());
         this.switcherListener = new InputListener() {
 
             @Override
@@ -200,7 +201,6 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
     @Override
     public void clear() {
         this.backgroundTexture.dispose();
-        this.icons.dispose();
         this.getEventManager().remove(this);
         super.clear();
     }
@@ -221,5 +221,34 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
         centerLabel(this.solvedLabel);
         centerLabel(this.timerLabel);
     }
+
+    private static class MenuButton extends Actor {
+
+        private Sprite sprite;
+
+        public MenuButton(Sprite sprite) {
+            this.sprite = sprite;
+        }
+
+        @Override
+        public void draw(Batch batch, float parentAlpha) {
+            Color color = getColor();
+            batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+            super.draw(batch, parentAlpha);
+
+            float size = PixelLogicUIUtil.getIconBaseHeight();
+            float offset = size / 2;
+            float y = MathUtils.floor(getY()) + offset - 1;
+            float x = MathUtils.floor(getX()) + offset;
+            float alpha = parentAlpha * color.a;
+            Color spriteColor = Color.WHITE;
+
+            batch.setColor(new Color(spriteColor.r, spriteColor.g, spriteColor.b, spriteColor.a * alpha));
+            batch.draw(sprite, x, y, size, size);
+            batch.setColor(color);
+        }
+
+    }
+
 
 }

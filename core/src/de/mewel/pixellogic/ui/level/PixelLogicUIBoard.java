@@ -52,7 +52,7 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
         this.addActor(this.grid);
         for (int row = 0; row < level.getRows(); row++) {
             for (int col = 0; col < level.getColumns(); col++) {
-                PixelLogicUIBoardPixel pixel = new PixelLogicUIBoardPixel(getAssets(), getEventManager(), row, col);
+                PixelLogicUIBoardPixel pixel = new PixelLogicUIBoardPixel(getAssets(), row, col);
                 pixel.set(level.get(row, col));
                 this.pixels[row][col] = pixel;
                 this.addActor(pixel);
@@ -72,7 +72,6 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
             }
         }
     }
-
 
     public PixelLogicLevel getLevel() {
         return this.level;

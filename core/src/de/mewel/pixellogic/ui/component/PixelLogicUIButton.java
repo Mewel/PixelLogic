@@ -1,11 +1,7 @@
 package de.mewel.pixellogic.ui.component;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
@@ -22,18 +18,23 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
 
     private PixelLogicUIColoredSurface background;
 
-    private ButtonListener listener;
+    private PixelLogicUIButtonListener listener;
 
     public PixelLogicUIButton(PixelLogicAssets assets, PixelLogicEventManager eventManager, String text) {
         super(assets, eventManager);
         this.text = text;
-        this.background = new PixelLogicUIColoredSurface(assets, eventManager);
+        this.background = new PixelLogicUIColoredSurface(assets);
         Color bgColor = PixelLogicUIConstants.LINE_COMPLETE_COLOR;
         this.background.setColor(bgColor);
         this.background.setBorder(1, new Color(bgColor).mul(.5f));
         this.addActor(this.background);
         this.updateLabel();
-        this.addListener(this.listener = new ButtonListener());
+        this.addListener(this.listener = new PixelLogicUIButtonListener() {
+            @Override
+            public void onClick() {
+                PixelLogicUIButton.this.onClick();
+            }
+        });
     }
 
     @Override
@@ -78,26 +79,6 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
 
     public void onClick() {
         // not implemented
-    }
-
-    private class ButtonListener extends InputListener {
-
-        private Vector2 start;
-
-        @Override
-        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            this.start = new Vector2(x, y);
-            return true;
-        }
-
-        @Override
-        public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-            int maxDragUntilCancel = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) / 20;
-            if (start.dst(new Vector2(x, y)) < maxDragUntilCancel) {
-                onClick();
-            }
-        }
-
     }
 
 }

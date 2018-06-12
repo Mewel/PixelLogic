@@ -1,7 +1,6 @@
 package de.mewel.pixellogic.ui.level;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.PIXEL_BLOCKED_COLOR;
@@ -12,8 +11,8 @@ public class PixelLogicUIBoardPixel extends PixelLogicUIColoredSurface {
 
     private int row, col;
 
-    public PixelLogicUIBoardPixel(PixelLogicAssets assets, PixelLogicEventManager eventManager, int row, int col) {
-        super(assets, eventManager);
+    public PixelLogicUIBoardPixel(PixelLogicAssets assets, int row, int col) {
+        super(assets);
         this.row = row;
         this.col = col;
         setColor(PIXEL_EMPTY_COLOR);

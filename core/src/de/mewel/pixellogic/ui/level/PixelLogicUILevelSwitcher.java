@@ -30,10 +30,10 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
 
     private boolean fillPixel;
 
-    PixelLogicUILevelSwitcher(PixelLogicAssets assets, PixelLogicEventManager eventManager, Texture icons) {
+    PixelLogicUILevelSwitcher(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         super(assets, eventManager);
-        this.penSprite = new Sprite(icons, 0, 0, BASE_SIZE, BASE_SIZE);
-        this.xSprite = new Sprite(icons, BASE_SIZE, 0, BASE_SIZE, BASE_SIZE);
+        this.penSprite = getAssets().getIcon(0);
+        this.xSprite = getAssets().getIcon(1);
         this.penColor = PixelLogicUIConstants.TOOLBAR_SWITCHER_ACTIVE_COLOR;
         this.xColor = PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
 

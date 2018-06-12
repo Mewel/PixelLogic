@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
@@ -30,15 +29,18 @@ import static de.mewel.pixellogic.ui.PixelLogicUIConstants.GRID_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_LIGHT_COLOR;
 
-public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
+public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
 
     private List<TimeTrialModeUI> modes;
 
     private Container<Label> labelContainer;
 
     public PixelLogicUITimeTrialPage(PixelLogicGlobal global) {
-        super(global, PixelLogicUIPageId.timeTrial);
+        super(global, PixelLogicUIPageId.timeTrial, "Time trial", PixelLogicUIPageId.mainMenu);
+    }
 
+    @Override
+    protected void build() {
         this.modes = new ArrayList<TimeTrialModeUI>();
         this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialEasyOptions(), this));
         this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions(), this));
@@ -48,31 +50,16 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
         /*for(TimeTrialModeUI mode : this.modes) {
             PixelLogicTimeTrialHighscoreStore.clear(mode.options.id);
         }*/
-        this.buildGUI();
+        this.buildModes();
     }
 
-    protected void buildGUI() {
-        // labels
+    protected void buildModes() {
         Label descriptionLabel = getDescriptionLabel();
-
-        // combine to VerticalGroup
-        VerticalGroup root = new VerticalGroup();
-        root.center();
-        root.bottom();
-        root.pad(getPadding());
-        root.space(getPadding() * 1.5f);
-
         this.labelContainer = new Container<Label>(descriptionLabel);
-        root.addActor(this.labelContainer);
+        getPageRoot().addActor(this.labelContainer);
         for (TimeTrialModeUI mode : this.modes) {
-            root.addActor(mode);
+            getPageRoot().addActor(mode);
         }
-        ScrollPane scrollPane = new ScrollPane(root);
-        getStage().addActor(scrollPane);
-        scrollPane.setScrollingDisabled(true, false);
-        scrollPane.setClamp(true);
-        scrollPane.setOverscroll(false, false);
-        scrollPane.setFillParent(true);
     }
 
     private Label getDescriptionLabel() {
@@ -113,14 +100,6 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
         }
     }
 
-    private static int getButtonHeight() {
-        return PixelLogicUIUtil.getBaseHeight();
-    }
-
-    private static int getButtonWidth() {
-        return getButtonHeight() * 4;
-    }
-
     public Label getLabel(String text, Color color) {
         Label.LabelStyle style = getLabelStyle(color);
         return new Label(text, style);
@@ -137,7 +116,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
 
         private PixelLogicUITimeTrialPage page;
 
-        PixelLogicUIButton button;
+        private PixelLogicUIButton button;
 
         private Table highscoreTable;
 
@@ -198,7 +177,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
             highscoreTable.row();
 
             // line
-            PixelLogicUIColoredSurface line = new PixelLogicUIColoredSurface(page.getAssets(), page.getEventManager());
+            PixelLogicUIColoredSurface line = new PixelLogicUIColoredSurface(page.getAssets());
             line.setColor(TEXT_LIGHT_COLOR);
             line.setWidth(getComponentWidth());
             line.setHeight(1);
@@ -229,6 +208,12 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIPage {
             final PixelLogicTimeTrialMode mode = new PixelLogicTimeTrialMode(options);
             mode.setup(page.getGlobal());
             mode.run();
+
+            final PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
+            data.put("options", options);
+            data.put("mode", options.id);
+            data.put("menuBackId", PixelLogicUIPageId.timeTrial);
+            page.getAppScreen().setPage(PixelLogicUIPageId.level, data);
         }
 
     }

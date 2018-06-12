@@ -4,11 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.PixmapLoader;
+import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
@@ -18,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
+
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BASE_SIZE;
 
 public class PixelLogicAssets {
 
@@ -49,17 +54,24 @@ public class PixelLogicAssets {
         manager.setLoader(BitmapFont.class, ".fnt", new PixelLogicBitmapFontLoader(resolver));
         //manager.setLoader(TextureAtlas.class, new TextureAtlasLoader(resolver));
         manager.setLoader(Pixmap.class, new PixmapLoader(resolver));
+        manager.setLoader(Texture.class, new TextureLoader(resolver));
 
         manager.setLoader(PixelLogicLevelCollection.class, new PixelLogicLevelCollectionLoader(resolver));
 
+        loadLogo();
         loadLevels();
         loadFonts();
+        loadIcons();
         //loadTextures();
 
         manager.finishLoading();
     }
 
-    protected void loadLevels() {
+    private void loadLogo() {
+        manager.load("logo.png", Texture.class);
+    }
+
+    private void loadLevels() {
         for (FileHandle collectionHandle : getLevelHandles()) {
             String collectionName = collectionHandle.path();
             manager.load(collectionName, PixelLogicLevelCollection.class);
@@ -74,6 +86,10 @@ public class PixelLogicAssets {
     protected void loadFonts() {
         loadTTFFont("fonts/visitor2.ttf", GAME_FONT_PREFIX);
         loadBitmapFont("fonts/numbers.fnt", LEVEL_FONT_PREFIX);
+    }
+
+    protected void loadIcons() {
+        manager.load("icons.png", Texture.class);
     }
 
     protected void loadTTFFont(String path, String prefix) {
@@ -168,6 +184,11 @@ public class PixelLogicAssets {
             handles.add(collectionHandle);
         }
         return handles;
+    }
+
+    public Sprite getIcon(int index) {
+        Texture icons = manager.get("icons.png", Texture.class);
+        return new Sprite(icons, BASE_SIZE * index, 0, BASE_SIZE, BASE_SIZE);
     }
 
     public void dispose() {

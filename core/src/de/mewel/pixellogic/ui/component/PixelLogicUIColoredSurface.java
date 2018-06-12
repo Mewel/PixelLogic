@@ -7,17 +7,16 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIActor;
 
 public class PixelLogicUIColoredSurface extends PixelLogicUIActor {
 
-    int borderWidth;
+    private int borderWidth;
 
-    Color borderColor;
+    private Color borderColor;
 
-    public PixelLogicUIColoredSurface(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager);
+    public PixelLogicUIColoredSurface(PixelLogicAssets assets) {
+        super(assets, null);
         this.borderWidth = 0;
         this.borderColor = null;
     }

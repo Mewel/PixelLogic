@@ -12,6 +12,8 @@ import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicUserChangedBoardEvent;
+import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
+import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
 
 public class PixelLogicCampaignMode extends PixelLogicLevelMode {
@@ -90,6 +92,11 @@ public class PixelLogicCampaignMode extends PixelLogicLevelMode {
             PixelLogicUserChangedBoardEvent changedBoardEvent = (PixelLogicUserChangedBoardEvent) event;
             this.preferences.putString("pixels", changedBoardEvent.getLevel().toPixelString());
             this.preferences.flush();
+        } else if (event instanceof PixelLogicUIPageChangeEvent) {
+            PixelLogicUIPageChangeEvent screenChangeEvent = (PixelLogicUIPageChangeEvent) event;
+            if (!screenChangeEvent.getPageId().equals(PixelLogicUIPageId.level)) {
+                this.dispose();
+            }
         }
     }
 

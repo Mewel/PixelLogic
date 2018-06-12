@@ -1,6 +1,7 @@
 package de.mewel.pixellogic.mode;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -53,12 +54,6 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     @Override
     public void run() {
         this.round = new AtomicInteger(0);
-        final PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
-        data.put("pageId", PixelLogicUIPageId.level);
-        data.put("options", options);
-        data.put("mode", options.id);
-        data.put("menuBackId", PixelLogicUIPageId.timeTrial);
-        getEventManager().fire(new PixelLogicUIPageChangeEvent(this, data));
         runNext();
     }
 
@@ -124,7 +119,11 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
         Random random = new Random();
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                imageData[row][col] = levelData[row][col] ? random.nextInt() : 0;
+                float r = random.nextFloat() * .5f + .5f;
+                float g = random.nextFloat() * .5f + .5f;
+                float b = random.nextFloat() * .5f + .5f;
+                imageData[row][col] = levelData[row][col] ?
+                        new Color(r, g, b, 1f).toIntBits() : 0;
             }
         }
         return imageData;

@@ -144,7 +144,7 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         public AchievementBlock(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
             super(assets, eventManager);
 
-            this.background = new PixelLogicUIColoredSurface(assets, eventManager);
+            this.background = new PixelLogicUIColoredSurface(assets);
             Color bgColor = PIXEL_BLOCKED_COLOR;
             this.background.setColor(bgColor);
             this.background.setBorder(1, new Color(bgColor).mul(.5f));

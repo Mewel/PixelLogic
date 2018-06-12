@@ -25,7 +25,7 @@ public class PixelLogicGame extends Game implements PixelLogicGlobal {
         this.appScreen = new PixelLogicUIAppScreen(this);
         this.setScreen(this.appScreen);
 
-        this.appScreen.setPage(PixelLogicUIPageId.timeTrial, new PixelLogicUIPageProperties());
+        this.appScreen.setPage(PixelLogicUIPageId.mainMenu, new PixelLogicUIPageProperties());
     }
 
     @Override
