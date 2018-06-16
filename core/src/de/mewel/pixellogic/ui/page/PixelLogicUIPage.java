@@ -81,6 +81,12 @@ public abstract class PixelLogicUIPage implements PixelLogicUIElement {
         this.getStage().dispose();
     }
 
+    public void pause() {
+    }
+
+    public void resume() {
+    }
+
     protected void updateViewport(int width, int height) {
         OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(false);

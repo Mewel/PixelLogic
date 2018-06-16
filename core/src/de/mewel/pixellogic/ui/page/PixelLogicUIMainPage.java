@@ -1,6 +1,8 @@
 package de.mewel.pixellogic.ui.page;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.mode.PixelLogicCampaignMode;
@@ -30,7 +32,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         getStage().addActor(this.background);
 
         this.menuBackground = new PixelLogicUIColoredSurface(getAssets());
-        this.menuBackground.setColor(new Color(255f, 255f, 255f, .6f));
+        this.menuBackground.setColor(new Color(255f, 255f, 255f, .7f));
         getStage().addActor(this.menuBackground);
 
         super.buildGui(headerText, backPageId);
@@ -75,15 +77,29 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
+
         this.background.setBounds(0, 0, width, height);
         this.campaignButton.setSize(getButtonWidth(), getButtonHeight());
         this.timeTrialButton.setSize(getButtonWidth(), getButtonHeight());
         this.achievementButton.setSize(getButtonWidth(), getButtonHeight());
 
-        /*this.menuBackground.setBounds(getPadding(), getPadding(),
-                width - getPadding() * 2,
-                height - getPadding() * 2);*/
-        this.menuBackground.setBounds(0, 0, width, height);
+        // menu background
+        int paddingX = (int) (getButtonHeight() / 1.5f);
+        int paddingY = (int) (getButtonHeight() / 1.5f);
+        int numChildren = getPageRoot().getChildren().size;
+        int menuBackgroundWidth = Math.min(Gdx.graphics.getWidth(), getButtonWidth() + 2 * paddingX);
+        int menuBackgroundHeight = (int) (getButtonHeight() * numChildren + getPageRoot().getSpace() * (numChildren - 1)) + 2 * paddingY;
+        int menuBackgroundX = width / 2 - menuBackgroundWidth / 2;
+        int menuBackgroundY = height / 2 - menuBackgroundHeight / 2;
+        this.menuBackground.setBounds(menuBackgroundX, menuBackgroundY, menuBackgroundWidth, menuBackgroundHeight);
+    }
+
+    public void pause() {
+        Gdx.app.log("main", "pause");
+    }
+
+    public void resume() {
+        Gdx.app.log("main", "resume");
     }
 
 

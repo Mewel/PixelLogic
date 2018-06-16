@@ -97,6 +97,20 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer, PixelLogicListe
     }
 
     @Override
+    public void pause() {
+        if (this.activePage != null) {
+            this.activePage.pause();
+        }
+    }
+
+    @Override
+    public void resume() {
+        if (this.activePage != null) {
+            this.activePage.resume();
+        }
+    }
+
+    @Override
     public PixelLogicAssets getAssets() {
         return this.assets;
     }

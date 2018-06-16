@@ -10,4 +10,8 @@ public interface PixelLogicUILayer extends PixelLogicUIElement {
 
     void dispose();
 
+    void pause();
+
+    void resume();
+
 }

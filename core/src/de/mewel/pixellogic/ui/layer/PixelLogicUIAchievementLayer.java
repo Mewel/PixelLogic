@@ -122,6 +122,14 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
     }
 
     @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
     public PixelLogicAssets getAssets() {
         return assets;
     }

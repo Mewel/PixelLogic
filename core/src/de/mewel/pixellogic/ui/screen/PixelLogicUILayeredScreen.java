@@ -37,6 +37,22 @@ public abstract class PixelLogicUILayeredScreen extends PixelLogicUIScreen {
     }
 
     @Override
+    public void pause() {
+        super.pause();
+        for (PixelLogicUILayer layer : layers) {
+            layer.pause();
+        }
+    }
+
+    @Override
+    public void resume() {
+        super.resume();
+        for (PixelLogicUILayer layer : layers) {
+            layer.resume();
+        }
+    }
+
+    @Override
     public void dispose() {
         super.dispose();
         for (PixelLogicUILayer layer : layers) {
