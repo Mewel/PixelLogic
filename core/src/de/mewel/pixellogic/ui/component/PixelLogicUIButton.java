@@ -28,7 +28,7 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
         this.background.setColor(bgColor);
         this.background.setBorder(1, new Color(bgColor).mul(.5f));
         this.addActor(this.background);
-        this.updateLabel();
+        this.updateLabel(false);
         this.addListener(this.listener = new PixelLogicUIButtonListener() {
             @Override
             public void onClick() {
@@ -41,18 +41,18 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
     protected void sizeChanged() {
         super.sizeChanged();
         this.background.setSize(this.getWidth(), this.getHeight());
-        updateLabel();
+        updateLabel(false);
     }
 
     public void setText(String text) {
         this.text = text;
-        updateLabel();
+        updateLabel(true);
     }
 
-    private void updateLabel() {
+    private void updateLabel(boolean force) {
         BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 2);
         if (this.label != null) {
-            if (labelFont.equals(this.label.getStyle().font)) {
+            if (!force && labelFont.equals(this.label.getStyle().font)) {
                 return;
             }
             this.removeActor(this.label);
@@ -60,11 +60,16 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
         Label.LabelStyle style = new Label.LabelStyle(labelFont, Color.WHITE);
         this.label = new Label(this.text, style);
         this.addActor(this.label);
+        this.updateLabelPosition();
     }
 
     @Override
     protected void positionChanged() {
         super.positionChanged();
+        this.updateLabelPosition();
+    }
+
+    private void updateLabelPosition() {
         float x = this.getWidth() / 2 - this.label.getPrefWidth() / 2;
         float y = this.getHeight() / 2 - this.label.getPrefHeight() / 2;
         this.label.setPosition(x, y);

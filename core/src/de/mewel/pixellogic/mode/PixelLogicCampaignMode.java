@@ -13,6 +13,7 @@ import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicUserChangedBoardEvent;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
+import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
 
@@ -26,7 +27,7 @@ public class PixelLogicCampaignMode extends PixelLogicLevelMode {
     public void setup(PixelLogicGlobal global) {
         super.setup(global);
         this.loadLevels();
-        this.preferences = Gdx.app.getPreferences("campaign_preferences");
+        this.preferences = Gdx.app.getPreferences("campaign");
     }
 
     public void run() {
@@ -48,13 +49,25 @@ public class PixelLogicCampaignMode extends PixelLogicLevelMode {
     private void loadNextLevel() {
         PixelLogicLevel level = next();
         if (level == null) {
-            // TODO handle no more level's
+            onFinished();
             return;
         }
         this.preferences.putString("levelName", level.getName());
         this.preferences.remove("pixels");
         this.preferences.flush();
         runLevel(level);
+    }
+
+    private void onFinished() {
+        this.preferences.putBoolean("finished", true);
+        this.preferences.putBoolean("replay", false);
+        this.preferences.remove("levelName");
+        this.preferences.remove("pixels");
+        this.preferences.flush();
+
+        PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
+        data.put("pageId", PixelLogicUIPageId.mainMenu);
+        this.getEventManager().fire(new PixelLogicUIPageChangeEvent(this, data));
     }
 
     private PixelLogicLevel next() {
@@ -67,7 +80,7 @@ public class PixelLogicCampaignMode extends PixelLogicLevelMode {
             for (PixelLogicLevel level : this.levels) {
                 level.reset();
             }
-            return this.levels.get(0);
+            return null;
         }
         return this.levels.get(nextLevelIndex);
     }
@@ -105,7 +118,7 @@ public class PixelLogicCampaignMode extends PixelLogicLevelMode {
 
         // load tutorial level's
         levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("3x3")));
-        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("4x4")));
+        /*levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("4x4")));
         levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("5x5")));
         levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("6x6")));
         levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("7x7")));
@@ -113,7 +126,7 @@ public class PixelLogicCampaignMode extends PixelLogicLevelMode {
         levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("9x9")));
         levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("10x10")));
         // levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("11x11")));
-        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("12x12")));
+        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("12x12")));*/
     }
 
 }

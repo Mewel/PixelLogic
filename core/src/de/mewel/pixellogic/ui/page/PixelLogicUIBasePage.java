@@ -95,7 +95,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage {
     }
 
     public static int getButtonWidth() {
-        return getButtonHeight() * 4;
+        return (int)(getButtonHeight() * 4.5f);
     }
 
     public VerticalGroup getPageRoot() {
