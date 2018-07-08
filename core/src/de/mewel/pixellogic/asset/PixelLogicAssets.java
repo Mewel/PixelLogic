@@ -20,6 +20,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.soap.Text;
+
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BASE_SIZE;
@@ -186,6 +188,10 @@ public class PixelLogicAssets {
         return handles;
     }
 
+    public Texture getLogo() {
+        return manager.get("logo.png", Texture.class);
+    }
+
     public Sprite getIcon(int index) {
         Texture icons = manager.get("icons.png", Texture.class);
         return new Sprite(icons, BASE_SIZE * index, 0, BASE_SIZE, BASE_SIZE);
@@ -195,5 +201,4 @@ public class PixelLogicAssets {
         this.manager.dispose();
         this.shapeRenderer.dispose();
     }
-
 }

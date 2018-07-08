@@ -3,12 +3,19 @@ package de.mewel.pixellogic.ui.page;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.utils.Align;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.mode.PixelLogicCampaignMode;
 import de.mewel.pixellogic.ui.background.PixelLogicUIRotatingBoardBackground;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
+import de.mewel.pixellogic.ui.component.PixelLogicVerticalGroup;
 
 public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
@@ -16,7 +23,9 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
     private PixelLogicUIColoredSurface backgroundOverlay;
 
-    private PixelLogicUIColoredSurface menuBackground;
+    private Image logoImage;
+
+    private PixelLogicVerticalGroup buttonGroup;
 
     private PixelLogicUIButton campaignButton;
 
@@ -34,18 +43,18 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         getStage().addActor(this.background);
 
         this.backgroundOverlay = new PixelLogicUIColoredSurface(getAssets());
-        this.backgroundOverlay.setColor(new Color(0, 0, 0, .3f));
+        this.backgroundOverlay.setColor(new Color(255f, 255f, 255f, .5f));
         getStage().addActor(this.backgroundOverlay);
-
-        this.menuBackground = new PixelLogicUIColoredSurface(getAssets());
-        this.menuBackground.setColor(new Color(255f, 255f, 255f, .7f));
-        getStage().addActor(this.menuBackground);
 
         super.buildGui(headerText, backPageId);
     }
 
     @Override
     protected void build() {
+
+        Texture logo = getAssets().getLogo();
+        logoImage = new Image(logo);
+        logoImage.setOrigin(Align.center);
 
         this.campaignButton = new PixelLogicUIButton(getAssets(), getEventManager(), getCampaignLabel()) {
             @Override
@@ -79,10 +88,19 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
             }
         };
 
+        buttonGroup = new PixelLogicVerticalGroup();
+        PixelLogicUIColoredSurface buttonGroupBackground = new PixelLogicUIColoredSurface(getAssets());
+        buttonGroupBackground.setColor(new Color(255f, 255f, 255f, .5f));
+        buttonGroup.setBackground(buttonGroupBackground);
+        buttonGroup.center();
+
+        buttonGroup.addActor(this.campaignButton);
+        buttonGroup.addActor(this.timeTrialButton);
+        buttonGroup.addActor(this.achievementButton);
+
         getPageRoot().center();
-        getPageRoot().addActor(this.campaignButton);
-        getPageRoot().addActor(this.timeTrialButton);
-        getPageRoot().addActor(this.achievementButton);
+        getPageRoot().addActor(logoImage);
+        getPageRoot().addActor(buttonGroup);
     }
 
     private String getCampaignLabel() {
@@ -116,15 +134,13 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         this.timeTrialButton.setSize(getButtonWidth(), getButtonHeight());
         this.achievementButton.setSize(getButtonWidth(), getButtonHeight());
 
-        // menu background
-        int paddingX = (int) (getButtonHeight() / 1.5f);
-        int paddingY = (int) (getButtonHeight() / 1.5f);
-        int numChildren = getPageRoot().getChildren().size;
-        int menuBackgroundWidth = Math.min(Gdx.graphics.getWidth(), getButtonWidth() + 2 * paddingX);
-        int menuBackgroundHeight = (int) (getButtonHeight() * numChildren + getPageRoot().getSpace() * (numChildren - 1)) + 2 * paddingY;
-        int menuBackgroundX = width / 2 - menuBackgroundWidth / 2;
-        int menuBackgroundY = height / 2 - menuBackgroundHeight / 2;
-        this.menuBackground.setBounds(menuBackgroundX, menuBackgroundY, menuBackgroundWidth, menuBackgroundHeight);
+        this.buttonGroup.pad(getPadding());
+        this.buttonGroup.space(getSpace());
+        this.buttonGroup.invalidate();
+
+        this.logoImage.setScale((int)(height / (this.logoImage.getHeight() * 6f)));
+
+        getPageRoot().space(getSpace() * 3);
     }
 
     public void pause() {

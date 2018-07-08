@@ -15,11 +15,11 @@ import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 
 public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIGroup {
 
-    int pixel = 30;
+    private int pixel = 25;
 
-    float rotate = 0;
+    private float rotate = 0;
 
-    float fadeTicker = 0;
+    private float fadeTicker = 0;
 
     private Pixel board[][];
 
@@ -45,7 +45,6 @@ public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIGroup {
         super.draw(batch, parentAlpha);
         batch.end();
         Gdx.gl.glEnable(GL30.GL_BLEND);
-        Color color = getColor();
         ShapeRenderer renderer = this.getAssets().getShapeRenderer();
         renderer.setProjectionMatrix(batch.getProjectionMatrix());
         renderer.setTransformMatrix(batch.getTransformMatrix());
@@ -59,27 +58,22 @@ public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIGroup {
         int space = size / 12;
         size = size - space;
         int combined = size + space;
-        int start = (int) ((-combined * pixel) / 2);
+        int start = (-combined * pixel) / 2;
 
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[0].length; col++) {
                 Pixel pixel = board[row][col];
-                if (pixel.alpha != 100f) {
-                    renderer.setColor(PixelLogicUIConstants.PIXEL_EMPTY_COLOR);
-                    renderer.begin(ShapeRenderer.ShapeType.Filled);
-                    renderer.box(start + row * combined, start + col * combined,
-                            0, size, size, 0f);
-                    renderer.end();
-                }
-                if (pixel.alpha != 0f) {
-                    Color c = new Color(pixel.color.r, pixel.color.g, pixel.color.b,
-                            pixel.alpha * parentAlpha);
-                    renderer.setColor(c);
-                    renderer.begin(ShapeRenderer.ShapeType.Filled);
-                    renderer.box(start + row * combined, start + col * combined,
-                            0, size, size, 0f);
-                    renderer.end();
-                }
+                Color c1 = new Color(pixel.color);
+                Color c2 = new Color(PixelLogicUIConstants.PIXEL_EMPTY_COLOR);
+                float r = pixel.alpha * c1.r + (1 - pixel.alpha) * c2.r;
+                float g = pixel.alpha * c1.g + (1 - pixel.alpha) * c2.g;
+                float b = pixel.alpha * c1.b + (1 - pixel.alpha) * c2.b;
+                Color c = new Color(r, g, b, parentAlpha);
+                renderer.setColor(c);
+                renderer.begin(ShapeRenderer.ShapeType.Filled);
+                renderer.box(start + row * combined, start + col * combined,
+                        0, size, size, 0f);
+                renderer.end();
             }
         }
 
@@ -98,10 +92,10 @@ public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIGroup {
         }
 
         // fade
-        final int changes = 3;
+        final int changes = 2;
         this.fadeTicker += delta;
         if (this.fadeTicker > .01f) {
-            for(int i = 0; i < changes; i++) {
+            for (int i = 0; i < changes; i++) {
                 int pixelIndex = random.nextInt(pixel * pixel);
                 int row = pixelIndex / pixel;
                 int col = pixelIndex % pixel;
@@ -114,9 +108,9 @@ public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIGroup {
             for (int col = 0; col < board[0].length; col++) {
                 Pixel pixel = this.board[row][col];
                 if (pixel.fade != null) {
-                    pixel.alpha += pixel.fade ? .5f * delta : -.5f * delta;
-                    if (pixel.fade && pixel.alpha > 100f) {
-                        pixel.alpha = 100f;
+                    pixel.alpha += pixel.fade ? .8f * delta : -.8f * delta;
+                    if (pixel.fade && pixel.alpha > 1f) {
+                        pixel.alpha = 1f;
                         pixel.fade = null;
                     } else if (!pixel.fade && pixel.alpha < 0f) {
                         pixel.alpha = 0f;
