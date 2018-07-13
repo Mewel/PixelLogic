@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.ui.level;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -67,7 +68,7 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 switcher.swap();
-                return super.touchDown(event, x, y, pointer, button);
+                return true;
             }
 
         };
