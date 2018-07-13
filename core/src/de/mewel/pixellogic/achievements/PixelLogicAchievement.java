@@ -31,7 +31,7 @@ public abstract class PixelLogicAchievement {
         this.done = true;
     }
 
-    boolean isDone() {
+    public boolean isDone() {
         return this.done;
     }
 

@@ -3,7 +3,7 @@ package de.mewel.pixellogic.ui.component;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 
-public class PixelLogicVerticalGroup extends VerticalGroup {
+public class PixelLogicUIVerticalGroup extends VerticalGroup {
 
     PixelLogicUIColoredSurface background;
 

@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.ui.page;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -67,14 +66,6 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
                 "clock and try to beat your highscore.", TEXT_COLOR);
         descriptionLabel.setWrap(true);
         return descriptionLabel;
-    }
-
-    public static int getPadding() {
-        return Gdx.graphics.getHeight() / 24;
-    }
-
-    public static int getComponentWidth() {
-        return Gdx.graphics.getWidth() - 2 * getPadding();
     }
 
     @Override

@@ -79,4 +79,8 @@ public class PixelLogicAchievements implements PixelLogicListener {
         preferences.flush();
     }
 
+    public List<PixelLogicAchievement> list() {
+        return this.achievements;
+    }
+
 }

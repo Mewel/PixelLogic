@@ -4,6 +4,7 @@ import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.achievements.PixelLogicAchievements;
 import de.mewel.pixellogic.ui.layer.PixelLogicUIAchievementLayer;
 import de.mewel.pixellogic.ui.layer.PixelLogicUIPageLayer;
+import de.mewel.pixellogic.ui.page.PixelLogicUIAchievementsPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIMainPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPage;
@@ -18,13 +19,10 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
 
     private PixelLogicUIAchievementLayer achievementLayer;
 
-    private PixelLogicAchievements achievements;
-
     public PixelLogicUIAppScreen(PixelLogicGlobal global) {
         super(global.getAssets(), global.getEventManager());
 
         // achievements
-        this.achievements = new PixelLogicAchievements(getEventManager());
         this.achievementLayer = new PixelLogicUIAchievementLayer(getAssets(), getEventManager());
 
         // page
@@ -33,6 +31,7 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
         this.pageLayer.add(PixelLogicUIPageId.level, new PixelLogicUILevelPage(global));
         this.pageLayer.add(PixelLogicUIPageId.timeTrial, new PixelLogicUITimeTrialPage(global));
         this.pageLayer.add(PixelLogicUIPageId.timeTrialFinished, new PixelLogicUITimeTrialFinishedPage(global));
+        this.pageLayer.add(PixelLogicUIPageId.achievements, new PixelLogicUIAchievementsPage(global));
 
         // add
         this.add(this.pageLayer);
@@ -50,14 +49,6 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
 
     public boolean isActive(PixelLogicUIPageId pageId) {
         return this.pageLayer.isActive(pageId);
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        if (this.achievements != null) {
-            this.achievements.dispose();
-        }
     }
 
 }

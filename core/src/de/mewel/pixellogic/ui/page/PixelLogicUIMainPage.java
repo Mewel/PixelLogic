@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.utils.Align;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
@@ -15,7 +12,7 @@ import de.mewel.pixellogic.mode.PixelLogicCampaignMode;
 import de.mewel.pixellogic.ui.background.PixelLogicUIRotatingBoardBackground;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
-import de.mewel.pixellogic.ui.component.PixelLogicVerticalGroup;
+import de.mewel.pixellogic.ui.component.PixelLogicUIVerticalGroup;
 
 public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
@@ -25,7 +22,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
     private Image logoImage;
 
-    private PixelLogicVerticalGroup buttonGroup;
+    private PixelLogicUIVerticalGroup buttonGroup;
 
     private PixelLogicUIButton campaignButton;
 
@@ -84,11 +81,12 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         this.achievementButton = new PixelLogicUIButton(getAssets(), getEventManager(), "achievements") {
             @Override
             public void onClick() {
-
+                PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
+                getAppScreen().setPage(PixelLogicUIPageId.achievements, pageProperties);
             }
         };
 
-        buttonGroup = new PixelLogicVerticalGroup();
+        buttonGroup = new PixelLogicUIVerticalGroup();
         PixelLogicUIColoredSurface buttonGroupBackground = new PixelLogicUIColoredSurface(getAssets());
         buttonGroupBackground.setColor(new Color(255f, 255f, 255f, .5f));
         buttonGroup.setBackground(buttonGroupBackground);
@@ -138,7 +136,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         this.buttonGroup.space(getSpace());
         this.buttonGroup.invalidate();
 
-        this.logoImage.setScale((int)(height / (this.logoImage.getHeight() * 6f)));
+        this.logoImage.setScale((int) (height / (this.logoImage.getHeight() * 6f)));
 
         getPageRoot().space(getSpace() * 3);
     }

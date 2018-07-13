@@ -3,6 +3,7 @@ package de.mewel.pixellogic;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 
+import de.mewel.pixellogic.achievements.PixelLogicAchievements;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
@@ -20,12 +21,16 @@ public class LevelTest extends Game implements PixelLogicGlobal {
 
     private PixelLogicUIAppScreen appScreen;
 
+    private PixelLogicAchievements achievements;
+
     @Override
     public void create() {
         this.eventManager = new PixelLogicEventManager();
 
         this.assets = new PixelLogicAssets();
         this.assets.load();
+
+        this.achievements = new PixelLogicAchievements(eventManager);
 
         this.appScreen = new PixelLogicUIAppScreen(this);
         this.setScreen(this.appScreen);
@@ -37,7 +42,7 @@ public class LevelTest extends Game implements PixelLogicGlobal {
         eventManager.listen(new PixelLogicListener() {
             @Override
             public void handle(PixelLogicEvent event) {
-                if(event instanceof PixelLogicNextLevelEvent) {
+                if (event instanceof PixelLogicNextLevelEvent) {
                     Gdx.app.log("lvl", ((PixelLogicNextLevelEvent) event).getNextLevel().toString());
                 }
             }
@@ -65,6 +70,9 @@ public class LevelTest extends Game implements PixelLogicGlobal {
         if (this.eventManager != null) {
             this.eventManager.dispose();
         }
+        if (this.achievements != null) {
+            this.achievements.dispose();
+        }
         super.dispose();
     }
 
@@ -79,6 +87,11 @@ public class LevelTest extends Game implements PixelLogicGlobal {
     @Override
     public PixelLogicUIAppScreen getAppScreen() {
         return appScreen;
+    }
+
+    @Override
+    public PixelLogicAchievements getAchievements() {
+        return achievements;
     }
 
 }
