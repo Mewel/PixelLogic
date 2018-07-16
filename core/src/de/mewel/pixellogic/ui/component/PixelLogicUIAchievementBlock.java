@@ -84,11 +84,18 @@ public class PixelLogicUIAchievementBlock extends PixelLogicUIGroup {
     }
 
     public void setHeaderStyle(Label.LabelStyle headerStyle) {
+        if (PixelLogicUIUtil.equalLabelStyle(this.headerStyle, headerStyle)) {
+            Gdx.app.log("block", "equals");
+            return;
+        }
         this.headerStyle = headerStyle;
         updateContainer();
     }
 
     public void setDescriptionStyle(Label.LabelStyle descriptionStyle) {
+        if (PixelLogicUIUtil.equalLabelStyle(this.descriptionStyle, descriptionStyle)) {
+            return;
+        }
         this.descriptionStyle = descriptionStyle;
         updateContainer();
     }
@@ -100,7 +107,7 @@ public class PixelLogicUIAchievementBlock extends PixelLogicUIGroup {
     }
 
     public float getPadding() {
-        return Gdx.graphics.getWidth() / 72;
+        return this.getWidth() / 72;
     }
 
     private void fixLabelHeight(Label label) {

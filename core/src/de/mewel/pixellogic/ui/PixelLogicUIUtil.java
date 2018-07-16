@@ -117,4 +117,14 @@ public class PixelLogicUIUtil {
         return String.format(Locale.ROOT, "%02d:%02d", minutes, seconds);
     }
 
+    public static boolean equalLabelStyle(Label.LabelStyle l1, Label.LabelStyle l2) {
+        if(l1 == null || l2 == null) {
+            return l1 == null && l2 == null;
+        }
+        if(!l1.fontColor.equals(l2.fontColor)) {
+            return false;
+        }
+        return l1.font == l2.font;
+    }
+
 }

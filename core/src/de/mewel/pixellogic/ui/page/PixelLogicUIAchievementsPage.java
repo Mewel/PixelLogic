@@ -78,11 +78,8 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
             getActor().setDebug(true);
             getActor().fill();
 
-            if (achievement.isDone()) {
-
-            }
-
             this.logo = new Logo(global.getAssets().getIcon(4));
+            this.logo.setColor(achievement.isDone() ? Color.GREEN : Color.LIGHT_GRAY);
             getActor().addActor(this.logo);
             this.logo.setDebug(true);
 
@@ -91,29 +88,32 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
             this.block.setHeaderStyle(getHeaderStyle());
             this.block.setDescriptionStyle(getDescriptionStyle());
             this.block.setDebug(true);
-            this.block.setPosition(0, 0);
             getActor().addActor(this.block);
 
             Texture whiteTexture = PixelLogicUIUtil.getTexture(BLOCK_COLOR);
             Sprite s = new Sprite(whiteTexture);
             this.setBackground(new SpriteDrawable(s));
-
-            this.resize();
         }
 
         public void resize() {
-            this.width(Gdx.graphics.getWidth());
-            float logoSize = this.getWidth() / 5;
-            this.minHeight(logoSize + logoSize / 4);
-            getActor().pad(getPadding() / 2);
-            getActor().space(getPadding());
+            int width = Gdx.graphics.getWidth();
+            int padding = getPadding();
+            float logoSize = width / 5;
 
-            this.block.updateContainer();
-            this.block.setWidth(logoSize * 3);
+            getActor().pad(padding / 2);
+            getActor().space(padding);
+
+            this.block.setHeaderStyle(getHeaderStyle());
+            this.block.setDescriptionStyle(getDescriptionStyle());
+            this.block.setWidth(width - (padding * 2 + logoSize));
             this.logo.setSize(logoSize, logoSize);
 
-            this.pack();
+            Gdx.app.log("block height", this.block.getHeight() + "");
+            Gdx.app.log("logo height", this.logo.getHeight() + "");
 
+            this.width(width);
+            float componentHeight = Math.max(this.block.getHeight(), this.logo.getHeight());
+            this.minHeight(componentHeight + componentHeight / 4);
         }
 
         private Label.LabelStyle getHeaderStyle() {
@@ -146,9 +146,8 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
                 float y = MathUtils.floor(getY()) + offset - 1;
                 float x = MathUtils.floor(getX()) + offset;
                 float alpha = parentAlpha * color.a;
-                Color spriteColor = Color.WHITE;
 
-                batch.setColor(new Color(spriteColor.r, spriteColor.g, spriteColor.b, spriteColor.a * alpha));
+                batch.setColor(new Color(color.r, color.g, color.b, color.a * alpha));
                 batch.draw(sprite, x, y, size, size);
                 batch.setColor(color);
             }
