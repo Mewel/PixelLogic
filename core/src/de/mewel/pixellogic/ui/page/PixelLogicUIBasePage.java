@@ -56,6 +56,8 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage {
         scrollPane.setOverscroll(false, false);
         scrollPane.setFillParent(true);
 
+        pageRoot.setDebug(true);
+
         build();
     }
 

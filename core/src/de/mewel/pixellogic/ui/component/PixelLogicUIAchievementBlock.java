@@ -48,7 +48,7 @@ public class PixelLogicUIAchievementBlock extends PixelLogicUIGroup {
         }
     }
 
-    protected void updateContainer() {
+    public void updateContainer() {
         this.container.clearChildren();
         this.container.pad(getPadding());
 
@@ -85,15 +85,18 @@ public class PixelLogicUIAchievementBlock extends PixelLogicUIGroup {
 
     public void setHeaderStyle(Label.LabelStyle headerStyle) {
         this.headerStyle = headerStyle;
+        updateContainer();
     }
 
     public void setDescriptionStyle(Label.LabelStyle descriptionStyle) {
         this.descriptionStyle = descriptionStyle;
+        updateContainer();
     }
 
     public void setBackground(PixelLogicUIColoredSurface background) {
         this.background = background;
         this.addActorAt(0, this.background);
+        updateContainer();
     }
 
     public float getPadding() {
