@@ -85,7 +85,6 @@ public class PixelLogicUIAchievementBlock extends PixelLogicUIGroup {
 
     public void setHeaderStyle(Label.LabelStyle headerStyle) {
         if (PixelLogicUIUtil.equalLabelStyle(this.headerStyle, headerStyle)) {
-            Gdx.app.log("block", "equals");
             return;
         }
         this.headerStyle = headerStyle;

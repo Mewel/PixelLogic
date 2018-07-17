@@ -19,6 +19,7 @@ import java.util.List;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.achievements.PixelLogicAchievement;
+import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIAchievementBlock;
 
@@ -60,7 +61,17 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
         Gdx.app.log("width", width + "");
     }
 
+    @Override
+    public void activate(PixelLogicUIPageProperties properties) {
+        super.activate(properties);
+        for (AchievementContainer achievementContainer : this.achievementContainers) {
+            achievementContainer.updateLogo();
+        }
+    }
+
     private static class AchievementContainer extends Container<HorizontalGroup> {
+
+        private PixelLogicAchievement achievement;
 
         private PixelLogicGlobal global;
 
@@ -70,18 +81,19 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
 
         AchievementContainer(PixelLogicAchievement achievement, PixelLogicGlobal global) {
             super(new HorizontalGroup());
+            this.achievement = achievement;
             this.global = global;
 
             getActor().setFillParent(true);
             getActor().top();
             getActor().left();
-            getActor().setDebug(true);
+            // getActor().setDebug(true);
             getActor().fill();
 
-            this.logo = new Logo(global.getAssets().getIcon(4));
-            this.logo.setColor(achievement.isDone() ? Color.GREEN : Color.LIGHT_GRAY);
+            this.logo = new Logo();
             getActor().addActor(this.logo);
-            this.logo.setDebug(true);
+            // this.logo.setDebug(true);
+            updateLogo();
 
             this.block = new PixelLogicUIAchievementBlock(global.getAssets(), global.getEventManager());
             this.block.setAchievement(achievement.getName(), achievement.getDescription());
@@ -93,6 +105,16 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
             Texture whiteTexture = PixelLogicUIUtil.getTexture(BLOCK_COLOR);
             Sprite s = new Sprite(whiteTexture);
             this.setBackground(new SpriteDrawable(s));
+        }
+
+        public void updateLogo() {
+            if (this.achievement.isDone()) {
+                this.logo.setColor(PixelLogicUIConstants.PIXEL_BLOCKED_COLOR);
+                this.logo.setSprite(global.getAssets().getIcon(4));
+            } else {
+                this.logo.setColor(PixelLogicUIConstants.TEXT_LIGHT_COLOR);
+                this.logo.setSprite(global.getAssets().getIcon(1));
+            }
         }
 
         public void resize() {
@@ -107,9 +129,6 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
             this.block.setDescriptionStyle(getDescriptionStyle());
             this.block.setWidth(width - (padding * 2 + logoSize));
             this.logo.setSize(logoSize, logoSize);
-
-            Gdx.app.log("block height", this.block.getHeight() + "");
-            Gdx.app.log("logo height", this.logo.getHeight() + "");
 
             this.width(width);
             float componentHeight = Math.max(this.block.getHeight(), this.logo.getHeight());
@@ -131,7 +150,7 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
 
             private Sprite sprite;
 
-            public Logo(Sprite sprite) {
+            public void setSprite(Sprite sprite) {
                 this.sprite = sprite;
             }
 
@@ -141,14 +160,16 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
                 batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
                 super.draw(batch, parentAlpha);
 
-                float size = PixelLogicUIUtil.getIconBaseHeight();
-                float offset = size / 2;
-                float y = MathUtils.floor(getY()) + offset - 1;
-                float x = MathUtils.floor(getX()) + offset;
-                float alpha = parentAlpha * color.a;
+                if (sprite != null) {
+                    float size = PixelLogicUIUtil.getIconBaseHeight() ;
+                    float alpha = parentAlpha * color.a;
 
-                batch.setColor(new Color(color.r, color.g, color.b, color.a * alpha));
-                batch.draw(sprite, x, y, size, size);
+                    batch.setColor(new Color(color.r, color.g, color.b, color.a * alpha));
+                    int x = (int) (getX() + getWidth() / 2 - size / 2);
+                    int y = (int) (getY() + getHeight() / 2 - size / 2);
+                    batch.draw(sprite, x,
+                            y, size, size);
+                }
                 batch.setColor(color);
             }
 
