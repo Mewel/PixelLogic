@@ -119,8 +119,9 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
 
         public void resize() {
             int width = Gdx.graphics.getWidth();
+            int height = Gdx.graphics.getHeight();
             int padding = getPadding();
-            float logoSize = width / 5;
+            float logoSize = Math.min(width / 5, height / 5);
 
             getActor().pad(padding / 2);
             getActor().space(padding);
@@ -131,8 +132,8 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
             this.logo.setSize(logoSize, logoSize);
 
             this.width(width);
-            float componentHeight = Math.max(this.block.getHeight(), this.logo.getHeight());
-            this.minHeight(componentHeight + componentHeight / 4);
+            float componentHeight = Math.max(this.block.getPrefHeight(), this.logo.getHeight());
+            this.minHeight(componentHeight);
         }
 
         private Label.LabelStyle getHeaderStyle() {

@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import java.util.LinkedList;
@@ -23,7 +22,6 @@ import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
-import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIAchievementBlock;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
@@ -56,22 +54,11 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         this.achievementBlock.setDescriptionStyle(getDescriptionStyle());
 
         PixelLogicUIColoredSurface background = new PixelLogicUIColoredSurface(assets);
-        Color bgColor = PIXEL_BLOCKED_COLOR;
         background.setColor(PIXEL_BLOCKED_COLOR);
-        background.setBorder(1, new Color(bgColor).mul(.5f));
+        background.setBorder(1, new Color(PIXEL_BLOCKED_COLOR).mul(.5f));
         this.achievementBlock.setBackground(background);
 
         this.stage.addActor(this.achievementBlock);
-    }
-
-    private Label.LabelStyle getHeaderStyle() {
-        BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 2);
-        return new Label.LabelStyle(labelFont, Color.WHITE);
-    }
-
-    private Label.LabelStyle getDescriptionStyle() {
-        BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 0);
-        return new Label.LabelStyle(labelFont, Color.WHITE);
     }
 
     @Override
@@ -116,17 +103,32 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
     public void resize(int width, int height) {
         this.updateViewport(width, height);
         this.stage.getViewport().update(width, height);
+        this.resizeAchievementBlock();
+    }
+
+    private void resizeAchievementBlock() {
+        int width = this.stage.getViewport().getScreenWidth();
         int padding = getPadding();
-        this.achievementBlock.setWidth(width - (padding * 2));
-        if (this.currentDisplayedAchievment != null) {
-            this.achievementBlock.setPosition(padding, padding);
-        } else {
-            this.achievementBlock.setPosition(padding, -this.achievementBlock.getHeight());
-        }
+        int blockWidth = width - (padding * 2);
+        float bestBlockHeight = this.achievementBlock.getPrefHeight();
+        float minBlockHeight = Gdx.graphics.getHeight() / 10f;
+        int blockHeight = (int) Math.max(minBlockHeight, bestBlockHeight);
+        int blockY = this.currentDisplayedAchievment != null ? padding : -blockHeight;
+        this.achievementBlock.setBounds(padding, blockY, blockWidth, blockHeight);
     }
 
     private int getPadding() {
         return Gdx.graphics.getWidth() / 64;
+    }
+
+    private Label.LabelStyle getHeaderStyle() {
+        BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 2);
+        return new Label.LabelStyle(labelFont, Color.WHITE);
+    }
+
+    private Label.LabelStyle getDescriptionStyle() {
+        BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 0);
+        return new Label.LabelStyle(labelFont, Color.WHITE);
     }
 
     private void updateViewport(int width, int height) {

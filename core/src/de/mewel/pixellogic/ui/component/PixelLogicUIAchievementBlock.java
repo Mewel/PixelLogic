@@ -1,8 +1,5 @@
 package de.mewel.pixellogic.ui.component;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 
@@ -10,8 +7,6 @@ import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
-
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.PIXEL_BLOCKED_COLOR;
 
 public class PixelLogicUIAchievementBlock extends PixelLogicUIGroup {
 
@@ -51,7 +46,6 @@ public class PixelLogicUIAchievementBlock extends PixelLogicUIGroup {
     public void updateContainer() {
         this.container.clearChildren();
         this.container.pad(getPadding());
-
         if (this.headerText != null && headerStyle != null) {
             this.header = new Label(this.headerText, headerStyle);
             this.header.setWrap(true);
@@ -64,17 +58,6 @@ public class PixelLogicUIAchievementBlock extends PixelLogicUIGroup {
             this.container.addActor(description);
             fixLabelHeight(this.description);
         }
-        if (header != null && description != null) {
-            updateHeight();
-        }
-    }
-
-    private void updateHeight() {
-        float bestHeight = header.getPrefHeight() + description.getPrefHeight() + getPadding() * 2f;
-        float minHeight = Gdx.graphics.getHeight() / 10f;
-        float height = Math.max(minHeight, bestHeight);
-        this.setY(-height);
-        this.setHeight(height);
     }
 
     public void setAchievement(String header, String description) {
@@ -111,6 +94,13 @@ public class PixelLogicUIAchievementBlock extends PixelLogicUIGroup {
 
     private void fixLabelHeight(Label label) {
         PixelLogicUIUtil.fixLabelHeight(label, this.getWidth() - (getPadding() * 2));
+    }
+
+    public float getPrefHeight() {
+        if (header == null || description == null) {
+            return 0f;
+        }
+        return header.getPrefHeight() + description.getPrefHeight() + getPadding() * 2f;
     }
 
 }
