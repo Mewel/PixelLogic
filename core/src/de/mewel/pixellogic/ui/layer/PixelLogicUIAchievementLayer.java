@@ -115,6 +115,7 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         int blockHeight = (int) Math.max(minBlockHeight, bestBlockHeight);
         int blockY = this.currentDisplayedAchievment != null ? padding : -blockHeight;
         this.achievementBlock.setBounds(padding, blockY, blockWidth, blockHeight);
+        this.achievementBlock.getContainer().pad(width / 72);
     }
 
     private int getPadding() {

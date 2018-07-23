@@ -57,8 +57,6 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
         for (AchievementContainer achievementContainer : this.achievementContainers) {
             achievementContainer.resize();
         }
-
-        Gdx.app.log("width", width + "");
     }
 
     @Override
@@ -87,19 +85,16 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
             getActor().setFillParent(true);
             getActor().top();
             getActor().left();
-            // getActor().setDebug(true);
             getActor().fill();
 
             this.logo = new Logo();
             getActor().addActor(this.logo);
-            // this.logo.setDebug(true);
             updateLogo();
 
             this.block = new PixelLogicUIAchievementBlock(global.getAssets(), global.getEventManager());
             this.block.setAchievement(achievement.getName(), achievement.getDescription());
             this.block.setHeaderStyle(getHeaderStyle());
             this.block.setDescriptionStyle(getDescriptionStyle());
-            this.block.setDebug(true);
             getActor().addActor(this.block);
 
             Texture whiteTexture = PixelLogicUIUtil.getTexture(BLOCK_COLOR);
@@ -121,19 +116,23 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
             int width = Gdx.graphics.getWidth();
             int height = Gdx.graphics.getHeight();
             int padding = getPadding();
-            float logoSize = Math.min(width / 5, height / 5);
+            float logoSize = Math.min(width / 10, height / 10);
 
-            getActor().pad(padding / 2);
-            getActor().space(padding);
+            getActor().pad(padding / 5);
+            getActor().space(padding / 2);
 
             this.block.setHeaderStyle(getHeaderStyle());
             this.block.setDescriptionStyle(getDescriptionStyle());
-            this.block.setWidth(width - (padding * 2 + logoSize));
+
+            this.block.setWidth((int) (width - (padding + logoSize)));
+            this.block.setHeight((int) this.block.getPrefHeight());
             this.logo.setSize(logoSize, logoSize);
 
             this.width(width);
+
             float componentHeight = Math.max(this.block.getPrefHeight(), this.logo.getHeight());
-            this.minHeight(componentHeight);
+            float containerHeight = componentHeight + getActor().getPadBottom() + getActor().getPadTop();
+            this.height(containerHeight);
         }
 
         private Label.LabelStyle getHeaderStyle() {

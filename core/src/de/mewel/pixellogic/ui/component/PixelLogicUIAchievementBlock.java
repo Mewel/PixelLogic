@@ -2,6 +2,7 @@ package de.mewel.pixellogic.ui.component;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.utils.Align;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
@@ -41,11 +42,11 @@ public class PixelLogicUIAchievementBlock extends PixelLogicUIGroup {
         if (this.background != null) {
             this.background.setSize(this.getWidth(), this.getHeight());
         }
+        this.updateContainer();
     }
 
     public void updateContainer() {
         this.container.clearChildren();
-        this.container.pad(getPadding());
         if (this.headerText != null && headerStyle != null) {
             this.header = new Label(this.headerText, headerStyle);
             this.header.setWrap(true);
@@ -55,6 +56,7 @@ public class PixelLogicUIAchievementBlock extends PixelLogicUIGroup {
         if (this.descriptionText != null && descriptionStyle != null) {
             this.description = new Label(this.descriptionText, descriptionStyle);
             this.description.setWrap(true);
+            this.description.setAlignment(Align.topLeft);
             this.container.addActor(description);
             fixLabelHeight(this.description);
         }
@@ -88,19 +90,21 @@ public class PixelLogicUIAchievementBlock extends PixelLogicUIGroup {
         updateContainer();
     }
 
-    public float getPadding() {
-        return this.getWidth() / 72;
-    }
-
     private void fixLabelHeight(Label label) {
-        PixelLogicUIUtil.fixLabelHeight(label, this.getWidth() - (getPadding() * 2));
+        int padding = (int) (this.container.getPadLeft() + this.container.getPadRight());
+        PixelLogicUIUtil.fixLabelHeight(label, this.getWidth() - padding);
     }
 
     public float getPrefHeight() {
         if (header == null || description == null) {
             return 0f;
         }
-        return header.getPrefHeight() + description.getPrefHeight() + getPadding() * 2f;
+        int padding = (int) (this.container.getPadTop() + this.container.getPadBottom());
+        return header.getPrefHeight() + description.getPrefHeight() + padding;
+    }
+
+    public VerticalGroup getContainer() {
+        return container;
     }
 
 }
