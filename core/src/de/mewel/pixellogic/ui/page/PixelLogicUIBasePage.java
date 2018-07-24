@@ -73,21 +73,21 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage {
     public void resize(int width, int height) {
         super.resize(width, height);
         if (this.header != null) {
-            this.header.setHeight(Gdx.graphics.getHeight() / 12);
-            this.header.setWidth(Gdx.graphics.getWidth());
+            this.header.setHeight(height / 12);
+            this.header.setWidth(width);
         }
     }
 
-    public static int getPadding() {
-        return Gdx.graphics.getHeight() / 24;
+    public int getPadding() {
+        return (int) this.getHeight() / 24;
     }
 
-    public float getSpace() {
-        return getPadding() * 1.5f;
+    public int getSpace() {
+        return (int) (getPadding() * 1.5f);
     }
 
-    public static int getComponentWidth() {
-        return Gdx.graphics.getWidth() - 2 * getPadding();
+    public int getComponentWidth() {
+        return (int) this.getWidth() - 2 * getPadding();
     }
 
     public static int getButtonHeight() {
@@ -95,7 +95,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage {
     }
 
     public static int getButtonWidth() {
-        return (int)(getButtonHeight() * 4.5f);
+        return (int) (getButtonHeight() * 4.5f);
     }
 
     public VerticalGroup getPageRoot() {

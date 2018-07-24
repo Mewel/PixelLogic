@@ -47,16 +47,22 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
+        this.updateSize();
+    }
 
-        getPageRoot().setWidth(width);
+    protected void updateSize() {
+        getPageRoot().setWidth(this.getWidth());
         getPageRoot().pad(0);
         getPageRoot().padTop(getPadding() / 4);
         getPageRoot().padBottom(getPadding() / 4);
         getPageRoot().space(getSpace() / 8);
 
         for (AchievementContainer achievementContainer : this.achievementContainers) {
-            achievementContainer.resize();
+            achievementContainer.resize((int) this.getWidth(), (int) this.getHeight());
         }
+
+        getPageRoot().invalidate();
+        getPageRoot().setHeight(getPageRoot().getPrefHeight());
     }
 
     @Override
@@ -65,9 +71,10 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
         for (AchievementContainer achievementContainer : this.achievementContainers) {
             achievementContainer.updateLogo();
         }
+        updateSize();
     }
 
-    private static class AchievementContainer extends Container<HorizontalGroup> {
+    private class AchievementContainer extends Container<HorizontalGroup> {
 
         private PixelLogicAchievement achievement;
 
@@ -112,9 +119,7 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
             }
         }
 
-        public void resize() {
-            int width = Gdx.graphics.getWidth();
-            int height = Gdx.graphics.getHeight();
+        public void resize(int width, int height) {
             int padding = getPadding();
             float logoSize = Math.min(width / 10, height / 10);
 
@@ -133,6 +138,10 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
             float componentHeight = Math.max(this.block.getPrefHeight(), this.logo.getHeight());
             float containerHeight = componentHeight + getActor().getPadBottom() + getActor().getPadTop();
             this.height(containerHeight);
+
+            this.setDebug(true);
+
+            // this.pack();
         }
 
         private Label.LabelStyle getHeaderStyle() {
@@ -145,8 +154,7 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
             return new Label.LabelStyle(labelFont, Color.BLACK);
         }
 
-
-        private static class Logo extends Actor {
+        private class Logo extends Actor {
 
             private Sprite sprite;
 

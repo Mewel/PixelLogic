@@ -99,4 +99,12 @@ public abstract class PixelLogicUIPage implements PixelLogicUIElement {
         this.getStage().getRoot().setBounds(0, 0, width, height);
     }
 
+    public float getWidth() {
+        return this.getStage().getWidth();
+    }
+
+    public float getHeight() {
+        return this.getStage().getHeight();
+    }
+
 }

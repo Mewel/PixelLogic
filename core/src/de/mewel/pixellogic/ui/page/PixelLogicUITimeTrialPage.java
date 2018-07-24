@@ -47,7 +47,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
         this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialEpicOptions(), this));
 
         /*for(TimeTrialModeUI mode : this.modes) {
-            PixelLogicTimeTrialHighscoreStore.clear(mode.options.id);
+            PixelLogicTimeTrialHighscoreStore.clear(mode.options.id.toString());
         }*/
         this.buildModes();
     }
@@ -101,7 +101,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
         return new Label.LabelStyle(font, color);
     }
 
-    private static class TimeTrialModeUI extends Container<VerticalGroup> {
+    private class TimeTrialModeUI extends Container<VerticalGroup> {
 
         private PixelLogicTimeTrialModeOptions options;
 
