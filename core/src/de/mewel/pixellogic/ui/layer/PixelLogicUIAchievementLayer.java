@@ -85,6 +85,7 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         this.currentDisplayedAchievment = this.achievements.poll();
         this.achievementBlock.setAchievement(this.currentDisplayedAchievment.getName(),
                 this.currentDisplayedAchievment.getDescription());
+        this.resizeAchievementBlock();
         int padding = getPadding();
         MoveToAction moveIn = Actions.moveTo(padding, padding, .2f);
         DelayAction delay = Actions.delay(7f);
@@ -107,6 +108,9 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
     }
 
     private void resizeAchievementBlock() {
+        this.achievementBlock.setHeaderStyle(getHeaderStyle());
+        this.achievementBlock.setDescriptionStyle(getDescriptionStyle());
+
         int width = this.stage.getViewport().getScreenWidth();
         int padding = getPadding();
         int blockWidth = width - (padding * 2);

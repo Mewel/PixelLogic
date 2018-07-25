@@ -21,7 +21,7 @@ public class PixelLogicAchievements implements PixelLogicListener {
         this.achievements = new ArrayList<PixelLogicAchievement>();
         eventManager.listen(this);
 
-        // clearAll();
+        clearAll();
         register();
     }
 

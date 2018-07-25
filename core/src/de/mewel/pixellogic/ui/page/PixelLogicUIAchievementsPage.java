@@ -1,18 +1,15 @@
 package de.mewel.pixellogic.ui.page;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.badlogic.gdx.utils.Align;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,7 +120,8 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
             int padding = getPadding();
             float logoSize = Math.min(width / 10, height / 10);
 
-            getActor().pad(padding / 5);
+            int groupPadding = padding / 5;
+            getActor().pad(groupPadding);
             getActor().space(padding / 2);
 
             this.block.setHeaderStyle(getHeaderStyle());
@@ -139,9 +137,7 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
             float containerHeight = componentHeight + getActor().getPadBottom() + getActor().getPadTop();
             this.height(containerHeight);
 
-            this.setDebug(true);
-
-            // this.pack();
+            getActor().setHeight(containerHeight - groupPadding * 2);
         }
 
         private Label.LabelStyle getHeaderStyle() {
