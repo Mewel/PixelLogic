@@ -85,7 +85,7 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         this.currentDisplayedAchievment = this.achievements.poll();
         this.achievementBlock.setAchievement(this.currentDisplayedAchievment.getName(),
                 this.currentDisplayedAchievment.getDescription());
-        this.resizeAchievementBlock();
+        this.resizeAchievementBlock(false);
         int padding = getPadding();
         MoveToAction moveIn = Actions.moveTo(padding, padding, .2f);
         DelayAction delay = Actions.delay(7f);
@@ -104,10 +104,10 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
     public void resize(int width, int height) {
         this.updateViewport(width, height);
         this.stage.getViewport().update(width, height);
-        this.resizeAchievementBlock();
+        this.resizeAchievementBlock(this.currentDisplayedAchievment != null);
     }
 
-    private void resizeAchievementBlock() {
+    private void resizeAchievementBlock(boolean visible) {
         this.achievementBlock.setHeaderStyle(getHeaderStyle());
         this.achievementBlock.setDescriptionStyle(getDescriptionStyle());
 
@@ -117,7 +117,7 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         float bestBlockHeight = this.achievementBlock.getPrefHeight();
         float minBlockHeight = Gdx.graphics.getHeight() / 10f;
         int blockHeight = (int) Math.max(minBlockHeight, bestBlockHeight);
-        int blockY = this.currentDisplayedAchievment != null ? padding : -blockHeight;
+        int blockY = visible ? padding : -blockHeight;
         this.achievementBlock.setBounds(padding, blockY, blockWidth, blockHeight);
         this.achievementBlock.getContainer().pad(width / 72);
     }

@@ -23,7 +23,6 @@ public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUILevelAnim
     @Override
     public float execute() {
         float time = super.execute();
-        getLevelUI();
         PixelLogicUIBoard board = getLevelUI().getBoard();
         board.setOrigin(Align.center);
         SequenceAction sequence = Actions.sequence(Actions.delay(DELAY), Actions.parallel(

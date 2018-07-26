@@ -14,10 +14,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicLoadNextLevelEvent;
-import de.mewel.pixellogic.event.PixelLogicSecretLevelStart;
+import de.mewel.pixellogic.event.PixelLogicSecretLevelEvent;
 import de.mewel.pixellogic.event.PixelLogicTimerEvent;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.model.PixelLogicLevelData;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.component.PixelLogicUIMessageModal;
 import de.mewel.pixellogic.ui.level.animation.PixelLogicUISecretLevelStartAnimation;
@@ -27,6 +28,7 @@ import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
+import de.mewel.pixellogic.util.PixelLogicLevelLoader;
 import de.mewel.pixellogic.util.PixelLogicStopWatch;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
@@ -93,7 +95,8 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     }
 
     private void runSecretLevel() {
-        Gdx.app.log("ttm", "run secret level");
+        PixelLogicLevel secretLevel = PixelLogicLevelLoader.load(getAssets().getLevelCollection("secret"), "1");
+        runLevel(secretLevel);
     }
 
     private void onFinished() {
@@ -157,7 +160,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
                     }
                 });
                 Gdx.input.setInputProcessor(stage);
-                getEventManager().fire(new PixelLogicSecretLevelStart(PixelLogicTimeTrialMode.this));
+                getEventManager().fire(new PixelLogicSecretLevelEvent(PixelLogicTimeTrialMode.this, PixelLogicSecretLevelEvent.Type.find));
             }
         }));
         stage.addAction(awaitAction);
@@ -175,8 +178,10 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
                 }
             }
             if (PixelLogicLevelStatus.playable.equals(changeEvent.getStatus())) {
-                long elapsed = this.stopWatch.startOrResume();
-                this.getEventManager().fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.start, elapsed));
+                if(!playSecretLevel) {
+                    long elapsed = this.stopWatch.startOrResume();
+                    this.getEventManager().fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.start, elapsed));
+                }
             }
             if (PixelLogicLevelStatus.finished.equals(changeEvent.getStatus())) {
                 long elapsed = this.stopWatch.pause();

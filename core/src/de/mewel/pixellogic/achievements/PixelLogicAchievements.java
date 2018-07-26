@@ -35,6 +35,7 @@ public class PixelLogicAchievements implements PixelLogicListener {
         this.achievements.add(new PixelLogicAchievementEpicMode());
         this.achievements.add(new PixelLogicAchievementNoBlock());
         this.achievements.add(new PixelLogicAchievementSecretLevelFind());
+        this.achievements.add(new PixelLogicAchievementSecretLevelBeat());
 
         // set if done
         for (PixelLogicAchievement achievement : this.achievements) {

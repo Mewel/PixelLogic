@@ -55,6 +55,11 @@ public class PixelLogicLevelCollection {
         this.level = level;
     }
 
+    public PixelLogicLevelData getLevel(String name) {
+        Integer index = getLevelIndexByName(name);
+        return index != null ? level.get(index) : null;
+    }
+
     public Integer getLevelIndexByName(String name) {
         for (int i = 0; i < this.level.size(); i++) {
             PixelLogicLevelData levelData = level.get(i);
