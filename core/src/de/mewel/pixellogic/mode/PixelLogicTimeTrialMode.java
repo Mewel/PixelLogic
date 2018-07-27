@@ -18,7 +18,6 @@ import de.mewel.pixellogic.event.PixelLogicSecretLevelEvent;
 import de.mewel.pixellogic.event.PixelLogicTimerEvent;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.model.PixelLogicLevelData;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.component.PixelLogicUIMessageModal;
 import de.mewel.pixellogic.ui.level.animation.PixelLogicUISecretLevelStartAnimation;
@@ -40,12 +39,17 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
 
     private PixelLogicStopWatch stopWatch;
 
-    private boolean playSecretLevel;
+    /**
+     * 0 = no secret level
+     * 1 = play secret level
+     * 2 = secret level finishd
+     */
+    private short secretLevelStatus;
 
     public PixelLogicTimeTrialMode(PixelLogicTimeTrialModeOptions options) {
         this.options = options;
         this.stopWatch = new PixelLogicStopWatch();
-        this.playSecretLevel = false;
+        this.secretLevelStatus = 0;
     }
 
     @Override
@@ -95,7 +99,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     }
 
     private void runSecretLevel() {
-        PixelLogicLevel secretLevel = PixelLogicLevelLoader.load(getAssets().getLevelCollection("secret"), "1");
+        PixelLogicLevel secretLevel = PixelLogicLevelLoader.load(getAssets().getLevelCollection("secret"), "SECRET LEVEL");
         runLevel(secretLevel);
     }
 
@@ -141,7 +145,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
         SequenceAction awaitAction = Actions.sequence(Actions.delay(executionTime), Actions.run(new Runnable() {
             @Override
             public void run() {
-                playSecretLevel = true;
+                secretLevelStatus = 1;
                 final PixelLogicUIMessageModal secretLevelIntroModal = new PixelLogicUIMessageModal("secret level", getAssets(), getEventManager(), stage) {
                     @Override
                     protected void afterClose() {
@@ -171,21 +175,30 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
             if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus())) {
-                if (!playSecretLevel) {
+                if (secretLevelStatus == 0) {
                     runNext();
-                } else {
+                } else if (secretLevelStatus == 1) {
                     runSecretLevel();
+                } else if (secretLevelStatus == 2) {
+                    PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
+                    data.put("pageId", PixelLogicUIPageId.timeTrial);
+                    this.getEventManager().fire(new PixelLogicUIPageChangeEvent(this, data));
                 }
             }
             if (PixelLogicLevelStatus.playable.equals(changeEvent.getStatus())) {
-                if(!playSecretLevel) {
+                if (secretLevelStatus == 0) {
                     long elapsed = this.stopWatch.startOrResume();
                     this.getEventManager().fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.start, elapsed));
                 }
             }
             if (PixelLogicLevelStatus.finished.equals(changeEvent.getStatus())) {
-                long elapsed = this.stopWatch.pause();
-                this.getEventManager().fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.stop, elapsed));
+                if (secretLevelStatus == 0) {
+                    long elapsed = this.stopWatch.pause();
+                    this.getEventManager().fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.stop, elapsed));
+                } else if (secretLevelStatus == 1) {
+                    secretLevelStatus = 2;
+                    getEventManager().fire(new PixelLogicSecretLevelEvent(PixelLogicTimeTrialMode.this, PixelLogicSecretLevelEvent.Type.beat));
+                }
             }
         }
         if (event instanceof PixelLogicUIPageChangeEvent) {
@@ -205,7 +218,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
                 this.getEventManager().fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.resume, elapsed));
             }
         }
-        if (event instanceof PixelLogicUserChangedBoardEvent) {
+        if (event instanceof PixelLogicUserChangedBoardEvent && secretLevelStatus == 0) {
             PixelLogicUserChangedBoardEvent changedBoardEvent = (PixelLogicUserChangedBoardEvent) event;
             if (PixelLogicTimeTrialModeOptions.Mode.time_trial_hardcore.equals(options.id) &&
                     changedBoardEvent.getLevel().isBlocked()) {
