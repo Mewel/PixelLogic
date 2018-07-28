@@ -3,7 +3,7 @@ android {
         config {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
-            storeFile file('/home/matthias/.android/debug.keystore')
+            storeFile file(rootProject.projectDir.absolutePath + '/android/debug.keystore')
             storePassword 'android'
         }
     }
