@@ -69,6 +69,12 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
             achievementContainer.updateLogo();
         }
         updateSize();
+        fadeIn(null);
+    }
+
+    @Override
+    public void deactivate(Runnable after) {
+        fadeOut(after);
     }
 
     private class AchievementContainer extends Container<HorizontalGroup> {

@@ -1,0 +1,43 @@
+{
+  "name": "12x12",
+  "pixmapWidth": 12,
+  "pixmapHeight": 16,
+  "level": [
+    {
+      "name": "Grotto"
+    },
+    {
+      "name": "Bomb Case"
+    },
+    {
+      "name": "Dinosaur"
+    },
+    {
+      "name": "Blob"
+    },
+    {
+      "name": "Archer"
+    },
+    {
+      "name": "Evil Bat"
+    },
+    {
+      "name": "Ghost"
+    },
+    {
+      "name": "Skeleton"
+    },
+    {
+      "name": "Space Ship"
+    },
+    {
+      "name": "Death Sign"
+    },
+    {
+      "name": "Mushroom"
+    },
+    {
+      "name": "Power Sphere"
+    }
+  ]
+}

@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -71,14 +69,12 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
     @Override
     public void activate(PixelLogicUIPageProperties properties) {
         super.activate(properties);
-        getStage().getRoot().getColor().a = 0f;
-        getStage().addAction(Actions.fadeIn(.2f));
+        fadeIn(null);
     }
 
     @Override
     public void deactivate(Runnable after) {
-        Action action = Actions.sequence(Actions.fadeOut(.2f), Actions.run(after));
-        this.getStage().addAction(action);
+        fadeOut(after);
     }
 
     @Override

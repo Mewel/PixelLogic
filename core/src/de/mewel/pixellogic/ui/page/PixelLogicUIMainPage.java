@@ -41,6 +41,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
         this.backgroundOverlay = new PixelLogicUIColoredSurface(getAssets());
         this.backgroundOverlay.setColor(new Color(255f, 255f, 255f, .5f));
+        this.backgroundOverlay.setInheritParentAlpha(false);
         getStage().addActor(this.backgroundOverlay);
 
         super.buildGui(headerText, backPageId);
@@ -120,6 +121,12 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         if (this.campaignButton != null) {
             this.campaignButton.setText(getCampaignLabel());
         }
+        fadeIn(null);
+    }
+
+    @Override
+    public void deactivate(Runnable after) {
+        fadeOut(after);
     }
 
     @Override

@@ -2,8 +2,11 @@ package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
@@ -105,6 +108,19 @@ public abstract class PixelLogicUIPage implements PixelLogicUIElement {
 
     public float getHeight() {
         return this.getStage().getHeight();
+    }
+
+    protected void fadeIn(Runnable after) {
+        getStage().getRoot().getColor().a = 0f;
+        AlphaAction fadeIn = Actions.fadeIn(.2f);
+        Action action = after != null ? Actions.sequence(fadeIn, Actions.run(after)) : fadeIn;
+        getStage().addAction(action);
+    }
+
+    protected void fadeOut(Runnable after) {
+        AlphaAction fadeOut = Actions.fadeOut(.2f);
+        Action action = after != null ? Actions.sequence(fadeOut, Actions.run(after)) : fadeOut;
+        getStage().addAction(action);
     }
 
 }

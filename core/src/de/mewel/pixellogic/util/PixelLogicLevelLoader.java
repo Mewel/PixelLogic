@@ -20,7 +20,7 @@ public abstract class PixelLogicLevelLoader {
                 PixelLogicLevel level = load(collection, i);
                 boolean solvable = PixelLogicUtil.isSolvable(level.getLevelData());
                 PixelLogicComplexityAnalyzerResult result = PixelLogicComplexityAnalyzer.analyze(level);
-                // Gdx.app.log("level loader", level.getName() + " is " + (solvable ? "valid" : "invalid"));
+                Gdx.app.log("level loader", level.getName() + " is " + (solvable ? "valid" : "invalid"));
                 Gdx.app.log("level loader", level.getName() + " complexity " + result.getComplexity());
                 levelList.add(level);
             }

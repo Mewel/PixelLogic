@@ -10,10 +10,10 @@ import java.util.Random;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.ui.PixelLogicUIActor;
 import de.mewel.pixellogic.ui.PixelLogicUIConstants;
-import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 
-public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIGroup {
+public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIActor {
 
     private int pixel = 25;
 
