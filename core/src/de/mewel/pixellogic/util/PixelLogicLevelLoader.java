@@ -57,9 +57,11 @@ public abstract class PixelLogicLevelLoader {
             return null;
         }
         int srcX, srcY;
-        if (levelData.getX() == null) {
-            srcX = collection.indexOf(levelData) * collection.getPixmapWidth();
-            srcY = 0;
+        if (levelData.getX() == null || levelData.getY() == null) {
+            int width = pixmap.getWidth();
+            Integer index = collection.indexOf(levelData);
+            srcX = (index * collection.getPixmapWidth()) % width;
+            srcY = ((index * collection.getPixmapWidth()) / width) * collection.getPixmapHeight();
         } else {
             srcX = levelData.getX() * collection.getPixmapWidth();
             srcY = levelData.getY() * collection.getPixmapHeight();
