@@ -96,29 +96,29 @@ public class PixelLogicUtil {
         int numberIndex = 0;
         Integer number = numberIndex < numbers.size() ? numbers.get(numberIndex) : null;
         int connected = -1;
-        for(Boolean pixel : line) {
-            if(pixel == null || !pixel) {
-                if(number == null || connected == -1) {
+        for (Boolean pixel : line) {
+            if (pixel == null || !pixel) {
+                if (number == null || connected == -1) {
                     continue;
                 }
-                if(connected != number) {
+                if (connected != number) {
                     return false;
                 }
                 connected = -1;
                 number = ++numberIndex < numbers.size() ? numbers.get(numberIndex) : null;
             } else {
-                if(number == null) {
+                if (number == null) {
                     return false;
                 }
-                if(connected == -1) {
+                if (connected == -1) {
                     connected = 0;
                 }
-                if(++connected > number) {
+                if (++connected > number) {
                     return false;
                 }
             }
         }
-        if(number != null && number == connected) {
+        if (number != null && number == connected) {
             numberIndex++;
         }
         return numberIndex == numbers.size();
@@ -191,6 +191,63 @@ public class PixelLogicUtil {
         return level;
     }
 
+    /**
+     * Returns empty starting/ending rows/columns offset values.
+     * <p>
+     * top, bottom, left, right
+     *
+     * @param level the level offsets
+     */
+    public static Integer[] offsetLevelData(Boolean[][] level) {
+        int top;
+        int bottom;
+        int left;
+        int right;
+        // top
+        for (top = 0; top < level.length; top++) {
+            Boolean[] row = PixelLogicUtil.getRow(level, top);
+            if (PixelLogicUtil.countPixel(row) > 0) {
+                break;
+            }
+        }
+        // bottom
+        for (bottom = 0; bottom < level.length; bottom++) {
+            Boolean[] row = PixelLogicUtil.getRow(level, level.length - 1 - bottom);
+            if (PixelLogicUtil.countPixel(row) > 0) {
+                break;
+            }
+        }
+        // left
+        for (left = 0; left < level[0].length; left++) {
+            Boolean[] column = PixelLogicUtil.getColumn(level, left);
+            if (PixelLogicUtil.countPixel(column) > 0) {
+                break;
+            }
+        }
+        // right
+        for (right = 0; right < level[0].length; right++) {
+            Boolean[] column = PixelLogicUtil.getColumn(level, level[0].length - 1 - right);
+            if (PixelLogicUtil.countPixel(column) > 0) {
+                break;
+            }
+        }
+        return new Integer[]{top, bottom, left, right};
+    }
+
+    public static Boolean[][] cutLevelData(Boolean[][] level, Integer[] offset) {
+        int top = offset[0];
+        int bottom = offset[1];
+        int left = offset[2];
+        int right = offset[3];
+        Boolean[][] newLevel = new Boolean[level.length - (top + bottom)][level[0].length - (left + right)];
+        for (int row = 0; row < newLevel.length; row++) {
+            for (int col = 0; col < newLevel[0].length; col++) {
+                newLevel[row][col] = level[top + row][left + col];
+            }
+        }
+        return newLevel;
+    }
+
     public static Boolean[][] createRandomLevel(int rows, int cols) {
         boolean valid;
         Boolean[][] level;
@@ -222,7 +279,7 @@ public class PixelLogicUtil {
             result = PixelLogicComplexityAnalyzer.analyze(newLevel);
             float newComplexity = result.getComplexity();
             found = newComplexity >= minComplexity && (maxComplexity == -1 || newComplexity <= maxComplexity);
-            if(found || newComplexity == complexity ||
+            if (found || newComplexity == complexity ||
                     (newComplexity > complexity && newComplexity < minComplexity) ||
                     (newComplexity < complexity && maxComplexity != -1 && newComplexity > maxComplexity)) {
                 randomLevel = newLevel;

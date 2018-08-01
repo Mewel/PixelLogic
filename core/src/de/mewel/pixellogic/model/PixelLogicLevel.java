@@ -18,16 +18,10 @@ public class PixelLogicLevel {
 
     private Integer[][] image;
 
+    private Integer[] levelImageOffset;
+
     public PixelLogicLevel(Boolean[][] levelData) {
         this(null, levelData);
-    }
-
-    public PixelLogicLevel(String name, Boolean[][] levelData) {
-        this.name = name;
-        this.rows = levelData.length;
-        this.cols = levelData[0].length;
-        this.levelData = levelData;
-        this.pixels = new Boolean[rows][cols];
     }
 
     public PixelLogicLevel(String name, Integer[][] image) {
@@ -38,6 +32,15 @@ public class PixelLogicLevel {
     public PixelLogicLevel(String name, Boolean[][] levelData, Integer[][] image) {
         this(name, levelData);
         this.image = image;
+    }
+
+    public PixelLogicLevel(String name, Boolean[][] levelData) {
+        this.name = name;
+        this.levelImageOffset = PixelLogicUtil.offsetLevelData(levelData);
+        this.levelData = PixelLogicUtil.cutLevelData(levelData, this.levelImageOffset);
+        this.rows = this.levelData.length;
+        this.cols = this.levelData[0].length;
+        this.pixels = new Boolean[this.rows][this.cols];
     }
 
     public int getColumns() {
@@ -56,7 +59,7 @@ public class PixelLogicLevel {
         if (this.image == null) {
             return null;
         }
-        return new Color(this.image[row][col]);
+        return new Color(this.image[row + this.levelImageOffset[0]][col] + this.levelImageOffset[2]);
     }
 
     /**
