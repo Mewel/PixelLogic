@@ -69,6 +69,9 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
     @Override
     public void activate(PixelLogicUIPageProperties properties) {
         super.activate(properties);
+        for (TimeTrialModeUI mode : this.modes) {
+            mode.activate();
+        }
         fadeIn(null);
     }
 
@@ -123,6 +126,9 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
             this.button = new PixelLogicUIButton(page.getAssets(), page.getEventManager(), options.name) {
                 @Override
                 public void onClick() {
+                    if(block()) {
+                        return;
+                    }
                     startTimeTrial(options);
                 }
             };
@@ -203,6 +209,9 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
             page.getAppScreen().setPage(PixelLogicUIPageId.level, data);
         }
 
+        public void activate() {
+            this.button.unblock();
+        }
     }
 
 }

@@ -57,6 +57,9 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         this.campaignButton = new PixelLogicUIButton(getAssets(), getEventManager(), getCampaignLabel()) {
             @Override
             public void onClick() {
+                if(block()) {
+                    return;
+                }
                 campaignButton.setText(getCampaignLabel());
                 getCampaignPreferences().putBoolean("replay", true);
                 getCampaignPreferences().flush();
@@ -74,6 +77,9 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         this.timeTrialButton = new PixelLogicUIButton(getAssets(), getEventManager(), "time trial") {
             @Override
             public void onClick() {
+                if(block()) {
+                    return;
+                }
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                 getAppScreen().setPage(PixelLogicUIPageId.timeTrial, pageProperties);
             }
@@ -82,6 +88,9 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         this.achievementButton = new PixelLogicUIButton(getAssets(), getEventManager(), "achievements") {
             @Override
             public void onClick() {
+                if(block()) {
+                    return;
+                }
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                 getAppScreen().setPage(PixelLogicUIPageId.achievements, pageProperties);
             }
@@ -120,6 +129,13 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         super.activate(properties);
         if (this.campaignButton != null) {
             this.campaignButton.setText(getCampaignLabel());
+            this.campaignButton.unblock();
+        }
+        if(this.timeTrialButton != null) {
+            this.timeTrialButton.unblock();
+        }
+        if(this.achievementButton != null) {
+            this.achievementButton.unblock();
         }
         fadeIn(null);
     }

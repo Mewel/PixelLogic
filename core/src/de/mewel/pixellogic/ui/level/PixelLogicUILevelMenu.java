@@ -35,6 +35,9 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         this.solveLevelButton = new PixelLogicUIButton(getAssets(), getEventManager(), "solve level") {
             @Override
             public void onClick() {
+                if(block()) {
+                    return;
+                }
                 close();
                 PixelLogicUtil.solveLevel(PixelLogicUILevelMenu.this.screen.getLevel());
             }
@@ -44,6 +47,9 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         this.resetLevelButton = new PixelLogicUIButton(getAssets(), getEventManager(), "reset level") {
             @Override
             public void onClick() {
+                if(block()) {
+                    return;
+                }
                 close();
                 screen.resetLevel();
             }
@@ -53,6 +59,9 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         this.continueButton = new PixelLogicUIButton(getAssets(), getEventManager(), "continue") {
             @Override
             public void onClick() {
+                if(block()) {
+                    return;
+                }
                 close();
             }
         };
@@ -61,11 +70,31 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         this.backButton = new PixelLogicUIButton(getAssets(), getEventManager(), "back to menu") {
             @Override
             public void onClick() {
+                if(block()) {
+                    return;
+                }
                 close();
                 back();
             }
         };
 
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        if(this.solveLevelButton != null) {
+            this.solveLevelButton.unblock();
+        }
+        if(this.resetLevelButton != null) {
+            this.resetLevelButton.unblock();
+        }
+        if(this.continueButton != null) {
+            this.continueButton.unblock();
+        }
+        if(this.backButton != null) {
+            this.backButton.unblock();
+        }
     }
 
     public void activate(PixelLogicUIPageProperties properties) {

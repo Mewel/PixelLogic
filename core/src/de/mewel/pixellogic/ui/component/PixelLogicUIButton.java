@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIConstants;
@@ -20,8 +22,11 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
 
     private PixelLogicUIButtonListener listener;
 
+    private AtomicBoolean blocked;
+
     public PixelLogicUIButton(PixelLogicAssets assets, PixelLogicEventManager eventManager, String text) {
         super(assets, eventManager);
+        this.blocked = new AtomicBoolean(false);
         this.text = text;
         this.background = new PixelLogicUIColoredSurface(assets);
         Color bgColor = PixelLogicUIConstants.LINE_COMPLETE_COLOR;
@@ -84,6 +89,14 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
 
     public void onClick() {
         // not implemented
+    }
+
+    public boolean block() {
+        return this.blocked.getAndSet(true);
+    }
+
+    public boolean unblock() {
+        return this.blocked.getAndSet(false);
     }
 
 }
