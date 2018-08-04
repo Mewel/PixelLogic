@@ -78,13 +78,18 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     }
 
     @Override
-    public void deactivate(Runnable after) {
+    public void deactivate(final Runnable after) {
         if (!PixelLogicLevelStatus.destroyed.equals(this.levelStatus)) {
             this.destroyLevel();
         }
         this.menu.deactivate();
-        Action action = Actions.sequence(Actions.fadeOut(.5f), Actions.run(after));
-        this.getStage().addAction(action);
+        super.deactivate(new Runnable() {
+            @Override
+            public void run() {
+                Action action = Actions.sequence(Actions.fadeOut(.5f), Actions.run(after));
+                getStage().addAction(action);
+            }
+        });
     }
 
     @Override
@@ -267,7 +272,8 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         public void handle(PixelLogicEvent event) {
             if (event instanceof PixelLogicUserEvent) {
                 PixelLogicUserEvent userEvent = (PixelLogicUserEvent) event;
-                if (PixelLogicUserEvent.Type.LEVEL_MENU_CLICKED.equals(userEvent.getType())) {
+                if (PixelLogicUserEvent.Type.LEVEL_MENU_CLICKED.equals(userEvent.getType()) ||
+                        PixelLogicUserEvent.Type.BACK_BUTTON_CLICKED.equals(userEvent.getType())) {
                     page.menu.show();
                 }
             }

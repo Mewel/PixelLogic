@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.ui.component;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -82,6 +83,7 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
 
     @Override
     public void clear() {
+        Gdx.app.log("button", "clear() called");
         this.background.clear();
         this.removeListener(this.listener);
         super.clear();

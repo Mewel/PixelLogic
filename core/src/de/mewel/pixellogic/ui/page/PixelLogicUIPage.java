@@ -13,6 +13,7 @@ import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIElement;
+import de.mewel.pixellogic.ui.component.PixelLogicUIStage;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIAppScreen;
 
 public abstract class PixelLogicUIPage implements PixelLogicUIElement {
@@ -28,7 +29,7 @@ public abstract class PixelLogicUIPage implements PixelLogicUIElement {
     public PixelLogicUIPage(PixelLogicGlobal global, PixelLogicUIPageId pageId) {
         this.global = global;
         this.pageId = pageId;
-        this.stage = new Stage();
+        this.stage = new PixelLogicUIStage(global.getAssets(), global.getEventManager());
         this.properties = new PixelLogicUIPageProperties();
     }
 

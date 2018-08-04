@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.ui.page;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,18 +12,23 @@ import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.event.PixelLogicListener;
+import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelGroup;
 
-public abstract class PixelLogicUIBasePage extends PixelLogicUIPage {
+public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements PixelLogicListener {
 
     protected Header header;
 
     protected VerticalGroup pageRoot;
+
+    protected PixelLogicUIPageId backPageId;
 
     public PixelLogicUIBasePage(PixelLogicGlobal global, PixelLogicUIPageId pageId) {
         this(global, pageId, null, null);
@@ -35,6 +41,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage {
     }
 
     protected void buildGui(String headerText, PixelLogicUIPageId backPageId) {
+        this.backPageId = backPageId;
         this.pageRoot = buildRoot();
         ScrollPane scrollPane;
         if (headerText != null) {
@@ -66,6 +73,24 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage {
     }
 
     protected abstract void build();
+
+
+    @Override
+    public void activate(PixelLogicUIPageProperties properties) {
+        this.getEventManager().listen(this);
+        super.activate(properties);
+    }
+
+    @Override
+    public void deactivate(final Runnable after) {
+        this.getEventManager().remove(this);
+        fadeOut(new Runnable() {
+            @Override
+            public void run() {
+                PixelLogicUIBasePage.super.deactivate(after);
+            }
+        });
+    }
 
     @Override
     public void resize(int width, int height) {
@@ -102,6 +127,17 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage {
 
     public boolean hasHeader() {
         return this.header != null;
+    }
+
+    @Override
+    public void handle(PixelLogicEvent event) {
+        Gdx.app.log("handle", this.getClass().getName());
+        if (backPageId != null && event instanceof PixelLogicUserEvent) {
+            PixelLogicUserEvent userEvent = (PixelLogicUserEvent) event;
+            if (PixelLogicUserEvent.Type.BACK_BUTTON_CLICKED.equals(userEvent.getType())) {
+                getAppScreen().setPage(backPageId, new PixelLogicUIPageProperties());
+            }
+        }
     }
 
     private class Header extends PixelLogicUILevelGroup {

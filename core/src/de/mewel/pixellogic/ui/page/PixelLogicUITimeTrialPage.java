@@ -76,11 +76,6 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
     }
 
     @Override
-    public void deactivate(Runnable after) {
-        fadeOut(after);
-    }
-
-    @Override
     public void resize(int width, int height) {
         super.resize(width, height);
         this.labelContainer.width(getComponentWidth());

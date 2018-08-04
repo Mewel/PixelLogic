@@ -58,6 +58,7 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer, PixelLogicListe
     }
 
     public void activate(final PixelLogicUIPage page, final PixelLogicUIPageProperties data) {
+        Gdx.app.log("layer activate", "current page " + this.activePage);
         if (this.activePage != null) {
             this.activePage.deactivate(new Runnable() {
                 @Override

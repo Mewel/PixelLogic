@@ -1,6 +1,7 @@
 package de.mewel.pixellogic;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 
 import de.mewel.pixellogic.achievements.PixelLogicAchievements;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
@@ -21,6 +22,10 @@ public class PixelLogicGame extends Game implements PixelLogicGlobal {
 
     @Override
     public void create() {
+        // libgdx init
+        Gdx.input.setCatchBackKey(true);
+
+        // pixel logic init
         this.eventManager = new PixelLogicEventManager();
 
         this.assets = new PixelLogicAssets();
