@@ -1,0 +1,49 @@
+{
+  "name": "medium",
+  "pixmapWidth": 10,
+  "pixmapHeight": 10,
+  "level": [
+    {
+      "name": "Ship"
+    },
+    {
+      "name": "Pill"
+    },
+    {
+      "name": "Bat"
+    },
+    {
+      "name": "Monster"
+    },
+    {
+      "name": "Windows"
+    },
+    {
+      "name": "Space Invader"
+    },
+    {
+      "name": "Donald"
+    },
+    {
+      "name": "Mario"
+    },
+    {
+      "name": "Ninja Turtle"
+    },
+    {
+      "name": "Tentacle"
+    },
+    {
+      "name": "Toad"
+    },
+    {
+      "name": "Piranha Plant"
+    },
+    {
+      "name": "Ghost"
+    },
+    {
+      "name": "Rhino"
+    }
+  ]
+}

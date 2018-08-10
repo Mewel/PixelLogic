@@ -1,0 +1,18 @@
+{
+  "name": "intro",
+  "pixmapWidth": 3,
+  "pixmapHeight": 3,
+  "preserveSize": true,
+  "preserveOrder": true,
+  "level": [
+    {
+      "name": "One Pixel"
+    },
+    {
+      "name": "Two Pixels"
+    },
+    {
+      "name": "Three Pixels"
+    }
+  ]
+}

@@ -20,24 +20,24 @@ public class PixelLogicLevel {
 
     private Integer[] levelImageOffset;
 
-    public PixelLogicLevel(Boolean[][] levelData) {
-        this(null, levelData);
+    public PixelLogicLevel(Boolean[][] levelData, boolean preserveSize) {
+        this(null, levelData, preserveSize);
     }
 
-    public PixelLogicLevel(String name, Integer[][] image) {
-        this(name, PixelLogicUtil.toLevelData(image));
+    public PixelLogicLevel(String name, Integer[][] image, boolean preserveSize) {
+        this(name, PixelLogicUtil.toLevelData(image), preserveSize);
         this.image = image;
     }
 
-    public PixelLogicLevel(String name, Boolean[][] levelData, Integer[][] image) {
-        this(name, levelData);
+    public PixelLogicLevel(String name, Boolean[][] levelData, Integer[][] image, boolean preserveSize) {
+        this(name, levelData, preserveSize);
         this.image = image;
     }
 
-    public PixelLogicLevel(String name, Boolean[][] levelData) {
+    public PixelLogicLevel(String name, Boolean[][] levelData, boolean preserveSize) {
         this.name = name;
-        this.levelImageOffset = PixelLogicUtil.offsetLevelData(levelData);
-        this.levelData = PixelLogicUtil.cutLevelData(levelData, this.levelImageOffset);
+        this.levelImageOffset = preserveSize ? new Integer[]{0, 0, 0, 0} : PixelLogicUtil.offsetLevelData(levelData);
+        this.levelData = preserveSize ? levelData : PixelLogicUtil.cutLevelData(levelData, this.levelImageOffset);
         this.rows = this.levelData.length;
         this.cols = this.levelData[0].length;
         this.pixels = new Boolean[this.rows][this.cols];

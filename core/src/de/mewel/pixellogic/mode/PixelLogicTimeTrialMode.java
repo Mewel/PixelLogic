@@ -116,7 +116,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
 
     private PixelLogicLevel createLevel(Boolean[][] levelData) {
         Integer[][] imageData = getImageData(levelData);
-        return new PixelLogicLevel("#" + (this.round.get() + 1), levelData, imageData);
+        return new PixelLogicLevel("#" + (this.round.get() + 1), levelData, imageData, false);
     }
 
     private Integer[][] getImageData(Boolean[][] levelData) {

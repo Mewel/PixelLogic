@@ -10,6 +10,8 @@ public class PixelLogicLevelCollection {
     private String name;
     private Integer pixmapWidth;
     private Integer pixmapHeight;
+    private Boolean preserveSize = false;
+    private Boolean preserveOrder = false;
     private List<PixelLogicLevelData> level;
 
     private Pixmap pixmap;
@@ -88,6 +90,22 @@ public class PixelLogicLevelCollection {
 
     public Pixmap getLevelmap() {
         return levelmap;
+    }
+
+    public Boolean getPreserveOrder() {
+        return preserveOrder;
+    }
+
+    public void setPreserveOrder(Boolean preserveOrder) {
+        this.preserveOrder = preserveOrder;
+    }
+
+    public Boolean getPreserveSize() {
+        return preserveSize;
+    }
+
+    public void setPreserveSize(Boolean preserveSize) {
+        this.preserveSize = preserveSize;
     }
 
 }

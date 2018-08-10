@@ -46,7 +46,7 @@ public abstract class PixelLogicLevelLoader {
                 levelmap = pixmap;
             }
             Boolean[][] level = PixelLogicUtil.toLevelData(levelmap);
-            return new PixelLogicLevel(levelData.getName(), level, pixmap);
+            return new PixelLogicLevel(levelData.getName(), level, pixmap, collection.getPreserveSize());
         } catch (Exception exc) {
             throw new RuntimeException("Unable to load level '" + levelData.getName() + "'", exc);
         }

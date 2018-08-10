@@ -174,16 +174,22 @@ public class PixelLogicAssets {
     }
 
     private List<FileHandle> getLevelHandles() {
-        List<FileHandle> handles = new ArrayList<FileHandle>();
         FileHandle levelFolder = Gdx.files.internal(LEVEL_DIRECTORY);
         FileHandle[] collectionsHandle = levelFolder.list();
+        return getLevelHandles(collectionsHandle);
+    }
+
+    private List<FileHandle> getLevelHandles(FileHandle[] collectionsHandle) {
+        List<FileHandle> handles = new ArrayList<FileHandle>();
         for (FileHandle collectionHandle : collectionsHandle) {
-            if (!collectionHandle.isDirectory() ||
-                    !collectionHandle.child("collection.json").exists() ||
-                    !collectionHandle.child("pixmap.png").exists()) {
+            if(!collectionHandle.isDirectory()) {
                 continue;
             }
-            handles.add(collectionHandle);
+            if(collectionHandle.child("collection.json").exists() && collectionHandle.child("pixmap.png").exists()) {
+                handles.add(collectionHandle);
+                continue;
+            }
+            handles.addAll(getLevelHandles(collectionHandle.list()));
         }
         return handles;
     }

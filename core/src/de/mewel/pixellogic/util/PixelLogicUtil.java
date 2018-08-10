@@ -345,7 +345,7 @@ public class PixelLogicUtil {
                 {0, red, red, 0, 0},
                 {red, 0, 0, 0, red},
                 {red, red, 0, 0, red}
-        });
+        }, true);
     }
 
     /**

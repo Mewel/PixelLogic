@@ -115,20 +115,10 @@ public class PixelLogicCampaignMode extends PixelLogicLevelMode {
 
     private void loadLevels() {
         levels = new ArrayList<PixelLogicLevel>();
-
-        //levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("3x3")));
-        // levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("characters")));
-
-        // load tutorial level's
-        /*levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("4x4")));
-        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("5x5")));
-        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("6x6")));
-        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("7x7")));
-        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("8x8")));
-        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("9x9")));
-        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("10x10")));
-        // levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("11x11")));*/
-        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("12x16")));
+        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("campaign/intro")));
+        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("campaign/easy")));
+        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("campaign/medium")));
+        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("campaign/hard")));
     }
 
 }
