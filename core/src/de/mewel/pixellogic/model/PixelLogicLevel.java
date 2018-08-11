@@ -59,7 +59,11 @@ public class PixelLogicLevel {
         if (this.image == null) {
             return null;
         }
-        return new Color(this.image[row + this.levelImageOffset[0]][col] + this.levelImageOffset[2]);
+        return new Color(this.image[row + this.levelImageOffset[0]][col + this.levelImageOffset[2]]);
+    }
+
+    public Integer[] getLevelImageOffset() {
+        return levelImageOffset;
     }
 
     /**

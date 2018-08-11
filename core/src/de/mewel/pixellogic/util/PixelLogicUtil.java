@@ -3,7 +3,13 @@ package de.mewel.pixellogic.util;
 import com.badlogic.gdx.graphics.Color;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
@@ -87,6 +93,22 @@ public class PixelLogicUtil {
             }
         }
         return true;
+    }
+
+    public static <K, V extends Comparable<? super V>> List<K> sortByValue(Map<K, V> map) {
+        List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(map.entrySet());
+        Collections.sort(list, new Comparator<Object>() {
+            @SuppressWarnings("unchecked")
+            public int compare(Object o1, Object o2) {
+                return ((Map.Entry<K, V>) (o1)).getValue().compareTo(((Map.Entry<K, V>) (o2)).getValue());
+            }
+        });
+        List<K> result = new ArrayList<K>();
+        for (Iterator<Map.Entry<K, V>> it = list.iterator(); it.hasNext();) {
+            Map.Entry<K, V> entry = it.next();
+            result.add(entry.getKey());
+        }
+        return result;
     }
 
     public static boolean isSolved(Boolean[] line, List<Integer> numbers) {
