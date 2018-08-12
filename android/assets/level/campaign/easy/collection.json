@@ -5,13 +5,13 @@
   "preserveOrder": true,
   "level": [
     {
-      "name": "Square"
-    },
-    {
       "name": "Disk"
     },
     {
       "name": "Dude"
+    },
+    {
+      "name": "Ruby Ring"
     },
     {
       "name": "Chrome"
