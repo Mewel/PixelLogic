@@ -27,11 +27,15 @@ public class PixelLogicCampaignMode extends PixelLogicLevelMode {
     @Override
     public void setup(PixelLogicGlobal global) {
         super.setup(global);
-        this.loadLevels();
-        this.preferences = Gdx.app.getPreferences("campaign");
+        if (!this.setupDone) {
+            this.loadLevels();
+            this.preferences = Gdx.app.getPreferences("campaign");
+            this.setupDone = true;
+        }
     }
 
     public void run() {
+        super.run();
         String levelName = this.preferences.getString("levelName");
         if (levelName != null) {
             PixelLogicLevel level = findLevel(levelName);
@@ -86,7 +90,7 @@ public class PixelLogicCampaignMode extends PixelLogicLevelMode {
         return this.levels.get(nextLevelIndex);
     }
 
-    private PixelLogicLevel findLevel(String name) {
+    public PixelLogicLevel findLevel(String name) {
         for (PixelLogicLevel level : this.levels) {
             if (level.getName().equals(name)) {
                 return level;

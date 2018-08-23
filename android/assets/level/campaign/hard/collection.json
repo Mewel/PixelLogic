@@ -61,28 +61,28 @@
       "name": "Shield"
     },
     {
-      "name": "Snowball"
+      "name": "Health Potion"
     },
     {
-      "name": "Santa's Little Helper"
+      "name": "Barrel"
     },
     {
-      "name": "Jake"
+      "name": "Cherries"
     },
     {
-      "name": "Dog"
+      "name": "Sword"
     },
     {
-      "name": "Yoshi"
+      "name": "Chilli"
     },
     {
-      "name": "Shy Guy"
+      "name": "Candy"
     },
     {
-      "name": "Pikachu"
+      "name": "Bible"
     },
     {
-      "name": "Blanka"
+      "name": "Gold"
     },
     {
       "name": "Nuthatch"
@@ -98,6 +98,15 @@
     },
     {
       "name": "Blue Tulip"
+    },
+    {
+      "name": "Gold Mask"
+    },
+    {
+      "name": "Present"
+    },
+    {
+      "name": "Ruby"
     }
   ]
 }

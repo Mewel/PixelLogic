@@ -47,18 +47,15 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     private short secretLevelStatus;
 
     public PixelLogicTimeTrialMode(PixelLogicTimeTrialModeOptions options) {
+        super();
         this.options = options;
         this.stopWatch = new PixelLogicStopWatch();
         this.secretLevelStatus = 0;
     }
 
     @Override
-    public void setup(PixelLogicGlobal global) {
-        super.setup(global);
-    }
-
-    @Override
     public void run() {
+        super.run();
         this.round = new AtomicInteger(0);
         runNext();
     }

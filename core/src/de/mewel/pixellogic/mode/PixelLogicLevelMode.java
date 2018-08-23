@@ -14,16 +14,23 @@ public abstract class PixelLogicLevelMode implements PixelLogicListener {
 
     private PixelLogicGlobal global;
 
+    protected boolean setupDone;
+
+    public PixelLogicLevelMode() {
+        this.setupDone = false;
+    }
+
     public void setup(PixelLogicGlobal global) {
         this.global = global;
-        this.getEventManager().listen(this);
     }
 
     protected void dispose() {
         this.getEventManager().remove(this);
     }
 
-    abstract void run();
+    protected void run() {
+        this.getEventManager().listen(this);
+    }
 
     public void runLevel(final PixelLogicLevel level) {
         this.level = level;

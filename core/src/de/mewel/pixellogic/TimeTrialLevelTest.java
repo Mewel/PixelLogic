@@ -13,7 +13,7 @@ import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIAppScreen;
 
-public class LevelTest extends Game implements PixelLogicGlobal {
+public class TimeTrialLevelTest extends Game implements PixelLogicGlobal {
 
     private PixelLogicAssets assets;
 
