@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicLoadNextLevelEvent;
 import de.mewel.pixellogic.event.PixelLogicSecretLevelEvent;
@@ -42,7 +41,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     /**
      * 0 = no secret level
      * 1 = play secret level
-     * 2 = secret level finishd
+     * 2 = secret level finished
      */
     private short secretLevelStatus;
 
