@@ -37,7 +37,7 @@ public class CharactersLevelTest extends Game implements PixelLogicGlobal {
         final PixelLogicCharactersMode mode = new PixelLogicCharactersMode();
         mode.setup(this);
         mode.reset();
-        PixelLogicLevel level = mode.findLevel("Sideshow Bob");
+        PixelLogicLevel level = mode.findLevel("Dhalsim");
         mode.runLevel(level);
 
         PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();

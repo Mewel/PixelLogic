@@ -10,6 +10,11 @@
       "y": 0
     },
     {
+      "name": "Luigi",
+      "x": 1,
+      "y": 0
+    },
+    {
       "name": "Toad",
       "x": 2,
       "y": 0
@@ -287,6 +292,11 @@
     {
       "name": "Scrooge McDuck",
       "x": 7,
+      "y": 8
+    },
+    {
+      "name": "Launchpad McQuack",
+      "x": 8,
       "y": 8
     },
     {
