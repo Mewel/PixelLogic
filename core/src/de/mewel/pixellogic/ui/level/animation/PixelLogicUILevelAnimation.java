@@ -1,7 +1,11 @@
 package de.mewel.pixellogic.ui.level.animation;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoardPixel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIColumnGroup;
@@ -61,8 +65,20 @@ public abstract class PixelLogicUILevelAnimation {
         float x = levelUI.getWidth() / 2f - levelUI.getBoard().getWidth() / 2f;
         float y = levelUI.getHeight() / 2f - levelUI.getBoard().getHeight() / 2f;
         sequenceAction.addAction(Actions.moveTo(x, y, 0.2f));
-        levelUI.getBoard().addAction(sequenceAction);
-        return .4f;
+
+        return getDuration(sequenceAction);
+    }
+
+    public static float getDuration(SequenceAction sequenceAction) {
+        float duration = .0f;
+        for (Action action : sequenceAction.getActions()) {
+            if (action instanceof TemporalAction) {
+                duration += ((TemporalAction) action).getDuration();
+            } else if (action instanceof DelayAction) {
+                duration += ((DelayAction) action).getDuration();
+            }
+        }
+        return duration;
     }
 
 }

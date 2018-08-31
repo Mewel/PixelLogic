@@ -1,8 +1,10 @@
 package de.mewel.pixellogic.ui.level.animation;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIConstants;
@@ -35,38 +37,21 @@ public class PixelLogicUIBoardSolvedAnimation extends PixelLogicUILevelAnimation
         int row = pixel.getRow();
         int col = pixel.getCol();
 
-        boolean isFilled = level.isFilled(row, col);
         Color pixelColor = level.getColor(row, col);
-        if (!isFilled) {
-            if (pixelColor == null || pixelColor.a == .0f) {
-                pixel.addAction(Actions.fadeOut(FADE_OUT_TIME));
-                return FADE_OUT_TIME;
-            } else {
-                SequenceAction sequenceAction = new SequenceAction();
-                sequenceAction.addAction(Actions.color(PixelLogicUIConstants.PIXEL_FILLED_COLOR, 0.1f));
-                sequenceAction.addAction(Actions.delay(0.2f));
-                return .3f + animateColorPixel(pixel, level, row, col, pixelColor, sequenceAction);
-            }
-        } else {
-            if (pixelColor != null) {
-                SequenceAction sequenceAction = new SequenceAction();
-                sequenceAction.addAction(Actions.color(PixelLogicUIConstants.PIXEL_FILLED_COLOR, 0.1f));
-                sequenceAction.addAction(Actions.delay(0.2f));
-                return .3f + animateColorPixel(pixel, level, row, col, pixelColor, sequenceAction);
-            }
+        if (pixelColor == null || pixelColor.a == .0f) {
+            pixel.addAction(Actions.fadeOut(FADE_OUT_TIME));
+            return FADE_OUT_TIME;
         }
-        return 0f;
-    }
-
-    private float animateColorPixel(PixelLogicUIBoardPixel pixel, PixelLogicLevel level, int row, int col,
-                                    Color pixelColor, SequenceAction sequenceAction) {
+        SequenceAction sequenceAction = new SequenceAction();
+        sequenceAction.addAction(Actions.color(PixelLogicUIConstants.PIXEL_FILLED_COLOR, 0.1f));
+        sequenceAction.addAction(Actions.delay(0.2f));
         float mult = (float) (col + row) / (float) (level.getColumns() + level.getRows());
         sequenceAction.addAction(Actions.delay(0.2f * mult));
         sequenceAction.addAction(Actions.color(Color.WHITE, 0.2f + (0.4f * mult)));
         sequenceAction.addAction(Actions.delay(0.2f * mult));
         sequenceAction.addAction(Actions.color(pixelColor, 0.2f + (0.4f * mult)));
         pixel.addAction(sequenceAction);
-        return 0.2f * mult + 0.2f + (0.4f * mult) + 0.2f * mult + 0.2f + (0.4f * mult);
+        return getDuration(sequenceAction);
     }
 
 }

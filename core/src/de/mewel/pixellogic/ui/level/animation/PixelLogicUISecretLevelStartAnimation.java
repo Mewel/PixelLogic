@@ -1,11 +1,17 @@
 package de.mewel.pixellogic.ui.level.animation;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.Align;
 
+import java.util.Random;
+
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoard;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoardPixel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIColumnGroup;
@@ -16,8 +22,11 @@ public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUILevelAnim
 
     private static final float DELAY = .3f;
 
+    private Random random;
+
     public PixelLogicUISecretLevelStartAnimation(PixelLogicUILevelPage levelPage) {
         super(levelPage);
+        this.random = new Random();
     }
 
     @Override
@@ -39,12 +48,26 @@ public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUILevelAnim
         int row = pixel.getRow();
         int col = pixel.getCol();
         int pos = find(row, col, level.getRows(), level.getColumns());
+        // fade out
         float delayPerPixel = 1.5f / (level.getRows() * level.getColumns());
-        SequenceAction sequenceAction = new SequenceAction();
-        sequenceAction.addAction(Actions.delay(DELAY + (delayPerPixel * pos)));
-        sequenceAction.addAction(Actions.fadeOut(.3f));
-        pixel.addAction(sequenceAction);
-        return DELAY + (delayPerPixel * pos) + .3f;
+        float delayDuration = DELAY + (delayPerPixel * pos);
+        SequenceAction fadeOutAction = new SequenceAction();
+        fadeOutAction.addAction(Actions.delay(delayDuration));
+        fadeOutAction.addAction(Actions.fadeOut(.3f));
+        // colorize
+        SequenceAction colorizeAction = new SequenceAction();
+        colorizeAction.addAction(Actions.delay(delayDuration - .1f));
+        float offset = random.nextFloat() * .4f * (random.nextBoolean() ? 1f : -1f);
+        Color newColor = new Color(PixelLogicUIConstants.PIXEL_BLOCKED_COLOR);
+        newColor.r = newColor.r + offset;
+        newColor.g = newColor.g + offset;
+        newColor.b = newColor.b + offset;
+        colorizeAction.addAction(Actions.color(newColor, .1f));
+
+        // parallel fade out and colorize
+        ParallelAction parallelAction = new ParallelAction(fadeOutAction, colorizeAction);
+        pixel.addAction(parallelAction);
+        return getDuration(fadeOutAction);
     }
 
     @Override
