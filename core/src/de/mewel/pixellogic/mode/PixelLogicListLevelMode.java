@@ -95,6 +95,10 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
         return null;
     }
 
+    public List<PixelLogicLevel> getLevels() {
+        return levels;
+    }
+
     @Override
     public void handle(PixelLogicEvent event) {
         if (event instanceof PixelLogicLevelStatusChangeEvent) {

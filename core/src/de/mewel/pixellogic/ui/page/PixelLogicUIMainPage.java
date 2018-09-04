@@ -26,7 +26,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
     private PixelLogicUIButton campaignButton;
 
-    private PixelLogicUIButton timeTrialButton;
+    private PixelLogicUIButton moreLevelsButton;
 
     private PixelLogicUIButton achievementButton;
 
@@ -57,7 +57,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         this.campaignButton = new PixelLogicUIButton(getAssets(), getEventManager(), getCampaignLabel()) {
             @Override
             public void onClick() {
-                if(block()) {
+                if (block()) {
                     return;
                 }
                 campaignButton.setText(getCampaignLabel());
@@ -74,21 +74,21 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
             }
         };
 
-        this.timeTrialButton = new PixelLogicUIButton(getAssets(), getEventManager(), "time trial") {
+        this.moreLevelsButton = new PixelLogicUIButton(getAssets(), getEventManager(), "more levels") {
             @Override
             public void onClick() {
-                if(block()) {
+                if (block()) {
                     return;
                 }
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
-                getAppScreen().setPage(PixelLogicUIPageId.timeTrial, pageProperties);
+                getAppScreen().setPage(PixelLogicUIPageId.moreLevels, pageProperties);
             }
         };
 
         this.achievementButton = new PixelLogicUIButton(getAssets(), getEventManager(), "achievements") {
             @Override
             public void onClick() {
-                if(block()) {
+                if (block()) {
                     return;
                 }
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
@@ -103,7 +103,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         buttonGroup.center();
 
         buttonGroup.addActor(this.campaignButton);
-        buttonGroup.addActor(this.timeTrialButton);
+        buttonGroup.addActor(this.moreLevelsButton);
         buttonGroup.addActor(this.achievementButton);
 
         getPageRoot().center();
@@ -131,10 +131,10 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
             this.campaignButton.setText(getCampaignLabel());
             this.campaignButton.unblock();
         }
-        if(this.timeTrialButton != null) {
-            this.timeTrialButton.unblock();
+        if (this.moreLevelsButton != null) {
+            this.moreLevelsButton.unblock();
         }
-        if(this.achievementButton != null) {
+        if (this.achievementButton != null) {
             this.achievementButton.unblock();
         }
         fadeIn(null);
@@ -147,7 +147,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         this.background.setBounds(0, 0, width, height);
         this.backgroundOverlay.setBounds(0, 0, width, height);
         this.campaignButton.setSize(getButtonWidth(), getButtonHeight());
-        this.timeTrialButton.setSize(getButtonWidth(), getButtonHeight());
+        this.moreLevelsButton.setSize(getButtonWidth(), getButtonHeight());
         this.achievementButton.setSize(getButtonWidth(), getButtonHeight());
 
         this.buttonGroup.pad(getPadding());

@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.ui.level;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 
@@ -29,12 +30,14 @@ public class PixelLogicUIRowInfo extends PixelLogicUILineInfo {
         float x = getWidth() - (getWidth() / 18);
         float y = getHeight() / 2;
 
+        float xCharOffset = 0;
         for (int i = 0; i < rowLevelData.size(); i++) {
             String text = String.valueOf(rowLevelData.get(i));
             Label label = new Label(text, style);
-            label.setPosition(x - (i * style.font.getSpaceWidth() * 1.5f), y, Align.right);
+            label.setPosition(x - (xCharOffset * style.font.getSpaceWidth() * 1.5f), y, Align.right);
             this.addActor(label);
             this.labels.add(label);
+            xCharOffset += text.length() == 1 ? 1 : 1.5f;
         }
     }
 

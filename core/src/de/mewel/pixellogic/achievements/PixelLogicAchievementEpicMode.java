@@ -15,7 +15,7 @@ public class PixelLogicAchievementEpicMode extends PixelLogicAchievement {
 
     @Override
     public String getDescription() {
-        return "Beat the Time Trial Epic Mode in under 9 minutes.";
+        return "Beat the Epic Time Trial Mode in under 9 minutes.";
     }
 
     @Override

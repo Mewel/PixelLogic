@@ -15,7 +15,7 @@ public class PixelLogicAchievementEasyMode extends PixelLogicAchievement {
 
     @Override
     public String getDescription() {
-        return "Beat the Time Trial Easy Mode in under 2 minutes.";
+        return "Beat the Easy Time Trial Mode in under 2 minutes.";
     }
 
     @Override

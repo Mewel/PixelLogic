@@ -65,7 +65,7 @@ public abstract class PixelLogicUILevelAnimation {
         float x = levelUI.getWidth() / 2f - levelUI.getBoard().getWidth() / 2f;
         float y = levelUI.getHeight() / 2f - levelUI.getBoard().getHeight() / 2f;
         sequenceAction.addAction(Actions.moveTo(x, y, 0.2f));
-
+        levelUI.getBoard().addAction(sequenceAction);
         return getDuration(sequenceAction);
     }
 

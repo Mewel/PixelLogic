@@ -29,6 +29,7 @@ public class PixelLogicAchievements implements PixelLogicListener {
         Preferences preferences = Gdx.app.getPreferences("achievements");
 
         // add
+        this.achievements.add(new PixelLogicAchievementCampaign());
         this.achievements.add(new PixelLogicAchievementEasyMode());
         this.achievements.add(new PixelLogicAchievementHardMode());
         this.achievements.add(new PixelLogicAchievementInsaneMode());

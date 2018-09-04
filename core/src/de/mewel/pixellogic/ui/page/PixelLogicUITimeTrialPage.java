@@ -33,7 +33,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
     private Container<Label> labelContainer;
 
     public PixelLogicUITimeTrialPage(PixelLogicGlobal global) {
-        super(global, PixelLogicUIPageId.timeTrial, "Time trial", PixelLogicUIPageId.mainMenu);
+        super(global, PixelLogicUIPageId.timeTrial, "Time trial", PixelLogicUIPageId.moreLevels);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
             this.button = new PixelLogicUIButton(page.getAssets(), page.getEventManager(), options.name) {
                 @Override
                 public void onClick() {
-                    if(block()) {
+                    if (block()) {
                         return;
                     }
                     startTimeTrial(options);

@@ -15,7 +15,7 @@ public class PixelLogicAchievementInsaneMode extends PixelLogicAchievement {
 
     @Override
     public String getDescription() {
-        return "Beat the Time Trial Insane Mode in under 8 minutes.";
+        return "Beat the Insane Time Trial Mode in under 8 minutes.";
     }
 
     @Override
