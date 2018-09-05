@@ -64,8 +64,6 @@ public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
 
     private class LevelModeUI extends Container<VerticalGroup> {
 
-        private String description;
-
         private Container<Label> labelContainer;
 
         private PixelLogicUIButton button;
@@ -73,8 +71,6 @@ public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
         public LevelModeUI(final String buttonText, final String description, final PixelLogicUIPageId pageId,
                            PixelLogicUIMoreLevelsPage page) {
             super(new VerticalGroup());
-
-            this.description = description;
 
             getActor().setFillParent(true);
             getActor().center();

@@ -23,6 +23,7 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIAchievementBlock;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BLOCK_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
 
 public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
 
@@ -73,7 +74,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
     public void activate(PixelLogicUIPageProperties properties) {
         super.activate(properties);
         for (LevelContainer levelContainer : this.levelContainers) {
-            levelContainer.updateLogo();
+            //levelContainer.updateLogo();
         }
         updateSize();
         fadeIn(null);
@@ -87,7 +88,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
 
         private Logo logo;
 
-        private PixelLogicUIAchievementBlock block;
+        private Container<Label> labelContainer;
 
         LevelContainer(PixelLogicLevel level, PixelLogicGlobal global) {
             super(new HorizontalGroup());
@@ -99,30 +100,19 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
             getActor().left();
             getActor().fill();
 
+            Label descriptionLabel = this.getLabel(level.getName(), TEXT_COLOR);
+            descriptionLabel.setWrap(true);
+            this.labelContainer = new Container<Label>(descriptionLabel);
+            getActor().addActor(this.labelContainer);
+
             this.logo = new Logo();
             getActor().addActor(this.logo);
-            updateLogo();
-
-            this.block = new PixelLogicUIAchievementBlock(global.getAssets(), global.getEventManager());
-            this.block.setAchievement(achievement.getName(), achievement.getDescription());
-            this.block.setHeaderStyle(getHeaderStyle());
-            this.block.setDescriptionStyle(getDescriptionStyle());
-            getActor().addActor(this.block);
 
             Texture whiteTexture = PixelLogicUIUtil.getTexture(BLOCK_COLOR);
             Sprite s = new Sprite(whiteTexture);
             this.setBackground(new SpriteDrawable(s));
         }
 
-        public void updateLogo() {
-            if (this.achievement.isDone()) {
-                this.logo.setColor(PixelLogicUIConstants.PIXEL_BLOCKED_COLOR);
-                this.logo.setSprite(global.getAssets().getIcon(4));
-            } else {
-                this.logo.setColor(PixelLogicUIConstants.TEXT_LIGHT_COLOR);
-                this.logo.setSprite(global.getAssets().getIcon(1));
-            }
-        }
 
         public void resize(int width, int height) {
             int padding = getPadding();
@@ -132,30 +122,23 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
             getActor().pad(groupPadding);
             getActor().space(padding / 2);
 
-            this.block.setHeaderStyle(getHeaderStyle());
-            this.block.setDescriptionStyle(getDescriptionStyle());
-
-            this.block.setWidth((int) (width - (padding + logoSize)));
-            this.block.setHeight((int) this.block.getPrefHeight());
             this.logo.setSize(logoSize, logoSize);
 
+            this.labelContainer.width(getComponentWidth());
+            this.labelContainer.getActor().setStyle(getLabelStyle(TEXT_COLOR));
+
             this.width(width);
-
-            float componentHeight = Math.max(this.block.getPrefHeight(), this.logo.getHeight());
-            float containerHeight = componentHeight + getActor().getPadBottom() + getActor().getPadTop();
-            this.height(containerHeight);
-
-            getActor().setHeight(containerHeight - groupPadding * 2);
         }
 
-        private Label.LabelStyle getHeaderStyle() {
+
+        public Label getLabel(String text, Color color) {
+            Label.LabelStyle style = getLabelStyle(color);
+            return new Label(text, style);
+        }
+
+        private Label.LabelStyle getLabelStyle(Color color) {
             BitmapFont labelFont = PixelLogicUIUtil.getAppFont(global.getAssets(), 2);
-            return new Label.LabelStyle(labelFont, Color.BLACK);
-        }
-
-        private Label.LabelStyle getDescriptionStyle() {
-            BitmapFont labelFont = PixelLogicUIUtil.getAppFont(global.getAssets(), 0);
-            return new Label.LabelStyle(labelFont, Color.BLACK);
+            return new Label.LabelStyle(labelFont, color);
         }
 
         private class Logo extends Actor {
