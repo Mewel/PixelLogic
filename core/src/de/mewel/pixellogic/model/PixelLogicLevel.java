@@ -62,6 +62,10 @@ public class PixelLogicLevel {
         return new Color(this.image[row + this.levelImageOffset[0]][col + this.levelImageOffset[2]]);
     }
 
+    public Integer[][] getImage() {
+        return image;
+    }
+
     public Integer[] getLevelImageOffset() {
         return levelImageOffset;
     }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
@@ -100,23 +101,24 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
             getActor().left();
             getActor().fill();
 
+            this.logo = new Logo();
+            //this.logo.setSprite(level.get);
+            this.logo.setSprite(global.getAssets().getIcon(5));
+            getActor().addActor(this.logo);
+
             Label descriptionLabel = this.getLabel(level.getName(), TEXT_COLOR);
             descriptionLabel.setWrap(true);
             this.labelContainer = new Container<Label>(descriptionLabel);
             getActor().addActor(this.labelContainer);
-
-            this.logo = new Logo();
-            getActor().addActor(this.logo);
 
             Texture whiteTexture = PixelLogicUIUtil.getTexture(BLOCK_COLOR);
             Sprite s = new Sprite(whiteTexture);
             this.setBackground(new SpriteDrawable(s));
         }
 
-
         public void resize(int width, int height) {
             int padding = getPadding();
-            float logoSize = Math.min(width / 10, height / 10);
+            int logoSize = Math.max(width / 16, height / 16);
 
             int groupPadding = padding / 5;
             getActor().pad(groupPadding);
@@ -154,16 +156,10 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
                 Color color = getColor();
                 batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
                 super.draw(batch, parentAlpha);
-
                 if (sprite != null) {
-                    float size = PixelLogicUIUtil.getIconBaseHeight();
                     float alpha = parentAlpha * color.a;
-
                     batch.setColor(new Color(color.r, color.g, color.b, color.a * alpha));
-                    int x = (int) (getX() + getWidth() / 2 - size / 2);
-                    int y = (int) (getY() + getHeight() / 2 - size / 2);
-                    batch.draw(sprite, x,
-                            y, size, size);
+                    batch.draw(sprite, getX(), getY(), getWidth(), getHeight());
                 }
                 batch.setColor(color);
             }
