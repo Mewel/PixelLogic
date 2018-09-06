@@ -37,6 +37,7 @@ public class TimeTrialLevelTest extends Game implements PixelLogicGlobal {
 
         final PixelLogicTimeTrialMode mode = new PixelLogicTimeTrialMode(new TestOptions());
         mode.setup(this);
+        mode.activate();
         mode.run();
 
         eventManager.listen(new PixelLogicListener() {

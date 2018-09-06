@@ -37,7 +37,8 @@ public class CampaignLevelTest extends Game implements PixelLogicGlobal {
         mode.setup(this);
 
         PixelLogicLevel level = mode.findLevel("Ship");
-        mode.runLevel(level);
+        mode.activate();
+        mode.run(level);
 
         PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
         pageProperties.put("menuBackId", PixelLogicUIPageId.mainMenu);

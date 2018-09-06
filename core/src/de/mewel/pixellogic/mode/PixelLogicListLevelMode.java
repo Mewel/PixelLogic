@@ -31,20 +31,23 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
     }
 
     public void run() {
-        super.run();
         String levelName = this.preferences.getString("levelName");
         if (levelName != null) {
             PixelLogicLevel level = findLevel(levelName);
             if (level != null) {
-                String pixels = this.preferences.getString("pixels");
-                if (pixels != null) {
-                    level.ofPixelString(pixels);
-                }
-                runLevel(level);
+                run(level);
                 return;
             }
         }
         loadNextLevel();
+    }
+
+    public void run(PixelLogicLevel level) {
+        String pixels = this.preferences.getString("pixels");
+        if (pixels != null) {
+            level.ofPixelString(pixels);
+        }
+        runLevel(level);
     }
 
     protected void loadNextLevel() {
@@ -113,7 +116,7 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
         } else if (event instanceof PixelLogicUIPageChangeEvent) {
             PixelLogicUIPageChangeEvent screenChangeEvent = (PixelLogicUIPageChangeEvent) event;
             if (!screenChangeEvent.getPageId().equals(PixelLogicUIPageId.level)) {
-                this.dispose();
+                this.deactivate();
             }
         }
     }

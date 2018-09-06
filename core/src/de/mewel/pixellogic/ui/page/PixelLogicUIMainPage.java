@@ -66,6 +66,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
                 PixelLogicCampaignMode campaignMode = new PixelLogicCampaignMode();
                 campaignMode.setup(getGlobal());
+                campaignMode.activate();
                 campaignMode.run();
 
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();

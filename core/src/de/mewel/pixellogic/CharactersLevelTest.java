@@ -38,7 +38,8 @@ public class CharactersLevelTest extends Game implements PixelLogicGlobal {
         mode.setup(this);
         mode.reset();
         PixelLogicLevel level = mode.findLevel("Sideshow Mel");
-        mode.runLevel(level);
+        mode.activate();
+        mode.run(level);
 
         PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
         pageProperties.put("menuBackId", PixelLogicUIPageId.mainMenu);

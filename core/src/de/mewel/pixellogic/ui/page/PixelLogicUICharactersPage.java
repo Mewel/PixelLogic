@@ -1,5 +1,7 @@
 package de.mewel.pixellogic.ui.page;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -19,9 +21,12 @@ import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.achievements.PixelLogicAchievement;
 import de.mewel.pixellogic.mode.PixelLogicCharactersMode;
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIAchievementBlock;
+import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
+import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BLOCK_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
@@ -31,6 +36,8 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
     private PixelLogicCharactersMode mode;
 
     private List<LevelContainer> levelContainers;
+
+    private Texture levelTexture;
 
     public PixelLogicUICharactersPage(PixelLogicGlobal global) {
         super(global, PixelLogicUIPageId.characters, "100 Characters", PixelLogicUIPageId.moreLevels);
@@ -42,9 +49,26 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
         this.mode.setup(getGlobal());
         List<PixelLogicLevel> levels = this.mode.getLevels();
 
+        PixelLogicLevelCollection collection = this.mode.getCollection();
+        this.levelTexture = new Texture(collection.getPixmap());
+
         this.levelContainers = new ArrayList<LevelContainer>();
-        for (PixelLogicLevel level : levels) {
-            LevelContainer levelContainer = new LevelContainer(level, getGlobal());
+        for (final PixelLogicLevel level : levels) {
+            Sprite image = collection.getSprite(level.getName(), levelTexture, 8, 8);
+            LevelContainer levelContainer = new LevelContainer(level, image, getGlobal());
+
+            levelContainer.addListener(new PixelLogicUIButtonListener() {
+                @Override
+                public void onClick() {
+                    mode.activate();
+                    mode.run(level);
+
+                    PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
+                    pageProperties.put("menuBackId", PixelLogicUIPageId.characters);
+                    getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties);
+                }
+            });
+
             getPageRoot().addActor(levelContainer);
             this.levelContainers.add(levelContainer);
         }
@@ -75,13 +99,24 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
     public void activate(PixelLogicUIPageProperties properties) {
         super.activate(properties);
         for (LevelContainer levelContainer : this.levelContainers) {
-            //levelContainer.updateLogo();
+            levelContainer.updateLogo();
+            levelContainer.updateLabel();
         }
         updateSize();
         fadeIn(null);
     }
 
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (this.levelTexture != null) {
+            this.levelTexture.dispose();
+        }
+    }
+
     private class LevelContainer extends Container<HorizontalGroup> {
+
+        private Sprite image;
 
         private PixelLogicLevel level;
 
@@ -91,9 +126,10 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
 
         private Container<Label> labelContainer;
 
-        LevelContainer(PixelLogicLevel level, PixelLogicGlobal global) {
+        LevelContainer(PixelLogicLevel level, Sprite image, PixelLogicGlobal global) {
             super(new HorizontalGroup());
             this.level = level;
+            this.image = image;
             this.global = global;
 
             getActor().setFillParent(true);
@@ -102,18 +138,34 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
             getActor().fill();
 
             this.logo = new Logo();
-            //this.logo.setSprite(level.get);
-            this.logo.setSprite(global.getAssets().getIcon(5));
             getActor().addActor(this.logo);
+            this.updateLogo();
 
             Label descriptionLabel = this.getLabel(level.getName(), TEXT_COLOR);
             descriptionLabel.setWrap(true);
             this.labelContainer = new Container<Label>(descriptionLabel);
             getActor().addActor(this.labelContainer);
+            this.updateLabel();
 
             Texture whiteTexture = PixelLogicUIUtil.getTexture(BLOCK_COLOR);
             Sprite s = new Sprite(whiteTexture);
             this.setBackground(new SpriteDrawable(s));
+        }
+
+        private void updateLogo() {
+            Sprite sprite = isSolved() ? image : global.getAssets().getIcon(5);
+            this.logo.setSprite(sprite);
+        }
+
+        private void updateLabel() {
+            String label = isSolved() ? this.level.getName() : "???";
+            this.labelContainer.getActor().setText(label);
+        }
+
+        private boolean isSolved() {
+            Preferences preferences = Gdx.app.getPreferences("characters");
+            String index = this.level.getName().replace(" ", "_");
+            return preferences.getBoolean(index);
         }
 
         public void resize(int width, int height) {

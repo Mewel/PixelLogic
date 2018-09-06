@@ -195,6 +195,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
         private void startTimeTrial(final PixelLogicTimeTrialModeOptions options) {
             final PixelLogicTimeTrialMode mode = new PixelLogicTimeTrialMode(options);
             mode.setup(page.getGlobal());
+            mode.activate();
             mode.run();
 
             final PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();

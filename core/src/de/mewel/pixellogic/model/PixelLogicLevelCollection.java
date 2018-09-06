@@ -1,6 +1,8 @@
 package de.mewel.pixellogic.model;
 
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import java.util.List;
 
@@ -106,6 +108,22 @@ public class PixelLogicLevelCollection {
 
     public void setPreserveSize(Boolean preserveSize) {
         this.preserveSize = preserveSize;
+    }
+
+    public Sprite getSprite(String name, Texture levelTexture) {
+        Integer index = getLevelIndexByName(name);
+        int columns = levelTexture.getWidth() / pixmapWidth;
+        int y = index / columns;
+        int x = index % columns;
+        return new Sprite(levelTexture, x * pixmapWidth, y * pixmapHeight, pixmapWidth, pixmapHeight);
+    }
+
+    public Sprite getSprite(String name, Texture levelTexture, int fixedWidth, int fixedHeight) {
+        Integer index = getLevelIndexByName(name);
+        int columns = levelTexture.getWidth() / pixmapWidth;
+        int y = index / columns;
+        int x = index % columns;
+        return new Sprite(levelTexture, x * pixmapWidth, y * pixmapHeight, fixedWidth, fixedHeight);
     }
 
 }

@@ -52,9 +52,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
         this.secretLevelStatus = 0;
     }
 
-    @Override
     public void run() {
-        super.run();
         this.round = new AtomicInteger(0);
         runNext();
     }
@@ -200,7 +198,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
         if (event instanceof PixelLogicUIPageChangeEvent) {
             PixelLogicUIPageChangeEvent screenChangeEvent = (PixelLogicUIPageChangeEvent) event;
             if (!screenChangeEvent.getPageId().equals(PixelLogicUIPageId.level)) {
-                this.dispose();
+                this.deactivate();
             }
         }
         if (event instanceof PixelLogicUserEvent) {
