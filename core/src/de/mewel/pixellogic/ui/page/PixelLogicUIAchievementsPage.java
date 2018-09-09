@@ -142,7 +142,7 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
         }
 
         private Label.LabelStyle getHeaderStyle() {
-            BitmapFont labelFont = PixelLogicUIUtil.getAppFont(global.getAssets(), 2);
+            BitmapFont labelFont = PixelLogicUIUtil.getAppFont(global.getAssets(), 1);
             return new Label.LabelStyle(labelFont, Color.BLACK);
         }
 

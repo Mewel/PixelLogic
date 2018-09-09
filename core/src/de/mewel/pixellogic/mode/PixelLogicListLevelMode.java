@@ -121,7 +121,7 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
         }
     }
 
-    protected abstract String getName();
+    public abstract String getName();
 
     protected abstract List<PixelLogicLevel> loadLevels();
 

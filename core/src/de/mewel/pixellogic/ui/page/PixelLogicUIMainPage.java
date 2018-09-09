@@ -34,11 +34,12 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
     public PixelLogicUIMainPage(PixelLogicGlobal global) {
         super(global, PixelLogicUIPageId.mainMenu);
-        this.campaignMode = new PixelLogicCampaignMode();
     }
 
     @Override
     protected void buildGui(String headerText, PixelLogicUIPageId backPageId) {
+        this.campaignMode = new PixelLogicCampaignMode();
+
         this.background = new PixelLogicUIRotatingBoardBackground(getAssets(), getEventManager());
         getStage().addActor(this.background);
 
@@ -52,7 +53,6 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
     @Override
     protected void build() {
-
         Texture logo = getAssets().getLogo();
         logoImage = new Image(logo);
         logoImage.setOrigin(Align.center);
@@ -64,8 +64,9 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
                     return;
                 }
                 campaignButton.setText(getCampaignLabel());
-                getCampaignPreferences().putBoolean("replay", true);
-                getCampaignPreferences().flush();
+                Preferences campaignPreferences = getCampaignPreferences();
+                campaignPreferences.putBoolean("started", true);
+                campaignPreferences.flush();
 
                 campaignMode.setup(getGlobal());
                 campaignMode.activate();
@@ -115,16 +116,13 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
     }
 
     private String getCampaignLabel() {
-        final Preferences preferences = getCampaignPreferences();
-        boolean replayCampaignStarted = preferences.getBoolean("replay");
-
-        Gdx.app.log("main", "replayCampaignStarted " + replayCampaignStarted);
-
-        return replayCampaignStarted ? "continue campaign" : "replay campaign";
+        boolean campaignStarted = getCampaignPreferences().getBoolean("started");
+        Gdx.app.log("main", "campaign started " + campaignStarted);
+        return campaignStarted ? "continue campaign" : "start campaign";
     }
 
     private Preferences getCampaignPreferences() {
-        return Gdx.app.getPreferences("campaign");
+        return Gdx.app.getPreferences(this.campaignMode.getName());
     }
 
     @Override

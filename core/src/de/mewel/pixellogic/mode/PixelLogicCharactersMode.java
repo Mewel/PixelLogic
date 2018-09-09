@@ -11,7 +11,7 @@ import de.mewel.pixellogic.util.PixelLogicLevelLoader;
 public class PixelLogicCharactersMode extends PixelLogicListLevelMode {
 
     @Override
-    protected String getName() {
+    public String getName() {
         return "characters";
     }
 

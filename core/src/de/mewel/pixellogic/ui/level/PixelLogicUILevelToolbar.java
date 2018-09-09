@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
@@ -135,10 +136,22 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
     public void onLevelBeforeDestroyed(PixelLogicLevelStatusChangeEvent event) {
         this.timerRunning = false;
         if (this.solvedLabel != null) {
-            this.solvedLabel.addAction(Actions.fadeOut(.4f));
+            this.solvedLabel.addAction(Actions.sequence(Actions.fadeOut(.4f), Actions.run(new Runnable() {
+                @Override
+                public void run() {
+                    removeActor(solvedLabel);
+                    solvedLabel = null;
+                }
+            })));
         }
         if (this.timerLabel != null) {
-            this.timerLabel.addAction(Actions.fadeOut(.4f));
+            this.timerLabel.addAction(Actions.sequence(Actions.fadeOut(.4f), Actions.run(new Runnable() {
+                @Override
+                public void run() {
+                    removeActor(timerLabel);
+                    timerLabel = null;
+                }
+            })));
         }
     }
 
