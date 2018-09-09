@@ -95,6 +95,14 @@ public class PixelLogicUtil {
         return true;
     }
 
+    /**
+     * Sorts a map by the value and return the keys as list in ascending order.
+     *
+     * @param map the map to sort
+     * @param <K> the keys which will be returned as list
+     * @param <V> the values which will be used to determine the order
+     * @return a sorted list of keys
+     */
     public static <K, V extends Comparable<? super V>> List<K> sortByValue(Map<K, V> map) {
         List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(map.entrySet());
         Collections.sort(list, new Comparator<Object>() {
@@ -104,7 +112,7 @@ public class PixelLogicUtil {
             }
         });
         List<K> result = new ArrayList<K>();
-        for (Iterator<Map.Entry<K, V>> it = list.iterator(); it.hasNext();) {
+        for (Iterator<Map.Entry<K, V>> it = list.iterator(); it.hasNext(); ) {
             Map.Entry<K, V> entry = it.next();
             result.add(entry.getKey());
         }

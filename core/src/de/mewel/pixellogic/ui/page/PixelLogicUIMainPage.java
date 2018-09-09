@@ -30,8 +30,11 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
     private PixelLogicUIButton achievementButton;
 
+    private PixelLogicCampaignMode campaignMode;
+
     public PixelLogicUIMainPage(PixelLogicGlobal global) {
         super(global, PixelLogicUIPageId.mainMenu);
+        this.campaignMode = new PixelLogicCampaignMode();
     }
 
     @Override
@@ -64,7 +67,6 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
                 getCampaignPreferences().putBoolean("replay", true);
                 getCampaignPreferences().flush();
 
-                PixelLogicCampaignMode campaignMode = new PixelLogicCampaignMode();
                 campaignMode.setup(getGlobal());
                 campaignMode.activate();
                 campaignMode.run();
