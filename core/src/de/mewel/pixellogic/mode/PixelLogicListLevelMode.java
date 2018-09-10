@@ -31,7 +31,7 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
     }
 
     public void run() {
-        String levelName = this.preferences.getString("levelName");
+        String levelName = this.preferences.getString(getLastPlayedLevelProperty());
         if (levelName != null) {
             PixelLogicLevel level = findLevel(levelName);
             if (level != null) {
@@ -43,7 +43,7 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
     }
 
     public void run(PixelLogicLevel level) {
-        String pixels = this.preferences.getString("pixels");
+        String pixels = this.preferences.getString(getPixelsProperty(level));
         if (pixels != null) {
             level.ofPixelString(pixels);
         }
@@ -56,8 +56,8 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
             onFinished();
             return;
         }
-        this.preferences.putString("levelName", level.getName());
-        this.preferences.remove("pixels");
+        this.preferences.putString(getLastPlayedLevelProperty(), level.getName());
+        this.preferences.remove(getPixelsProperty(level));
         this.preferences.flush();
         runLevel(level);
     }
@@ -84,8 +84,12 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
     }
 
     public void reset() {
-        this.preferences.remove("levelName");
-        this.preferences.remove("pixels");
+        this.preferences.remove(getLastPlayedLevelProperty());
+        for (String key : this.preferences.get().keySet()) {
+            if (key.startsWith("pixels_")) {
+                this.preferences.remove(key);
+            }
+        }
         this.preferences.flush();
     }
 
@@ -102,6 +106,18 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
         return levels;
     }
 
+    public Preferences getPreferences() {
+        return preferences;
+    }
+
+    protected String getLastPlayedLevelProperty() {
+        return "lastPlayedLevel";
+    }
+
+    protected String getPixelsProperty(PixelLogicLevel level) {
+        return "pixels_" + level.toSimpleName();
+    }
+
     @Override
     public void handle(PixelLogicEvent event) {
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
@@ -111,7 +127,7 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
             }
         } else if (event instanceof PixelLogicUserChangedBoardEvent) {
             PixelLogicUserChangedBoardEvent changedBoardEvent = (PixelLogicUserChangedBoardEvent) event;
-            this.preferences.putString("pixels", changedBoardEvent.getLevel().toPixelString());
+            this.preferences.putString(getPixelsProperty(level), changedBoardEvent.getLevel().toPixelString());
             this.preferences.flush();
         } else if (event instanceof PixelLogicUIPageChangeEvent) {
             PixelLogicUIPageChangeEvent screenChangeEvent = (PixelLogicUIPageChangeEvent) event;

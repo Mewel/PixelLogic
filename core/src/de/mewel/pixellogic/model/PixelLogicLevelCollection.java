@@ -111,18 +111,19 @@ public class PixelLogicLevelCollection {
     }
 
     public Sprite getSprite(String name, Texture levelTexture) {
-        Integer index = getLevelIndexByName(name);
-        int columns = levelTexture.getWidth() / pixmapWidth;
-        int y = index / columns;
-        int x = index % columns;
-        return new Sprite(levelTexture, x * pixmapWidth, y * pixmapHeight, pixmapWidth, pixmapHeight);
+        return getSprite(name, levelTexture, pixmapWidth, pixmapHeight);
     }
 
     public Sprite getSprite(String name, Texture levelTexture, int fixedWidth, int fixedHeight) {
-        Integer index = getLevelIndexByName(name);
-        int columns = levelTexture.getWidth() / pixmapWidth;
-        int y = index / columns;
-        int x = index % columns;
+        PixelLogicLevelData data = getLevel(name);
+        Integer x = data.getX();
+        Integer y = data.getY();
+        if (x == null || y == null) {
+            Integer index = getLevelIndexByName(name);
+            int columns = levelTexture.getWidth() / pixmapWidth;
+            y = index / columns;
+            x = index % columns;
+        }
         return new Sprite(levelTexture, x * pixmapWidth, y * pixmapHeight, fixedWidth, fixedHeight);
     }
 

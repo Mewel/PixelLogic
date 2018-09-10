@@ -31,9 +31,9 @@ public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
     protected void build() {
         this.modes = new ArrayList<LevelModeUI>();
         this.modes.add(new LevelModeUI("100 Characters", "Play over 50 bonus levels based on" +
-                " the awesome pixel art by XXXX XXXX.",
+                " the awesome pixel art by Johan Vinet.",
                 PixelLogicUIPageId.characters, this));
-        this.modes.add(new LevelModeUI("Time trial", "Play infinite auto " +
+        this.modes.add(new LevelModeUI("Time trial", "Play infinite computer " +
                 "generated levels against the clock and try to beat your highscore.",
                 PixelLogicUIPageId.timeTrial, this));
         this.buildModes();

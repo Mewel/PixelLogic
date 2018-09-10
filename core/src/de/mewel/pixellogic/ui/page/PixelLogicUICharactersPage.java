@@ -1,13 +1,10 @@
 package de.mewel.pixellogic.ui.page;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
@@ -18,14 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
-import de.mewel.pixellogic.achievements.PixelLogicAchievement;
 import de.mewel.pixellogic.mode.PixelLogicCharactersMode;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
-import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
-import de.mewel.pixellogic.ui.component.PixelLogicUIAchievementBlock;
-import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BLOCK_COLOR;
@@ -163,9 +156,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
         }
 
         private boolean isSolved() {
-            Preferences preferences = Gdx.app.getPreferences("characters");
-            String index = this.level.getName().replace(" ", "_");
-            return preferences.getBoolean(index);
+            return mode.isLevelSolved(level);
         }
 
         public void resize(int width, int height) {

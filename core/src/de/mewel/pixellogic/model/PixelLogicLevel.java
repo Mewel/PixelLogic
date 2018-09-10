@@ -233,6 +233,10 @@ public class PixelLogicLevel {
         return builder.toString();
     }
 
+    public String toSimpleName() {
+        return getName().replaceAll("\\W", "_");
+    }
+
     public String toPixelString() {
         StringBuilder builder = new StringBuilder();
         for (int row = 0; row < this.rows; row++) {
