@@ -24,13 +24,33 @@ public abstract class PixelLogicLevelLoader {
         if (collection.getPreserveOrder()) {
             return levelList;
         }
-        // return by complexity: easiest level first
+        // order is pre calculated -> cause calculating the complexity takes to much time
+        List<Integer> order = collection.getOrder();
+        if (order != null && order.size() == levelList.size()) {
+            List<PixelLogicLevel> orderedLevelList = new ArrayList<PixelLogicLevel>(levelList.size());
+            for (int i = 0; i < levelList.size(); i++) {
+                orderedLevelList.add(levelList.get(order.get(i)));
+            }
+            return orderedLevelList;
+        }
+        // not pre calculated -> we analyze the complexity and print it -> to hard to put it back ;)
         Map<PixelLogicLevel, Float> complexityMap = new HashMap<PixelLogicLevel, Float>();
         for (PixelLogicLevel level : levelList) {
             PixelLogicComplexityAnalyzerResult result = PixelLogicComplexityAnalyzer.analyze(level);
             complexityMap.put(level, result.getComplexity());
         }
-        return PixelLogicUtil.sortByValue(complexityMap);
+        List<PixelLogicLevel> pixelLogicLevels = PixelLogicUtil.sortByValue(complexityMap);
+        // print the order to console -> need to manually put it back to the collection
+        StringBuilder orderString = new StringBuilder("\"order\": [");
+        String prefix = "";
+        for (PixelLogicLevel level : pixelLogicLevels) {
+            orderString.append(prefix).append(levelList.indexOf(level));
+            prefix = ",";
+        }
+        orderString.append("]");
+        Gdx.app.log("level loader order for " + collection.getName(), orderString.toString());
+        // return by complexity: easiest level first
+        return pixelLogicLevels;
     }
 
     private static List<PixelLogicLevel> loadOrdered(PixelLogicLevelCollection collection) {

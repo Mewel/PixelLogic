@@ -13,7 +13,7 @@ import de.mewel.pixellogic.util.PixelLogicLevelLoader;
 public class PixelLogicCampaignMode extends PixelLogicListLevelMode {
 
     @Override
-    protected String getName() {
+    public String getName() {
         return "campaign";
     }
 

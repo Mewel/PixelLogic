@@ -56,7 +56,7 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
     }
 
     private void updateLabel(boolean force) {
-        BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 2);
+        BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 1);
         if (this.label != null) {
             if (!force && labelFont.equals(this.label.getStyle().font)) {
                 return;

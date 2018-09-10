@@ -15,6 +15,7 @@ public class PixelLogicLevelCollection {
     private Boolean preserveSize = false;
     private Boolean preserveOrder = false;
     private List<PixelLogicLevelData> level;
+    private List<Integer> order;
 
     private Pixmap pixmap;
     private Pixmap levelmap;
@@ -108,6 +109,14 @@ public class PixelLogicLevelCollection {
 
     public void setPreserveSize(Boolean preserveSize) {
         this.preserveSize = preserveSize;
+    }
+
+    public List<Integer> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<Integer> order) {
+        this.order = order;
     }
 
     public Sprite getSprite(String name, Texture levelTexture) {
