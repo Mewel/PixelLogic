@@ -44,9 +44,7 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
 
     public void run(PixelLogicLevel level) {
         String pixels = this.preferences.getString(getPixelsProperty(level));
-        if (pixels != null) {
-            level.ofPixelString(pixels);
-        }
+        level.ofPixelString(pixels);
         runLevel(level);
     }
 
@@ -65,6 +63,7 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
     protected void onFinished() {
         this.preferences.putBoolean("finished", true);
         this.preferences.putBoolean("replay", false);
+        this.preferences.flush();
         this.reset();
     }
 
@@ -124,6 +123,9 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
             if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus())) {
                 loadNextLevel();
+            } else if (PixelLogicLevelStatus.solved.equals(changeEvent.getStatus())) {
+                this.preferences.remove(getPixelsProperty(level));
+                this.preferences.flush();
             }
         } else if (event instanceof PixelLogicUserChangedBoardEvent) {
             PixelLogicUserChangedBoardEvent changedBoardEvent = (PixelLogicUserChangedBoardEvent) event;

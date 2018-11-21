@@ -1,4 +1,4 @@
-package de.mewel.pixellogic;
+package de.mewel.pixellogic.spike;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;

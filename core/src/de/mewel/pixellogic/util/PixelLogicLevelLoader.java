@@ -19,6 +19,36 @@ public abstract class PixelLogicLevelLoader {
         if (collection == null) {
             return new ArrayList<PixelLogicLevel>();
         }
+        if (collection.getLevelList() == null) {
+            return loadByAutoDetect(collection);
+        }
+        return loadByList(collection);
+    }
+
+    private static List<PixelLogicLevel> loadByAutoDetect(PixelLogicLevelCollection collection) {
+        int levelWidth = collection.getPixmapWidth();
+        int levelHeight = collection.getPixmapHeight();
+        int pixmapWidth = collection.getLevelmap().getWidth();
+        int pixmapHeight = collection.getLevelmap().getHeight();
+        int cols = pixmapWidth / levelWidth;
+        int rows = pixmapHeight / levelHeight;
+
+        List<PixelLogicLevel> levels = new ArrayList<PixelLogicLevel>();
+        int levelNumber = 0;
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < cols; x++) {
+                PixelLogicLevelData levelData = new PixelLogicLevelData();
+                levelData.setX(x);
+                levelData.setY(y);
+                levelData.setName("#" + ++levelNumber);
+                PixelLogicLevel level = getPixelLogicImageLevel(collection, levelData);
+                levels.add(level);
+            }
+        }
+        return levels;
+    }
+
+    private static List<PixelLogicLevel> loadByList(PixelLogicLevelCollection collection) {
         List<PixelLogicLevel> levelList = loadOrdered(collection);
         // preserve order
         if (collection.getPreserveOrder()) {

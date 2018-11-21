@@ -40,6 +40,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
                 }
                 close();
                 PixelLogicUtil.solveLevel(PixelLogicUILevelMenu.this.screen.getLevel());
+                PixelLogicUILevelMenu.this.screen.getLevelUI().getBoard().updateFromLevelPixels();
             }
         };
 

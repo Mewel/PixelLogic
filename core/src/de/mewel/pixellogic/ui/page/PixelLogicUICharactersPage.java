@@ -2,10 +2,8 @@ package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -20,6 +18,7 @@ import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
+import de.mewel.pixellogic.ui.component.PixelLogicUISprite;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BLOCK_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
@@ -115,7 +114,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
 
         private PixelLogicGlobal global;
 
-        private Logo logo;
+        private PixelLogicUISprite logo;
 
         private Container<Label> labelContainer;
 
@@ -130,7 +129,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
             getActor().left();
             getActor().fill();
 
-            this.logo = new Logo();
+            this.logo = new PixelLogicUISprite(getAssets(), getEventManager());
             getActor().addActor(this.logo);
             this.updateLogo();
 
@@ -175,7 +174,6 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
             this.width(width);
         }
 
-
         public Label getLabel(String text, Color color) {
             Label.LabelStyle style = getLabelStyle(color);
             return new Label(text, style);
@@ -185,30 +183,6 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
             BitmapFont labelFont = PixelLogicUIUtil.getAppFont(global.getAssets(), 2);
             return new Label.LabelStyle(labelFont, color);
         }
-
-        private class Logo extends Actor {
-
-            private Sprite sprite;
-
-            public void setSprite(Sprite sprite) {
-                this.sprite = sprite;
-            }
-
-            @Override
-            public void draw(Batch batch, float parentAlpha) {
-                Color color = getColor();
-                batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-                super.draw(batch, parentAlpha);
-                if (sprite != null) {
-                    float alpha = parentAlpha * color.a;
-                    batch.setColor(new Color(color.r, color.g, color.b, color.a * alpha));
-                    batch.draw(sprite, getX(), getY(), getWidth(), getHeight());
-                }
-                batch.setColor(color);
-            }
-
-        }
-
 
     }
 

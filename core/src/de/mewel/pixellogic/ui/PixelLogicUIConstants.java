@@ -6,12 +6,14 @@ public abstract class PixelLogicUIConstants {
 
     public static int BASE_SIZE = 24;
 
+    public static final Color MAIN_COLOR = Color.valueOf("#FA5882");
+
     public static final Color APP_BACKGROUND = Color.valueOf("#f8f8f8");
     public static final Color BLOCK_COLOR = Color.valueOf("#fefefe");
 
     public static final Color PIXEL_EMPTY_COLOR = Color.valueOf("#CEE3F6");
     public static final Color PIXEL_FILLED_COLOR = Color.valueOf("#1C1C1C");
-    public static final Color PIXEL_BLOCKED_COLOR = Color.valueOf("#FA5882");
+    public static final Color PIXEL_BLOCKED_COLOR = MAIN_COLOR;
     public static final Color LINE_COLOR = Color.valueOf("#F5DA81");
     public static final Color LINE_COMPLETE_COLOR = Color.valueOf("#FF8000");
     public static final Color TEXT_COLOR = Color.valueOf("#424242");

@@ -62,6 +62,14 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
         this.updateChildrenBounds();
     }
 
+    public void updateFromLevelPixels() {
+        for (int row = 0; row < level.getRows(); row++) {
+            for (int col = 0; col < level.getColumns(); col++) {
+                this.pixels[row][col].set(level.get(row, col));
+            }
+        }
+    }
+
     public void clear() {
         if (this.level == null) {
             return;

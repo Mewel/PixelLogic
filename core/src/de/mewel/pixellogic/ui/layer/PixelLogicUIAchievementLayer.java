@@ -26,7 +26,7 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIAchievementBlock;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.PIXEL_BLOCKED_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.MAIN_COLOR;
 
 public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLogicListener {
 
@@ -54,8 +54,8 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         this.achievementBlock.setDescriptionStyle(getDescriptionStyle());
 
         PixelLogicUIColoredSurface background = new PixelLogicUIColoredSurface(assets);
-        background.setColor(PIXEL_BLOCKED_COLOR);
-        background.setBorder(1, new Color(PIXEL_BLOCKED_COLOR).mul(.5f));
+        background.setColor(MAIN_COLOR);
+        background.setBorder(1, new Color(MAIN_COLOR).mul(.5f));
         this.achievementBlock.setBackground(background);
 
         this.stage.addActor(this.achievementBlock);

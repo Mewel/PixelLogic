@@ -19,6 +19,7 @@ public class PixelLogicLevelCollection {
 
     private Pixmap pixmap;
     private Pixmap levelmap;
+    private Pixmap unsolved;
 
     public String getId() {
         return id;
@@ -93,6 +94,14 @@ public class PixelLogicLevelCollection {
 
     public Pixmap getLevelmap() {
         return levelmap;
+    }
+
+    public void setUnsolvedPixmap(Pixmap unsolvedPixmap) {
+        this.unsolved = unsolvedPixmap;
+    }
+
+    public Pixmap getUnsolved() {
+        return unsolved;
     }
 
     public Boolean getPreserveOrder() {

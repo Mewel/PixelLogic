@@ -16,11 +16,12 @@ import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
-import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelGroup;
+
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.MAIN_COLOR;
 
 public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements PixelLogicListener {
 
@@ -155,7 +156,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
             this.text = text;
 
             this.background = new PixelLogicUIColoredSurface(assets);
-            this.background.setColor(PixelLogicUIConstants.PIXEL_BLOCKED_COLOR);
+            this.background.setColor(MAIN_COLOR);
             this.addActor(this.background);
 
             this.backButton = new BackButton(assets.getIcon(3));

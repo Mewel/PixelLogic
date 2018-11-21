@@ -1,5 +1,7 @@
 package de.mewel.pixellogic.mode;
 
+import com.badlogic.gdx.Gdx;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +49,7 @@ public class PixelLogicCharactersMode extends PixelLogicListLevelMode {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
             if (PixelLogicLevelStatus.solved.equals(changeEvent.getStatus())) {
                 getPreferences().putBoolean(getSolvedProperty(getLevel()), true);
+                getPreferences().flush();
             }
         }
     }

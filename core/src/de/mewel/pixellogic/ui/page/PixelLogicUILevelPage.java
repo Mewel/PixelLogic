@@ -10,6 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicListener;
@@ -24,9 +27,13 @@ import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelMenu;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelToolbar;
 import de.mewel.pixellogic.ui.level.animation.PixelLogicUIBoardSolvedAnimation;
+import de.mewel.pixellogic.ui.level.animation.PixelLogicUILevelAnimation;
+import de.mewel.pixellogic.ui.level.animation.PixelLogicUIPictureBoardSolvedAnimation;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 
 public class PixelLogicUILevelPage extends PixelLogicUIPage {
+
+    private static Map<String, Class<? extends PixelLogicUILevelAnimation>> SOLVED_ANIMATION_MAP;
 
     private PixelLogicUILevel levelUI;
 
@@ -44,7 +51,15 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
     private PixelLogicUIMessageModal loadingModal;
 
+    private PixelLogicUILevelAnimation solvedAnimation;
+
     private FPSLogger fpsLogger = new FPSLogger();
+
+    static {
+        SOLVED_ANIMATION_MAP = new HashMap<String, Class<? extends PixelLogicUILevelAnimation>>();
+        SOLVED_ANIMATION_MAP.put("default", PixelLogicUIBoardSolvedAnimation.class);
+        SOLVED_ANIMATION_MAP.put("picture", PixelLogicUIPictureBoardSolvedAnimation.class);
+    }
 
     public PixelLogicUILevelPage(PixelLogicGlobal global) {
         super(global, PixelLogicUIPageId.level);
@@ -128,6 +143,12 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     public void destroyLevel() {
         changeLevelStatus(PixelLogicLevelStatus.beforeDestroyed);
 
+        // destroy animation
+        if (this.solvedAnimation != null) {
+            this.solvedAnimation.destroy();
+            this.solvedAnimation = null;
+        }
+
         // toolbar
         Action fadeOutToolbarAction = Actions.sequence(Actions.fadeOut(.4f), Actions.run(new Runnable() {
             @Override
@@ -174,7 +195,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
     private void onSolved() {
         changeLevelStatus(PixelLogicLevelStatus.solved);
-        new PixelLogicUIBoardSolvedAnimation(this).execute();
+        this.solvedAnimation = showSolvedAnimation();
         this.getStage().addAction(Actions.sequence(
                 Actions.delay(.3f),
                 Actions.run(new Runnable() {
@@ -184,6 +205,20 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
                                 }
                             }
                 )));
+    }
+
+    private PixelLogicUILevelAnimation showSolvedAnimation() {
+        String animationKey = getProperties().getString("solvedAnimation", "default");
+        Class<? extends PixelLogicUILevelAnimation> animationClass = SOLVED_ANIMATION_MAP.get(animationKey);
+        PixelLogicUILevelAnimation animation;
+        try {
+            animation = animationClass.newInstance();
+        } catch (Exception e) {
+            animation = new PixelLogicUIBoardSolvedAnimation();
+        }
+        animation.setPage(this);
+        animation.execute();
+        return animation;
     }
 
     private void changeLevelStatus(PixelLogicLevelStatus status) {

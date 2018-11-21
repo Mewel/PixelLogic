@@ -16,11 +16,13 @@ import java.util.List;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.achievements.PixelLogicAchievement;
-import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIAchievementBlock;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BLOCK_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.MAIN_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_LIGHT_COLOR;
 
 public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
 
@@ -109,10 +111,10 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
 
         public void updateLogo() {
             if (this.achievement.isDone()) {
-                this.logo.setColor(PixelLogicUIConstants.PIXEL_BLOCKED_COLOR);
+                this.logo.setColor(MAIN_COLOR);
                 this.logo.setSprite(global.getAssets().getIcon(4));
             } else {
-                this.logo.setColor(PixelLogicUIConstants.TEXT_LIGHT_COLOR);
+                this.logo.setColor(TEXT_LIGHT_COLOR);
                 this.logo.setSprite(global.getAssets().getIcon(1));
             }
         }
@@ -143,12 +145,12 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
 
         private Label.LabelStyle getHeaderStyle() {
             BitmapFont labelFont = PixelLogicUIUtil.getAppFont(global.getAssets(), 1);
-            return new Label.LabelStyle(labelFont, Color.BLACK);
+            return new Label.LabelStyle(labelFont, MAIN_COLOR);
         }
 
         private Label.LabelStyle getDescriptionStyle() {
             BitmapFont labelFont = PixelLogicUIUtil.getAppFont(global.getAssets(), 0);
-            return new Label.LabelStyle(labelFont, Color.BLACK);
+            return new Label.LabelStyle(labelFont, TEXT_COLOR);
         }
 
         private class Logo extends Actor {

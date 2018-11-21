@@ -1,8 +1,6 @@
 package de.mewel.pixellogic.ui.level.animation;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -16,16 +14,14 @@ import de.mewel.pixellogic.ui.level.PixelLogicUIBoard;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoardPixel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIColumnGroup;
 import de.mewel.pixellogic.ui.level.PixelLogicUIRowGroup;
-import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 
-public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUILevelAnimation {
+public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUIBaseLevelAnimation {
 
     private static final float DELAY = .3f;
 
     private Random random;
 
-    public PixelLogicUISecretLevelStartAnimation(PixelLogicUILevelPage levelPage) {
-        super(levelPage);
+    public PixelLogicUISecretLevelStartAnimation() {
         this.random = new Random();
     }
 

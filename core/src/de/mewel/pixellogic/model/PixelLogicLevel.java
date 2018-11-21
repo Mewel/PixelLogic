@@ -248,6 +248,10 @@ public class PixelLogicLevel {
     }
 
     public void ofPixelString(String pixelData) {
+        this.reset();
+        if(pixelData == null) {
+            return;
+        }
         for (int i = 0; i < pixelData.length(); i++) {
             char c = pixelData.charAt(i);
             int row = i / getColumns();

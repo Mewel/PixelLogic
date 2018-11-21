@@ -1,10 +1,8 @@
 package de.mewel.pixellogic.ui.level.animation;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIConstants;
@@ -13,11 +11,7 @@ import de.mewel.pixellogic.ui.level.PixelLogicUIColumnGroup;
 import de.mewel.pixellogic.ui.level.PixelLogicUIRowGroup;
 import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 
-public class PixelLogicUIBoardSolvedAnimation extends PixelLogicUILevelAnimation {
-
-    public PixelLogicUIBoardSolvedAnimation(PixelLogicUILevelPage levelPage) {
-        super(levelPage);
-    }
+public class PixelLogicUIBoardSolvedAnimation extends PixelLogicUIBaseLevelAnimation {
 
     @Override
     protected float animateColumnGroup(PixelLogicUIColumnGroup group) {

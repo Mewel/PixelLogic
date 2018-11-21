@@ -16,6 +16,11 @@ public class PixelLogicUIPageProperties {
         return result != null ? result.toString() : null;
     }
 
+    public String getString(String key, String defaultValue) {
+        Object result = data.get(key);
+        return result != null ? result.toString() : defaultValue;
+    }
+
     public Long getLong(String key) {
         return (Long) data.get(key);
     }

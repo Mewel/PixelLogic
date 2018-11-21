@@ -182,10 +182,10 @@ public class PixelLogicAssets {
     private List<FileHandle> getLevelHandles(FileHandle[] collectionsHandle) {
         List<FileHandle> handles = new ArrayList<FileHandle>();
         for (FileHandle collectionHandle : collectionsHandle) {
-            if(!collectionHandle.isDirectory()) {
+            if (!collectionHandle.isDirectory()) {
                 continue;
             }
-            if(collectionHandle.child("collection.json").exists() && collectionHandle.child("pixmap.png").exists()) {
+            if (collectionHandle.child("collection.json").exists() && collectionHandle.child("pixmap.png").exists()) {
                 handles.add(collectionHandle);
                 continue;
             }
@@ -207,4 +207,5 @@ public class PixelLogicAssets {
         this.manager.dispose();
         this.shapeRenderer.dispose();
     }
+
 }

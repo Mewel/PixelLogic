@@ -1,7 +1,8 @@
-package de.mewel.pixellogic;
+package de.mewel.pixellogic.spike;
 
 import com.badlogic.gdx.Game;
 
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.achievements.PixelLogicAchievements;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;

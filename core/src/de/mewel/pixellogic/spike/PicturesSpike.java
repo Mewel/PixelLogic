@@ -1,18 +1,19 @@
-package de.mewel.pixellogic;
+package de.mewel.pixellogic.spike;
 
 import com.badlogic.gdx.Game;
 
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.achievements.PixelLogicAchievements;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.mode.PixelLogicCampaignMode;
 import de.mewel.pixellogic.mode.PixelLogicCharactersMode;
+import de.mewel.pixellogic.mode.PixelLogicPictureMode;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIAppScreen;
 
-public class CharactersLevelTest extends Game implements PixelLogicGlobal {
+public class PicturesSpike extends Game implements PixelLogicGlobal {
 
     private PixelLogicAssets assets;
 
@@ -34,14 +35,16 @@ public class CharactersLevelTest extends Game implements PixelLogicGlobal {
         this.appScreen = new PixelLogicUIAppScreen(this);
         this.setScreen(this.appScreen);
 
-        final PixelLogicCharactersMode mode = new PixelLogicCharactersMode();
+        final PixelLogicPictureMode mode = new PixelLogicPictureMode();
         mode.setup(this);
         mode.reset();
-        PixelLogicLevel level = mode.findLevel("Sideshow Mel");
+        PixelLogicLevel level = mode.findLevel("#18");
         mode.activate();
         mode.run(level);
 
         PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
+        pageProperties.put("solvedAnimation", "picture");
+        pageProperties.put("pictureCollection", mode.getCollection());
         pageProperties.put("menuBackId", PixelLogicUIPageId.mainMenu);
         getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties);
     }
@@ -77,5 +80,6 @@ public class CharactersLevelTest extends Game implements PixelLogicGlobal {
     public PixelLogicAchievements getAchievements() {
         return achievements;
     }
+
 
 }

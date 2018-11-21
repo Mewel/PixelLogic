@@ -16,7 +16,7 @@ import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 
 public class PixelLogicLevelCollectionLoader extends SynchronousAssetLoader<PixelLogicLevelCollection, PixelLogicLevelCollectionLoader.PixelLogicLevelCollectionLoaderParameters> {
 
-    private FileHandle jsonHandle, pixmapHandle, levelmapHandle;
+    private FileHandle jsonHandle, pixmapHandle, levelmapHandle, unsolvedHandle;
 
     public PixelLogicLevelCollectionLoader(FileHandleResolver resolver) {
         super(resolver);
@@ -34,6 +34,9 @@ public class PixelLogicLevelCollectionLoader extends SynchronousAssetLoader<Pixe
         if (levelmapHandle.exists()) {
             collection.setLevelmap(new Pixmap(levelmapHandle));
         }
+        if (unsolvedHandle.exists()) {
+            collection.setUnsolvedPixmap(new Pixmap(unsolvedHandle));
+        }
         return collection;
     }
 
@@ -42,6 +45,7 @@ public class PixelLogicLevelCollectionLoader extends SynchronousAssetLoader<Pixe
         this.jsonHandle = file.child("collection.json");
         this.pixmapHandle = file.child("pixmap.png");
         this.levelmapHandle = file.child("levelmap.png");
+        this.unsolvedHandle = file.child("unsolved.png");
 
         if (!jsonHandle.exists()) {
             throw new GdxRuntimeException("Couldn't load '" + jsonHandle.path() + "'");
@@ -53,6 +57,9 @@ public class PixelLogicLevelCollectionLoader extends SynchronousAssetLoader<Pixe
         dependencies.add(new AssetDescriptor<Pixmap>(pixmapHandle, Pixmap.class));
         if (levelmapHandle.exists()) {
             dependencies.add(new AssetDescriptor<Pixmap>(levelmapHandle, Pixmap.class));
+        }
+        if (unsolvedHandle.exists()) {
+            dependencies.add(new AssetDescriptor<Pixmap>(unsolvedHandle, Pixmap.class));
         }
         return dependencies;
     }
