@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.ui.level;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 

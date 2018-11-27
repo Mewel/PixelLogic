@@ -9,6 +9,7 @@ import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.mode.PixelLogicCharactersMode;
 import de.mewel.pixellogic.mode.PixelLogicPictureMode;
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIAppScreen;
@@ -35,12 +36,13 @@ public class PicturesSpike extends Game implements PixelLogicGlobal {
         this.appScreen = new PixelLogicUIAppScreen(this);
         this.setScreen(this.appScreen);
 
-        final PixelLogicPictureMode mode = new PixelLogicPictureMode();
+        PixelLogicLevelCollection collection = getAssets().getLevelCollection("pictures/davinci");
+
+        final PixelLogicPictureMode mode = new PixelLogicPictureMode(collection);
         mode.setup(this);
         mode.reset();
-        PixelLogicLevel level = mode.findLevel("#18");
         mode.activate();
-        mode.run(level);
+        mode.run();
 
         PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
         pageProperties.put("solvedAnimation", "picture");
