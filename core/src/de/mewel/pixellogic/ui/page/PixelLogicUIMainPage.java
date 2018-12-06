@@ -30,6 +30,8 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
     private PixelLogicUIButton achievementButton;
 
+    private PixelLogicUIButton aboutButton;
+
     private PixelLogicCampaignMode campaignMode;
 
     public PixelLogicUIMainPage(PixelLogicGlobal global) {
@@ -101,6 +103,17 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
             }
         };
 
+        this.aboutButton = new PixelLogicUIButton(getAssets(), getEventManager(), "about") {
+            @Override
+            public void onClick() {
+                if (block()) {
+                    return;
+                }
+                PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
+                getAppScreen().setPage(PixelLogicUIPageId.about, pageProperties);
+            }
+        };
+
         buttonGroup = new PixelLogicUIVerticalGroup();
         PixelLogicUIColoredSurface buttonGroupBackground = new PixelLogicUIColoredSurface(getAssets());
         buttonGroupBackground.setColor(new Color(255f, 255f, 255f, .5f));
@@ -110,6 +123,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         buttonGroup.addActor(this.campaignButton);
         buttonGroup.addActor(this.moreLevelsButton);
         buttonGroup.addActor(this.achievementButton);
+        buttonGroup.addActor(this.aboutButton);
 
         getPageRoot().center();
         getPageRoot().addActor(logoImage);
@@ -139,6 +153,9 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         if (this.achievementButton != null) {
             this.achievementButton.unblock();
         }
+        if (this.aboutButton != null) {
+            this.aboutButton.unblock();
+        }
         fadeIn(null);
     }
 
@@ -151,6 +168,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         this.campaignButton.setSize(getButtonWidth(), getButtonHeight());
         this.moreLevelsButton.setSize(getButtonWidth(), getButtonHeight());
         this.achievementButton.setSize(getButtonWidth(), getButtonHeight());
+        this.aboutButton.setSize(getButtonWidth(), getButtonHeight());
 
         this.buttonGroup.pad(getPadding());
         this.buttonGroup.space(getSpace());
@@ -158,6 +176,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
         this.logoImage.setScale((int) (height / (this.logoImage.getHeight() * 6f)));
 
+        getPageRoot().padTop(getPadding() * 3);
         getPageRoot().space(getSpace() * 3);
     }
 

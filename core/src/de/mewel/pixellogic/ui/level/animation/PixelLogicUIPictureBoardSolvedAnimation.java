@@ -16,8 +16,6 @@ import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 
 public class PixelLogicUIPictureBoardSolvedAnimation extends PixelLogicUIBaseLevelAnimation {
 
-    private PixelLogicUIPicture picture;
-
     @Override
     protected float animatePixel(PixelLogicUIBoardPixel pixel) {
         PixelLogicLevel level = getLevelUI().getLevel();

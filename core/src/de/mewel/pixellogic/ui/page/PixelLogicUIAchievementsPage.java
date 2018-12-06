@@ -145,7 +145,7 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
 
         private Label.LabelStyle getHeaderStyle() {
             BitmapFont labelFont = PixelLogicUIUtil.getAppFont(global.getAssets(), 1);
-            return new Label.LabelStyle(labelFont, MAIN_COLOR);
+            return new Label.LabelStyle(labelFont, this.achievement.isDone() ? MAIN_COLOR : TEXT_LIGHT_COLOR);
         }
 
         private Label.LabelStyle getDescriptionStyle() {
@@ -168,7 +168,7 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
                 super.draw(batch, parentAlpha);
 
                 if (sprite != null) {
-                    float size = PixelLogicUIUtil.getIconBaseHeight() ;
+                    float size = PixelLogicUIUtil.getIconBaseHeight();
                     float alpha = parentAlpha * color.a;
 
                     batch.setColor(new Color(color.r, color.g, color.b, color.a * alpha));

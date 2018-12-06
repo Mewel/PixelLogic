@@ -121,12 +121,16 @@ public class PixelLogicAssets {
         int fixedSize = (int) Math.ceil(size / GAME_FONT_SIZE) * GAME_FONT_SIZE;
         fixedSize = Math.min(fixedSize, GAME_FONT_SIZE * GAME_FONT_ITERATIONS);
         fixedSize = Math.max(fixedSize, GAME_FONT_SIZE);
-        return manager.get(GAME_FONT_PREFIX + fixedSize + ".ttf", BitmapFont.class);
+        BitmapFont bitmapFont = manager.get(GAME_FONT_PREFIX + fixedSize + ".ttf", BitmapFont.class);
+        bitmapFont.getData().markupEnabled = true;
+        return bitmapFont;
     }
 
     public BitmapFont getLevelFont(int size) {
         int fixedSize = getFixedLevelFontSize(size);
-        return manager.get(LEVEL_FONT_PREFIX + fixedSize + ".fnt", BitmapFont.class);
+        BitmapFont bitmapFont = manager.get(LEVEL_FONT_PREFIX + fixedSize + ".fnt", BitmapFont.class);
+        bitmapFont.getData().markupEnabled = true;
+        return bitmapFont;
     }
 
     public static int getLevelFontIterationStart() {

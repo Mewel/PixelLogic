@@ -23,6 +23,7 @@ import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BLOCK_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.GRID_COLOR;
+import static de.mewel.pixellogic.ui.PixelLogicUIConstants.MAIN_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_LIGHT_COLOR;
 
@@ -178,7 +179,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
                 final PixelLogicTimeTrialModeOptions.Mode mode = page.getProperties().get("mode");
                 boolean lastRankInvalid = rank == null || rank == -1 || mode == null || !mode.equals(options.id);
                 for (int i = 0; i < highscoreList.size(); i++) {
-                    Color color = lastRankInvalid || rank != i ? TEXT_COLOR : GRID_COLOR;
+                    Color color = lastRankInvalid || rank != i ? TEXT_COLOR : MAIN_COLOR;
                     PixelLogicTimeTrialHighscoreStore.Highscore highscore = highscoreList.get(i);
                     Label highscoreDate = page.getLabel(PixelLogicUIUtil.formatDate(highscore.date), color);
                     Label highscoreTime = page.getLabel(PixelLogicUIUtil.formatMilliseconds(highscore.time), color);

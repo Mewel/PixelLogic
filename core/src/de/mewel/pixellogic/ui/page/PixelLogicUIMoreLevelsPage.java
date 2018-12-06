@@ -17,7 +17,6 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 
 import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BLOCK_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
 
 public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
 
@@ -30,13 +29,13 @@ public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
     @Override
     protected void build() {
         this.modes = new ArrayList<LevelModeUI>();
-        this.modes.add(new LevelModeUI("100 Characters", "Play over 50 bonus levels based on" +
+        this.modes.add(new LevelModeUI("100 Characters", "[TEXT_COLOR]Play over [MAIN_COLOR]50 bonus[] levels based on" +
                 " the awesome pixel art by Johan Vinet.",
                 PixelLogicUIPageId.characters, this));
-        this.modes.add(new LevelModeUI("Time trial", "Play infinite computer " +
-                "generated levels against the clock and try to beat your highscore.",
+        this.modes.add(new LevelModeUI("Time trial", "[TEXT_COLOR]Play [MAIN_COLOR]infinite computer " +
+                "generated[] levels against the clock and try to beat your highscore.",
                 PixelLogicUIPageId.timeTrial, this));
-        this.modes.add(new LevelModeUI("Art Puzzles", "Discover beautiful and famous art",
+        this.modes.add(new LevelModeUI("Art Puzzles", "[TEXT_COLOR]Discover beautiful and famous art",
                 PixelLogicUIPageId.picture, this));
         this.buildModes();
     }
@@ -79,7 +78,7 @@ public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
             getActor().bottom();
             getActor().space(getPadding());
 
-            Label descriptionLabel = this.getLabel(description, TEXT_COLOR);
+            Label descriptionLabel = this.getLabel(description);
             descriptionLabel.setWrap(true);
             this.labelContainer = new Container<Label>(descriptionLabel);
             getActor().addActor(this.labelContainer);
@@ -111,21 +110,21 @@ public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
             this.button.setSize(getButtonWidth(), getButtonHeight());
 
             this.labelContainer.width(getComponentWidth());
-            this.labelContainer.getActor().setStyle(getLabelStyle(TEXT_COLOR));
+            this.labelContainer.getActor().setStyle(getLabelStyle());
         }
 
         public void activate() {
             this.button.unblock();
         }
 
-        public Label getLabel(String text, Color color) {
-            Label.LabelStyle style = getLabelStyle(color);
+        public Label getLabel(String text) {
+            Label.LabelStyle style = getLabelStyle();
             return new Label(text, style);
         }
 
-        private Label.LabelStyle getLabelStyle(Color color) {
+        private Label.LabelStyle getLabelStyle() {
             BitmapFont font = PixelLogicUIUtil.getAppFont(getAssets(), 0);
-            return new Label.LabelStyle(font, color);
+            return new Label.LabelStyle(font, Color.WHITE);
         }
     }
 

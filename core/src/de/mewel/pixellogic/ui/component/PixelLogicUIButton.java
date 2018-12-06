@@ -30,7 +30,7 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
         this.blocked = new AtomicBoolean(false);
         this.text = text;
         this.background = new PixelLogicUIColoredSurface(assets);
-        Color bgColor = PixelLogicUIConstants.LINE_COMPLETE_COLOR;
+        Color bgColor = PixelLogicUIConstants.SECONDARY_COLOR;
         this.background.setColor(bgColor);
         this.background.setBorder(1, new Color(bgColor).mul(.5f));
         this.addActor(this.background);
