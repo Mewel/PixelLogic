@@ -1,7 +1,6 @@
 package de.mewel.pixellogic.ui.misc;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,12 +16,10 @@ import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
-import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoard;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoardPixel;
 import de.mewel.pixellogic.ui.level.animation.PixelLogicUIBaseLevelAnimation;
-import de.mewel.pixellogic.ui.level.animation.PixelLogicUIBoardSolvedAnimation;
 
 
 public class PixelLogicUIPicture extends PixelLogicUIGroup {
@@ -31,13 +28,10 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
 
     private Background background;
 
-    private int solvedIndex;
-
     public PixelLogicUIPicture(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicLevelCollection collection) {
         super(assets, eventManager);
         this.collection = collection;
-        this.solvedIndex = getSolveProgress();
-        this.background = new Background(collection, solvedIndex);
+        this.background = new Background(collection);
         this.addActor(this.background);
     }
 
@@ -47,31 +41,20 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
         this.background.setSize(getWidth(), getHeight());
     }
 
-    /**
-     * Returns a number between -1 and the amount of sprites for this picture to solve. Minus one
-     * means that nothing is solved yet.
-     *
-     * @return a number between -1 and the amount of sprite for this picture
-     */
-    public int getSolveProgress() {
-        Preferences preferences = Gdx.app.getPreferences("picture_" + collection.getId());
-        return preferences.getInteger("solvedIndex", -1);
+    public void update(int levelIndex) {
+        this.background.update(levelIndex);
     }
 
-    public int getAndIncrementSolveProgress() {
-        Preferences preferences = Gdx.app.getPreferences("picture_" + collection.getId());
-        this.solvedIndex = getSolveProgress() + 1;
-        preferences.putInteger("solvedIndex", this.solvedIndex);
-        preferences.flush();
-        return this.solvedIndex;
+    public void update(int levelIndex, int oldLevelIndex, int blendTime) {
+        this.background.update(levelIndex, oldLevelIndex, blendTime);
     }
 
-    public void solveNext(final PixelLogicUIBoard board, float delay) {
-        final int solveProgress = getAndIncrementSolveProgress();
+    public void update(final PixelLogicUIBoard board, final int levelIndex, final int oldLevelIndex, float delay) {
+        Gdx.app.log("picture", "solveNext");
 
         int rows = background.getRows();
-        int col = solveProgress % rows;
-        int row = (rows - 1) - solveProgress / rows;
+        int col = levelIndex % rows;
+        int row = (rows - 1) - levelIndex / rows;
 
         float width = (getWidth() / background.getCols());
         float height = (getHeight() / rows);
@@ -101,13 +84,13 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
                 fakeBoard.animate();
             }
         }));
-        boardAnimation.addAction(Actions.delay(2f));
         boardAnimation.addAction(Actions.run(new Runnable() {
             @Override
             public void run() {
-                background.update(solveProgress);
+                background.update(levelIndex, oldLevelIndex, 100);
             }
         }));
+        boardAnimation.addAction(Actions.delay(1.6f));
         boardAnimation.addAction(Actions.fadeOut(0));
         fakeBoard.addAction(boardAnimation);
         board.addAction(new SequenceAction(Actions.delay(delay), Actions.fadeOut(0f)));
@@ -119,12 +102,17 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
 
         private Sprite sprite;
 
-        public Background(PixelLogicLevelCollection collection, int solvedIndex) {
+        private Sprite newSprite;
+
+        private int blendTime = 0;
+
+        private int currentBlendTime = 0;
+
+        public Background(PixelLogicLevelCollection collection) {
             this.collection = collection;
-            update(solvedIndex);
         }
 
-        public void update(int solvedIndex) {
+        public void update(int solvedIndex, int oldSolvedIndex, int blendTime) {
             Pixmap base = collection.getPixmap();
             Pixmap mixed = new Pixmap(base.getWidth(), base.getHeight(), base.getFormat());
             mixed.drawPixmap(base, 0, 0);
@@ -144,7 +132,17 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
                                 pixmapWidth, pixmapHeight);
                 }
             }
-            this.sprite = new Sprite(new Texture(mixed));
+            if (this.sprite == null || solvedIndex == oldSolvedIndex || blendTime == 0) {
+                this.sprite = new Sprite(new Texture(mixed));
+            } else {
+                this.blendTime = blendTime;
+                this.currentBlendTime = blendTime;
+                this.newSprite = new Sprite(new Texture(mixed));
+            }
+        }
+
+        public void update(int solvedIndex) {
+            this.update(solvedIndex, solvedIndex, 0);
         }
 
         public float getPixmapHeight() {
@@ -171,7 +169,26 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
             if (sprite != null) {
                 batch.draw(sprite, getX(), getY(), getWidth(), getHeight());
             }
+            if (this.newSprite != null) {
+                alpha *= 1 - (float) this.currentBlendTime / (float) this.blendTime;
+                batch.setColor(new Color(color.r, color.g, color.b, alpha));
+                batch.draw(newSprite, getX(), getY(), getWidth(), getHeight());
+            }
             batch.setColor(color);
+        }
+
+        @Override
+        public void act(float delta) {
+            super.act(delta);
+            if (this.newSprite != null) {
+                this.currentBlendTime -= delta;
+                if (this.currentBlendTime <= 0) {
+                    this.currentBlendTime = 0;
+                    this.blendTime = 0;
+                    this.sprite = newSprite;
+                    this.newSprite = null;
+                }
+            }
         }
     }
 

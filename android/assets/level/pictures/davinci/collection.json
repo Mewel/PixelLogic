@@ -1,6 +1,23 @@
 {
-  "name": "da Vinci",
+  "id": "vitruvianMan",
+  "name": "da Vinci's Vitruvian Man",
   "pixmapWidth": 12,
   "pixmapHeight": 12,
-  "preserveSize": true
+  "preserveSize": true,
+  "order": [
+    1,
+    2,
+    3,
+    4,
+    6,
+    7,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17
+  ]
 }

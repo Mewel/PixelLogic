@@ -36,6 +36,8 @@ public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
         this.modes.add(new LevelModeUI("Time trial", "Play infinite computer " +
                 "generated levels against the clock and try to beat your highscore.",
                 PixelLogicUIPageId.timeTrial, this));
+        this.modes.add(new LevelModeUI("Art Mode", "Discover beautiful and famous art",
+                PixelLogicUIPageId.picture, this));
         this.buildModes();
     }
 

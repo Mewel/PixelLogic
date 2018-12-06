@@ -121,4 +121,8 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer, PixelLogicListe
         return this.eventManager;
     }
 
+    public PixelLogicUIPage getActivePage() {
+        return activePage;
+    }
+
 }

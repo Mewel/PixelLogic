@@ -32,15 +32,20 @@ public abstract class PixelLogicLevelLoader {
         int pixmapHeight = collection.getLevelmap().getHeight();
         int cols = pixmapWidth / levelWidth;
         int rows = pixmapHeight / levelHeight;
+        List<Integer> orderList = collection.getOrder();
 
         List<PixelLogicLevel> levels = new ArrayList<PixelLogicLevel>();
-        int levelNumber = 0;
+        int levelCounter = 0;
+        int orderCounter = 0;
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < cols; x++) {
+                if (orderList != null && !orderList.isEmpty() && !orderList.contains(orderCounter++)) {
+                    continue;
+                }
                 PixelLogicLevelData levelData = new PixelLogicLevelData();
                 levelData.setX(x);
                 levelData.setY(y);
-                levelData.setName("#" + ++levelNumber);
+                levelData.setName("#" + ++levelCounter);
                 PixelLogicLevel level = getPixelLogicImageLevel(collection, levelData);
                 levels.add(level);
             }

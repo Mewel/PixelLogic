@@ -132,7 +132,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
 
     private void startSecretLevel() {
         Gdx.input.setInputProcessor(null);
-        final PixelLogicUILevelPage page = (PixelLogicUILevelPage) getAppScreen().getPage(PixelLogicUIPageId.level);
+        final PixelLogicUILevelPage page = (PixelLogicUILevelPage) getAppScreen().getCurrentPage();
         final Stage stage = page.getStage();
         PixelLogicUISecretLevelStartAnimation animation = new PixelLogicUISecretLevelStartAnimation();
         animation.setPage(page);

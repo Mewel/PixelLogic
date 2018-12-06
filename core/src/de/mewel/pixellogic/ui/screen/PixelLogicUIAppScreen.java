@@ -12,6 +12,7 @@ import de.mewel.pixellogic.ui.page.PixelLogicUIMoreLevelsPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
+import de.mewel.pixellogic.ui.page.PixelLogicUIPicturePage;
 import de.mewel.pixellogic.ui.page.PixelLogicUITimeTrialFinishedPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUITimeTrialPage;
 
@@ -36,6 +37,7 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
         this.pageLayer.add(PixelLogicUIPageId.timeTrialFinished, new PixelLogicUITimeTrialFinishedPage(global));
         this.pageLayer.add(PixelLogicUIPageId.characters, new PixelLogicUICharactersPage(global));
         this.pageLayer.add(PixelLogicUIPageId.achievements, new PixelLogicUIAchievementsPage(global));
+        this.pageLayer.add(PixelLogicUIPageId.picture, new PixelLogicUIPicturePage(global));
 
         // add
         this.add(this.pageLayer);
@@ -53,6 +55,10 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
 
     public boolean isActive(PixelLogicUIPageId pageId) {
         return this.pageLayer.isActive(pageId);
+    }
+
+    public PixelLogicUIPage getCurrentPage() {
+        return this.pageLayer.getActivePage();
     }
 
 }
