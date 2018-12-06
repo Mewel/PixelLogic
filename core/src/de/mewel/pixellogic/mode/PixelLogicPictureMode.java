@@ -69,29 +69,21 @@ public class PixelLogicPictureMode extends PixelLogicListLevelMode {
         return getPreferences().getBoolean("finished", false);
     }
 
-    /**
-     * Returns a number between -1 and the amount of sprites for this picture to solve. Minus one
-     * means that nothing is solved yet.
-     *
-     * @return a number between -1 and the amount of sprite for this picture
-     */
-    public int getSolveProgress() {
-        return getPreferences().getInteger("solvedIndex", -1);
+    public int getSolvedIndex() {
+        String levelName = getPreferences().getString(getLastPlayedLevelProperty(), null);
+        return levelName != null ? Integer.valueOf(levelName.substring(1)) - 1 : -1;
     }
 
-    public int incrementAndGetSolveProgress() {
-        int solvedIndex = getSolveProgress() + 1;
-        getPreferences().putInteger("solvedIndex", solvedIndex);
-        getPreferences().flush();
-        return solvedIndex;
+    public int getNextLevelIndex() {
+        return getLevelIndex(getSolvedIndex());
     }
 
-    public int getLevelIndex() {
-        //String levelName = getPreferences().getString(getLastPlayedLevelProperty(), null);
-        //Integer levelIndex = levelName != null ? Integer.valueOf(levelName.substring(1)) - 1 : null;
-        //return levelIndex != null ? collection.getOrder().get(levelIndex) : -1;
-        int solveProgress = getSolveProgress();
-        return solveProgress == -1 ? -1 : collection.getOrder().get(solveProgress);
+    public int getSolvedLevelIndex() {
+        return getLevelIndex(getSolvedIndex() - 1);
+    }
+
+    private int getLevelIndex(int base) {
+        return base >= 0 ? collection.getOrder().get(base) : -1;
     }
 
     @Override
@@ -124,13 +116,8 @@ public class PixelLogicPictureMode extends PixelLogicListLevelMode {
         this.picture.getColor().a = 0f;
         this.pageRoot.addActorBefore(level, picture);
 
-        //this.solvedIndex = getSolveProgress();
-        //int levelIndex = solvedIndex == -1 ? -1 : collection.getOrder().get(solvedIndex);
-        //this.background.update(levelIndex);
-
-        int solveProgress = incrementAndGetSolveProgress();
-        final int oldLevelIndex = solveProgress == 0 ? -1 : collection.getOrder().get(solveProgress - 1);
-        final int levelIndex = getLevelIndex();
+        final int oldLevelIndex = getSolvedLevelIndex();
+        final int levelIndex = getNextLevelIndex();
 
         this.picture.update(oldLevelIndex);
         final float delay = .5f;
@@ -140,7 +127,7 @@ public class PixelLogicPictureMode extends PixelLogicListLevelMode {
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {
-                        picture.update(board, levelIndex, oldLevelIndex, delay + .2f);
+                        picture.animate(board, levelIndex, oldLevelIndex, delay + .2f);
                     }
                 })));
     }

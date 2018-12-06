@@ -24,13 +24,10 @@ import de.mewel.pixellogic.ui.level.animation.PixelLogicUIBaseLevelAnimation;
 
 public class PixelLogicUIPicture extends PixelLogicUIGroup {
 
-    private PixelLogicLevelCollection collection;
-
     private Background background;
 
     public PixelLogicUIPicture(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicLevelCollection collection) {
         super(assets, eventManager);
-        this.collection = collection;
         this.background = new Background(collection);
         this.addActor(this.background);
     }
@@ -49,7 +46,7 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
         this.background.update(levelIndex, oldLevelIndex, blendTime);
     }
 
-    public void update(final PixelLogicUIBoard board, final int levelIndex, final int oldLevelIndex, float delay) {
+    public void animate(final PixelLogicUIBoard board, final int levelIndex, final int oldLevelIndex, float delay) {
         Gdx.app.log("picture", "solveNext");
 
         int rows = background.getRows();

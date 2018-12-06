@@ -56,6 +56,7 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
         }
         this.preferences.putString(getLastPlayedLevelProperty(), level.getName());
         this.preferences.remove(getPixelsProperty(level));
+        this.preferences.flush();
         runLevel(level);
     }
 

@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.ui.page;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -29,7 +28,7 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
     private List<PictureModeContainer> pictureModeContainers;
 
     public PixelLogicUIPicturePage(PixelLogicGlobal global) {
-        super(global, PixelLogicUIPageId.picture, "Art Mode", PixelLogicUIPageId.moreLevels);
+        super(global, PixelLogicUIPageId.picture, "Art Puzzles", PixelLogicUIPageId.moreLevels);
     }
 
     @Override
@@ -89,7 +88,7 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
     public void activate(PixelLogicUIPageProperties properties) {
         super.activate(properties);
         for (PictureModeContainer pictureModeContainer : this.pictureModeContainers) {
-            pictureModeContainer.updatImage();
+            pictureModeContainer.updateImage();
             pictureModeContainer.updateLabel();
         }
         updateSize();
@@ -162,8 +161,9 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
             return new Label.LabelStyle(labelFont, color);
         }
 
-        public void updatImage() {
-            this.picture.update(mode.getLevelIndex(), -1, 150);
+        public void updateImage() {
+            this.picture.update(mode.isSolved() ? Integer.MAX_VALUE : mode.getSolvedLevelIndex(),
+                    -1, 150);
         }
 
     }
