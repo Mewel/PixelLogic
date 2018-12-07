@@ -1,5 +1,7 @@
 package de.mewel.pixellogic.util;
 
+import com.badlogic.gdx.Gdx;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -30,6 +32,24 @@ public class PixelLogicSolverTest {
     }
 
     @Test
+    public void testChromeLevel() {
+        Boolean[][] level = new Boolean[][]{
+                {false, true, false},
+                {true, false, true},
+                {false, true, false}
+        };
+
+        List<List<Integer>> rowData = PixelLogicUtil.getRowData(level);
+        List<List<Integer>> colData = PixelLogicUtil.getColumnData(level);
+        Boolean[][] solvedLevel = new PixelLogicSolver().solve(rowData, colData).getLevel();
+
+        System.out.println(PixelLogicUtil.toString(solvedLevel));
+
+        assertTrue("chrome level should be valid", PixelLogicUtil.isValid(solvedLevel));
+        assertArrayEquals("level should be equals", level, solvedLevel);
+    }
+
+    @Test
     public void solveLine() {
         PixelLogicSolver solver = new PixelLogicSolver();
 
@@ -44,6 +64,10 @@ public class PixelLogicSolverTest {
         solver.solveLine(line);
         assertTrue("there shouldn't be any changes", line.getAmountOf((byte) 2) == 1);
         assertArrayEquals(new Boolean[]{null, true, null}, line.toBooleanLine());
+
+        line = buildLine(3, 1, 1);
+        solver.solveLine(line);
+        assertArrayEquals(new Boolean[]{true, false, true}, line.toBooleanLine());
 
         // complex test
         line = buildLine(new Boolean[]{null, null, false, true, null, null, true, false, null, false}, 1, 4);

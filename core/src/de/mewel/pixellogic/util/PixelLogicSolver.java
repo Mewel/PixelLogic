@@ -33,21 +33,24 @@ public class PixelLogicSolver {
         for (Line line : lines.values()) {
             solveQueue.offer(line.id, line);
         }
+
         float complexity = solve(lines, solveQueue);
+        Boolean[][] level = toLevel(rows, cols, lines);
+        return new PixelLogicSolverResult(level, complexity);
+    }
+
+    private Boolean[][] toLevel(int rows, int cols, Map<String, Line> lines) {
         Boolean[][] level = new Boolean[rows][cols];
         for (int row = 0; row < rows; row++) {
             level[row] = lines.get("r" + row).toBooleanLine();
         }
-        return new PixelLogicSolverResult(level, complexity);
+        return level;
     }
 
     private float solve(Map<String, Line> lines, ArrayMergingDeque<String, Line> solveQueue) {
         int complexity = 0;
         while (!solveQueue.isEmpty()) {
             Line line = solveQueue.poll();
-            if(!line.hasChangePotential()) {
-                continue;
-            }
             List<Pixel> dirtyPixels = solveLine(line);
             boolean isLineARow = line.isRow();
             for (Pixel dirtyPixel : dirtyPixels) {
@@ -58,14 +61,13 @@ public class PixelLogicSolver {
                 }
             }
             complexity++;
+            //Boolean[][] level = toLevel(rows, cols, lines);
+            //System.out.println(PixelLogicUtil.toString(level));
         }
-        return (float)complexity / (float)lines.size();
+        return (float) complexity / (float) lines.size();
     }
 
     public List<Pixel> solveLine(Line line) {
-        if (line.solved) {
-            return new ArrayList<Pixel>();
-        }
         if (line.isFullyFilled()) {
             line.solved = true;
             return line.blockPixel();
@@ -107,7 +109,13 @@ public class PixelLogicSolver {
             return null;
         }
         if (lines.size() == 1) {
-            return lines.get(0);
+            Boolean[] line = lines.get(0);
+            for (int i = 0; i < line.length; i++) {
+                if (line[i] == null) {
+                    line[i] = false;
+                }
+            }
+            return line;
         }
         Boolean[] firstLine = lines.get(0);
         Boolean[] mergedLine = new Boolean[firstLine.length];
@@ -224,12 +232,6 @@ public class PixelLogicSolver {
         @Override
         public boolean equals(Object obj) {
             return obj != null && obj instanceof Line && id.equals(((Line) obj).id);
-        }
-
-        public boolean hasChangePotential() {
-            /*int freePixel = getAmountOf((byte) 0);
-            return this.requiredPixels * 2 > freePixel;*/
-            return true;
         }
 
     }

@@ -1,18 +1,23 @@
 package de.mewel.pixellogic.spike;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+
+import java.util.List;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.achievements.PixelLogicAchievements;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.mode.PixelLogicCharactersMode;
 import de.mewel.pixellogic.mode.PixelLogicPictureMode;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIAppScreen;
+import de.mewel.pixellogic.util.PixelLogicComplexityAnalyzer;
+import de.mewel.pixellogic.util.PixelLogicComplexityAnalyzerResult;
+import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PicturesSpike extends Game implements PixelLogicGlobal {
 
@@ -37,12 +42,20 @@ public class PicturesSpike extends Game implements PixelLogicGlobal {
         this.setScreen(this.appScreen);
 
         PixelLogicLevelCollection collection = getAssets().getLevelCollection("pictures/davinci");
-
         final PixelLogicPictureMode mode = new PixelLogicPictureMode(collection);
         mode.setup(this);
         mode.reset();
+
+        List<PixelLogicLevel> levels = mode.getLevels();
+        for (PixelLogicLevel level : levels) {
+            boolean solvable = PixelLogicUtil.isSolvable(level.getLevelData());
+            Gdx.app.log("level loader", level.getName() + " is " + (solvable ? "valid" : "invalid--------------------------------------"));
+            PixelLogicComplexityAnalyzerResult result = PixelLogicComplexityAnalyzer.analyze(level);
+            Gdx.app.log("level loader", level.getName() + " complexity " + result.getComplexity());
+        }
+
         mode.activate();
-        mode.run();
+        mode.run(levels.get(19 - 1));
 
         PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
         pageProperties.put("solvedAnimation", "picture");

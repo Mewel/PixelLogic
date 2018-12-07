@@ -61,6 +61,12 @@ public class PixelLogicPictureMode extends PixelLogicListLevelMode {
         destroyPicture();
     }
 
+    @Override
+    public void run(PixelLogicLevel level) {
+        storeLastPlayedLevel(level);
+        super.run(level);
+    }
+
     public PixelLogicLevelCollection getCollection() {
         return this.collection;
     }
