@@ -4,7 +4,7 @@ import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
 
-public class PixelLogicUserChangedBoardEvent extends PixelLogicEvent {
+public class PixelLogicBoardChangedEvent extends PixelLogicEvent {
 
     private PixelLogicLevel level;
 
@@ -21,7 +21,7 @@ public class PixelLogicUserChangedBoardEvent extends PixelLogicEvent {
      * @param col
      * @param value
      */
-    public PixelLogicUserChangedBoardEvent(PixelLogicUILevel source, PixelLogicLevel level, int row, int col, Boolean value) {
+    public PixelLogicBoardChangedEvent(PixelLogicUILevel source, PixelLogicLevel level, int row, int col, Boolean value) {
         super(source);
         this.level = level;
         this.row = row;
@@ -35,7 +35,7 @@ public class PixelLogicUserChangedBoardEvent extends PixelLogicEvent {
      * @param source
      * @param level
      */
-    public PixelLogicUserChangedBoardEvent(PixelLogicUILevel source, PixelLogicLevel level) {
+    public PixelLogicBoardChangedEvent(PixelLogicUILevel source, PixelLogicLevel level) {
         super(source);
         this.level = level;
         this.row = -1;

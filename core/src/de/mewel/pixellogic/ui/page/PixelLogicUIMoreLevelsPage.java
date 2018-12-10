@@ -16,7 +16,7 @@ import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BLOCK_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_COLOR;
 
 public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
 
@@ -85,10 +85,7 @@ public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
 
             this.button = new PixelLogicUIButton(page.getAssets(), page.getEventManager(), buttonText) {
                 @Override
-                public void onClick() {
-                    if (block()) {
-                        return;
-                    }
+                public void handleClick() {
                     PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                     getAppScreen().setPage(pageId, pageProperties);
                 }

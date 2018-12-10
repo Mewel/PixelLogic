@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Align;
 import java.util.Random;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.ui.PixelLogicUIConstants;
+import de.mewel.pixellogic.PixelLogicConstants;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoard;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoardPixel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIColumnGroup;
@@ -54,7 +54,7 @@ public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUIBaseLevel
         SequenceAction colorizeAction = new SequenceAction();
         colorizeAction.addAction(Actions.delay(delayDuration - .1f));
         float offset = random.nextFloat() * .4f * (random.nextBoolean() ? 1f : -1f);
-        Color newColor = new Color(PixelLogicUIConstants.PIXEL_BLOCKED_COLOR);
+        Color newColor = new Color(PixelLogicConstants.PIXEL_BLOCKED_COLOR);
         newColor.r = newColor.r + offset;
         newColor.g = newColor.g + offset;
         newColor.b = newColor.b + offset;

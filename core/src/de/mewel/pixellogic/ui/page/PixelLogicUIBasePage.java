@@ -21,7 +21,7 @@ import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelGroup;
 
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.MAIN_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.MAIN_COLOR;
 
 public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements PixelLogicListener {
 
@@ -163,6 +163,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
             this.backButton.addListener(new PixelLogicUIButtonListener() {
                 @Override
                 public void onClick() {
+                    PixelLogicUIUtil.playButtonSound(getAssets());
                     getAppScreen().setPage(backPageId, new PixelLogicUIPageProperties());
                 }
             });

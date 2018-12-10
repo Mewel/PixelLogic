@@ -7,13 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import de.mewel.pixellogic.PixelLogicConstants;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
-public class PixelLogicUIButton extends PixelLogicUIGroup {
+public abstract class PixelLogicUIButton extends PixelLogicUIGroup {
 
     private Label label;
 
@@ -30,7 +30,7 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
         this.blocked = new AtomicBoolean(false);
         this.text = text;
         this.background = new PixelLogicUIColoredSurface(assets);
-        Color bgColor = PixelLogicUIConstants.SECONDARY_COLOR;
+        Color bgColor = PixelLogicConstants.SECONDARY_COLOR;
         this.background.setColor(bgColor);
         this.background.setBorder(1, new Color(bgColor).mul(.5f));
         this.addActor(this.background);
@@ -90,8 +90,14 @@ public class PixelLogicUIButton extends PixelLogicUIGroup {
     }
 
     public void onClick() {
-        // not implemented
+        if (block()) {
+            return;
+        }
+        PixelLogicUIUtil.playButtonSound(getAssets());
+        handleClick();
     }
+
+    public abstract void handleClick();
 
     public boolean block() {
         return this.blocked.getAndSet(true);

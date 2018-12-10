@@ -8,12 +8,22 @@ import java.util.List;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicUIColumnInfo extends PixelLogicUILineInfo {
 
     public PixelLogicUIColumnInfo(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicLevel level, int column) {
         super(assets, eventManager, level, column);
+    }
+
+    @Override
+    public void onBoardChange(PixelLogicBoardChangedEvent event) {
+        if (event.getCol() == line) {
+            for (Label label : labels) {
+                label.getStyle().fontColor = getLabelColor();
+            }
+        }
     }
 
     @Override

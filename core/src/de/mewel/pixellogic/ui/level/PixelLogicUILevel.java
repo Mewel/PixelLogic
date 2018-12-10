@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.ui.level;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -12,9 +13,12 @@ import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
+import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelSwitcherChangedEvent;
-import de.mewel.pixellogic.ui.level.event.PixelLogicUserChangedBoardEvent;
+
+import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_SOUND;
 
 public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
@@ -63,7 +67,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         }
         this.level.reset();
         this.board.clear();
-        this.getEventManager().fire(new PixelLogicUserChangedBoardEvent(this, level));
+        this.getEventManager().fire(new PixelLogicBoardChangedEvent(this, level));
     }
 
     public void resize() {
@@ -164,7 +168,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
             boolean selected = button != 1 && this.selectedPixelType;
             UserAction.Type action = currentPixel == null ? (selected ? UserAction.Type.FILL : UserAction.Type.BLOCK) : UserAction.Type.EMPTY;
             this.userAction = new UserAction(gui, action, pixel, selected);
-            drawPixel(pixel);
+            update(pixel);
             return true;
         }
 
@@ -175,7 +179,17 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
         @Override
         public void touchDragged(InputEvent event, float boardX, float boardY, int pointer) {
-            drawPixel(toPixel(boardX, boardY));
+            Vector2 pixel = toPixel(boardX, boardY);
+            update(pixel);
+        }
+
+        private void update(Vector2 pixel) {
+            String before = gui.level.toPixelString();
+            drawPixel(pixel);
+            String after = gui.level.toPixelString();
+            if (!before.equals(after)) {
+                playSound(pixel);
+            }
         }
 
         private Vector2 toPixel(float boardX, float boardY) {
@@ -194,6 +208,15 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
                 return;
             }
             this.userAction.update(pixel, gui.level);
+        }
+
+        private void playSound(Vector2 pixel) {
+            if (pixel == null || this.userAction == null) {
+                return;
+            }
+            boolean type = this.userAction.selectedPixelType;
+            Sound sound = gui.getAssets().get().get(type ? PIXEL_SOUND : BLOCK_SOUND);
+            sound.play(type ? .05f : .1f);
         }
 
     }
@@ -288,7 +311,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
             }
             level.set(row, col, pixelValue);
             levelUI.getBoard().setPixel(row, col, pixelValue);
-            levelUI.getEventManager().fire(new PixelLogicUserChangedBoardEvent(levelUI, level, row, col, pixelValue));
+            levelUI.getEventManager().fire(new PixelLogicBoardChangedEvent(levelUI, level, row, col, pixelValue));
         }
 
     }

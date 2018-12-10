@@ -3,6 +3,7 @@ package de.mewel.pixellogic.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
+import de.mewel.pixellogic.PixelLogicGame;
 import de.mewel.pixellogic.spike.PicturesSpike;
 
 public class DesktopLauncher {
@@ -13,9 +14,9 @@ public class DesktopLauncher {
         config.useGL30 = true;
         config.width = 360;
         config.height = 590;
-        //new LwjglApplication(new PixelLogicGame(), config);
+        new LwjglApplication(new PixelLogicGame(), config);
 
-        new LwjglApplication(new PicturesSpike(), config);
+        //new LwjglApplication(new PicturesSpike(), config);
     }
 
 }

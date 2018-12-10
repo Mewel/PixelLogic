@@ -1,6 +1,7 @@
 package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.utils.Scaling;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.mewel.pixellogic.PixelLogicConstants;
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicListener;
@@ -196,6 +198,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     private void onSolved() {
         changeLevelStatus(PixelLogicLevelStatus.solved);
         this.solvedAnimation = showSolvedAnimation();
+        getAssets().get().get(PixelLogicConstants.PUZZLE_SOLVED_SOUND, Sound.class).play(.2f);
         this.getStage().addAction(Actions.sequence(
                 Actions.delay(.3f),
                 Actions.run(new Runnable() {

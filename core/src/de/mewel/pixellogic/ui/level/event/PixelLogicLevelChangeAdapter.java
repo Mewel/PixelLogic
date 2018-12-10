@@ -5,17 +5,17 @@ import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 
-public class PixelLogicLevelStatusChangeAdapter {
+public class PixelLogicLevelChangeAdapter {
 
     private PixelLogicEventManager eventManager;
 
     private PixelLogicListener listener;
 
-    public PixelLogicLevelStatusChangeAdapter(PixelLogicEventManager eventManager) {
+    public PixelLogicLevelChangeAdapter(PixelLogicEventManager eventManager) {
         this.eventManager = eventManager;
     }
 
-    public void bind(final PixelLogicLevelStatusChangeListener changeListener) {
+    public void bind(final PixelLogicLevelChangeListener changeListener) {
         this.listener = new PixelLogicListener() {
             @Override
             public void handle(PixelLogicEvent event) {
@@ -32,6 +32,10 @@ public class PixelLogicLevelStatusChangeAdapter {
                         changeListener.onLevelDestroyed(changeEvent);
                     }
                     changeListener.onLevelChange(changeEvent);
+                }
+                if (event instanceof PixelLogicBoardChangedEvent) {
+                    PixelLogicBoardChangedEvent changedEvent = (PixelLogicBoardChangedEvent) event;
+                    changeListener.onBoardChange(changedEvent);
                 }
             }
         };

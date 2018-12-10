@@ -11,7 +11,7 @@ import java.util.Random;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIActor;
-import de.mewel.pixellogic.ui.PixelLogicUIConstants;
+import de.mewel.pixellogic.PixelLogicConstants;
 
 public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIActor {
 
@@ -33,8 +33,8 @@ public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIActor {
             for (int col = 0; col < pixel; col++) {
                 Pixel pixel = new Pixel(row, col);
                 pixel.alpha = random.nextBoolean() ? 1f : 0f;
-                pixel.color = random.nextFloat() > .4f ? PixelLogicUIConstants.PIXEL_FILLED_COLOR :
-                        PixelLogicUIConstants.PIXEL_BLOCKED_COLOR;
+                pixel.color = random.nextFloat() > .4f ? PixelLogicConstants.PIXEL_FILLED_COLOR :
+                        PixelLogicConstants.PIXEL_BLOCKED_COLOR;
                 board[row][col] = pixel;
             }
         }
@@ -64,7 +64,7 @@ public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIActor {
             for (int col = 0; col < board[0].length; col++) {
                 Pixel pixel = board[row][col];
                 Color c1 = new Color(pixel.color);
-                Color c2 = new Color(PixelLogicUIConstants.PIXEL_EMPTY_COLOR);
+                Color c2 = new Color(PixelLogicConstants.PIXEL_EMPTY_COLOR);
                 float r = pixel.alpha * c1.r + (1 - pixel.alpha) * c2.r;
                 float g = pixel.alpha * c1.g + (1 - pixel.alpha) * c2.g;
                 float b = pixel.alpha * c1.b + (1 - pixel.alpha) * c2.b;
@@ -116,8 +116,8 @@ public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIActor {
                         pixel.alpha = 0f;
                         pixel.fade = null;
                         pixel.color = random.nextFloat() > .4f ?
-                                PixelLogicUIConstants.PIXEL_FILLED_COLOR :
-                                PixelLogicUIConstants.PIXEL_BLOCKED_COLOR;
+                                PixelLogicConstants.PIXEL_FILLED_COLOR :
+                                PixelLogicConstants.PIXEL_BLOCKED_COLOR;
                     }
                 }
             }

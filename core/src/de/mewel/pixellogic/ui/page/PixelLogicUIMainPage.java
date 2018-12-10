@@ -61,11 +61,9 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         logoImage.setOrigin(Align.center);
 
         this.campaignButton = new PixelLogicUIButton(getAssets(), getEventManager(), getCampaignLabel()) {
+
             @Override
-            public void onClick() {
-                if (block()) {
-                    return;
-                }
+            public void handleClick() {
                 campaignButton.setText(getCampaignLabel());
                 Preferences campaignPreferences = getCampaignPreferences();
                 campaignPreferences.putBoolean("started", true);
@@ -83,10 +81,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
         this.moreLevelsButton = new PixelLogicUIButton(getAssets(), getEventManager(), "more levels") {
             @Override
-            public void onClick() {
-                if (block()) {
-                    return;
-                }
+            public void handleClick() {
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                 getAppScreen().setPage(PixelLogicUIPageId.moreLevels, pageProperties);
             }
@@ -94,10 +89,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
         this.achievementButton = new PixelLogicUIButton(getAssets(), getEventManager(), "achievements") {
             @Override
-            public void onClick() {
-                if (block()) {
-                    return;
-                }
+            public void handleClick() {
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                 getAppScreen().setPage(PixelLogicUIPageId.achievements, pageProperties);
             }
@@ -105,10 +97,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
         this.aboutButton = new PixelLogicUIButton(getAssets(), getEventManager(), "about") {
             @Override
-            public void onClick() {
-                if (block()) {
-                    return;
-                }
+            public void handleClick() {
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                 getAppScreen().setPage(PixelLogicUIPageId.about, pageProperties);
             }

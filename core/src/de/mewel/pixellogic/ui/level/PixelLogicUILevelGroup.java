@@ -3,17 +3,18 @@ package de.mewel.pixellogic.ui.level;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
-import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeAdapter;
+import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelChangeAdapter;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
-import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeListener;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelChangeListener;
 
-public abstract class PixelLogicUILevelGroup extends PixelLogicUIGroup implements PixelLogicLevelStatusChangeListener {
+public abstract class PixelLogicUILevelGroup extends PixelLogicUIGroup implements PixelLogicLevelChangeListener {
 
-    private PixelLogicLevelStatusChangeAdapter changeAdapter;
+    private PixelLogicLevelChangeAdapter changeAdapter;
 
     public PixelLogicUILevelGroup(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         super(assets, eventManager);
-        this.changeAdapter = new PixelLogicLevelStatusChangeAdapter(eventManager);
+        this.changeAdapter = new PixelLogicLevelChangeAdapter(eventManager);
         this.changeAdapter.bind(this);
     }
 
@@ -41,6 +42,10 @@ public abstract class PixelLogicUILevelGroup extends PixelLogicUIGroup implement
 
     @Override
     public void onLevelDestroyed(PixelLogicLevelStatusChangeEvent event) {
+    }
+
+    @Override
+    public void onBoardChange(PixelLogicBoardChangedEvent event) {
     }
 
 }

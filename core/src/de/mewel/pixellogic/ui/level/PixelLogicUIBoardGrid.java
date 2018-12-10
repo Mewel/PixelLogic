@@ -13,7 +13,7 @@ import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIActor;
-import de.mewel.pixellogic.ui.PixelLogicUIConstants;
+import de.mewel.pixellogic.PixelLogicConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
@@ -42,7 +42,7 @@ public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
     public PixelLogicUIBoardGrid(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicLevel level) {
         super(assets, eventManager);
         this.level = level;
-        this.setColor(PixelLogicUIConstants.GRID_COLOR);
+        this.setColor(PixelLogicConstants.GRID_COLOR);
         this.update();
     }
 

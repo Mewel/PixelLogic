@@ -1,6 +1,6 @@
 package de.mewel.pixellogic.ui.level.event;
 
-public interface PixelLogicLevelStatusChangeListener {
+public interface PixelLogicLevelChangeListener {
 
     void onLevelChange(PixelLogicLevelStatusChangeEvent event);
 
@@ -11,5 +11,7 @@ public interface PixelLogicLevelStatusChangeListener {
     void onLevelBeforeDestroyed(PixelLogicLevelStatusChangeEvent event);
 
     void onLevelDestroyed(PixelLogicLevelStatusChangeEvent event);
+
+    void onBoardChange(PixelLogicBoardChangedEvent event);
 
 }

@@ -9,12 +9,15 @@ import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIAppScreen;
+import de.mewel.pixellogic.ui.screen.PixelLogicUISplashScreen;
 
 public class PixelLogicGame extends Game implements PixelLogicGlobal {
 
     private PixelLogicAssets assets;
 
     private PixelLogicEventManager eventManager;
+
+    private PixelLogicUISplashScreen splashScreen;
 
     private PixelLogicUIAppScreen appScreen;
 
@@ -25,21 +28,55 @@ public class PixelLogicGame extends Game implements PixelLogicGlobal {
         // libgdx init
         Gdx.input.setCatchBackKey(true);
 
+        this.splashScreen = new PixelLogicUISplashScreen();
+        this.setScreen(this.splashScreen);
+
+        initAndRun();
+    }
+
+    private void initAndRun() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        // load assets
+                        PixelLogicGame.this.init();
+                        // fade out splash screen and run game
+                        splashScreen.close(1f, new Runnable() {
+                            @Override
+                            public void run() {
+                                PixelLogicGame.this.run();
+                            }
+                        });
+                    }
+                });
+            }
+        }).start();
+    }
+
+    private void init() {
+        // load assets
+        assets = new PixelLogicAssets();
+        assets.load();
         // pixel logic init
-        this.eventManager = new PixelLogicEventManager();
+        eventManager = new PixelLogicEventManager();
+        achievements = new PixelLogicAchievements(eventManager);
+        appScreen = new PixelLogicUIAppScreen(PixelLogicGame.this);
+    }
 
-        this.assets = new PixelLogicAssets();
-        this.assets.load();
-
-        this.achievements = new PixelLogicAchievements(eventManager);
-
-        this.appScreen = new PixelLogicUIAppScreen(this);
-        this.setScreen(this.appScreen);
-        this.appScreen.setPage(PixelLogicUIPageId.mainMenu, new PixelLogicUIPageProperties());
+    private void run() {
+        // set screen and show main menu
+        setScreen(appScreen);
+        appScreen.setPage(PixelLogicUIPageId.mainMenu, new PixelLogicUIPageProperties());
     }
 
     @Override
     public void dispose() {
+        if (this.splashScreen != null) {
+            this.splashScreen.dispose();
+        }
         if (this.eventManager != null) {
             this.eventManager.dispose();
         }

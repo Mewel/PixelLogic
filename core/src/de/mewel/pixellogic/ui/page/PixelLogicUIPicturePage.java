@@ -20,8 +20,8 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
 import de.mewel.pixellogic.ui.misc.PixelLogicUIPicture;
 
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BLOCK_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
 
 public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
 

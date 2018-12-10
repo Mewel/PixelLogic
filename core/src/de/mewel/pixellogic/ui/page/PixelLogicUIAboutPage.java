@@ -1,7 +1,6 @@
 package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Colors;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
@@ -11,10 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
-import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
-
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
 
 public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
 

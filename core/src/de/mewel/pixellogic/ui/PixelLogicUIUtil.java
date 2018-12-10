@@ -1,6 +1,7 @@
 package de.mewel.pixellogic.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,7 +20,8 @@ import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelResolution;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BASE_SIZE;
+import static de.mewel.pixellogic.PixelLogicConstants.BASE_SIZE;
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
 
 public class PixelLogicUIUtil {
 
@@ -118,13 +120,18 @@ public class PixelLogicUIUtil {
     }
 
     public static boolean equalLabelStyle(Label.LabelStyle l1, Label.LabelStyle l2) {
-        if(l1 == null || l2 == null) {
+        if (l1 == null || l2 == null) {
             return l1 == null && l2 == null;
         }
-        if(!l1.fontColor.equals(l2.fontColor)) {
+        if (!l1.fontColor.equals(l2.fontColor)) {
             return false;
         }
         return l1.font == l2.font;
+    }
+
+    public static void playButtonSound(PixelLogicAssets assets) {
+        Sound clickSound = assets.get().get(BUTTON_SOUND, Sound.class);
+        clickSound.play(.25f);
     }
 
 }

@@ -19,10 +19,10 @@ import de.mewel.pixellogic.achievements.PixelLogicAchievement;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIAchievementBlock;
 
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BLOCK_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.MAIN_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_LIGHT_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.MAIN_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.TEXT_LIGHT_COLOR;
 
 public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
 

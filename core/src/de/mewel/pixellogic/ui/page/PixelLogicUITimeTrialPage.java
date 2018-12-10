@@ -21,11 +21,10 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BLOCK_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.GRID_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.MAIN_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_LIGHT_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.MAIN_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.TEXT_LIGHT_COLOR;
 
 public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
 
@@ -121,10 +120,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
 
             this.button = new PixelLogicUIButton(page.getAssets(), page.getEventManager(), options.name) {
                 @Override
-                public void onClick() {
-                    if (block()) {
-                        return;
-                    }
+                public void handleClick() {
                     startTimeTrial(options);
                 }
             };

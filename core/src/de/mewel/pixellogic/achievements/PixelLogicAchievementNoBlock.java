@@ -4,7 +4,7 @@ import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
-import de.mewel.pixellogic.ui.level.event.PixelLogicUserChangedBoardEvent;
+import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
 
 public class PixelLogicAchievementNoBlock extends PixelLogicAchievement {
 
@@ -41,8 +41,8 @@ public class PixelLogicAchievementNoBlock extends PixelLogicAchievement {
             }
         }
         // reset on board is empty
-        if (event instanceof PixelLogicUserChangedBoardEvent) {
-            PixelLogicUserChangedBoardEvent changedBoardEvent = (PixelLogicUserChangedBoardEvent) event;
+        if (event instanceof PixelLogicBoardChangedEvent) {
+            PixelLogicBoardChangedEvent changedBoardEvent = (PixelLogicBoardChangedEvent) event;
             if (changedBoardEvent.getLevel().isEmpty()) {
                 this.blocked = false;
             }
@@ -65,8 +65,8 @@ public class PixelLogicAchievementNoBlock extends PixelLogicAchievement {
             }
         }
         // check if something is blocked by the user
-        if (event instanceof PixelLogicUserChangedBoardEvent) {
-            PixelLogicUserChangedBoardEvent changedBoardEvent = (PixelLogicUserChangedBoardEvent) event;
+        if (event instanceof PixelLogicBoardChangedEvent) {
+            PixelLogicBoardChangedEvent changedBoardEvent = (PixelLogicBoardChangedEvent) event;
             Boolean value = changedBoardEvent.getValue();
             if (changedBoardEvent.isPixelChanged()) {
                 if (value != null && !value) {

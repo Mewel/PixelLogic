@@ -58,6 +58,7 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                PixelLogicUIUtil.playButtonSound(getAssets());
                 getEventManager().fire(new PixelLogicUserEvent(PixelLogicUILevelToolbar.this, PixelLogicUserEvent.Type.LEVEL_MENU_CLICKED));
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -85,6 +86,7 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
         this.level = level;
         this.menuButton.addAction(Actions.fadeIn(.3f));
         this.switcher.addAction(Actions.fadeIn(.3f));
+        this.switcher.reset();
 
         this.menuButton.addListener(this.menuButtonListener);
         this.switcher.addListener(this.switcherListener);

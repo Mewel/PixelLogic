@@ -6,12 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
-import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
 
 public class PixelLogicUITimeTrialFinishedPage extends PixelLogicUIPage {
 

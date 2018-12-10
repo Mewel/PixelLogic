@@ -3,9 +3,13 @@ package de.mewel.pixellogic.asset;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.MusicLoader;
 import com.badlogic.gdx.assets.loaders.PixmapLoader;
+import com.badlogic.gdx.assets.loaders.SoundLoader;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -20,11 +24,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.soap.Text;
-
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BASE_SIZE;
+import static de.mewel.pixellogic.PixelLogicConstants.BASE_SIZE;
+import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.PUZZLE_SOLVED_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.SWITCHER_SOUND;
 
 public class PixelLogicAssets {
 
@@ -46,7 +53,6 @@ public class PixelLogicAssets {
 
     public PixelLogicAssets() {
         manager = new AssetManager();
-        shapeRenderer = new ShapeRenderer();
     }
 
     public void load() {
@@ -54,16 +60,17 @@ public class PixelLogicAssets {
         manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
         manager.setLoader(BitmapFont.class, ".fnt", new PixelLogicBitmapFontLoader(resolver));
-        //manager.setLoader(TextureAtlas.class, new TextureAtlasLoader(resolver));
         manager.setLoader(Pixmap.class, new PixmapLoader(resolver));
         manager.setLoader(Texture.class, new TextureLoader(resolver));
-
+        manager.setLoader(Sound.class, new SoundLoader(resolver));
+        manager.setLoader(Music.class, new MusicLoader(resolver));
         manager.setLoader(PixelLogicLevelCollection.class, new PixelLogicLevelCollectionLoader(resolver));
 
         loadLogo();
         loadLevels();
         loadFonts();
         loadIcons();
+        loadAudio();
         //loadTextures();
 
         manager.finishLoading();
@@ -79,10 +86,6 @@ public class PixelLogicAssets {
             manager.load(collectionName, PixelLogicLevelCollection.class);
             Gdx.app.log("assets", "level collection " + collectionName + " loaded");
         }
-    }
-
-    protected void loadTextures() {
-        // manager.load("target/level.atlas", TextureAtlas.class);
     }
 
     protected void loadFonts() {
@@ -115,6 +118,14 @@ public class PixelLogicAssets {
             manager.load(assetName, BitmapFont.class, params);
             Gdx.app.log("assets", "font " + assetName + " loaded");
         }
+    }
+
+    private void loadAudio() {
+        manager.load(BUTTON_SOUND, Sound.class);
+        manager.load(PIXEL_SOUND, Sound.class);
+        manager.load(BLOCK_SOUND, Sound.class);
+        manager.load(SWITCHER_SOUND, Sound.class);
+        manager.load(PUZZLE_SOLVED_SOUND, Sound.class);
     }
 
     public BitmapFont getGameFont(int size) {
@@ -174,6 +185,9 @@ public class PixelLogicAssets {
     }
 
     public ShapeRenderer getShapeRenderer() {
+        if (shapeRenderer == null) {
+            shapeRenderer = new ShapeRenderer();
+        }
         return shapeRenderer;
     }
 
@@ -208,8 +222,12 @@ public class PixelLogicAssets {
     }
 
     public void dispose() {
-        this.manager.dispose();
-        this.shapeRenderer.dispose();
+        if (this.manager != null) {
+            this.manager.dispose();
+        }
+        if (this.shapeRenderer != null) {
+            this.shapeRenderer.dispose();
+        }
     }
 
 }

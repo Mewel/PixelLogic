@@ -10,7 +10,7 @@ import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
-import de.mewel.pixellogic.ui.level.event.PixelLogicUserChangedBoardEvent;
+import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 
@@ -131,8 +131,8 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
                 this.preferences.remove(getPixelsProperty(level));
                 this.preferences.flush();
             }
-        } else if (event instanceof PixelLogicUserChangedBoardEvent) {
-            PixelLogicUserChangedBoardEvent changedBoardEvent = (PixelLogicUserChangedBoardEvent) event;
+        } else if (event instanceof PixelLogicBoardChangedEvent) {
+            PixelLogicBoardChangedEvent changedBoardEvent = (PixelLogicBoardChangedEvent) event;
             this.preferences.putString(getPixelsProperty(level), changedBoardEvent.getLevel().toPixelString());
             this.preferences.flush();
         } else if (event instanceof PixelLogicUIPageChangeEvent) {

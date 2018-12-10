@@ -12,14 +12,14 @@ import java.util.List;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.LINE_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.LINE_COMPLETE_COLOR;
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TEXT_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.APP_BACKGROUND;
+import static de.mewel.pixellogic.PixelLogicConstants.LINE_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.LINE_COMPLETE_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
 
-public abstract class PixelLogicUILineInfo extends PixelLogicUIGroup {
+public abstract class PixelLogicUILineInfo extends PixelLogicUILevelGroup {
 
     protected PixelLogicLevel level;
 
@@ -74,12 +74,16 @@ public abstract class PixelLogicUILineInfo extends PixelLogicUIGroup {
         clearLabels();
         PixelLogicUILevelResolution resolution = PixelLogicUIUtil.get(level);
         BitmapFont labelFont = getAssets().getLevelFont(resolution.getFontSize());
-        Label.LabelStyle style = new Label.LabelStyle(labelFont, TEXT_COLOR);
+        Label.LabelStyle style = new Label.LabelStyle(labelFont, getLabelColor());
         addLabels((int) labelFont.getLineHeight(), style);
     }
 
     protected abstract void addLabels(int fontSize, Label.LabelStyle style);
 
     protected abstract boolean isLineComplete();
+
+    public Color getLabelColor() {
+        return isLineComplete() ? APP_BACKGROUND : TEXT_COLOR;
+    }
 
 }

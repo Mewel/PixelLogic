@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.ui.level;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -8,15 +9,16 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
+import de.mewel.pixellogic.PixelLogicConstants;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.ui.PixelLogicUIConstants;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelSwitcherChangedEvent;
 
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.BASE_SIZE;
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.TOOLBAR_SWITCHER_ACTIVE_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.SWITCHER_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.TOOLBAR_SWITCHER_ACTIVE_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
 
 public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
 
@@ -34,8 +36,8 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
         super(assets, eventManager);
         this.penSprite = getAssets().getIcon(0);
         this.xSprite = getAssets().getIcon(1);
-        this.penColor = PixelLogicUIConstants.TOOLBAR_SWITCHER_ACTIVE_COLOR;
-        this.xColor = PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
+        this.penColor = PixelLogicConstants.TOOLBAR_SWITCHER_ACTIVE_COLOR;
+        this.xColor = TOOLBAR_SWITCHER_INACTIVE_COLOR;
 
         this.fillPixel = true;
 
@@ -44,6 +46,13 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
         this.addActor(this.marker);
 
         this.updateBounds();
+    }
+
+    public void reset() {
+        this.fillPixel = true;
+        this.marker.setX(0);
+        this.penColor = TOOLBAR_SWITCHER_ACTIVE_COLOR;
+        this.xColor = TOOLBAR_SWITCHER_INACTIVE_COLOR;
     }
 
     @Override
@@ -89,9 +98,13 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
         this.fillPixel = !this.fillPixel;
         getEventManager().fire(new PixelLogicLevelSwitcherChangedEvent(PixelLogicUILevelSwitcher.this, fillPixel));
 
+        // sound
+        Sound sound = getAssets().get().get(SWITCHER_SOUND, Sound.class);
+        sound.play(.05f);
+
         // animate
-        this.penColor = PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
-        this.xColor = PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
+        this.penColor = TOOLBAR_SWITCHER_INACTIVE_COLOR;
+        this.xColor = TOOLBAR_SWITCHER_INACTIVE_COLOR;
         float x = this.fillPixel ? 0 : this.getWidth() - this.marker.getWidth();
         this.marker.addAction(Actions.sequence(
                 Actions.moveTo(x, 0, 0.1f),
@@ -100,8 +113,8 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
                 Actions.run(new Runnable() {
                                 @Override
                                 public void run() {
-                                    penColor = fillPixel ? TOOLBAR_SWITCHER_ACTIVE_COLOR : PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
-                                    xColor = !fillPixel ? TOOLBAR_SWITCHER_ACTIVE_COLOR : PixelLogicUIConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
+                                    penColor = fillPixel ? TOOLBAR_SWITCHER_ACTIVE_COLOR : TOOLBAR_SWITCHER_INACTIVE_COLOR;
+                                    xColor = !fillPixel ? TOOLBAR_SWITCHER_ACTIVE_COLOR : TOOLBAR_SWITCHER_INACTIVE_COLOR;
                                 }
                             }
                 )));

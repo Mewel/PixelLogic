@@ -34,10 +34,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         // solve level
         this.solveLevelButton = new PixelLogicUIButton(getAssets(), getEventManager(), "solve level") {
             @Override
-            public void onClick() {
-                if(block()) {
-                    return;
-                }
+            public void handleClick() {
                 close();
                 PixelLogicUtil.solveLevel(PixelLogicUILevelMenu.this.screen.getLevel());
                 PixelLogicUILevelMenu.this.screen.getLevelUI().getBoard().updateFromLevelPixels();
@@ -47,10 +44,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         // reset level
         this.resetLevelButton = new PixelLogicUIButton(getAssets(), getEventManager(), "reset level") {
             @Override
-            public void onClick() {
-                if(block()) {
-                    return;
-                }
+            public void handleClick() {
                 close();
                 screen.resetLevel();
             }
@@ -59,10 +53,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         // continue
         this.continueButton = new PixelLogicUIButton(getAssets(), getEventManager(), "continue") {
             @Override
-            public void onClick() {
-                if(block()) {
-                    return;
-                }
+            public void handleClick() {
                 close();
             }
         };
@@ -70,10 +61,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         // back
         this.backButton = new PixelLogicUIButton(getAssets(), getEventManager(), "back to menu") {
             @Override
-            public void onClick() {
-                if(block()) {
-                    return;
-                }
+            public void handleClick() {
                 close();
                 back();
             }
@@ -84,16 +72,16 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
     @Override
     public void show() {
         super.show();
-        if(this.solveLevelButton != null) {
+        if (this.solveLevelButton != null) {
             this.solveLevelButton.unblock();
         }
-        if(this.resetLevelButton != null) {
+        if (this.resetLevelButton != null) {
             this.resetLevelButton.unblock();
         }
-        if(this.continueButton != null) {
+        if (this.continueButton != null) {
             this.continueButton.unblock();
         }
-        if(this.backButton != null) {
+        if (this.backButton != null) {
             this.backButton.unblock();
         }
     }

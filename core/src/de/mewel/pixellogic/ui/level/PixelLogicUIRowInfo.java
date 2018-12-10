@@ -9,6 +9,7 @@ import java.util.List;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicUIRowInfo extends PixelLogicUILineInfo {
@@ -20,6 +21,15 @@ public class PixelLogicUIRowInfo extends PixelLogicUILineInfo {
     @Override
     protected boolean isLineComplete() {
         return level.isRowComplete(this.line);
+    }
+
+    @Override
+    public void onBoardChange(PixelLogicBoardChangedEvent event) {
+        if (event.getRow() == line) {
+            for (Label label : labels) {
+                label.getStyle().fontColor = getLabelColor();
+            }
+        }
     }
 
     @Override

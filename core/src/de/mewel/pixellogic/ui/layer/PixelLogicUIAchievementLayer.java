@@ -26,7 +26,7 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIAchievementBlock;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 
-import static de.mewel.pixellogic.ui.PixelLogicUIConstants.MAIN_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.MAIN_COLOR;
 
 public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLogicListener {
 
