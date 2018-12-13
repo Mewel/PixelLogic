@@ -6,15 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
-import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
+import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangedEvent;
 
-public class PixelLogicUIPageLayer implements PixelLogicUILayer, PixelLogicListener {
+public class PixelLogicUIPageLayer implements PixelLogicUILayer {
 
     private Map<PixelLogicUIPageId, PixelLogicUIPage> pageMap;
 
@@ -29,7 +27,6 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer, PixelLogicListe
         this.eventManager = eventManager;
         this.pageMap = new HashMap<PixelLogicUIPageId, PixelLogicUIPage>();
         this.activePage = null;
-        this.eventManager.listen(this);
     }
 
     public void add(PixelLogicUIPageId id, PixelLogicUIPage screen) {
@@ -44,35 +41,31 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer, PixelLogicListe
         return this.activePage != null && activePage.getPageId().equals(id);
     }
 
-    @Override
-    public void handle(PixelLogicEvent event) {
-        if (event instanceof PixelLogicUIPageChangeEvent) {
-            PixelLogicUIPageChangeEvent pageChangeEvent = (PixelLogicUIPageChangeEvent) event;
-            PixelLogicUIPageId pageId = pageChangeEvent.getPageId();
-            PixelLogicUIPage page = this.pageMap.get(pageId);
-            if (page == null) {
-                throw new RuntimeException("Unable to find page " + pageId);
-            }
-            activate(page, pageChangeEvent.getData());
-        }
-    }
-
     public void activate(final PixelLogicUIPage page, final PixelLogicUIPageProperties data) {
         Gdx.app.log("layer activate", "current page " + this.activePage);
         if (this.activePage != null) {
             this.activePage.deactivate(new Runnable() {
                 @Override
                 public void run() {
-                    activePage = page;
-                    activePage.activate(data);
-                    activePage.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                    activate(page, activePage, data);
                 }
             });
             return;
         }
-        this.activePage = page;
-        this.activePage.activate(data);
-        this.activePage.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        activate(page, null, data);
+    }
+
+    protected void activate(final PixelLogicUIPage newPage, final PixelLogicUIPage oldPage, final PixelLogicUIPageProperties data) {
+        data.put("pageId", newPage.getPageId());
+        if (oldPage != null) {
+            data.put("oldPageId", oldPage.getPageId());
+        }
+        getEventManager().fire(new PixelLogicUIPageChangedEvent(this, data));
+
+        activePage = newPage;
+        activePage.activate(data);
+        activePage.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
     }
 
     @Override
@@ -91,7 +84,6 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer, PixelLogicListe
 
     @Override
     public void dispose() {
-        this.eventManager.remove(this);
         for (PixelLogicUIPage page : pageMap.values()) {
             page.dispose();
         }
@@ -118,7 +110,7 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer, PixelLogicListe
 
     @Override
     public PixelLogicEventManager getEventManager() {
-        return this.eventManager;
+        return eventManager;
     }
 
     public PixelLogicUIPage getActivePage() {

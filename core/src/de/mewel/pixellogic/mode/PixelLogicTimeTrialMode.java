@@ -20,12 +20,11 @@ import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.component.PixelLogicUIMessageModal;
 import de.mewel.pixellogic.ui.level.animation.PixelLogicUISecretLevelStartAnimation;
-import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
-import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
 import de.mewel.pixellogic.util.PixelLogicStopWatch;
 import de.mewel.pixellogic.util.PixelLogicUtil;
@@ -100,12 +99,11 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
     private void onFinished() {
         this.stopWatch.stop();
         PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
-        data.put("pageId", PixelLogicUIPageId.timeTrialFinished);
         data.put("mode", this.options.id);
         data.put("time", this.stopWatch.elapsed());
         int rank = PixelLogicTimeTrialHighscoreStore.add(this.options.id.name(), this.stopWatch.elapsed());
         data.put("rank", rank);
-        this.getEventManager().fire(new PixelLogicUIPageChangeEvent(this, data));
+        this.getAppScreen().setPage(PixelLogicUIPageId.timeTrialFinished, data);
     }
 
     private PixelLogicLevel createLevel(Boolean[][] levelData) {
@@ -177,9 +175,8 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
                 } else if (secretLevelStatus == 1) {
                     runSecretLevel();
                 } else if (secretLevelStatus == 2) {
+                    getAppScreen().setPage(PixelLogicUIPageId.timeTrial);
                     PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
-                    data.put("pageId", PixelLogicUIPageId.timeTrial);
-                    this.getEventManager().fire(new PixelLogicUIPageChangeEvent(this, data));
                 }
             }
             if (PixelLogicLevelStatus.playable.equals(changeEvent.getStatus())) {

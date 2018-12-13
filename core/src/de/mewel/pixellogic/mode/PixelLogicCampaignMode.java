@@ -6,8 +6,6 @@ import java.util.List;
 import de.mewel.pixellogic.event.PixelLogicCampaignFinishedEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
-import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
-import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
 
 public class PixelLogicCampaignMode extends PixelLogicListLevelMode {
@@ -25,9 +23,7 @@ public class PixelLogicCampaignMode extends PixelLogicListLevelMode {
         this.getEventManager().fire(new PixelLogicCampaignFinishedEvent(this));
 
         // back to main menu
-        PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
-        data.put("pageId", PixelLogicUIPageId.mainMenu);
-        this.getEventManager().fire(new PixelLogicUIPageChangeEvent(this, data));
+        this.getAppScreen().setPage(PixelLogicUIPageId.mainMenu);
     }
 
     @Override

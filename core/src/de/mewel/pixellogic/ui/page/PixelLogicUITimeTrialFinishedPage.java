@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
-import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 
 import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
 
@@ -49,12 +48,11 @@ public class PixelLogicUITimeTrialFinishedPage extends PixelLogicUIPage {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                PixelLogicUIPageProperties changeScreenData = new PixelLogicUIPageProperties();
-                changeScreenData.put("pageId", PixelLogicUIPageId.timeTrial);
-                changeScreenData.put("mode", mode);
-                changeScreenData.put("time", time);
-                changeScreenData.put("rank", rank);
-                getEventManager().fire(new PixelLogicUIPageChangeEvent(PixelLogicUITimeTrialFinishedPage.this, changeScreenData));
+                PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
+                data.put("mode", mode);
+                data.put("time", time);
+                data.put("rank", rank);
+                getAppScreen().setPage(PixelLogicUIPageId.timeTrial, data);
             }
         });
     }

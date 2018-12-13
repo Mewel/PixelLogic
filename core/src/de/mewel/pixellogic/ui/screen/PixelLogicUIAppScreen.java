@@ -15,7 +15,6 @@ import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPicturePage;
 import de.mewel.pixellogic.ui.page.PixelLogicUITimeTrialFinishedPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUITimeTrialPage;
-import de.mewel.pixellogic.ui.page.PixelLogicUITutorialLevelPage;
 
 public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
 
@@ -45,6 +44,10 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
         // add
         this.add(this.pageLayer);
         this.add(this.achievementLayer);
+    }
+
+    public void setPage(PixelLogicUIPageId pageId) {
+        this.setPage(pageId, new PixelLogicUIPageProperties());
     }
 
     public void setPage(PixelLogicUIPageId pageId, PixelLogicUIPageProperties properties) {

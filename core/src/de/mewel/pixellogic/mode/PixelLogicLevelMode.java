@@ -10,7 +10,7 @@ import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
-import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
+import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangedEvent;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIAppScreen;
 
 public abstract class PixelLogicLevelMode implements PixelLogicListener {
@@ -45,9 +45,9 @@ public abstract class PixelLogicLevelMode implements PixelLogicListener {
     @Override
     public void handle(PixelLogicEvent event) {
         // deactivate by default if page is changed
-        if (event instanceof PixelLogicUIPageChangeEvent) {
-            PixelLogicUIPageChangeEvent screenChangeEvent = (PixelLogicUIPageChangeEvent) event;
-            if (!screenChangeEvent.getPageId().equals(PixelLogicUIPageId.level)) {
+        if (event instanceof PixelLogicUIPageChangedEvent) {
+            PixelLogicUIPageChangedEvent pageChangedEvent = (PixelLogicUIPageChangedEvent) event;
+            if (!pageChangedEvent.getPageId().equals(PixelLogicUIPageId.level)) {
                 this.deactivate();
             }
         }

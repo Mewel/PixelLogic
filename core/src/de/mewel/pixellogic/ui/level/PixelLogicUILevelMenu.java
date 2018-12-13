@@ -11,7 +11,6 @@ import de.mewel.pixellogic.ui.component.PixelLogicUIModal;
 import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
-import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicUILevelMenu extends PixelLogicUIModal {
@@ -121,10 +120,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
             Gdx.app.log("level menu", "pushing back button without screen id, this should never happen!");
             return;
         }
-        PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
-        data.put("pageId", backButtonScreenId);
-        data.put("backButton", true);
-        getEventManager().fire(new PixelLogicUIPageChangeEvent(PixelLogicUILevelMenu.this, data));
+        this.screen.getAppScreen().setPage(backButtonScreenId);
     }
 
     @Override

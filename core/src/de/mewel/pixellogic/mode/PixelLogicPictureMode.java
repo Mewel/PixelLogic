@@ -19,7 +19,7 @@ import de.mewel.pixellogic.ui.misc.PixelLogicUIPicture;
 import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
-import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
+import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangedEvent;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
 
 public class PixelLogicPictureMode extends PixelLogicListLevelMode {
@@ -44,9 +44,7 @@ public class PixelLogicPictureMode extends PixelLogicListLevelMode {
     protected void onFinished() {
         super.onFinished();
         // back to main menu
-        PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
-        data.put("pageId", PixelLogicUIPageId.picture);
-        this.getEventManager().fire(new PixelLogicUIPageChangeEvent(this, data));
+        this.getAppScreen().setPage(PixelLogicUIPageId.picture);
     }
 
     @Override

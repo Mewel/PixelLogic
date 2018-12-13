@@ -1,7 +1,5 @@
 package de.mewel.pixellogic.mode;
 
-import com.badlogic.gdx.Gdx;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +10,6 @@ import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
-import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
 
 public class PixelLogicCharactersMode extends PixelLogicListLevelMode {
@@ -27,9 +24,7 @@ public class PixelLogicCharactersMode extends PixelLogicListLevelMode {
         super.onFinished();
 
         // back to main menu
-        PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
-        data.put("pageId", PixelLogicUIPageId.characters);
-        this.getEventManager().fire(new PixelLogicUIPageChangeEvent(this, data));
+        this.getAppScreen().setPage(PixelLogicUIPageId.characters);
     }
 
     @Override

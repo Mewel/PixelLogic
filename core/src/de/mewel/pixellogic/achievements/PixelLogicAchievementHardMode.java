@@ -4,7 +4,7 @@ import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
-import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
+import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangedEvent;
 
 public class PixelLogicAchievementHardMode extends PixelLogicAchievement {
 
@@ -20,10 +20,10 @@ public class PixelLogicAchievementHardMode extends PixelLogicAchievement {
 
     @Override
     boolean check(PixelLogicEvent event) {
-        if (!(event instanceof PixelLogicUIPageChangeEvent)) {
+        if (!(event instanceof PixelLogicUIPageChangedEvent)) {
             return false;
         }
-        PixelLogicUIPageChangeEvent pageChangeEvent = (PixelLogicUIPageChangeEvent) event;
+        PixelLogicUIPageChangedEvent pageChangeEvent = (PixelLogicUIPageChangedEvent) event;
         if (!(PixelLogicUIPageId.timeTrialFinished.equals(pageChangeEvent.getPageId()))) {
             return false;
         }
