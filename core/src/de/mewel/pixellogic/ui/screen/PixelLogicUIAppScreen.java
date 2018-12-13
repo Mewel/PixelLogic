@@ -52,7 +52,12 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
 
     public void setPage(PixelLogicUIPageId pageId, PixelLogicUIPageProperties properties) {
         PixelLogicUIPage page = this.pageLayer.get(pageId);
-        this.pageLayer.activate(page, properties);
+        this.pageLayer.activate(page, properties, null);
+    }
+
+    public void setPage(PixelLogicUIPageId pageId, PixelLogicUIPageProperties properties, Runnable after) {
+        PixelLogicUIPage page = this.pageLayer.get(pageId);
+        this.pageLayer.activate(page, properties, after);
     }
 
     public PixelLogicUIPage getPage(PixelLogicUIPageId pageId) {

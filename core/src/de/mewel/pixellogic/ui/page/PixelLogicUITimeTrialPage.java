@@ -192,14 +192,18 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
         private void startTimeTrial(final PixelLogicTimeTrialModeOptions options) {
             final PixelLogicTimeTrialMode mode = new PixelLogicTimeTrialMode(options);
             mode.setup(page.getGlobal());
-            mode.activate();
-            mode.run();
 
             final PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
             data.put("options", options);
             data.put("mode", options.id);
             data.put("menuBackId", PixelLogicUIPageId.timeTrial);
-            page.getAppScreen().setPage(PixelLogicUIPageId.level, data);
+            page.getAppScreen().setPage(PixelLogicUIPageId.level, data, new Runnable() {
+                @Override
+                public void run() {
+                    mode.activate();
+                    mode.run();
+                }
+            });
         }
 
         public void activate() {

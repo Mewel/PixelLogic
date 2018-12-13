@@ -1,7 +1,5 @@
 package de.mewel.pixellogic.mode;
 
-import com.badlogic.gdx.Gdx;
-
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
@@ -48,7 +46,6 @@ public abstract class PixelLogicLevelMode implements PixelLogicListener {
         if (event instanceof PixelLogicUIPageChangeEvent) {
             PixelLogicUIPageChangeEvent pageChangedEvent = (PixelLogicUIPageChangeEvent) event;
             if (!pageChangedEvent.getPageId().equals(PixelLogicUIPageId.level)) {
-                Gdx.app.log("level mode", "deactivate");
                 this.deactivate();
             }
         }

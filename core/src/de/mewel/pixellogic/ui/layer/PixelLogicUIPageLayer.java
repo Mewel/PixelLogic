@@ -41,7 +41,7 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer {
         return this.activePage != null && activePage.getPageId().equals(id);
     }
 
-    public void activate(final PixelLogicUIPage page, final PixelLogicUIPageProperties data) {
+    public void activate(final PixelLogicUIPage page, final PixelLogicUIPageProperties data, final Runnable after) {
         Gdx.app.log("layer activate", "current page " + this.activePage);
 
         // fire before activation, not sure if thats good but otherwise the back button does not
@@ -58,18 +58,22 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer {
             this.activePage.deactivate(new Runnable() {
                 @Override
                 public void run() {
-                    activate(page, activePage, data);
+                    activate(page, activePage, data, after);
                 }
             });
             return;
         }
-        activate(page, null, data);
+        activate(page, null, data, after);
     }
 
-    protected void activate(final PixelLogicUIPage newPage, final PixelLogicUIPage oldPage, final PixelLogicUIPageProperties data) {
+    protected void activate(final PixelLogicUIPage newPage, final PixelLogicUIPage oldPage,
+                            final PixelLogicUIPageProperties data, final Runnable after) {
         activePage = newPage;
         activePage.activate(data);
         activePage.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        if (after != null) {
+            after.run();
+        }
     }
 
     @Override

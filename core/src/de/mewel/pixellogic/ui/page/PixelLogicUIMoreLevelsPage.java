@@ -149,12 +149,15 @@ public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
                 @Override
                 public void onClick() {
                     PixelLogicUIUtil.playButtonSound(getAssets());
-                    tutorialMode.activate();
-                    tutorialMode.run();
-
                     PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                     pageProperties.put("menuBackId", PixelLogicUIPageId.moreLevels);
-                    getAppScreen().setPage(PixelLogicUIPageId.tutorialLevel, pageProperties);
+                    getAppScreen().setPage(PixelLogicUIPageId.tutorialLevel, pageProperties, new Runnable() {
+                        @Override
+                        public void run() {
+                            tutorialMode.activate();
+                            tutorialMode.run();
+                        }
+                    });
                 }
             });
             this.addActor(this.tutorialButton);

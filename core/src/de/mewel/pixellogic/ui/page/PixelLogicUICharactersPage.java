@@ -52,12 +52,15 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
             levelContainer.addListener(new PixelLogicUIButtonListener() {
                 @Override
                 public void onClick() {
-                    mode.activate();
-                    mode.run(level);
-
                     PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                     pageProperties.put("menuBackId", PixelLogicUIPageId.characters);
-                    getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties);
+                    getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties, new Runnable() {
+                        @Override
+                        public void run() {
+                            mode.activate();
+                            mode.run(level);
+                        }
+                    });
                 }
             });
 

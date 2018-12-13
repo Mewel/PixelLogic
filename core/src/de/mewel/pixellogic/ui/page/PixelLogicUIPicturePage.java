@@ -51,13 +51,17 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
             container.addListener(new PixelLogicUIButtonListener() {
                 @Override
                 public void onClick() {
-                    container.mode.activate();
-                    container.mode.run();
                     PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                     pageProperties.put("solvedAnimation", "picture");
                     pageProperties.put("pictureCollection", container.mode.getCollection());
                     pageProperties.put("menuBackId", PixelLogicUIPageId.picture);
-                    getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties);
+                    getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties, new Runnable() {
+                        @Override
+                        public void run() {
+                            container.mode.activate();
+                            container.mode.run();
+                        }
+                    });
                 }
             });
         }

@@ -81,13 +81,13 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
         // STAGE
         this.screenListener = new ScreenListener(this);
-        getEventManager().listen(this.screenListener);
     }
 
     @Override
     public void activate(PixelLogicUIPageProperties properties) {
         Gdx.app.log("lvl screen", "activate");
         super.activate(properties);
+        getEventManager().listen(this.screenListener);
         getStage().addListener(this.screenListener);
         this.levelStatus = null;
         this.updateBackgroundImage();
@@ -97,7 +97,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
     @Override
     public void deactivate(final Runnable after) {
-        // getEventManager().remove(this.screenListener);
+        getEventManager().remove(this.screenListener);
         getStage().removeListener(this.screenListener);
         if (!PixelLogicLevelStatus.destroyed.equals(this.levelStatus)) {
             this.destroyLevel();

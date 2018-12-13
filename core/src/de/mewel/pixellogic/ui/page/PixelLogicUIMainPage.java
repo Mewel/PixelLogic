@@ -71,9 +71,13 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
                 campaignMode.setup(getGlobal());
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                 pageProperties.put("menuBackId", PixelLogicUIPageId.mainMenu);
-                getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties);
-                campaignMode.activate();
-                campaignMode.run();
+                getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties, new Runnable() {
+                    @Override
+                    public void run() {
+                        campaignMode.activate();
+                        campaignMode.run();
+                    }
+                });
             }
         };
 
