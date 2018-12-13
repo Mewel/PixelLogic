@@ -10,7 +10,7 @@ import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
-import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangedEvent;
+import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 
 public class PixelLogicUIPageLayer implements PixelLogicUILayer {
 
@@ -43,6 +43,17 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer {
 
     public void activate(final PixelLogicUIPage page, final PixelLogicUIPageProperties data) {
         Gdx.app.log("layer activate", "current page " + this.activePage);
+
+        // fire before activation, not sure if thats good but otherwise the back button does not
+        // work cause it goes to the next lvl because the destroy event is fired before the
+        // change page event
+        data.put("pageId", page.getPageId());
+        if (activePage != null) {
+            data.put("oldPageId", activePage.getPageId());
+        }
+        getEventManager().fire(new PixelLogicUIPageChangeEvent(this, data));
+
+        // activate page
         if (this.activePage != null) {
             this.activePage.deactivate(new Runnable() {
                 @Override
@@ -56,16 +67,9 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer {
     }
 
     protected void activate(final PixelLogicUIPage newPage, final PixelLogicUIPage oldPage, final PixelLogicUIPageProperties data) {
-        data.put("pageId", newPage.getPageId());
-        if (oldPage != null) {
-            data.put("oldPageId", oldPage.getPageId());
-        }
-        getEventManager().fire(new PixelLogicUIPageChangedEvent(this, data));
-
         activePage = newPage;
         activePage.activate(data);
         activePage.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
     }
 
     @Override

@@ -4,11 +4,11 @@ import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 
-public class PixelLogicUIPageChangedEvent extends PixelLogicEvent {
+public class PixelLogicUIPageChangeEvent extends PixelLogicEvent {
 
     private PixelLogicUIPageProperties data;
 
-    public PixelLogicUIPageChangedEvent(Object source, PixelLogicUIPageProperties data) {
+    public PixelLogicUIPageChangeEvent(Object source, PixelLogicUIPageProperties data) {
         super(source);
         this.data = data;
     }

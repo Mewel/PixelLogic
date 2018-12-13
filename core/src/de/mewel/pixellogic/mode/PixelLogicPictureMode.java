@@ -18,8 +18,6 @@ import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.misc.PixelLogicUIPicture;
 import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
-import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
-import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangedEvent;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
 
 public class PixelLogicPictureMode extends PixelLogicListLevelMode {
