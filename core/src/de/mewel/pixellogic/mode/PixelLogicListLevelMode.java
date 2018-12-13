@@ -9,10 +9,8 @@ import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
-import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
-import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
-import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 
 public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
 
@@ -123,6 +121,7 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
 
     @Override
     public void handle(PixelLogicEvent event) {
+        super.handle(event);
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
             if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus())) {
@@ -135,11 +134,6 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
             PixelLogicBoardChangedEvent changedBoardEvent = (PixelLogicBoardChangedEvent) event;
             this.preferences.putString(getPixelsProperty(level), changedBoardEvent.getLevel().toPixelString());
             this.preferences.flush();
-        } else if (event instanceof PixelLogicUIPageChangeEvent) {
-            PixelLogicUIPageChangeEvent screenChangeEvent = (PixelLogicUIPageChangeEvent) event;
-            if (!screenChangeEvent.getPageId().equals(PixelLogicUIPageId.level)) {
-                this.deactivate();
-            }
         }
     }
 

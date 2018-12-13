@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -35,27 +36,27 @@ import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 
 public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
-    private static Map<String, Class<? extends PixelLogicUILevelAnimation>> SOLVED_ANIMATION_MAP;
+    protected static Map<String, Class<? extends PixelLogicUILevelAnimation>> SOLVED_ANIMATION_MAP;
 
-    private PixelLogicUILevel levelUI;
+    protected PixelLogicUILevel levelUI;
 
-    private PixelLogicUILevelToolbar toolbar;
+    protected PixelLogicUILevelToolbar toolbar;
 
-    private PixelLogicUILevelMenu menu;
+    protected PixelLogicUILevelMenu menu;
 
-    private Texture backgroundTexture;
+    protected Texture backgroundTexture;
 
-    private Image backgroundImage;
+    protected Image backgroundImage;
 
-    private PixelLogicLevelStatus levelStatus;
+    protected PixelLogicLevelStatus levelStatus;
 
-    private ScreenListener screenListener;
+    protected ScreenListener screenListener;
 
-    private PixelLogicUIMessageModal loadingModal;
+    protected PixelLogicUIMessageModal loadingModal;
 
-    private PixelLogicUILevelAnimation solvedAnimation;
+    protected PixelLogicUILevelAnimation solvedAnimation;
 
-    private FPSLogger fpsLogger = new FPSLogger();
+    protected FPSLogger fpsLogger = new FPSLogger();
 
     static {
         SOLVED_ANIMATION_MAP = new HashMap<String, Class<? extends PixelLogicUILevelAnimation>>();
@@ -80,7 +81,6 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
         // STAGE
         this.screenListener = new ScreenListener(this);
-        getStage().addListener(this.screenListener);
         getEventManager().listen(this.screenListener);
     }
 
@@ -88,6 +88,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     public void activate(PixelLogicUIPageProperties properties) {
         Gdx.app.log("lvl screen", "activate");
         super.activate(properties);
+        getStage().addListener(this.screenListener);
         this.levelStatus = null;
         this.updateBackgroundImage();
         this.menu.activate(properties);
@@ -96,6 +97,8 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
     @Override
     public void deactivate(final Runnable after) {
+        // getEventManager().remove(this.screenListener);
+        getStage().removeListener(this.screenListener);
         if (!PixelLogicLevelStatus.destroyed.equals(this.levelStatus)) {
             this.destroyLevel();
         }
@@ -112,7 +115,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        this.updateBounds();
+        this.updateBounds(width, height);
         this.updateBackgroundImage();
     }
 
@@ -127,7 +130,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         this.levelUI.getColor().a = .0f;
         this.levelUI.load(level);
         this.getStage().addActor(this.levelUI);
-        this.updateBounds();
+        this.updateBounds((int) getWidth(), (int) getHeight());
         changeLevelStatus(PixelLogicLevelStatus.loaded);
         Action fadeInAction = Actions.sequence(Actions.fadeIn(.4f), Actions.run(new Runnable() {
             @Override
@@ -252,30 +255,43 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         this.backgroundTexture.dispose();
     }
 
-    private void updateBounds() {
-        int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
-
+    private void updateBounds(int width, int height) {
         // root
-        this.getRoot().setSize(screenWidth, screenHeight);
+        this.getRoot().setSize(width, height);
 
         // toolbar
-        int toolbarHeight = PixelLogicUIUtil.getToolbarHeight();
-        int toolbarHeightAndPadding = toolbarHeight + PixelLogicUIUtil.getToolbarPaddingTop();
-        this.toolbar.setBounds(0, 0, screenWidth, toolbarHeight);
+        if (toolbar != null) {
+            updateToolbarBounds(width);
+        }
 
         // level
         if (this.levelUI != null) {
-            int levelMaxHeight = PixelLogicUIUtil.getLevelMaxHeight();
-            this.levelUI.resize();
-            float x = screenWidth / 2f - this.levelUI.getWidth() / 2f;
-            float y = levelMaxHeight / 2f - this.levelUI.getHeight() / 2f + toolbarHeightAndPadding;
-            this.levelUI.setPosition((int) x, (int) y);
+            updateLevelBounds(width, height);
         }
-
         // modal's
-        this.menu.setBounds(0, 0, screenWidth, screenHeight);
-        this.loadingModal.setBounds(0, 0, screenWidth, screenHeight);
+        if (menu != null && loadingModal != null) {
+            updateModalBounds(width, height);
+        }
+    }
+
+    protected void updateModalBounds(int width, int height) {
+        this.menu.setBounds(0, 0, width, height);
+        this.loadingModal.setBounds(0, 0, width, height);
+    }
+
+    protected void updateLevelBounds(int width, int height) {
+        int levelMaxHeight = PixelLogicUIUtil.getLevelMaxHeight();
+        Vector2 levelSize = PixelLogicUIUtil.get(getLevel()).getLevelSize();
+        this.levelUI.setSize(levelSize.x, levelSize.y);
+        int toolbarHeightAndPadding = PixelLogicUIUtil.getToolbarHeight() + PixelLogicUIUtil.getToolbarPaddingTop();
+        float x = width / 2f - this.levelUI.getWidth() / 2f;
+        float y = levelMaxHeight / 2f - this.levelUI.getHeight() / 2f + toolbarHeightAndPadding;
+        this.levelUI.setPosition((int) x, (int) y);
+    }
+
+    protected void updateToolbarBounds(int width) {
+        int toolbarHeight = PixelLogicUIUtil.getToolbarHeight();
+        this.toolbar.setBounds(0, 0, width, toolbarHeight);
     }
 
     private void updateBackgroundImage() {

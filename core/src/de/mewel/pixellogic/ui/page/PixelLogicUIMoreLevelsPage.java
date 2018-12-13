@@ -13,8 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
+import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.mode.PixelLogicTutorialMode;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
+import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_COLOR;
 
@@ -53,6 +57,11 @@ public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
             mode.activate();
         }
         fadeIn(null);
+    }
+
+    @Override
+    protected Header buildHeader(String headerText, PixelLogicUIPageId backPageId) {
+        return new PlayHeader(getAssets(), getEventManager(), headerText, backPageId);
     }
 
     @Override
@@ -122,6 +131,44 @@ public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
         private Label.LabelStyle getLabelStyle() {
             BitmapFont font = PixelLogicUIUtil.getAppFont(getAssets(), 0);
             return new Label.LabelStyle(font, Color.WHITE);
+        }
+    }
+
+    protected class PlayHeader extends Header {
+
+        private HeaderButton tutorialButton;
+
+        public PlayHeader(PixelLogicAssets assets, PixelLogicEventManager eventManager, String text, PixelLogicUIPageId backPageId) {
+            super(assets, eventManager, text, backPageId);
+
+            final PixelLogicTutorialMode tutorialMode = new PixelLogicTutorialMode();
+            tutorialMode.setup(getGlobal());
+
+            this.tutorialButton = new HeaderButton(assets.getIcon(6));
+            this.tutorialButton.addListener(new PixelLogicUIButtonListener() {
+                @Override
+                public void onClick() {
+                    PixelLogicUIUtil.playButtonSound(getAssets());
+                    tutorialMode.activate();
+                    tutorialMode.run();
+
+                    PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
+                    pageProperties.put("menuBackId", PixelLogicUIPageId.moreLevels);
+                    getAppScreen().setPage(PixelLogicUIPageId.tutorialLevel, pageProperties);
+                }
+            });
+            this.addActor(this.tutorialButton);
+        }
+
+        @Override
+        protected void positionChanged() {
+            super.positionChanged();
+
+            // tutorial button
+            int size = PixelLogicUIUtil.getIconBaseHeight();
+            int y = (int) (this.getHeight() / 2f - size / 2f);
+            int x = (int) this.getWidth() - getPadding() - size;
+            this.tutorialButton.setBounds(x, y, size, size);
         }
     }
 

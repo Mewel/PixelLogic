@@ -46,7 +46,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
         this.pageRoot = buildRoot();
         ScrollPane scrollPane;
         if (headerText != null) {
-            this.header = new Header(getAssets(), getEventManager(), headerText, backPageId);
+            this.header = buildHeader(headerText, backPageId);
             VerticalGroup baseGroup = new VerticalGroup();
             baseGroup.top();
             baseGroup.addActor(this.header);
@@ -63,6 +63,10 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
         scrollPane.setFillParent(true);
 
         build();
+    }
+
+    protected Header buildHeader(String headerText, PixelLogicUIPageId backPageId) {
+        return new Header(getAssets(), getEventManager(), headerText, backPageId);
     }
 
     protected VerticalGroup buildRoot() {
@@ -141,7 +145,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
         }
     }
 
-    private class Header extends PixelLogicUILevelGroup {
+    protected class Header extends PixelLogicUILevelGroup {
 
         private PixelLogicUIColoredSurface background;
 
@@ -149,7 +153,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
 
         private String text;
 
-        private BackButton backButton;
+        private HeaderButton backButton;
 
         public Header(PixelLogicAssets assets, PixelLogicEventManager eventManager, String text, final PixelLogicUIPageId backPageId) {
             super(assets, eventManager);
@@ -159,7 +163,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
             this.background.setColor(MAIN_COLOR);
             this.addActor(this.background);
 
-            this.backButton = new BackButton(assets.getIcon(3));
+            this.backButton = new HeaderButton(assets.getIcon(3));
             this.backButton.addListener(new PixelLogicUIButtonListener() {
                 @Override
                 public void onClick() {
@@ -214,11 +218,11 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
             super.clear();
         }
 
-        private class BackButton extends Actor {
+        protected class HeaderButton extends Actor {
 
             private Sprite sprite;
 
-            public BackButton(Sprite sprite) {
+            public HeaderButton(Sprite sprite) {
                 this.sprite = sprite;
             }
 

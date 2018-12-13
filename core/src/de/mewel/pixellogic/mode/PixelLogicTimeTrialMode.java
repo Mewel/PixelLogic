@@ -168,6 +168,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
 
     @Override
     public void handle(PixelLogicEvent event) {
+        super.handle(event);
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
             if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus())) {
@@ -195,12 +196,6 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
                     secretLevelStatus = 2;
                     getEventManager().fire(new PixelLogicSecretLevelEvent(PixelLogicTimeTrialMode.this, PixelLogicSecretLevelEvent.Type.beat));
                 }
-            }
-        }
-        if (event instanceof PixelLogicUIPageChangeEvent) {
-            PixelLogicUIPageChangeEvent screenChangeEvent = (PixelLogicUIPageChangeEvent) event;
-            if (!screenChangeEvent.getPageId().equals(PixelLogicUIPageId.level)) {
-                this.deactivate();
             }
         }
         if (event instanceof PixelLogicUserEvent) {

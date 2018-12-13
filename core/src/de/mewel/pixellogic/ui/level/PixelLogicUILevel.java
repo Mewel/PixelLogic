@@ -29,6 +29,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
     // input
     private LevelListener levelListener;
+    private boolean enabled;
 
     // game stuff
     private PixelLogicLevel level;
@@ -39,6 +40,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         this.levelListener = new LevelListener(this);
         this.level = null;
         this.status = null;
+        this.enabled = true;
     }
 
     public void load(PixelLogicLevel level) {
@@ -70,10 +72,10 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         this.getEventManager().fire(new PixelLogicBoardChangedEvent(this, level));
     }
 
-    public void resize() {
+    @Override
+    protected void sizeChanged() {
+        super.sizeChanged();
         updateSpritePosition();
-        Vector2 size = PixelLogicUIUtil.get(level).getLevelSize();
-        this.setSize(size.x, size.y);
     }
 
     public boolean isSolved() {
@@ -132,6 +134,14 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         return columnGroup;
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
     private static class LevelListener extends InputListener implements PixelLogicListener {
 
         private PixelLogicUILevel gui;
@@ -157,8 +167,11 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
         @Override
         public boolean touchDown(InputEvent event, float boardX, float boardY, int pointer, int button) {
+            if (!gui.isEnabled()) {
+                return false;
+            }
             if (!PixelLogicLevelStatus.playable.equals(gui.status)) {
-                return true;
+                return false;
             }
             Vector2 pixel = toPixel(boardX, boardY);
             if (pixel == null) {
@@ -174,11 +187,17 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
         @Override
         public void touchUp(InputEvent event, float boardX, float boardY, int pointer, int button) {
+            if (!gui.isEnabled()) {
+                return;
+            }
             this.userAction = null;
         }
 
         @Override
         public void touchDragged(InputEvent event, float boardX, float boardY, int pointer) {
+            if (!gui.isEnabled()) {
+                return;
+            }
             Vector2 pixel = toPixel(boardX, boardY);
             update(pixel);
         }

@@ -1,0 +1,14 @@
+{
+  "name": "tutorial",
+  "pixmapWidth": 7,
+  "pixmapHeight": 7,
+  "preserveOrder": true,
+  "level": [
+    {
+      "name": "HEART"
+    },
+    {
+      "name": "RUBIN GOBLET"
+    }
+  ]
+}

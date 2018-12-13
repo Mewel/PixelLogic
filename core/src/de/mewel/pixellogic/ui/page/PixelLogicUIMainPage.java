@@ -36,7 +36,6 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
     public PixelLogicUIMainPage(PixelLogicGlobal global) {
         super(global, PixelLogicUIPageId.mainMenu);
-        this.campaignMode = new PixelLogicCampaignMode();
     }
 
     @Override
@@ -70,12 +69,11 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
                 campaignPreferences.flush();
 
                 campaignMode.setup(getGlobal());
-                campaignMode.activate();
-                campaignMode.run();
-
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                 pageProperties.put("menuBackId", PixelLogicUIPageId.mainMenu);
                 getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties);
+                campaignMode.activate();
+                campaignMode.run();
             }
         };
 
