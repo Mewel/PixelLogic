@@ -28,6 +28,7 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIMessageModal;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelMenu;
+import de.mewel.pixellogic.ui.level.PixelLogicUILevelResolution;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelToolbar;
 import de.mewel.pixellogic.ui.level.animation.PixelLogicUIBoardSolvedAnimation;
 import de.mewel.pixellogic.ui.level.animation.PixelLogicUILevelAnimation;
@@ -80,7 +81,11 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         this.loadingModal = new PixelLogicUIMessageModal("loading next level...", getAssets(), getEventManager(), getStage());
 
         // STAGE
-        this.screenListener = new ScreenListener(this);
+        this.screenListener = createScreenListener();
+    }
+
+    protected ScreenListener createScreenListener() {
+        return new ScreenListener(this);
     }
 
     @Override
@@ -130,8 +135,12 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         this.levelUI.getColor().a = .0f;
         this.levelUI.load(level);
         this.getStage().addActor(this.levelUI);
-        this.updateBounds((int) getWidth(), (int) getHeight());
-        changeLevelStatus(PixelLogicLevelStatus.loaded);
+        changeLevelStatus(PixelLogicLevelStatus.loaded, new Runnable() {
+            @Override
+            public void run() {
+                updateBounds((int) getWidth(), (int) getHeight());
+            }
+        });
         Action fadeInAction = Actions.sequence(Actions.fadeIn(.4f), Actions.run(new Runnable() {
             @Override
             public void run() {
@@ -198,7 +207,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         // fpsLogger.log();
     }
 
-    private void onSolved() {
+    protected void onSolved() {
         changeLevelStatus(PixelLogicLevelStatus.solved);
         this.solvedAnimation = showSolvedAnimation();
         getAssets().get().get(PixelLogicConstants.PUZZLE_SOLVED_SOUND, Sound.class).play(.2f);
@@ -213,7 +222,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
                 )));
     }
 
-    private PixelLogicUILevelAnimation showSolvedAnimation() {
+    public PixelLogicUILevelAnimation showSolvedAnimation() {
         String animationKey = getProperties().getString("solvedAnimation", "default");
         Class<? extends PixelLogicUILevelAnimation> animationClass = SOLVED_ANIMATION_MAP.get(animationKey);
         PixelLogicUILevelAnimation animation;
@@ -228,8 +237,12 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     }
 
     private void changeLevelStatus(PixelLogicLevelStatus status) {
+        this.changeLevelStatus(status, null);
+    }
+
+    private void changeLevelStatus(PixelLogicLevelStatus status, Runnable after) {
         this.levelStatus = status;
-        getEventManager().fire(new PixelLogicLevelStatusChangeEvent(this, getLevel(), getLevelStatus()));
+        getEventManager().fire(new PixelLogicLevelStatusChangeEvent(this, getLevel(), getLevelStatus()), after);
     }
 
     public PixelLogicLevel getLevel() {
@@ -255,7 +268,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         this.backgroundTexture.dispose();
     }
 
-    private void updateBounds(int width, int height) {
+    protected void updateBounds(int width, int height) {
         // root
         this.getRoot().setSize(width, height);
 
@@ -280,9 +293,12 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     }
 
     protected void updateLevelBounds(int width, int height) {
-        int levelMaxHeight = PixelLogicUIUtil.getLevelMaxHeight();
-        Vector2 levelSize = PixelLogicUIUtil.get(getLevel()).getLevelSize();
+        int levelMaxHeight = Math.min(PixelLogicUIUtil.getLevelMaxHeight(), height);
+        PixelLogicUILevelResolution resolution = new PixelLogicUILevelResolution(getLevel(), width, levelMaxHeight);
+
+        Vector2 levelSize = resolution.getLevelSize();
         this.levelUI.setSize(levelSize.x, levelSize.y);
+        this.levelUI.updateLevelResolution(resolution);
         int toolbarHeightAndPadding = PixelLogicUIUtil.getToolbarHeight() + PixelLogicUIUtil.getToolbarPaddingTop();
         float x = width / 2f - this.levelUI.getWidth() / 2f;
         float y = levelMaxHeight / 2f - this.levelUI.getHeight() / 2f + toolbarHeightAndPadding;
@@ -306,7 +322,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         //this.getRoot().addActorAt(0, this.backgroundImage);
     }
 
-    private static class ScreenListener extends InputListener implements PixelLogicListener {
+    protected static class ScreenListener extends InputListener implements PixelLogicListener {
 
         private PixelLogicUILevelPage page;
 

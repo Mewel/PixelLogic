@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.ui.level;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
@@ -222,8 +220,8 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
     }
 
     @Override
-    public void setBounds(float x, float y, float width, float height) {
-        super.setBounds(x, y, width, height);
+    protected void sizeChanged() {
+        super.sizeChanged();
         updateBounds();
     }
 
@@ -236,6 +234,10 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
                 (this.getHeight() - iconSize) / 2, switcherWidth, iconSize);
         centerLabel(this.solvedLabel);
         centerLabel(this.timerLabel);
+    }
+
+    public PixelLogicUILevelSwitcher getSwitcher() {
+        return this.switcher;
     }
 
     private static class MenuButton extends Actor {

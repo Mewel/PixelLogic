@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
 
@@ -19,17 +18,10 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
         super(assets, eventManager);
     }
 
-    @Override
-    protected void sizeChanged() {
-        super.sizeChanged();
-        this.updateChildrenBounds();
-    }
-
-    private void updateChildrenBounds() {
+    public void updateLevelResolution(PixelLogicUILevelResolution resolution) {
         if (this.level == null) {
             return;
         }
-        PixelLogicUILevelResolution resolution = PixelLogicUIUtil.get(this.level);
         for (int row = 0; row < level.getRows(); row++) {
             for (int col = 0; col < level.getColumns(); col++) {
                 float x = resolution.getGamePixelSizeCombined() * col;
@@ -38,7 +30,7 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
                 pixel.setBounds(x, y, resolution.getGamePixelSize(), resolution.getGamePixelSize());
             }
         }
-        this.grid.update();
+        this.grid.updateResolution(resolution);
     }
 
     public void setPixel(int row, int col, Boolean value) {
@@ -59,7 +51,6 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
             }
         }
         this.addAction(Actions.fadeIn(2f));
-        this.updateChildrenBounds();
     }
 
     public void updateFromLevelPixels() {

@@ -12,7 +12,6 @@ import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
-import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelSwitcherChangedEvent;
@@ -23,13 +22,14 @@ import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_SOUND;
 public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
     // gui
+    private PixelLogicUILevelResolution resolution;
     private PixelLogicUIRowGroup rowGroup;
     private PixelLogicUIColumnGroup columnGroup;
     private PixelLogicUIBoard board;
 
     // input
     private LevelListener levelListener;
-    private boolean enabled;
+    private Boolean[][] enabled;
 
     // game stuff
     private PixelLogicLevel level;
@@ -40,7 +40,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         this.levelListener = new LevelListener(this);
         this.level = null;
         this.status = null;
-        this.enabled = true;
+        this.enabled = null;
     }
 
     public void load(PixelLogicLevel level) {
@@ -60,7 +60,9 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         this.columnGroup = new PixelLogicUIColumnGroup(getAssets(), getEventManager());
         addActor(this.columnGroup);
 
-        updateSpritePosition();
+        // enable all
+        this.enabled = new Boolean[level.getRows()][level.getColumns()];
+        setEnabled(true);
     }
 
     public void resetLevel() {
@@ -70,12 +72,6 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         this.level.reset();
         this.board.clear();
         this.getEventManager().fire(new PixelLogicBoardChangedEvent(this, level));
-    }
-
-    @Override
-    protected void sizeChanged() {
-        super.sizeChanged();
-        updateSpritePosition();
     }
 
     public boolean isSolved() {
@@ -92,11 +88,9 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         return this.level;
     }
 
-    private void updateSpritePosition() {
-        if (level == null) {
-            return;
-        }
-        PixelLogicUILevelResolution resolution = PixelLogicUIUtil.get(level);
+    @Override
+    public void updateLevelResolution(PixelLogicUILevelResolution resolution) {
+        this.resolution = resolution;
         int rowInfoWidth = resolution.getRowInfoWidth();
         int rowInfoHeight = resolution.getColumnInfoHeight();
         Vector2 boardSize = resolution.getBoardSize();
@@ -105,6 +99,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         int boardOffsetX = rowInfoWidth + space;
         if (this.board != null) {
             this.board.setSize(boardSize.x, boardSize.y);
+            this.board.updateLevelResolution(resolution);
             if (!this.isSolved()) {
                 this.board.setPosition(boardOffsetX, 0);
             } else {
@@ -113,12 +108,15 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
                 this.board.setPosition(x, y);
             }
         }
+
         if (this.rowGroup != null) {
             this.rowGroup.setBounds(0, 0, rowInfoWidth, boardSize.y);
+            this.rowGroup.updateLevelResolution(resolution);
         }
         if (this.columnGroup != null) {
             float boardOffsetY = boardSize.y + space;
             this.columnGroup.setBounds(boardOffsetX, boardOffsetY, boardSize.x, rowInfoHeight);
+            this.columnGroup.updateLevelResolution(resolution);
         }
     }
 
@@ -134,12 +132,49 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         return columnGroup;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public PixelLogicUILevel setEnabled(boolean enabled) {
+        for (int row = 0; row < this.level.getRows(); row++) {
+            for (int col = 0; col < this.level.getColumns(); col++) {
+                this.enabled[row][col] = enabled;
+            }
+        }
+        return this;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    public PixelLogicUILevel setEnabled(int row, int column, boolean enabled) {
+        this.enabled[row][column] = enabled;
+        return this;
+    }
+
+    public PixelLogicUILevel setEnabledRow(int row, boolean enabled) {
+        for (int col = 0; col < this.level.getColumns(); col++) {
+            this.enabled[row][col] = enabled;
+        }
+        return this;
+    }
+
+    public PixelLogicUILevel setEnabledColumn(int column, boolean enabled) {
+        for (int row = 0; row < this.level.getRows(); row++) {
+            this.enabled[row][column] = enabled;
+        }
+        return this;
+    }
+
+    public boolean isEnabled(int row, int col) {
+        return this.enabled[row][col];
+    }
+
+    /**
+     * Sets a pixel on the board
+     *
+     * @param row   row of the board
+     * @param col   column of the board
+     * @param pixel the pixel type
+     */
+    public void setPixel(int row, int col, Boolean pixel) {
+        level.set(row, col, pixel);
+        getBoard().setPixel(row, col, pixel);
+        getEventManager().fire(new PixelLogicBoardChangedEvent(this, level, row, col, pixel));
     }
 
     private static class LevelListener extends InputListener implements PixelLogicListener {
@@ -167,14 +202,11 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
         @Override
         public boolean touchDown(InputEvent event, float boardX, float boardY, int pointer, int button) {
-            if (!gui.isEnabled()) {
-                return false;
-            }
             if (!PixelLogicLevelStatus.playable.equals(gui.status)) {
                 return false;
             }
             Vector2 pixel = toPixel(boardX, boardY);
-            if (pixel == null) {
+            if (pixel == null || !gui.isEnabled((int) pixel.y, (int) pixel.x)) {
                 return false;
             }
             Boolean currentPixel = gui.level.get((int) pixel.y, (int) pixel.x);
@@ -187,18 +219,15 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
         @Override
         public void touchUp(InputEvent event, float boardX, float boardY, int pointer, int button) {
-            if (!gui.isEnabled()) {
-                return;
-            }
             this.userAction = null;
         }
 
         @Override
         public void touchDragged(InputEvent event, float boardX, float boardY, int pointer) {
-            if (!gui.isEnabled()) {
+            Vector2 pixel = toPixel(boardX, boardY);
+            if (pixel == null || !gui.isEnabled((int) pixel.y, (int) pixel.x)) {
                 return;
             }
-            Vector2 pixel = toPixel(boardX, boardY);
             update(pixel);
         }
 
@@ -213,7 +242,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
         private Vector2 toPixel(float boardX, float boardY) {
             PixelLogicLevel level = gui.level;
-            PixelLogicUILevelResolution resolution = PixelLogicUIUtil.get(level);
+            PixelLogicUILevelResolution resolution = gui.resolution;
             int x = MathUtils.floor(boardX) / resolution.getGamePixelSizeCombined();
             int y = MathUtils.floor(boardY) / resolution.getGamePixelSizeCombined();
             if (x < 0 || y < 0 || x >= level.getColumns() || y >= level.getRows()) {
@@ -328,9 +357,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
             if (pixelValue == oldValue) {
                 return;
             }
-            level.set(row, col, pixelValue);
-            levelUI.getBoard().setPixel(row, col, pixelValue);
-            levelUI.getEventManager().fire(new PixelLogicBoardChangedEvent(levelUI, level, row, col, pixelValue));
+            levelUI.setPixel(row, col, pixelValue);
         }
 
     }

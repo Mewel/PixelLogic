@@ -35,6 +35,8 @@ public abstract class PixelLogicConstants {
         Colors.put("MAIN_COLOR", MAIN_COLOR);
         Colors.put("SECONDARY_COLOR", SECONDARY_COLOR);
         Colors.put("TEXT_COLOR", TEXT_COLOR);
+        Colors.put("LINE_COLOR", LINE_COLOR);
+        Colors.put("LINE_COMPLETE_COLOR", LINE_COMPLETE_COLOR);
     }
 
 }

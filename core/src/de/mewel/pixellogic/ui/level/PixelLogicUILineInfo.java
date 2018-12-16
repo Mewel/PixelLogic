@@ -57,9 +57,11 @@ public abstract class PixelLogicUILineInfo extends PixelLogicUILevelGroup {
     }
 
     @Override
-    protected void sizeChanged() {
-        super.sizeChanged();
-        updateLabels();
+    public void updateLevelResolution(PixelLogicUILevelResolution resolution) {
+        clearLabels();
+        BitmapFont labelFont = getAssets().getLevelFont(resolution.getFontSize());
+        Label.LabelStyle style = new Label.LabelStyle(labelFont, getLabelColor());
+        addLabels((int) labelFont.getLineHeight(), style);
     }
 
     protected void clearLabels() {
@@ -68,14 +70,6 @@ public abstract class PixelLogicUILineInfo extends PixelLogicUILevelGroup {
             this.removeActor(label);
         }
         this.labels.clear();
-    }
-
-    protected void updateLabels() {
-        clearLabels();
-        PixelLogicUILevelResolution resolution = PixelLogicUIUtil.get(level);
-        BitmapFont labelFont = getAssets().getLevelFont(resolution.getFontSize());
-        Label.LabelStyle style = new Label.LabelStyle(labelFont, getLabelColor());
-        addLabels((int) labelFont.getLineHeight(), style);
     }
 
     protected abstract void addLabels(int fontSize, Label.LabelStyle style);

@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 
 public class PixelLogicUIColumnGroup extends PixelLogicUILevelGroup {
@@ -23,7 +22,6 @@ public class PixelLogicUIColumnGroup extends PixelLogicUILevelGroup {
             PixelLogicUIColumnInfo part = new PixelLogicUIColumnInfo(getAssets(), getEventManager(), level, i);
             this.addActor(part);
         }
-        this.updateChildrenBounds();
     }
 
     @Override
@@ -31,21 +29,17 @@ public class PixelLogicUIColumnGroup extends PixelLogicUILevelGroup {
         this.level = null;
     }
 
-    @Override
-    protected void sizeChanged() {
-        super.sizeChanged();
-        this.updateChildrenBounds();
-    }
-
-    protected void updateChildrenBounds() {
+    public void updateLevelResolution(PixelLogicUILevelResolution resolution) {
         if (this.level == null) {
             return;
         }
-        PixelLogicUILevelResolution resolution = PixelLogicUIUtil.get(level);
         for (int i = 0; i < this.getChildren().size; i++) {
             Actor actor = this.getChildren().get(i);
             float x = resolution.getGamePixelSizeCombined() * i;
             actor.setBounds(x, 0, resolution.getGamePixelSize(), getHeight());
+            if(actor instanceof PixelLogicUIColumnInfo) {
+                ((PixelLogicUIColumnInfo) actor).updateLevelResolution(resolution);
+            }
         }
     }
 

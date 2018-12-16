@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import java.text.DateFormat;
@@ -15,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import de.mewel.pixellogic.PixelLogicConstants;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelResolution;
@@ -81,12 +84,6 @@ public class PixelLogicUIUtil {
         return assets.getGameFont((int) getAppFontHeight(size));
     }
 
-    public static PixelLogicUILevelResolution get(PixelLogicLevel level) {
-        int maxWidth = Gdx.graphics.getWidth();
-        int maxHeight = PixelLogicUIUtil.getLevelMaxHeight();
-        return new PixelLogicUILevelResolution(level, maxWidth, maxHeight);
-    }
-
     public static int getToolbarHeight() {
         int baseHeight = PixelLogicUIUtil.getIconBaseHeight() * 2;
         return Math.max(baseHeight, BASE_SIZE * 2);
@@ -132,6 +129,13 @@ public class PixelLogicUIUtil {
     public static void playButtonSound(PixelLogicAssets assets) {
         Sound clickSound = assets.get().get(BUTTON_SOUND, Sound.class);
         clickSound.play(.25f);
+    }
+
+    public static Action blinkAction(Color color, float duration) {
+        Color brighter = new Color(color).mul(1.4f);
+        return Actions.forever(Actions.sequence(
+                Actions.color(brighter, duration),
+                Actions.color(color, duration)));
     }
 
 }

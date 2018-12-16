@@ -5,8 +5,8 @@ import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelChangeAdapter;
-import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelChangeListener;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 
 public abstract class PixelLogicUILevelGroup extends PixelLogicUIGroup implements PixelLogicLevelChangeListener {
 
@@ -16,6 +16,9 @@ public abstract class PixelLogicUILevelGroup extends PixelLogicUIGroup implement
         super(assets, eventManager);
         this.changeAdapter = new PixelLogicLevelChangeAdapter(eventManager);
         this.changeAdapter.bind(this);
+    }
+
+    public void updateLevelResolution(PixelLogicUILevelResolution resolution) {
     }
 
     @Override

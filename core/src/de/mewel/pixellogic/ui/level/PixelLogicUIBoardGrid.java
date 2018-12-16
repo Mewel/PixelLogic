@@ -9,12 +9,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.mewel.pixellogic.PixelLogicConstants;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIActor;
-import de.mewel.pixellogic.PixelLogicConstants;
-import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
 
@@ -43,12 +42,15 @@ public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
         super(assets, eventManager);
         this.level = level;
         this.setColor(PixelLogicConstants.GRID_COLOR);
-        this.update();
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
+        if (resolution == null) {
+            return;
+        }
+
         int spaceSize = resolution.getGameSpaceSize();
         int combined = resolution.getGamePixelSizeCombined();
         int xWidth = combined * level.getColumns() - spaceSize;
@@ -81,8 +83,8 @@ public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
         batch.begin();
     }
 
-    public void update() {
-        this.resolution = PixelLogicUIUtil.get(level);
+    public void updateResolution(PixelLogicUILevelResolution resolution) {
+        this.resolution = resolution;
     }
 
 }

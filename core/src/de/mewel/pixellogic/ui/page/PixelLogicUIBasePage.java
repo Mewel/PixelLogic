@@ -16,10 +16,10 @@ import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
+import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
-import de.mewel.pixellogic.ui.level.PixelLogicUILevelGroup;
 
 import static de.mewel.pixellogic.PixelLogicConstants.MAIN_COLOR;
 
@@ -145,7 +145,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
         }
     }
 
-    protected class Header extends PixelLogicUILevelGroup {
+    protected class Header extends PixelLogicUIGroup {
 
         private PixelLogicUIColoredSurface background;
 
