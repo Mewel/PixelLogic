@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.ui.level;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -70,6 +71,8 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
             return;
         }
         this.level.reset();
+        this.rowGroup.reset();
+        this.columnGroup.reset();
         this.board.clear();
         this.getEventManager().fire(new PixelLogicBoardChangedEvent(this, level));
     }
@@ -142,6 +145,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
     }
 
     public PixelLogicUILevel setEnabled(int row, int column, boolean enabled) {
+        Gdx.app.log("setEnabled", "row=" + row + " col=" + column + " enabled=" + enabled);
         this.enabled[row][column] = enabled;
         return this;
     }

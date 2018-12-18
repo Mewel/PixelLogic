@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.ui.level;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -81,6 +82,8 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
     }
 
     public void show(PixelLogicLevel level) {
+        Gdx.app.log("TOOLBAR", "show");
+
         this.level = level;
         this.menuButton.addAction(Actions.fadeIn(.3f));
         this.switcher.addAction(Actions.fadeIn(.3f));
@@ -226,9 +229,9 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
     }
 
     private void updateBounds() {
-        float padding = this.getHeight() / 32;
-        float iconSize = this.getHeight() - (padding * 2);
-        float switcherWidth = this.getHeight() * 2;
+        int padding = (int) this.getHeight() / 32;
+        int iconSize = (int) this.getHeight() - (padding * 2);
+        int switcherWidth = (int) this.getHeight() * 2;
         this.menuButton.setBounds(padding, padding, iconSize, iconSize);
         this.switcher.setBounds((this.getWidth() - switcherWidth) - padding,
                 (this.getHeight() - iconSize) / 2, switcherWidth, iconSize);

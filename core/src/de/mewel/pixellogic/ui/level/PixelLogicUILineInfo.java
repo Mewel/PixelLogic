@@ -29,6 +29,8 @@ public abstract class PixelLogicUILineInfo extends PixelLogicUILevelGroup {
 
     protected Texture texture;
 
+    protected PixelLogicUILevelResolution resolution;
+
     public PixelLogicUILineInfo(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicLevel level, int line) {
         super(assets, eventManager);
         this.level = level;
@@ -58,6 +60,11 @@ public abstract class PixelLogicUILineInfo extends PixelLogicUILevelGroup {
 
     @Override
     public void updateLevelResolution(PixelLogicUILevelResolution resolution) {
+        this.resolution = resolution;
+        updateLabels(resolution);
+    }
+
+    private void updateLabels(PixelLogicUILevelResolution resolution) {
         clearLabels();
         BitmapFont labelFont = getAssets().getLevelFont(resolution.getFontSize());
         Label.LabelStyle style = new Label.LabelStyle(labelFont, getLabelColor());
@@ -78,6 +85,13 @@ public abstract class PixelLogicUILineInfo extends PixelLogicUILevelGroup {
 
     public Color getLabelColor() {
         return isLineComplete() ? APP_BACKGROUND : TEXT_COLOR;
+    }
+
+    public void reset() {
+        if (this.resolution == null) {
+            return;
+        }
+        updateLabels(this.resolution);
     }
 
 }

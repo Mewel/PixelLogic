@@ -1,5 +1,7 @@
 package de.mewel.pixellogic.ui.page;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,6 +17,7 @@ import java.util.List;
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.mode.PixelLogicCampaignMode;
 import de.mewel.pixellogic.mode.PixelLogicTutorialMode;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
@@ -22,25 +25,61 @@ import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_COLOR;
 
-public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
+public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
 
     private List<LevelModeUI> modes;
 
-    public PixelLogicUIMoreLevelsPage(PixelLogicGlobal global) {
-        super(global, PixelLogicUIPageId.moreLevels, "More Levels", PixelLogicUIPageId.mainMenu);
+    private PixelLogicCampaignMode campaignMode;
+
+    public PixelLogicUIPlayPage(PixelLogicGlobal global) {
+        super(global, PixelLogicUIPageId.play, "PLAY", PixelLogicUIPageId.mainMenu);
     }
 
     @Override
     protected void build() {
+        this.campaignMode = new PixelLogicCampaignMode();
+        this.campaignMode.setup(getGlobal());
+
         this.modes = new ArrayList<LevelModeUI>();
+        this.modes.add(new LevelModeUI(getCampaignLabel(), "[TEXT_COLOR]play the campaign.",
+                this, new Runnable() {
+            @Override
+            public void run() {
+                PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
+                pageProperties.put("menuBackId", PixelLogicUIPageId.play);
+                getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties, new Runnable() {
+                    @Override
+                    public void run() {
+                        campaignMode.activate();
+                        campaignMode.run();
+                    }
+                });
+            }
+        }));
         this.modes.add(new LevelModeUI("100 Characters", "[TEXT_COLOR]Play over [MAIN_COLOR]50 bonus[] levels based on" +
-                " the awesome pixel art by Johan Vinet.",
-                PixelLogicUIPageId.characters, this));
+                " the awesome pixel art by Johan Vinet.", this, new Runnable() {
+            @Override
+            public void run() {
+                PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
+                getAppScreen().setPage(PixelLogicUIPageId.characters, pageProperties);
+            }
+        }));
         this.modes.add(new LevelModeUI("Time trial", "[TEXT_COLOR]Play [MAIN_COLOR]infinite computer " +
-                "generated[] levels against the clock and try to beat your highscore.",
-                PixelLogicUIPageId.timeTrial, this));
-        this.modes.add(new LevelModeUI("Art Puzzles", "[TEXT_COLOR]Discover beautiful and famous art",
-                PixelLogicUIPageId.picture, this));
+                "generated[] levels against the clock and try to beat your highscore.", this, new Runnable() {
+            @Override
+            public void run() {
+                PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
+                getAppScreen().setPage(PixelLogicUIPageId.timeTrial, pageProperties);
+            }
+        }));
+        this.modes.add(new LevelModeUI("Art Puzzles", "[TEXT_COLOR]Discover beautiful and famous art.",
+                this, new Runnable() {
+            @Override
+            public void run() {
+                PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
+                getAppScreen().setPage(PixelLogicUIPageId.picture, pageProperties);
+            }
+        }));
         this.buildModes();
     }
 
@@ -56,12 +95,23 @@ public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
         for (LevelModeUI mode : this.modes) {
             mode.activate();
         }
+        this.modes.get(0).button.setText(getCampaignLabel());
         fadeIn(null);
     }
 
     @Override
     protected Header buildHeader(String headerText, PixelLogicUIPageId backPageId) {
         return new PlayHeader(getAssets(), getEventManager(), headerText, backPageId);
+    }
+
+    private Preferences getCampaignPreferences() {
+        return Gdx.app.getPreferences(this.campaignMode.getName());
+    }
+
+    private String getCampaignLabel() {
+        boolean campaignStarted = getCampaignPreferences().getBoolean("started");
+        Gdx.app.log("main", "campaign started " + campaignStarted);
+        return campaignStarted ? "continue campaign" : "start campaign";
     }
 
     @Override
@@ -78,8 +128,8 @@ public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
 
         private PixelLogicUIButton button;
 
-        public LevelModeUI(final String buttonText, final String description, final PixelLogicUIPageId pageId,
-                           PixelLogicUIMoreLevelsPage page) {
+        public LevelModeUI(final String buttonText, final String description,
+                           PixelLogicUIPlayPage page, final Runnable buttonAction) {
             super(new VerticalGroup());
 
             getActor().setFillParent(true);
@@ -95,8 +145,7 @@ public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
             this.button = new PixelLogicUIButton(page.getAssets(), page.getEventManager(), buttonText) {
                 @Override
                 public void handleClick() {
-                    PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
-                    getAppScreen().setPage(pageId, pageProperties);
+                    buttonAction.run();
                 }
             };
             this.button.setSize(getButtonWidth(), getButtonHeight());
@@ -150,7 +199,7 @@ public class PixelLogicUIMoreLevelsPage extends PixelLogicUIBasePage {
                 public void onClick() {
                     PixelLogicUIUtil.playButtonSound(getAssets());
                     PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
-                    pageProperties.put("menuBackId", PixelLogicUIPageId.moreLevels);
+                    pageProperties.put("menuBackId", PixelLogicUIPageId.play);
                     getAppScreen().setPage(PixelLogicUIPageId.tutorialLevel, pageProperties, new Runnable() {
                         @Override
                         public void run() {

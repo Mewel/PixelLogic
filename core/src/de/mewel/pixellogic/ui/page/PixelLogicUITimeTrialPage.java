@@ -33,7 +33,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
     private Container<Label> labelContainer;
 
     public PixelLogicUITimeTrialPage(PixelLogicGlobal global) {
-        super(global, PixelLogicUIPageId.timeTrial, "Time trial", PixelLogicUIPageId.moreLevels);
+        super(global, PixelLogicUIPageId.timeTrial, "Time trial", PixelLogicUIPageId.play);
     }
 
     @Override

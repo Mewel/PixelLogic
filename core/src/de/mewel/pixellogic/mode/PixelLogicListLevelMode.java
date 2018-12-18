@@ -29,6 +29,8 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
     }
 
     public void run() {
+        this.preferences.putBoolean("started", true);
+        this.preferences.flush();
         String levelName = this.preferences.getString(getLastPlayedLevelProperty());
         if (levelName != null) {
             PixelLogicLevel level = findLevel(levelName);

@@ -77,11 +77,15 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         this.toolbar = new PixelLogicUILevelToolbar(getAssets(), getEventManager());
 
         // MODAL's
-        this.menu = new PixelLogicUILevelMenu(getAssets(), getEventManager(), this);
+        this.menu = createMenu();
         this.loadingModal = new PixelLogicUIMessageModal("loading next level...", getAssets(), getEventManager(), getStage());
 
         // STAGE
         this.screenListener = createScreenListener();
+    }
+
+    protected PixelLogicUILevelMenu createMenu() {
+        return new PixelLogicUILevelMenu(getAssets(), getEventManager(), this);
     }
 
     protected ScreenListener createScreenListener() {
@@ -236,11 +240,11 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         return animation;
     }
 
-    private void changeLevelStatus(PixelLogicLevelStatus status) {
+    protected void changeLevelStatus(PixelLogicLevelStatus status) {
         this.changeLevelStatus(status, null);
     }
 
-    private void changeLevelStatus(PixelLogicLevelStatus status, Runnable after) {
+    protected void changeLevelStatus(PixelLogicLevelStatus status, Runnable after) {
         this.levelStatus = status;
         getEventManager().fire(new PixelLogicLevelStatusChangeEvent(this, getLevel(), getLevelStatus()), after);
     }

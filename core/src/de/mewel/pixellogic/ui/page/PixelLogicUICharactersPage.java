@@ -32,7 +32,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
     private Texture levelTexture;
 
     public PixelLogicUICharactersPage(PixelLogicGlobal global) {
-        super(global, PixelLogicUIPageId.characters, "100 Characters", PixelLogicUIPageId.moreLevels);
+        super(global, PixelLogicUIPageId.characters, "100 Characters", PixelLogicUIPageId.play);
     }
 
     @Override

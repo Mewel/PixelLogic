@@ -22,7 +22,7 @@ allprojects {
     version = '1.0'
     ext {
         appName = "pixellogic"
-        gdxVersion = '1.9.7'
+        gdxVersion = '1.9.8'
         roboVMVersion = '2.3.1'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'

@@ -4,6 +4,7 @@ package de.mewel.pixellogic.ui.component;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -36,6 +37,12 @@ public abstract class PixelLogicUIModal extends PixelLogicUIGroup {
     public void show() {
         this.setColor(0f, 0f, 0f, 0f);
         this.parent.addActor(this);
+        this.addAction(Actions.fadeIn(fadeInDuration));
+    }
+
+    public void show(Actor before) {
+        this.setColor(0f, 0f, 0f, 0f);
+        this.parent.addActorBefore(before, this);
         this.addAction(Actions.fadeIn(fadeInDuration));
     }
 
@@ -75,7 +82,6 @@ public abstract class PixelLogicUIModal extends PixelLogicUIGroup {
     public Table getContent() {
         return content;
     }
-
 
 
 }

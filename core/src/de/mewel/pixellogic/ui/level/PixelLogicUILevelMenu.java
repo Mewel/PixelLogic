@@ -2,6 +2,7 @@ package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.Gdx;
 
+import de.mewel.pixellogic.PixelLogicConstants;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
@@ -15,16 +16,16 @@ import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicUILevelMenu extends PixelLogicUIModal {
 
-    private PixelLogicUILevelPage screen;
+    protected PixelLogicUILevelPage page;
 
-    private PixelLogicUIButton solveLevelButton, resetLevelButton, continueButton, backButton;
+    protected PixelLogicUIButton solveLevelButton, resetLevelButton, continueButton, backButton;
 
-    private PixelLogicUIPageId backButtonScreenId;
+    protected PixelLogicUIPageId backButtonPageId;
 
-    public PixelLogicUILevelMenu(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicUILevelPage screen) {
-        super(assets, eventManager, screen.getStage().getRoot());
-        this.screen = screen;
-        this.backButtonScreenId = null;
+    public PixelLogicUILevelMenu(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicUILevelPage page) {
+        super(assets, eventManager, page.getStage().getRoot());
+        this.page = page;
+        this.backButtonPageId = null;
         buildContent();
     }
 
@@ -35,8 +36,8 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
             @Override
             public void handleClick() {
                 close();
-                PixelLogicUtil.solveLevel(PixelLogicUILevelMenu.this.screen.getLevel());
-                PixelLogicUILevelMenu.this.screen.getLevelUI().getBoard().updateFromLevelPixels();
+                PixelLogicUtil.solveLevel(PixelLogicUILevelMenu.this.page.getLevel());
+                PixelLogicUILevelMenu.this.page.getLevelUI().getBoard().updateFromLevelPixels();
             }
         };
 
@@ -45,7 +46,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
             @Override
             public void handleClick() {
                 close();
-                screen.resetLevel();
+                page.resetLevel();
             }
         };
 
@@ -88,18 +89,22 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
     public void activate(PixelLogicUIPageProperties properties) {
         int padding = PixelLogicUIUtil.getBaseHeight() / 2;
 
-        getContent().add(this.solveLevelButton).padBottom(padding);
-        getContent().row();
-        getContent().add(this.resetLevelButton).padBottom(padding);
-        getContent().row();
-
-        this.backButtonScreenId = properties.get("menuBackId");
-        if (this.backButtonScreenId != null) {
+        if (this.solveLevelButton != null) {
+            getContent().add(this.solveLevelButton).padBottom(padding);
+            getContent().row();
+        }
+        if (this.resetLevelButton != null) {
+            getContent().add(this.resetLevelButton).padBottom(padding);
+            getContent().row();
+        }
+        this.backButtonPageId = properties.get("menuBackId");
+        if (this.backButtonPageId != null) {
             getContent().add(this.backButton).padBottom(padding);
             getContent().row();
         }
-        getContent().add(this.continueButton).padTop(padding);
-
+        if (this.continueButton != null) {
+            getContent().add(this.continueButton).padTop(padding);
+        }
         this.updateButtonSize();
     }
 
@@ -115,12 +120,12 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         return getButtonHeight() * 4;
     }
 
-    private void back() {
-        if (backButtonScreenId == null) {
-            Gdx.app.log("level menu", "pushing back button without screen id, this should never happen!");
+    protected void back() {
+        if (backButtonPageId == null) {
+            Gdx.app.log("level menu", "pushing back button without page id, this should never happen!");
             return;
         }
-        this.screen.getAppScreen().setPage(backButtonScreenId);
+        this.page.getAppScreen().setPage(backButtonPageId);
     }
 
     @Override
@@ -137,11 +142,18 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
     private void updateButtonSize() {
         int buttonWidth = getButtonWidth();
         int buttonHeight = getButtonHeight();
-
-        this.solveLevelButton.setSize(buttonWidth, buttonHeight);
-        this.resetLevelButton.setSize(buttonWidth, buttonHeight);
-        this.continueButton.setSize(buttonWidth, buttonHeight);
-        this.backButton.setSize(buttonWidth, buttonHeight);
+        if (this.solveLevelButton != null) {
+            this.solveLevelButton.setSize(buttonWidth, buttonHeight);
+        }
+        if (this.resetLevelButton != null) {
+            this.resetLevelButton.setSize(buttonWidth, buttonHeight);
+        }
+        if (this.continueButton != null) {
+            this.continueButton.setSize(buttonWidth, buttonHeight);
+        }
+        if (this.backButton != null) {
+            this.backButton.setSize(buttonWidth, buttonHeight);
+        }
     }
 
 }

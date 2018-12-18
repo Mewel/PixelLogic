@@ -107,4 +107,8 @@ public abstract class PixelLogicUIButton extends PixelLogicUIGroup {
         return this.blocked.getAndSet(false);
     }
 
+    public PixelLogicUIColoredSurface getBackground() {
+        return background;
+    }
+
 }

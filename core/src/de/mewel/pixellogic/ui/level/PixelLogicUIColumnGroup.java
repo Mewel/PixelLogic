@@ -43,4 +43,13 @@ public class PixelLogicUIColumnGroup extends PixelLogicUILevelGroup {
         }
     }
 
+    public void reset() {
+        for (int i = 0; i < this.getChildren().size; i++) {
+            Actor actor = this.getChildren().get(i);
+            if (actor instanceof PixelLogicUIColumnInfo) {
+                ((PixelLogicUIColumnInfo) actor).reset();
+            }
+        }
+    }
+
 }

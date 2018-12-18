@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.ui.page;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -9,9 +8,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -23,11 +24,17 @@ import com.rafaskoberg.gdx.typinglabel.TypingListener;
 
 import de.mewel.pixellogic.PixelLogicConstants;
 import de.mewel.pixellogic.PixelLogicGlobal;
+import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
+import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
+import de.mewel.pixellogic.ui.component.PixelLogicUIModal;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
+import de.mewel.pixellogic.ui.level.PixelLogicUILevelMenu;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelResolution;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelSwitcher;
+import de.mewel.pixellogic.ui.level.PixelLogicUILevelToolbar;
 
 import static de.mewel.pixellogic.PixelLogicConstants.SECONDARY_COLOR;
 
@@ -38,6 +45,10 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
     public PixelLogicUITutorialLevelPage(PixelLogicGlobal global) {
         super(global);
         this.messageBox = new MessageBox();
+    }
+
+    protected PixelLogicUILevelMenu createMenu() {
+        return new TutorialMenu(getAssets(), getEventManager(), this);
     }
 
     @Override
@@ -113,7 +124,6 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
         this.setMessage(text, new TypingAdapter() {
             @Override
             public void end() {
-                Gdx.app.log("tutorial page", "show next message button");
                 showNextMessageButton(new Runnable() {
                     @Override
                     public void run() {
@@ -143,6 +153,52 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
         switcher.remove();
     }
 
+    public void showSwitcher(Runnable after) {
+        PixelLogicUILevelToolbar toolbar = getToolbar();
+        final PixelLogicUILevelSwitcher switcher = toolbar.getSwitcher();
+        switcher.remove();
+        switcher.clearActions();
+        switcher.getColor().a = 0f;
+        switcher.setPosition(getWidth() / 2, getHeight() / 2, Align.center);
+        getStage().getRoot().addActor(switcher);
+
+        final SwitcherModal switcherModal = new SwitcherModal(getAssets(), getEventManager(), getStage().getRoot());
+        switcherModal.setBounds(0, 0, getWidth(), getHeight());
+
+        int padding = (int) toolbar.getHeight() / 32;
+        int x = (int) (toolbar.getWidth() - switcher.getWidth()) - padding;
+        int y = (int) (toolbar.getHeight() - (toolbar.getHeight() - (padding * 2))) / 2;
+
+        SequenceAction sequence = new SequenceAction();
+        sequence.addAction(Actions.delay(.5f));
+        sequence.addAction(Actions.run(new Runnable() {
+            @Override
+            public void run() {
+                switcherModal.show(switcher);
+            }
+        }));
+        sequence.addAction(Actions.delay(1f));
+        sequence.addAction(Actions.fadeIn(.5f));
+        sequence.addAction(Actions.delay(1f));
+        sequence.addAction(Actions.run(new Runnable() {
+            @Override
+            public void run() {
+                switcher.swap();
+            }
+        }));
+        sequence.addAction(Actions.delay(1f));
+        sequence.addAction(Actions.moveTo(x, y, .2f));
+        sequence.addAction(Actions.delay(.2f));
+        sequence.addAction(Actions.run(new Runnable() {
+            @Override
+            public void run() {
+                switcherModal.close();
+            }
+        }));
+        sequence.addAction(Actions.delay(.2f));
+        sequence.addAction(Actions.run(after));
+        switcher.addAction(sequence);
+    }
 
     public class MessageBox extends Container<HorizontalGroup> {
 
@@ -228,7 +284,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
         @Override
         public float getPrefHeight() {
             float lineHeight = label.getBitmapFontCache().getFont().getLineHeight();
-            return lineHeight * 5 + getPadBottom() + getPadTop() + 2 * getPadding();
+            return lineHeight * 6 + getPadBottom() + getPadTop() + 2 * getPadding();
         }
 
         public void showNextButton(final Runnable action) {
@@ -301,4 +357,39 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
     }
 
+    private class TutorialMenu extends PixelLogicUILevelMenu {
+
+        public TutorialMenu(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicUILevelPage screen) {
+            super(assets, eventManager, screen);
+        }
+
+        @Override
+        protected void buildContent() {
+            // continue
+            this.continueButton = new PixelLogicUIButton(getAssets(), getEventManager(), "continue") {
+                @Override
+                public void handleClick() {
+                    close();
+                }
+            };
+
+            // back
+            this.backButton = new PixelLogicUIButton(getAssets(), getEventManager(), "skip tutorial") {
+                @Override
+                public void handleClick() {
+                    close();
+                    back();
+                }
+            };
+        }
+    }
+
+    protected static class SwitcherModal extends PixelLogicUIModal {
+
+
+        public SwitcherModal(PixelLogicAssets assets, PixelLogicEventManager eventManager, Group parent) {
+            super(assets, eventManager, parent);
+        }
+
+    }
 }
