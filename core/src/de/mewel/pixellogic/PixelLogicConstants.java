@@ -30,6 +30,7 @@ public abstract class PixelLogicConstants {
     public static final String BLOCK_SOUND = "audio/63532__florian-reinke__click2.wav";
     public static final String SWITCHER_SOUND = "audio/134712__joedeshon__push-button-switch-04.wav";
     public static final String PUZZLE_SOLVED_SOUND = "audio/258142__tuudurt__level-win.wav";
+    public static final String KEY_SOUND = "audio/378083__bigmonmulgrew__mechanical-key-soft.wav";
 
     static {
         Colors.put("MAIN_COLOR", MAIN_COLOR);

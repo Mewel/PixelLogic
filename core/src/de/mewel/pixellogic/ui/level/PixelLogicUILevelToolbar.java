@@ -82,8 +82,6 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
     }
 
     public void show(PixelLogicLevel level) {
-        Gdx.app.log("TOOLBAR", "show");
-
         this.level = level;
         this.menuButton.addAction(Actions.fadeIn(.3f));
         this.switcher.addAction(Actions.fadeIn(.3f));

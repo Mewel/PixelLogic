@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.SnapshotArray;
-import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -197,7 +196,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
                 new Runnable() {
                     @Override
                     public void run() {
-                        levelPage.setMessage("{SLOWER}{COLOR=TEXT_COLOR}Now its your turn :). Fill this row!");
+                        levelPage.setMessage("{COLOR=TEXT_COLOR}Now its your turn :). Fill this row!");
                         levelUI.setEnabled(false).setEnabledRow(3, true);
                         showRow(levelUI, 3);
                     }
@@ -265,13 +264,14 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         }
         this.status = 10;
         levelPage.setMessage("{COLOR=TEXT_COLOR}All three combinations have " +
-                "{COLOR=MAIN_COLOR} one pixel " +
-                "{COLOR=TEXT_COLOR}in common. This one must be set. Can you find it?", new TypingAdapter() {
-            @Override
-            public void end() {
-                levelUI.setEnabled(2, 2, true);
-            }
-        });
+                        "{COLOR=MAIN_COLOR} one pixel " +
+                        "{COLOR=TEXT_COLOR}in common. This one must be set. Can you find it?",
+                new PixelLogicUITutorialLevelPage.TutorialTypingAdapter(getAssets()) {
+                    @Override
+                    public void end() {
+                        levelUI.setEnabled(2, 2, true);
+                    }
+                });
     }
 
     private void handleStatus11() {
@@ -322,12 +322,13 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         this.status = 13;
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
-        levelPage.setMessage("{COLOR=TEXT_COLOR}So, what to do here? :)", new TypingAdapter() {
-            @Override
-            public void end() {
-                levelUI.setEnabled(0, 2, true);
-            }
-        });
+        levelPage.setMessage("{COLOR=TEXT_COLOR}So, what to do here? :)",
+                new PixelLogicUITutorialLevelPage.TutorialTypingAdapter(getAssets()) {
+                    @Override
+                    public void end() {
+                        levelUI.setEnabled(0, 2, true);
+                    }
+                });
         showRow(levelUI, 0);
     }
 
@@ -363,20 +364,21 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
 
-        levelPage.setMessage("{COLOR=TEXT_COLOR}Block the other column!", new TypingAdapter() {
-            @Override
-            public void end() {
-                levelPage.showSwitcher(new Runnable() {
+        levelPage.setMessage("{COLOR=TEXT_COLOR}Block the other column!",
+                new PixelLogicUITutorialLevelPage.TutorialTypingAdapter(getAssets()) {
                     @Override
-                    public void run() {
-                        levelUI.setEnabled(false);
-                        levelUI.setEnabled(0, 4, true);
-                        levelUI.setEnabled(1, 4, true);
-                        levelUI.setEnabled(2, 4, true);
+                    public void end() {
+                        levelPage.showSwitcher(new Runnable() {
+                            @Override
+                            public void run() {
+                                levelUI.setEnabled(false);
+                                levelUI.setEnabled(0, 4, true);
+                                levelUI.setEnabled(1, 4, true);
+                                levelUI.setEnabled(2, 4, true);
+                            }
+                        });
                     }
                 });
-            }
-        });
     }
 
     private void handleStatus16() {

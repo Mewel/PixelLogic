@@ -29,6 +29,7 @@ import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 import static de.mewel.pixellogic.PixelLogicConstants.BASE_SIZE;
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.KEY_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.PUZZLE_SOLVED_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.SWITCHER_SOUND;
@@ -126,6 +127,7 @@ public class PixelLogicAssets {
         manager.load(BLOCK_SOUND, Sound.class);
         manager.load(SWITCHER_SOUND, Sound.class);
         manager.load(PUZZLE_SOLVED_SOUND, Sound.class);
+        manager.load(KEY_SOUND, Sound.class);
     }
 
     public BitmapFont getGameFont(int size) {

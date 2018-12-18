@@ -40,7 +40,7 @@ public abstract class PixelLogicTimeTrialHighscoreStore {
 
     public static List<Highscore> list(String mode) {
         List<Highscore> highscoreList = new ArrayList<Highscore>();
-        Preferences preferences = Gdx.app.getPreferences("highscore_" + mode);
+        Preferences preferences = Gdx.app.getPreferences("pixellogic_highscore_" + mode);
         for (int i = 1; i <= MAX_ENTRIES; i++) {
             String highscoreAsString = preferences.getString(String.valueOf(i), null);
             Highscore highscore = Highscore.of(highscoreAsString);
@@ -53,7 +53,7 @@ public abstract class PixelLogicTimeTrialHighscoreStore {
     }
 
     public static void store(String mode, List<Highscore> highscoreList) {
-        Preferences preferences = Gdx.app.getPreferences("highscore_" + mode);
+        Preferences preferences = Gdx.app.getPreferences("pixellogic_highscore_" + mode);
         for (int i = 0; i < highscoreList.size(); i++) {
             Highscore highscore = highscoreList.get(i);
             preferences.putString(String.valueOf(i + 1), highscore.toString());
@@ -62,7 +62,7 @@ public abstract class PixelLogicTimeTrialHighscoreStore {
     }
 
     public static void clear(String mode) {
-        Preferences preferences = Gdx.app.getPreferences("highscore_" + mode);
+        Preferences preferences = Gdx.app.getPreferences("pixellogic_highscore_" + mode);
         preferences.clear();
         preferences.flush();
     }

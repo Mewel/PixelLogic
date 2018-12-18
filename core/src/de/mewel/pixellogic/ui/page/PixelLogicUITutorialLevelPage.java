@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.ui.page;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -36,6 +37,9 @@ import de.mewel.pixellogic.ui.level.PixelLogicUILevelResolution;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelSwitcher;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelToolbar;
 
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.KEY_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.SECONDARY_COLOR;
 
 public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
@@ -117,11 +121,11 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
     }
 
     public void setMessage(String text) {
-        this.setMessage(text, (TypingListener) null);
+        this.setMessage(text, new TutorialTypingAdapter(getAssets()));
     }
 
     public void setMessage(String text, final Runnable action) {
-        this.setMessage(text, new TypingAdapter() {
+        this.setMessage(text, new TutorialTypingAdapter(getAssets()) {
             @Override
             public void end() {
                 showNextMessageButton(new Runnable() {
@@ -298,6 +302,8 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
                             next.addListener(new InputListener() {
                                 @Override
                                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                                    Sound clickSound = getAssets().get().get(BUTTON_SOUND, Sound.class);
+                                    clickSound.play(.25f);
                                     action.run();
                                     return super.touchDown(event, x, y, pointer, button);
                                 }
@@ -392,4 +398,21 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
         }
 
     }
+
+    public static class TutorialTypingAdapter extends TypingAdapter {
+
+        private Sound typeSound;
+
+        public TutorialTypingAdapter(PixelLogicAssets assets) {
+            this.typeSound = assets.get().get(KEY_SOUND, Sound.class);
+        }
+
+        @Override
+        public void onChar(Character ch) {
+            typeSound.play(.5f);
+            super.onChar(ch);
+        }
+
+    }
+
 }

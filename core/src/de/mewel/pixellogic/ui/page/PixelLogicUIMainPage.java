@@ -1,12 +1,14 @@
 package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
+import de.mewel.pixellogic.mode.PixelLogicTutorialMode;
 import de.mewel.pixellogic.ui.background.PixelLogicUIRotatingBoardBackground;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
@@ -54,7 +56,24 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         this.playButton = new PixelLogicUIButton(getAssets(), getEventManager(), "play") {
             @Override
             public void handleClick() {
+                Preferences preferences = getPreferences();
+                boolean firstTimeOpenApp = preferences.getBoolean("firstTimeOpenApp", true);
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
+                if (firstTimeOpenApp) {
+                    preferences.putBoolean("firstTimeOpenApp", false);
+                    preferences.flush();
+                    PixelLogicUIPlayPage page = (PixelLogicUIPlayPage) getAppScreen().getPage(PixelLogicUIPageId.play);
+                    final PixelLogicTutorialMode tutorialMode = page.getTutorialMode();
+                    pageProperties.put("menuBackId", PixelLogicUIPageId.play);
+                    getAppScreen().setPage(PixelLogicUIPageId.tutorialLevel, pageProperties, new Runnable() {
+                        @Override
+                        public void run() {
+                            tutorialMode.activate();
+                            tutorialMode.run();
+                        }
+                    });
+                    return;
+                }
                 getAppScreen().setPage(PixelLogicUIPageId.play, pageProperties);
             }
         };
@@ -133,5 +152,8 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         Gdx.app.log("main", "resume");
     }
 
+    private Preferences getPreferences() {
+        return Gdx.app.getPreferences("pixellogic_settings");
+    }
 
 }

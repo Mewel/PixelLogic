@@ -23,7 +23,7 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
         super.setup(global);
         if (!this.setupDone) {
             this.levels = this.loadLevels();
-            this.preferences = Gdx.app.getPreferences(getName());
+            this.preferences = Gdx.app.getPreferences("pixellogic_" + getName());
             this.setupDone = true;
         }
     }

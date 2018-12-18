@@ -26,7 +26,7 @@ public class PixelLogicAchievements implements PixelLogicListener {
     }
 
     protected void register() {
-        Preferences preferences = Gdx.app.getPreferences("achievements");
+        Preferences preferences = Gdx.app.getPreferences("pixellogic_achievements");
 
         // add
         this.achievements.add(new PixelLogicAchievementCampaign());
@@ -64,7 +64,7 @@ public class PixelLogicAchievements implements PixelLogicListener {
     }
 
     public void fireAchieved(PixelLogicAchievement achievement) {
-        Preferences preferences = Gdx.app.getPreferences("achievements");
+        Preferences preferences = Gdx.app.getPreferences("pixellogic_achievements");
         achievement.achieved();
         preferences.putBoolean(getDoneKey(achievement), true);
         preferences.flush();
@@ -76,7 +76,7 @@ public class PixelLogicAchievements implements PixelLogicListener {
     }
 
     public void clearAll() {
-        Preferences preferences = Gdx.app.getPreferences("achievements");
+        Preferences preferences = Gdx.app.getPreferences("pixellogic_achievements");
         preferences.clear();
         preferences.flush();
     }

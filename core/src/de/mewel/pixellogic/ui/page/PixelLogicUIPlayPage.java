@@ -31,12 +31,17 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
 
     private PixelLogicCampaignMode campaignMode;
 
+    private PixelLogicTutorialMode tutorialMode;
+
     public PixelLogicUIPlayPage(PixelLogicGlobal global) {
         super(global, PixelLogicUIPageId.play, "PLAY", PixelLogicUIPageId.mainMenu);
     }
 
     @Override
     protected void build() {
+        this.tutorialMode = new PixelLogicTutorialMode();
+        this.tutorialMode.setup(getGlobal());
+
         this.campaignMode = new PixelLogicCampaignMode();
         this.campaignMode.setup(getGlobal());
 
@@ -105,7 +110,7 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
     }
 
     private Preferences getCampaignPreferences() {
-        return Gdx.app.getPreferences(this.campaignMode.getName());
+        return Gdx.app.getPreferences("pixellogic_" + this.campaignMode.getName());
     }
 
     private String getCampaignLabel() {
@@ -120,6 +125,10 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
         for (LevelModeUI mode : this.modes) {
             mode.resize();
         }
+    }
+
+    public PixelLogicTutorialMode getTutorialMode() {
+        return this.tutorialMode;
     }
 
     private class LevelModeUI extends Container<VerticalGroup> {
@@ -189,10 +198,6 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
 
         public PlayHeader(PixelLogicAssets assets, PixelLogicEventManager eventManager, String text, PixelLogicUIPageId backPageId) {
             super(assets, eventManager, text, backPageId);
-
-            final PixelLogicTutorialMode tutorialMode = new PixelLogicTutorialMode();
-            tutorialMode.setup(getGlobal());
-
             this.tutorialButton = new HeaderButton(assets.getIcon(6));
             this.tutorialButton.addListener(new PixelLogicUIButtonListener() {
                 @Override
