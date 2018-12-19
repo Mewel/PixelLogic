@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.mode;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -20,6 +21,9 @@ import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUITutorialLevelPage;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
+
+import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_SOUND;
 
 public class PixelLogicTutorialMode extends PixelLogicLevelMode {
 
@@ -476,6 +480,8 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
     private SequenceAction createSolveSequence(final PixelLogicUILevel levelUI, Map<Vector2, Boolean> pixels,
                                                float delay) {
         SequenceAction solveSequence = Actions.sequence();
+        final Sound drawSound = getAssets().get().get(PIXEL_SOUND);
+        final Sound blockSound = getAssets().get().get(BLOCK_SOUND);
         for (final Map.Entry<Vector2, Boolean> entry : pixels.entrySet()) {
             final Vector2 pixel = entry.getKey();
             solveSequence.addAction(Actions.delay(delay));
@@ -483,9 +489,15 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
                 @Override
                 public void run() {
                     levelUI.setPixel((int) pixel.y, (int) pixel.x, entry.getValue());
+                    if (entry.getValue() != null) {
+                        if (entry.getValue()) {
+                            drawSound.play(.05f);
+                        } else {
+                            blockSound.play(.1f);
+                        }
+                    }
                 }
             }));
-
         }
         return solveSequence;
     }

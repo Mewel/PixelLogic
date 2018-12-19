@@ -29,7 +29,6 @@ public class PixelLogicCampaignMode extends PixelLogicListLevelMode {
     @Override
     protected List<PixelLogicLevel> loadLevels() {
         List<PixelLogicLevel> levels = new ArrayList<PixelLogicLevel>();
-        levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("campaign/intro")));
         levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("campaign/easy")));
         levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("campaign/medium")));
         levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("campaign/hard")));

@@ -108,6 +108,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
     @Override
     protected void onSolved() {
         showSolvedAnimation();
+        getAssets().get().get(PixelLogicConstants.PUZZLE_SOLVED_SOUND, Sound.class).play(.2f);
     }
 
     @Override
@@ -409,7 +410,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
         @Override
         public void onChar(Character ch) {
-            typeSound.play(.5f);
+            typeSound.play(.1f);
             super.onChar(ch);
         }
 
