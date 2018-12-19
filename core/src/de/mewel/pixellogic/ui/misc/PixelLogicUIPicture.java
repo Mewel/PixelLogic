@@ -42,13 +42,11 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
         this.background.update(levelIndex);
     }
 
-    public void update(int levelIndex, int oldLevelIndex, int blendTime) {
+    public void update(int levelIndex, int oldLevelIndex, float blendTime) {
         this.background.update(levelIndex, oldLevelIndex, blendTime);
     }
 
     public void animate(final PixelLogicUIBoard board, final int levelIndex, final int oldLevelIndex, float delay) {
-        Gdx.app.log("picture", "solveNext");
-
         int rows = background.getRows();
         int col = levelIndex % rows;
         int row = (rows - 1) - levelIndex / rows;
@@ -84,7 +82,7 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
         boardAnimation.addAction(Actions.run(new Runnable() {
             @Override
             public void run() {
-                background.update(levelIndex, oldLevelIndex, 100);
+                background.update(levelIndex, oldLevelIndex, .5f);
             }
         }));
         boardAnimation.addAction(Actions.delay(1.6f));
@@ -101,15 +99,15 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
 
         private Sprite newSprite;
 
-        private int blendTime = 0;
+        private float blendTime = 0f;
 
-        private int currentBlendTime = 0;
+        private float currentBlendTime = 0f;
 
         public Background(PixelLogicLevelCollection collection) {
             this.collection = collection;
         }
 
-        public void update(int solvedIndex, int oldSolvedIndex, int blendTime) {
+        public void update(int solvedIndex, int oldSolvedIndex, float blendTime) {
             Pixmap base = collection.getPixmap();
             Pixmap mixed = new Pixmap(base.getWidth(), base.getHeight(), base.getFormat());
             mixed.drawPixmap(base, 0, 0);
@@ -129,7 +127,7 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
                                 pixmapWidth, pixmapHeight);
                 }
             }
-            if (this.sprite == null || solvedIndex == oldSolvedIndex || blendTime == 0) {
+            if (this.sprite == null || solvedIndex == oldSolvedIndex || blendTime == 0f) {
                 this.sprite = new Sprite(new Texture(mixed));
             } else {
                 this.blendTime = blendTime;
@@ -167,7 +165,7 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
                 batch.draw(sprite, getX(), getY(), getWidth(), getHeight());
             }
             if (this.newSprite != null) {
-                alpha *= 1 - (float) this.currentBlendTime / (float) this.blendTime;
+                alpha *= 1 - this.currentBlendTime / this.blendTime;
                 batch.setColor(new Color(color.r, color.g, color.b, alpha));
                 batch.draw(newSprite, getX(), getY(), getWidth(), getHeight());
             }
@@ -180,8 +178,8 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
             if (this.newSprite != null) {
                 this.currentBlendTime -= delta;
                 if (this.currentBlendTime <= 0) {
-                    this.currentBlendTime = 0;
-                    this.blendTime = 0;
+                    this.currentBlendTime = 0f;
+                    this.blendTime = 0f;
                     this.sprite = newSprite;
                     this.newSprite = null;
                 }

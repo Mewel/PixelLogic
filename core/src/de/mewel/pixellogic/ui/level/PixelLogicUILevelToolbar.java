@@ -120,7 +120,7 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
     }
 
     private BitmapFont getToolbarFont() {
-        return getAssets().getGameFont((int) this.getHeight());
+        return PixelLogicUIUtil.getAppFont(getAssets(), 2);
     }
 
     @Override

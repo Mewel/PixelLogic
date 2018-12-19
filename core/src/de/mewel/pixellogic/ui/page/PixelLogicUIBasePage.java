@@ -177,7 +177,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
         }
 
         private void updateLabel() {
-            BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 3);
+            BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 2);
             if (this.label != null) {
                 if (labelFont.equals(this.label.getStyle().font)) {
                     return;

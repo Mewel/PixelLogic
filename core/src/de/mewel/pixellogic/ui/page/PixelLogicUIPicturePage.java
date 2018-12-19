@@ -167,7 +167,7 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
 
         public void updateImage() {
             this.picture.update(mode.isSolved() ? Integer.MAX_VALUE : mode.getSolvedLevelIndex(),
-                    -1, 150);
+                    -1, 1.5f);
         }
 
     }

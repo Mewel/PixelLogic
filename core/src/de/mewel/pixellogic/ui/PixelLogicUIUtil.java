@@ -75,13 +75,8 @@ public class PixelLogicUIUtil {
         return Math.max(BASE_SIZE, baseHeight);
     }
 
-    public static float getAppFontHeight(int size) {
-        float baseSize = getBaseHeight() * 0.5f;
-        return baseSize + (size * (baseSize / 6));
-    }
-
     public static BitmapFont getAppFont(PixelLogicAssets assets, int size) {
-        return assets.getGameFont((int) getAppFontHeight(size));
+        return assets.getGameFont((int) getIconBaseHeight(), size);
     }
 
     public static int getToolbarHeight() {
