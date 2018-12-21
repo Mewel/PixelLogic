@@ -1,13 +1,20 @@
 package de.mewel.pixellogic.model;
 
+import com.badlogic.gdx.utils.OrderedMap;
+
 public class PixelLogicLevelData {
 
     private String name;
+    private OrderedMap<String, String> languages;
     private Integer x;
     private Integer y;
 
     public String getName() {
         return name;
+    }
+
+    public OrderedMap<String, String> getLanguages() {
+        return languages;
     }
 
     public Integer getX() {

@@ -114,9 +114,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         PixelLogicUILevel levelUI = levelPage.getLevelUI();
         levelUI.setEnabled(false);
 
-        levelPage.setMessage("{COLOR=TEXT_COLOR}Welcome to {COLOR=MAIN_COLOR}PIXELLOGIC" +
-                        "{COLOR=TEXT_COLOR}! {WAIT=.5}" +
-                        "This game is all about solving pixel art puzzles. {WAIT=.5}Lets have some fun :)",
+        levelPage.setMessage(getAssets().translate("tutorial.status1"),
                 new Runnable() {
                     @Override
                     public void run() {
@@ -167,9 +165,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         // Actor topInfo = rowInfo.get(rowInfo.size - 1);
         // topInfo.addAction(PixelLogicUIUtil.blinkAction(Color.RED, 1f));
 
-        levelPage.setMessage("{COLOR=TEXT_COLOR}The {COLOR=MAIN_COLOR}5 " +
-                        "{COLOR=TEXT_COLOR}in this row means that" +
-                        " {COLOR=MAIN_COLOR}all {COLOR=TEXT_COLOR}pixels have to be filled.",
+        levelPage.setMessage(getAssets().translate("tutorial.status5"),
                 new Runnable() {
                     @Override
                     public void run() {
@@ -195,12 +191,11 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         this.status = 7;
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
-        levelPage.setMessage("{COLOR=TEXT_COLOR}When a row/column is solved, the" +
-                        " corresponding info box changes its {COLOR=LINE_COMPLETE_COLOR}color.",
+        levelPage.setMessage(getAssets().translate("tutorial.status7a"),
                 new Runnable() {
                     @Override
                     public void run() {
-                        levelPage.setMessage("{COLOR=TEXT_COLOR}Now its your turn :). Fill this row!");
+                        levelPage.setMessage(getAssets().translate("tutorial.status7b"));
                         levelUI.setEnabled(false).setEnabledRow(3, true);
                         showRow(levelUI, 3);
                     }
@@ -212,13 +207,11 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
         levelUI.setEnabled(false);
-        levelPage.setMessage("{COLOR=TEXT_COLOR}Perfect! Lets see the next line.", new Runnable() {
+        levelPage.setMessage(getAssets().translate("tutorial.status8a"), new Runnable() {
             @Override
             public void run() {
                 showRow(levelUI, 2);
-                levelPage.setMessage("{COLOR=TEXT_COLOR}Now {COLOR=MAIN_COLOR}3 connected " +
-                        "{COLOR=TEXT_COLOR}pixels needs to be set. There are three possibilities." +
-                        " Lets see them.", new Runnable() {
+                levelPage.setMessage(getAssets().translate("tutorial.status8b"), new Runnable() {
                     @Override
                     public void run() {
                         handleStatus9(0);
@@ -267,9 +260,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
             levelUI.setPixel(2, col, null);
         }
         this.status = 10;
-        levelPage.setMessage("{COLOR=TEXT_COLOR}All three combinations have " +
-                        "{COLOR=MAIN_COLOR} one pixel " +
-                        "{COLOR=TEXT_COLOR}in common. This one must be set. Can you find it?",
+        levelPage.setMessage(getAssets().translate("tutorial.status10"),
                 new PixelLogicUITutorialLevelPage.TutorialTypingAdapter(getAssets()) {
                     @Override
                     public void end() {
@@ -283,12 +274,10 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
         levelUI.setEnabled(false);
-        levelPage.setMessage("{COLOR=TEXT_COLOR}Exactly! The center pixel appeared in all three" +
-                " combinations.", new Runnable() {
+        levelPage.setMessage(getAssets().translate("tutorial.status11a"), new Runnable() {
             @Override
             public void run() {
-                levelPage.setMessage("{COLOR=TEXT_COLOR}We can't say what other pixels have to be" +
-                        " set, so we leave them for now. Let's see the next row.", new Runnable() {
+                levelPage.setMessage(getAssets().translate("tutorial.status11b"), new Runnable() {
                     @Override
                     public void run() {
                         handleStatus12();
@@ -303,13 +292,10 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
 
-        levelPage.setMessage("{COLOR=TEXT_COLOR}There is only {COLOR=MAIN_COLOR}one pixel " +
-                "{COLOR=TEXT_COLOR}in this line. But without further information we can't " +
-                "determine the exact position.", new Runnable() {
+        levelPage.setMessage(getAssets().translate("tutorial.status12a"), new Runnable() {
             @Override
             public void run() {
-                levelPage.setMessage("{COLOR=MAIN_COLOR}PixelLogic {COLOR=TEXT_COLOR}is always about" +
-                                " logic, you never have to guess! If you can't solve a line, try the next one.",
+                levelPage.setMessage(getAssets().translate("tutorial.status12b"),
                         new Runnable() {
                             @Override
                             public void run() {
@@ -326,7 +312,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         this.status = 13;
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
-        levelPage.setMessage("{COLOR=TEXT_COLOR}So, what to do here? :)",
+        levelPage.setMessage(getAssets().translate("tutorial.status13"),
                 new PixelLogicUITutorialLevelPage.TutorialTypingAdapter(getAssets()) {
                     @Override
                     public void end() {
@@ -341,14 +327,12 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
         levelUI.setEnabled(false);
-        levelPage.setMessage("{COLOR=MAIN_COLOR}Awesome{COLOR=TEXT_COLOR}! Lets see the columns." +
-                " They work just like the rows.", new Runnable() {
+        levelPage.setMessage(getAssets().translate("tutorial.status14a"), new Runnable() {
             @Override
             public void run() {
                 showColumn(levelUI, 0);
                 showColumn(levelUI, 4);
-                levelPage.setMessage("{COLOR=TEXT_COLOR}Looks like those two columns are already solved." +
-                        " It's important to keep track of that and block the invalid pixel.", new Runnable() {
+                levelPage.setMessage(getAssets().translate("tutorial.status14b"), new Runnable() {
                     @Override
                     public void run() {
                         Map<Vector2, Boolean> pixels = new LinkedHashMap<Vector2, Boolean>();
@@ -368,7 +352,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
 
-        levelPage.setMessage("{COLOR=TEXT_COLOR}Block the other column!",
+        levelPage.setMessage(getAssets().translate("tutorial.status15"),
                 new PixelLogicUITutorialLevelPage.TutorialTypingAdapter(getAssets()) {
                     @Override
                     public void end() {
@@ -389,13 +373,12 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         this.status = 16;
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
-        levelPage.setMessage("{COLOR=MAIN_COLOR}Perfect{COLOR=TEXT_COLOR}! When you block " +
-                "pixels you can't accidentally draw on them. Lets move on to the next column.", new Runnable() {
+        levelPage.setMessage(getAssets().translate("tutorial.status16a"), new Runnable() {
             @Override
             public void run() {
                 showColumn(levelUI, 2);
                 levelUI.setEnabled(1, 2, true);
-                levelPage.setMessage("{COLOR=TEXT_COLOR}That looks easy. I think you can do it :).");
+                levelPage.setMessage(getAssets().translate("tutorial.status16b"));
             }
         });
     }
@@ -405,14 +388,12 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
         levelUI.setEnabled(false);
-        levelPage.setMessage("{COLOR=MAIN_COLOR}Great! {COLOR=TEXT_COLOR}Lets see the last two columns.", new Runnable() {
+        levelPage.setMessage(getAssets().translate("tutorial.status17a"), new Runnable() {
             @Override
             public void run() {
                 showColumn(levelUI, 1);
                 showColumn(levelUI, 3);
-                levelPage.setMessage("{COLOR=TEXT_COLOR}Here's something new." +
-                        " {COLOR=MAIN_COLOR}Separate numbers {COLOR=TEXT_COLOR}show different" +
-                        " segments. Lets see how it works.", new Runnable() {
+                levelPage.setMessage(getAssets().translate("tutorial.status17b"), new Runnable() {
                     @Override
                     public void run() {
                         Map<Vector2, Boolean> pixels = new LinkedHashMap<Vector2, Boolean>();
@@ -431,8 +412,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
         levelUI.setEnabled(true);
-        levelPage.setMessage("{COLOR=TEXT_COLOR}Separate numbers needs some {COLOR=MAIN_COLOR}space" +
-                "{COLOR=TEXT_COLOR} between them. It's not always one pixel, it can vary. Now finish the level :)");
+        levelPage.setMessage(getAssets().translate("tutorial.status18"));
     }
 
     private void handleStatus19() {
@@ -440,16 +420,13 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
         levelUI.setEnabled(false);
-        levelPage.setMessage("{COLOR=MAIN_COLOR}Awesome{COLOR=TEXT_COLOR}, you did it!!!", new Runnable() {
+        levelPage.setMessage(getAssets().translate("tutorial.status19a"), new Runnable() {
             @Override
             public void run() {
-                levelPage.setMessage("{COLOR=TEXT_COLOR}You learned everything you need to know. " +
-                        " To rerun the tutorial click on the question mark at the top" +
-                        " right corner of the next page.", new Runnable() {
+                levelPage.setMessage(getAssets().translate("tutorial.status19b"), new Runnable() {
                     @Override
                     public void run() {
-                        levelPage.setMessage("{COLOR=TEXT_COLOR}I recommend starting with the campaign. Have" +
-                                " fun with {COLOR=MAIN_COLOR}PixelLogic{COLOR=TEXT_COLOR}!", new Runnable() {
+                        levelPage.setMessage(getAssets().translate("tutorial.status19c"), new Runnable() {
                             @Override
                             public void run() {
                                 levelPage.destroyLevel();

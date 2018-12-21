@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,9 @@ import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 import static de.mewel.pixellogic.PixelLogicConstants.BASE_SIZE;
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.GAME_FONT;
 import static de.mewel.pixellogic.PixelLogicConstants.KEY_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.LEVEL_FONT;
 import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.PUZZLE_SOLVED_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.SWITCHER_SOUND;
@@ -72,6 +75,7 @@ public class PixelLogicAssets {
         loadFonts();
         loadIcons();
         loadAudio();
+        loadI18n();
         //loadTextures();
 
         manager.finishLoading();
@@ -90,8 +94,8 @@ public class PixelLogicAssets {
     }
 
     protected void loadFonts() {
-        loadTTFFont("fonts/visitor2.ttf", GAME_FONT_PREFIX);
-        loadBitmapFont("fonts/numbers.fnt", LEVEL_FONT_PREFIX);
+        loadTTFFont(GAME_FONT, GAME_FONT_PREFIX);
+        loadBitmapFont(LEVEL_FONT, LEVEL_FONT_PREFIX);
     }
 
     protected void loadIcons() {
@@ -128,6 +132,10 @@ public class PixelLogicAssets {
         manager.load(SWITCHER_SOUND, Sound.class);
         manager.load(PUZZLE_SOLVED_SOUND, Sound.class);
         manager.load(KEY_SOUND, Sound.class);
+    }
+
+    private void loadI18n() {
+        manager.load("i18n/pixellogic", I18NBundle.class);
     }
 
     public BitmapFont getGameFont(int base, int size) {
@@ -222,6 +230,11 @@ public class PixelLogicAssets {
     public Sprite getIcon(int index) {
         Texture icons = manager.get("icons.png", Texture.class);
         return new Sprite(icons, BASE_SIZE * index, 0, BASE_SIZE, BASE_SIZE);
+    }
+
+    public String translate(String key) {
+        I18NBundle bundle = manager.get("i18n/pixellogic", I18NBundle.class);
+        return bundle.get(key);
     }
 
     public void dispose() {

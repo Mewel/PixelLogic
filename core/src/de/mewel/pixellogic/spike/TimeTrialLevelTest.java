@@ -31,7 +31,7 @@ public class TimeTrialLevelTest extends Game implements PixelLogicGlobal {
         this.assets = new PixelLogicAssets();
         this.assets.load();
 
-        this.achievements = new PixelLogicAchievements(eventManager);
+        this.achievements = new PixelLogicAchievements(assets, eventManager);
 
         this.appScreen = new PixelLogicUIAppScreen(this);
         this.setScreen(this.appScreen);

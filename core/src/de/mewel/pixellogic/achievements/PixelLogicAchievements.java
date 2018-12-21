@@ -6,17 +6,21 @@ import com.badlogic.gdx.Preferences;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 
 public class PixelLogicAchievements implements PixelLogicListener {
 
+    private PixelLogicAssets assets;
+
     private PixelLogicEventManager eventManager;
 
     private List<PixelLogicAchievement> achievements;
 
-    public PixelLogicAchievements(PixelLogicEventManager eventManager) {
+    public PixelLogicAchievements(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
+        this.assets = assets;
         this.eventManager = eventManager;
         this.achievements = new ArrayList<PixelLogicAchievement>();
         eventManager.listen(this);
@@ -29,14 +33,14 @@ public class PixelLogicAchievements implements PixelLogicListener {
         Preferences preferences = Gdx.app.getPreferences("pixellogic_achievements");
 
         // add
-        this.achievements.add(new PixelLogicAchievementCampaign());
-        this.achievements.add(new PixelLogicAchievementEasyMode());
-        this.achievements.add(new PixelLogicAchievementHardMode());
-        this.achievements.add(new PixelLogicAchievementInsaneMode());
-        this.achievements.add(new PixelLogicAchievementEpicMode());
-        this.achievements.add(new PixelLogicAchievementNoBlock());
-        this.achievements.add(new PixelLogicAchievementSecretLevelFind());
-        this.achievements.add(new PixelLogicAchievementSecretLevelBeat());
+        this.achievements.add(new PixelLogicAchievementCampaign(getAssets()));
+        this.achievements.add(new PixelLogicAchievementEasyMode(getAssets()));
+        this.achievements.add(new PixelLogicAchievementHardMode(getAssets()));
+        this.achievements.add(new PixelLogicAchievementInsaneMode(getAssets()));
+        this.achievements.add(new PixelLogicAchievementEpicMode(getAssets()));
+        this.achievements.add(new PixelLogicAchievementNoBlock(getAssets()));
+        this.achievements.add(new PixelLogicAchievementSecretLevelFind(getAssets()));
+        this.achievements.add(new PixelLogicAchievementSecretLevelBeat(getAssets()));
 
         // set if done
         for (PixelLogicAchievement achievement : this.achievements) {
@@ -73,6 +77,10 @@ public class PixelLogicAchievements implements PixelLogicListener {
 
     public void dispose() {
         this.eventManager.remove(this);
+    }
+
+    public PixelLogicAssets getAssets() {
+        return assets;
     }
 
     public void clearAll() {

@@ -29,7 +29,7 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
     private List<AchievementContainer> achievementContainers;
 
     public PixelLogicUIAchievementsPage(PixelLogicGlobal global) {
-        super(global, PixelLogicUIPageId.achievements, "Achievements", PixelLogicUIPageId.mainMenu);
+        super(global, PixelLogicUIPageId.achievements, global.getAssets().translate("achievements"), PixelLogicUIPageId.mainMenu);
     }
 
     @Override

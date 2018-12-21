@@ -34,7 +34,7 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
     private PixelLogicTutorialMode tutorialMode;
 
     public PixelLogicUIPlayPage(PixelLogicGlobal global) {
-        super(global, PixelLogicUIPageId.play, "PLAY", PixelLogicUIPageId.mainMenu);
+        super(global, PixelLogicUIPageId.play, global.getAssets().translate("play"), PixelLogicUIPageId.mainMenu);
     }
 
     @Override
@@ -46,8 +46,7 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
         this.campaignMode.setup(getGlobal());
 
         this.modes = new ArrayList<LevelModeUI>();
-        this.modes.add(new LevelModeUI(getCampaignLabel(), "[TEXT_COLOR]play the campaign.",
-                this, new Runnable() {
+        this.modes.add(new LevelModeUI(getCampaignLabel(), getAssets().translate("play.campaign.description"), this, new Runnable() {
             @Override
             public void run() {
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
@@ -61,23 +60,21 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
                 });
             }
         }));
-        this.modes.add(new LevelModeUI("100 Characters", "[TEXT_COLOR]Play over [MAIN_COLOR]50 bonus[] levels based on" +
-                " the awesome pixel art by Johan Vinet.", this, new Runnable() {
+        this.modes.add(new LevelModeUI(getAssets().translate("play.characters.title"), getAssets().translate("play.characters.description"), this, new Runnable() {
             @Override
             public void run() {
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                 getAppScreen().setPage(PixelLogicUIPageId.characters, pageProperties);
             }
         }));
-        this.modes.add(new LevelModeUI("Time trial", "[TEXT_COLOR]Play [MAIN_COLOR]infinite computer " +
-                "generated[] levels against the clock and try to beat your highscore.", this, new Runnable() {
+        this.modes.add(new LevelModeUI(getAssets().translate("play.timeTrial.title"), getAssets().translate("play.timeTrial.description"), this, new Runnable() {
             @Override
             public void run() {
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                 getAppScreen().setPage(PixelLogicUIPageId.timeTrial, pageProperties);
             }
         }));
-        this.modes.add(new LevelModeUI("Art Puzzles", "[TEXT_COLOR]Discover beautiful and famous art.",
+        this.modes.add(new LevelModeUI(getAssets().translate("play.art.title"), getAssets().translate("play.art.description"),
                 this, new Runnable() {
             @Override
             public void run() {
@@ -115,8 +112,7 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
 
     private String getCampaignLabel() {
         boolean campaignStarted = getCampaignPreferences().getBoolean("started");
-        Gdx.app.log("main", "campaign started " + campaignStarted);
-        return campaignStarted ? "continue campaign" : "start campaign";
+        return getAssets().translate("play.campaign." + (campaignStarted ? "continue" : "start"));
     }
 
     @Override

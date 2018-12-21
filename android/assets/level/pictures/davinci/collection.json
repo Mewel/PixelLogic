@@ -1,6 +1,9 @@
 {
   "id": "vitruvianMan",
-  "name": "da Vinci's Vitruvian Man",
+  "languages": {
+    "en": "da Vinci's Vitruvian Man",
+    "de": "da Vinci's Vitruvianischer Mensch"
+  },
   "pixmapWidth": 12,
   "pixmapHeight": 12,
   "preserveSize": true,

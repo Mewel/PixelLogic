@@ -104,10 +104,10 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
         if (this.solvedLabel == null) {
             BitmapFont labelFont = getToolbarFont();
             Label.LabelStyle style = new Label.LabelStyle(labelFont, Color.WHITE);
-            this.solvedLabel = new Label(level.getName(), style);
+            this.solvedLabel = new Label(level.getDisplayName(), style);
             this.addActor(this.solvedLabel);
         } else {
-            this.solvedLabel.setText(level.getName());
+            this.solvedLabel.setText(level.getDisplayName());
         }
         centerLabel(this.solvedLabel);
         this.solvedLabel.getColor().a = 0f;

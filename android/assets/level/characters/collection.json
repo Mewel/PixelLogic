@@ -1,5 +1,9 @@
 {
-  "name": "Johan Vinet 100 Characters",
+  "id": "characters",
+  "languages": {
+    "en": "Johan Vinet 100 Characters",
+    "de": "Johan Vinet 100 Charaktere"
+  },
   "pixmapWidth": 12,
   "pixmapHeight": 12,
   "preserveOrder": true,

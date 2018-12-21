@@ -1,18 +1,18 @@
 package de.mewel.pixellogic.achievements;
 
+import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicCampaignFinishedEvent;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 
 public class PixelLogicAchievementCampaign extends PixelLogicAchievement {
 
-    @Override
-    public String getName() {
-        return "Yes We Can!";
+    public PixelLogicAchievementCampaign(PixelLogicAssets assets) {
+        super(assets);
     }
 
     @Override
-    public String getDescription() {
-        return "Finish the campaign.";
+    public String getId() {
+        return "campaign";
     }
 
     @Override

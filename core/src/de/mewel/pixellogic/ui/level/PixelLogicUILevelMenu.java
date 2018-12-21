@@ -42,7 +42,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         };
 
         // reset level
-        this.resetLevelButton = new PixelLogicUIButton(getAssets(), getEventManager(), "reset level") {
+        this.resetLevelButton = new PixelLogicUIButton(getAssets(), getEventManager(), getAssets().translate("level.menu.reset")) {
             @Override
             public void handleClick() {
                 close();
@@ -51,7 +51,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         };
 
         // continue
-        this.continueButton = new PixelLogicUIButton(getAssets(), getEventManager(), "continue") {
+        this.continueButton = new PixelLogicUIButton(getAssets(), getEventManager(), getAssets().translate("level.menu.continue")) {
             @Override
             public void handleClick() {
                 close();
@@ -59,7 +59,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         };
 
         // back
-        this.backButton = new PixelLogicUIButton(getAssets(), getEventManager(), "back to menu") {
+        this.backButton = new PixelLogicUIButton(getAssets(), getEventManager(), getAssets().translate("level.menu.back")) {
             @Override
             public void handleClick() {
                 close();

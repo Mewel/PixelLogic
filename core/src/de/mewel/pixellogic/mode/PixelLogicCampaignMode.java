@@ -22,8 +22,8 @@ public class PixelLogicCampaignMode extends PixelLogicListLevelMode {
         // finished event -> adds achievement
         this.getEventManager().fire(new PixelLogicCampaignFinishedEvent(this));
 
-        // back to main menu
-        this.getAppScreen().setPage(PixelLogicUIPageId.mainMenu);
+        // back to play page
+        this.getAppScreen().setPage(PixelLogicUIPageId.play);
     }
 
     @Override

@@ -3,13 +3,15 @@ package de.mewel.pixellogic.model;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.utils.OrderedMap;
 
 import java.util.List;
+import java.util.Locale;
 
 public class PixelLogicLevelCollection {
 
     private String id;
-    private String name;
+    private OrderedMap<String, String> languages;
     private Integer pixmapWidth;
     private Integer pixmapHeight;
     private Boolean preserveSize = false;
@@ -29,12 +31,8 @@ public class PixelLogicLevelCollection {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public OrderedMap<String, String> getLanguages() {
+        return languages;
     }
 
     public Integer getPixmapWidth() {
@@ -143,6 +141,20 @@ public class PixelLogicLevelCollection {
             x = index % columns;
         }
         return new Sprite(levelTexture, x * pixmapWidth, y * pixmapHeight, fixedWidth, fixedHeight);
+    }
+
+    public String getName() {
+        OrderedMap<String, String> languages = getLanguages();
+        if (languages == null) {
+            return getId();
+        }
+        String language = Locale.getDefault().getLanguage();
+        String primaryLanguageText = languages.get(language);
+        if (primaryLanguageText != null) {
+            return primaryLanguageText;
+        }
+        String englishText = languages.get("en");
+        return englishText != null ? englishText : getId();
     }
 
 }

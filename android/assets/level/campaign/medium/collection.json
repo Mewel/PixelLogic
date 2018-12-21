@@ -1,16 +1,25 @@
 {
-  "name": "medium",
+  "id": "medium",
   "pixmapWidth": 10,
   "pixmapHeight": 10,
   "level": [
     {
-      "name": "Ship"
+      "name": "Ship",
+      "languages": {
+        "de": "Schiff"
+      }
     },
     {
-      "name": "Pill"
+      "name": "Pill",
+      "languages": {
+        "de": "Pille"
+      }
     },
     {
-      "name": "Bat"
+      "name": "Bat",
+      "languages": {
+        "de": "Fledermaus"
+      }
     },
     {
       "name": "Monster"
@@ -22,20 +31,26 @@
       "name": "Space Invader"
     },
     {
-      "name": "Mushrooms"
+      "name": "Mushrooms",
+      "languages": {
+        "de": "Pilze"
+      }
     },
     {
-      "name": "Chicken"
+      "name": "Chicken",
+      "languages": {
+        "de": "Huhn"
+      }
     }
   ],
   "order": [
     4,
-    5,
     3,
     0,
     7,
     6,
     2,
-    1
+    1,
+    5
   ]
 }

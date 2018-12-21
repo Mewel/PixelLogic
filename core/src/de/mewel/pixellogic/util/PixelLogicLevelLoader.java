@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
@@ -46,7 +47,7 @@ public abstract class PixelLogicLevelLoader {
                 levelData.setX(x);
                 levelData.setY(y);
                 levelData.setName("#" + ++levelCounter);
-                PixelLogicLevel level = getPixelLogicImageLevel(collection, levelData);
+                PixelLogicLevel level = createLevel(collection, levelData);
                 levels.add(level);
             }
         }
@@ -108,10 +109,10 @@ public abstract class PixelLogicLevelLoader {
 
     public static PixelLogicLevel load(PixelLogicLevelCollection collection, int levelIndex) {
         PixelLogicLevelData levelData = collection.getLevelList().get(levelIndex);
-        return getPixelLogicImageLevel(collection, levelData);
+        return createLevel(collection, levelData);
     }
 
-    private static PixelLogicLevel getPixelLogicImageLevel(PixelLogicLevelCollection collection, PixelLogicLevelData levelData) {
+    private static PixelLogicLevel createLevel(PixelLogicLevelCollection collection, PixelLogicLevelData levelData) {
         try {
             Integer[][] pixmap = getImageData(collection, levelData, collection.getPixmap());
             Integer[][] levelmap = getImageData(collection, levelData, collection.getLevelmap());
@@ -119,7 +120,12 @@ public abstract class PixelLogicLevelLoader {
                 levelmap = pixmap;
             }
             Boolean[][] level = PixelLogicUtil.toLevelData(levelmap);
-            return new PixelLogicLevel(levelData.getName(), level, pixmap, collection.getPreserveSize());
+            PixelLogicLevel pixelLogicLevel = new PixelLogicLevel(levelData.getName(), level, pixmap, collection.getPreserveSize());
+            if (levelData.getLanguages() != null) {
+                String language = Locale.getDefault().getLanguage();
+                pixelLogicLevel.setDisplayName(levelData.getLanguages().get(language));
+            }
+            return pixelLogicLevel;
         } catch (Exception exc) {
             throw new RuntimeException("Unable to load level '" + levelData.getName() + "'", exc);
         }

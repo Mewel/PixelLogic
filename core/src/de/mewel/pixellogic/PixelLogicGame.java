@@ -62,7 +62,7 @@ public class PixelLogicGame extends Game implements PixelLogicGlobal {
         assets.load();
         // pixel logic init
         eventManager = new PixelLogicEventManager();
-        achievements = new PixelLogicAchievements(eventManager);
+        achievements = new PixelLogicAchievements(assets, eventManager);
         appScreen = new PixelLogicUIAppScreen(PixelLogicGame.this);
     }
 

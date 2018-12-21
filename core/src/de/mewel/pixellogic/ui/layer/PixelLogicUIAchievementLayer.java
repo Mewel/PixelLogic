@@ -127,7 +127,7 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
     }
 
     private Label.LabelStyle getHeaderStyle() {
-        BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 2);
+        BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 1);
         return new Label.LabelStyle(labelFont, Color.WHITE);
     }
 

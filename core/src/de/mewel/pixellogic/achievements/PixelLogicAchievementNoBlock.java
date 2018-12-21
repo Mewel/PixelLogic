@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.achievements;
 
+import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
@@ -12,19 +13,15 @@ public class PixelLogicAchievementNoBlock extends PixelLogicAchievement {
 
     private Boolean blocked;
 
-    PixelLogicAchievementNoBlock() {
+    PixelLogicAchievementNoBlock(PixelLogicAssets assets) {
+        super(assets);
         this.isThePuzzelBigEnough = null;
         this.blocked = null;
     }
 
     @Override
-    public String getName() {
-        return "!Bloc Party";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Solve a 6x6 or bigger puzzle without blocking a single pixel.";
+    public String getId() {
+        return "noBlock";
     }
 
     @Override

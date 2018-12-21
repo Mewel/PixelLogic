@@ -1,13 +1,18 @@
 package de.mewel.pixellogic.achievements;
 
+import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicSecretLevelEvent;
 
 public class PixelLogicAchievementSecretLevelFind extends PixelLogicAchievement {
 
+    public PixelLogicAchievementSecretLevelFind(PixelLogicAssets assets) {
+        super(assets);
+    }
+
     @Override
-    public String getName() {
-        return "Secret Level";
+    public String getId() {
+        return "secretLevelFind";
     }
 
     @Override

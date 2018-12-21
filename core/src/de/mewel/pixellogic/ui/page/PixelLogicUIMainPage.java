@@ -53,7 +53,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         logoImage = new Image(logo);
         logoImage.setOrigin(Align.center);
 
-        this.playButton = new PixelLogicUIButton(getAssets(), getEventManager(), "play") {
+        this.playButton = new PixelLogicUIButton(getAssets(), getEventManager(), getAssets().translate("play")) {
             @Override
             public void handleClick() {
                 Preferences preferences = getPreferences();
@@ -78,7 +78,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
             }
         };
 
-        this.achievementButton = new PixelLogicUIButton(getAssets(), getEventManager(), "achievements") {
+        this.achievementButton = new PixelLogicUIButton(getAssets(), getEventManager(), getAssets().translate("achievements")) {
             @Override
             public void handleClick() {
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
@@ -86,7 +86,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
             }
         };
 
-        this.aboutButton = new PixelLogicUIButton(getAssets(), getEventManager(), "about") {
+        this.aboutButton = new PixelLogicUIButton(getAssets(), getEventManager(), getAssets().translate("about")) {
             @Override
             public void handleClick() {
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();

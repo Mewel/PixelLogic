@@ -32,7 +32,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
     private Texture levelTexture;
 
     public PixelLogicUICharactersPage(PixelLogicGlobal global) {
-        super(global, PixelLogicUIPageId.characters, "100 Characters", PixelLogicUIPageId.play);
+        super(global, PixelLogicUIPageId.characters, global.getAssets().translate("play.characters.title"), PixelLogicUIPageId.play);
     }
 
     @Override
@@ -136,7 +136,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
             getActor().addActor(this.logo);
             this.updateLogo();
 
-            Label descriptionLabel = this.getLabel(level.getName(), TEXT_COLOR);
+            Label descriptionLabel = this.getLabel(level.getDisplayName(), TEXT_COLOR);
             descriptionLabel.setWrap(true);
             this.labelContainer = new Container<Label>(descriptionLabel);
             getActor().addActor(this.labelContainer);
@@ -153,7 +153,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
         }
 
         private void updateLabel() {
-            String label = isSolved() ? this.level.getName() : "???";
+            String label = isSolved() ? this.level.getDisplayName() : "???";
             this.labelContainer.getActor().setText(label);
         }
 

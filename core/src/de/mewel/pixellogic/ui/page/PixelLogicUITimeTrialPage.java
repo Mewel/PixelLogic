@@ -33,7 +33,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
     private Container<Label> labelContainer;
 
     public PixelLogicUITimeTrialPage(PixelLogicGlobal global) {
-        super(global, PixelLogicUIPageId.timeTrial, "Time trial", PixelLogicUIPageId.play);
+        super(global, PixelLogicUIPageId.timeTrial, global.getAssets().translate("play.timeTrial.title"), PixelLogicUIPageId.play);
     }
 
     @Override
@@ -60,8 +60,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
     }
 
     private Label getDescriptionLabel() {
-        Label descriptionLabel = this.getLabel("Play infinite auto generated levels against the " +
-                "clock and try to beat your highscore.", TEXT_COLOR);
+        Label descriptionLabel = this.getLabel(getAssets().translate("play.timeTrial.description"));
         descriptionLabel.setWrap(true);
         return descriptionLabel;
     }
@@ -79,20 +78,20 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
     public void resize(int width, int height) {
         super.resize(width, height);
         this.labelContainer.width(getComponentWidth());
-        this.labelContainer.getActor().setStyle(getLabelStyle(TEXT_COLOR));
+        this.labelContainer.getActor().setStyle(getLabelStyle());
         for (TimeTrialModeUI mode : this.modes) {
             mode.resize();
         }
     }
 
-    public Label getLabel(String text, Color color) {
-        Label.LabelStyle style = getLabelStyle(color);
+    public Label getLabel(String text) {
+        Label.LabelStyle style = getLabelStyle();
         return new Label(text, style);
     }
 
-    private Label.LabelStyle getLabelStyle(Color color) {
+    private Label.LabelStyle getLabelStyle() {
         BitmapFont font = PixelLogicUIUtil.getAppFont(getAssets(), 0);
-        return new Label.LabelStyle(font, color);
+        return new Label.LabelStyle(font, Color.WHITE);
     }
 
     private class TimeTrialModeUI extends Container<VerticalGroup> {
@@ -155,8 +154,8 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
             List<PixelLogicTimeTrialHighscoreStore.Highscore> highscoreList = PixelLogicTimeTrialHighscoreStore.list(options.id.name());
 
             // header
-            Label normalHighscoreLabel = page.getLabel("highscore", TEXT_LIGHT_COLOR);
-            Label normalTimeLabel = page.getLabel("time", TEXT_LIGHT_COLOR);
+            Label normalHighscoreLabel = page.getLabel("[TEXT_LIGHT_COLOR]highscore");
+            Label normalTimeLabel = page.getLabel("[TEXT_LIGHT_COLOR]time");
             highscoreTable.add(normalHighscoreLabel).growX().left();
             highscoreTable.add(normalTimeLabel).right();
             highscoreTable.row();
@@ -175,16 +174,16 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
                 final PixelLogicTimeTrialModeOptions.Mode mode = page.getProperties().get("mode");
                 boolean lastRankInvalid = rank == null || rank == -1 || mode == null || !mode.equals(options.id);
                 for (int i = 0; i < highscoreList.size(); i++) {
-                    Color color = lastRankInvalid || rank != i ? TEXT_COLOR : MAIN_COLOR;
+                    String color = lastRankInvalid || rank != i ? "[TEXT_COLOR]" : "[MAIN_COLOR]";
                     PixelLogicTimeTrialHighscoreStore.Highscore highscore = highscoreList.get(i);
-                    Label highscoreDate = page.getLabel(PixelLogicUIUtil.formatDate(highscore.date), color);
-                    Label highscoreTime = page.getLabel(PixelLogicUIUtil.formatMilliseconds(highscore.time), color);
+                    Label highscoreDate = page.getLabel(color + PixelLogicUIUtil.formatDate(highscore.date));
+                    Label highscoreTime = page.getLabel(color + PixelLogicUIUtil.formatMilliseconds(highscore.time));
                     highscoreTable.add(highscoreDate).growX().left();
                     highscoreTable.add(highscoreTime).right();
                     highscoreTable.row();
                 }
             } else {
-                highscoreTable.add(page.getLabel("no games played", TEXT_COLOR)).colspan(2).center();
+                highscoreTable.add(page.getLabel("[TEXT_COLOR]no games played")).colspan(2).center();
                 highscoreTable.row();
             }
         }

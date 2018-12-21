@@ -32,6 +32,9 @@ public abstract class PixelLogicConstants {
     public static final String PUZZLE_SOLVED_SOUND = "audio/258142__tuudurt__level-win.wav";
     public static final String KEY_SOUND = "audio/378083__bigmonmulgrew__mechanical-key-soft.wav";
 
+    public static final String GAME_FONT = "fonts/visitor3.otf";
+    public static final String LEVEL_FONT = "fonts/numbers.fnt";
+
     static {
         Colors.put("MAIN_COLOR", MAIN_COLOR);
         Colors.put("SECONDARY_COLOR", SECONDARY_COLOR);

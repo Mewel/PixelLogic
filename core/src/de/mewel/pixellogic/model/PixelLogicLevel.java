@@ -10,6 +10,8 @@ public class PixelLogicLevel {
 
     private String name;
 
+    private String displayName;
+
     private int rows, cols;
 
     private Boolean[][] pixels;
@@ -222,6 +224,14 @@ public class PixelLogicLevel {
         this.name = name;
     }
 
+    public String getDisplayName() {
+        return displayName != null ? displayName : getName();
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     public String toString() {
         StringBuilder builder = new StringBuilder();
         for (int row = 0; row < this.rows; row++) {
@@ -249,7 +259,7 @@ public class PixelLogicLevel {
 
     public void ofPixelString(String pixelData) {
         this.reset();
-        if(pixelData == null) {
+        if (pixelData == null) {
             return;
         }
         for (int i = 0; i < pixelData.length(); i++) {

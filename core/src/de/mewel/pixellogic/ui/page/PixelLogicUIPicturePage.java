@@ -28,7 +28,7 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
     private List<PictureModeContainer> pictureModeContainers;
 
     public PixelLogicUIPicturePage(PixelLogicGlobal global) {
-        super(global, PixelLogicUIPageId.picture, "Art Puzzles", PixelLogicUIPageId.play);
+        super(global, PixelLogicUIPageId.picture, global.getAssets().translate("play.art.title"), PixelLogicUIPageId.play);
     }
 
     @Override

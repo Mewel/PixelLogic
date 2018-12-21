@@ -1,38 +1,56 @@
 {
-  "name": "easy",
+  "id": "easy",
   "pixmapWidth": 5,
   "pixmapHeight": 5,
   "preserveOrder": true,
   "level": [
     {
-      "name": "Disk"
+      "name": "Disk",
+      "languages": {
+        "de": "Diskette"
+      }
     },
     {
       "name": "Dude"
     },
     {
-      "name": "Ruby Ring"
+      "name": "Ruby Ring",
+      "languages": {
+        "de": "Rubin Ring"
+      }
     },
     {
       "name": "Chrome"
     },
     {
-      "name": "Tree"
+      "name": "christmas tree",
+      "languages": {
+        "de": "Tannenbaum"
+      }
     },
     {
       "name": "Monitor"
     },
     {
-      "name": "Grave"
+      "name": "Grave",
+      "languages": {
+        "de": "Grab"
+      }
     },
     {
-      "name": "Cloud"
+      "name": "Cloud",
+      "languages": {
+        "de": "Wolke"
+      }
     },
     {
       "name": "Headset"
     },
     {
-      "name": "Trolley"
+      "name": "Trolley",
+      "languages": {
+        "de": "Einkaufswagen"
+      }
     }
   ]
 }
