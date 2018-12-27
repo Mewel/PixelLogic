@@ -111,10 +111,7 @@ public class PixelLogicPictureMode extends PixelLogicListLevelMode {
         this.picture = new PixelLogicUIPicture(page.getAssets(), page.getEventManager(), collection);
         this.pageRoot = page.getRoot();
 
-        int toolbarHeight = PixelLogicUIUtil.getToolbarHeight();
-        float size = Math.min(page.getWidth(), page.getHeight() - toolbarHeight);
-        this.picture.setSize(size, size);
-        this.picture.setPosition(page.getWidth() / 2 - size / 2, page.getHeight() / 2 - size / 2 + toolbarHeight / 2);
+        updatePictureBounds(page);
         this.picture.getColor().a = 0f;
         this.pageRoot.addActorBefore(level, picture);
 
@@ -132,6 +129,20 @@ public class PixelLogicPictureMode extends PixelLogicListLevelMode {
                         picture.animate(board, levelIndex, oldLevelIndex, delay + .2f);
                     }
                 })));
+    }
+
+    private void updatePictureBounds(PixelLogicUILevelPage page) {
+        float toolbarHeight = PixelLogicUIUtil.getToolbarHeight();
+        float maxWidth = page.getWidth();
+        float maxHeight = page.getHeight() - toolbarHeight;
+        float pixmapWidth = this.collection.getPixmap().getWidth();
+        float pixmapHeight = this.collection.getPixmap().getHeight();
+        float scale = Math.min(maxWidth / pixmapWidth, maxHeight / pixmapHeight);
+        int pictureWidth = (int) (pixmapWidth * scale);
+        int pictureHeight = (int) (pixmapHeight * scale);
+
+        this.picture.setPosition(page.getWidth() / 2 - pictureWidth / 2, page.getHeight() / 2 - pictureHeight / 2 + toolbarHeight / 2);
+        this.picture.setSize(pictureWidth, pictureHeight);
     }
 
     private void destroyPicture() {

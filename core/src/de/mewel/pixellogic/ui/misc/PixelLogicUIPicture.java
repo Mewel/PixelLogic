@@ -48,8 +48,9 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
 
     public void animate(final PixelLogicUIBoard board, final int levelIndex, final int oldLevelIndex, float delay) {
         int rows = background.getRows();
-        int col = levelIndex % rows;
-        int row = (rows - 1) - levelIndex / rows;
+        int cols = background.getCols();
+        int col = levelIndex % cols;
+        int row = (rows - 1) - (levelIndex / cols);
 
         float width = (getWidth() / background.getCols());
         float height = (getHeight() / rows);
@@ -95,6 +96,8 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
 
         private PixelLogicLevelCollection collection;
 
+        private Pixmap unsolved;
+
         private Sprite sprite;
 
         private Sprite newSprite;
@@ -105,6 +108,7 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
 
         public Background(PixelLogicLevelCollection collection) {
             this.collection = collection;
+            this.unsolved = collection.getUnsolved();
         }
 
         public void update(int solvedIndex, int oldSolvedIndex, float blendTime) {
@@ -118,7 +122,6 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
             int cols = mixed.getWidth() / pixmapWidth;
 
             int solvedCounter = -1;
-            Pixmap unsolved = collection.getUnsolved();
             for (int row = 0; row < rows; row++) {
                 for (int col = 0; col < cols; col++) {
                     if (solvedCounter++ >= solvedIndex)
@@ -185,6 +188,11 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
                 }
             }
         }
+
+        public Pixmap getUnsolved() {
+            return unsolved;
+        }
+
     }
 
     private static class ResizeableBoard extends PixelLogicUIGroup {
