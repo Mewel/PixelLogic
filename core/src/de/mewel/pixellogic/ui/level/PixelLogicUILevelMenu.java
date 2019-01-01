@@ -1,8 +1,10 @@
 package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
-import de.mewel.pixellogic.PixelLogicConstants;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
@@ -22,10 +24,13 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
 
     protected PixelLogicUIPageId backButtonPageId;
 
+    private Label statusLabel;
+
     public PixelLogicUILevelMenu(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicUILevelPage page) {
         super(assets, eventManager, page.getStage().getRoot());
         this.page = page;
         this.backButtonPageId = null;
+        this.statusLabel = null;
         buildContent();
     }
 
@@ -137,6 +142,24 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
     protected void sizeChanged() {
         super.sizeChanged();
         this.updateButtonSize();
+        this.updateStatusLabelPosition();
+    }
+
+    public void setStatusText(String text) {
+        if (this.statusLabel == null) {
+            BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 1);
+            Label.LabelStyle style = new Label.LabelStyle(labelFont, new Color(Color.WHITE));
+            this.statusLabel = new Label(text, style);
+            this.addActor(this.statusLabel);
+        } else {
+            this.statusLabel.setText(text);
+        }
+        this.updateStatusLabelPosition();
+    }
+
+    public void clearStatusText() {
+        this.statusLabel.remove();
+        this.statusLabel = null;
     }
 
     private void updateButtonSize() {
@@ -156,4 +179,11 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         }
     }
 
+    private void updateStatusLabelPosition() {
+        if (this.statusLabel != null) {
+            int x = (int) (getWidth() / 2 - this.statusLabel.getWidth() / 2);
+            int y = (int) (this.getHeight() - (this.getHeight() / 20) - this.statusLabel.getHeight());
+            this.statusLabel.setPosition(x, y);
+        }
+    }
 }

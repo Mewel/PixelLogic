@@ -257,6 +257,10 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         return this.levelUI;
     }
 
+    public PixelLogicUILevelMenu getMenu() {
+        return menu;
+    }
+
     public PixelLogicUILevelToolbar getToolbar() {
         return toolbar;
     }
