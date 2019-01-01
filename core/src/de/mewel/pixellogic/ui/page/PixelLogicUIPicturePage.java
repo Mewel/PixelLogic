@@ -117,14 +117,14 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
 
             getActor().addActor(this.picture);
 
-            Label descriptionLabel = this.getLabel(getLabelText(), TEXT_COLOR);
+            Label descriptionLabel = this.getLabel(getLabelText(), new Color(TEXT_COLOR));
             descriptionLabel.setWrap(true);
             descriptionLabel.setAlignment(Align.center);
             this.labelContainer = new Container<Label>(descriptionLabel);
             getActor().addActor(this.labelContainer);
             this.updateLabel();
 
-            Texture whiteTexture = PixelLogicUIUtil.getTexture(BLOCK_COLOR);
+            Texture whiteTexture = PixelLogicUIUtil.getTexture(new Color(BLOCK_COLOR));
             Sprite s = new Sprite(whiteTexture);
             this.setBackground(new SpriteDrawable(s));
         }
@@ -150,7 +150,7 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
 
             this.picture.setSize(size, size);
             this.labelContainer.width(getComponentWidth());
-            this.labelContainer.getActor().setStyle(getLabelStyle(TEXT_COLOR));
+            this.labelContainer.getActor().setStyle(getLabelStyle(new Color(TEXT_COLOR)));
 
             this.width(width);
         }

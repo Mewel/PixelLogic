@@ -54,7 +54,7 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         this.achievementBlock.setDescriptionStyle(getDescriptionStyle());
 
         PixelLogicUIColoredSurface background = new PixelLogicUIColoredSurface(assets);
-        background.setColor(MAIN_COLOR);
+        background.setColor(new Color(MAIN_COLOR));
         background.setBorder(1, new Color(MAIN_COLOR).mul(.5f));
         this.achievementBlock.setBackground(background);
 

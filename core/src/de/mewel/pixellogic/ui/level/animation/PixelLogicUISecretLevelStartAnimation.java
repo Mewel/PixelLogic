@@ -15,6 +15,8 @@ import de.mewel.pixellogic.ui.level.PixelLogicUIBoardPixel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIColumnGroup;
 import de.mewel.pixellogic.ui.level.PixelLogicUIRowGroup;
 
+import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_BLOCKED_COLOR;
+
 public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUIBaseLevelAnimation {
 
     private static final float DELAY = .3f;
@@ -54,7 +56,7 @@ public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUIBaseLevel
         SequenceAction colorizeAction = new SequenceAction();
         colorizeAction.addAction(Actions.delay(delayDuration - .1f));
         float offset = random.nextFloat() * .4f * (random.nextBoolean() ? 1f : -1f);
-        Color newColor = new Color(PixelLogicConstants.PIXEL_BLOCKED_COLOR);
+        Color newColor = new Color(PIXEL_BLOCKED_COLOR);
         newColor.r = newColor.r + offset;
         newColor.g = newColor.g + offset;
         newColor.b = newColor.b + offset;

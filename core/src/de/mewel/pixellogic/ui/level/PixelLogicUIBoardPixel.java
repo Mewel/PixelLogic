@@ -1,5 +1,7 @@
 package de.mewel.pixellogic.ui.level;
 
+import com.badlogic.gdx.graphics.Color;
+
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 
@@ -15,11 +17,13 @@ public class PixelLogicUIBoardPixel extends PixelLogicUIColoredSurface {
         super(assets);
         this.row = row;
         this.col = col;
-        setColor(PIXEL_EMPTY_COLOR);
+        setColor(new Color(PIXEL_EMPTY_COLOR));
     }
 
     public void set(Boolean value) {
-        setColor(value == null ? PIXEL_EMPTY_COLOR : (value ? PIXEL_FILLED_COLOR : PIXEL_BLOCKED_COLOR));
+        setColor(value == null ? new Color(PIXEL_EMPTY_COLOR) :
+                (value ? new Color(PIXEL_FILLED_COLOR) :
+                        new Color(PIXEL_BLOCKED_COLOR)));
     }
 
     public int getRow() {

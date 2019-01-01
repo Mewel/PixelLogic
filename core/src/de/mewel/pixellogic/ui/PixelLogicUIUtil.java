@@ -17,10 +17,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import de.mewel.pixellogic.PixelLogicConstants;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.ui.level.PixelLogicUILevelResolution;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BASE_SIZE;
@@ -76,7 +74,11 @@ public class PixelLogicUIUtil {
     }
 
     public static BitmapFont getAppFont(PixelLogicAssets assets, int size) {
-        return assets.getGameFont((int) getIconBaseHeight(), size);
+        return assets.getGameFont(getIconBaseHeight(), size);
+    }
+
+    public static BitmapFont getTutorialFont(PixelLogicAssets assets) {
+        return assets.getTutorialFont((int)(getIconBaseHeight() * 0.8f));
     }
 
     public static int getToolbarHeight() {

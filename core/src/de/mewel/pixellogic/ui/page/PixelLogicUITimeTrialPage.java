@@ -22,8 +22,6 @@ import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_COLOR;
-import static de.mewel.pixellogic.PixelLogicConstants.MAIN_COLOR;
-import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
 import static de.mewel.pixellogic.PixelLogicConstants.TEXT_LIGHT_COLOR;
 
 public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
@@ -135,7 +133,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
             getActor().addActor(this.highscoreContainer);
             getActor().pack();
 
-            Texture whiteTexture = PixelLogicUIUtil.getTexture(BLOCK_COLOR);
+            Texture whiteTexture = PixelLogicUIUtil.getTexture(new Color(BLOCK_COLOR));
             Sprite s = new Sprite(whiteTexture);
             this.setBackground(new SpriteDrawable(s));
         }
@@ -162,7 +160,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
 
             // line
             PixelLogicUIColoredSurface line = new PixelLogicUIColoredSurface(page.getAssets());
-            line.setColor(TEXT_LIGHT_COLOR);
+            line.setColor(new Color(TEXT_LIGHT_COLOR));
             line.setWidth(getComponentWidth());
             line.setHeight(1);
             highscoreTable.add(line).colspan(2).expand();

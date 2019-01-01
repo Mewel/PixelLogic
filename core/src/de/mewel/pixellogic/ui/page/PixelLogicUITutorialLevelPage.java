@@ -39,7 +39,7 @@ import de.mewel.pixellogic.ui.level.PixelLogicUILevelToolbar;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.KEY_SOUND;
-import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_EMPTY_COLOR;
 import static de.mewel.pixellogic.PixelLogicConstants.SECONDARY_COLOR;
 
 public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
@@ -217,22 +217,22 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
             super(new HorizontalGroup());
             createLabel("", null);
             this.next = new NextButton(getAssets().getIcon(7));
-            this.next.setColor(SECONDARY_COLOR);
+            this.next.setColor(new Color(SECONDARY_COLOR));
             this.hideNextButton(0);
 
             getActor().addActor(this.labelContainer);
             getActor().addActor(this.next);
 
-            Texture whiteTexture = PixelLogicUIUtil.getTexture(PixelLogicConstants.PIXEL_EMPTY_COLOR);
+            Texture whiteTexture = PixelLogicUIUtil.getTexture(new Color(PIXEL_EMPTY_COLOR));
             Sprite s = new Sprite(whiteTexture);
             this.setBackground(new SpriteDrawable(s));
         }
 
         private void createLabel(String text, TypingListener typingListener) {
             // build label
-            BitmapFont font = PixelLogicUIUtil.getAppFont(getAssets(), 1);
+            BitmapFont font = PixelLogicUIUtil.getTutorialFont(getAssets());
             this.label = new TypingLabel(text,
-                    new Label.LabelStyle(font, Color.WHITE));
+                    new Label.LabelStyle(font, new Color(Color.WHITE)));
             this.label.setWrap(true);
             if (typingListener != null) {
                 this.label.setTypingListener(typingListener);
@@ -310,14 +310,14 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
                                 }
                             });
                         }
-                    })/*,
-                    PixelLogicUIUtil.blinkAction(new Color(SECONDARY_COLOR), .8f)*/));
+                    }),
+                    PixelLogicUIUtil.blinkAction(new Color(SECONDARY_COLOR), .8f)));
         }
 
         private void hideNextButton(float fadeOutDuration) {
-            this.next.getListeners().clear();
             this.next.clearActions();
             this.next.addAction(Actions.fadeOut(fadeOutDuration));
+            this.next.getListeners().clear();
         }
 
         private class NextButton extends Actor {
@@ -332,7 +332,6 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
             public void draw(Batch batch, float parentAlpha) {
                 Color color = getColor();
                 batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-                super.draw(batch, parentAlpha);
 
                 float size = PixelLogicUIUtil.getIconBaseHeight();
                 float y = MathUtils.floor(getY()) + getHeight() / 2 - size / 2;
@@ -340,13 +339,16 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
                 float alpha = parentAlpha * color.a;
                 Color spriteColor = getColor();
 
+                //Gdx.app.log("alpha", (spriteColor.a * parentAlpha) + "");
+                //Gdx.app.log("actions", this.getActions() + "");
+
                 batch.setColor(new Color(spriteColor.r, spriteColor.g, spriteColor.b, spriteColor.a * alpha));
                 batch.draw(sprite, x, y, size, size);
                 batch.setColor(color);
+                super.draw(batch, parentAlpha);
             }
 
         }
-
 
     }
 

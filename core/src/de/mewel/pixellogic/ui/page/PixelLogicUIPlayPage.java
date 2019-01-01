@@ -158,7 +158,7 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
 
             getActor().pack();
 
-            Texture whiteTexture = PixelLogicUIUtil.getTexture(BLOCK_COLOR);
+            Texture whiteTexture = PixelLogicUIUtil.getTexture(new Color(BLOCK_COLOR));
             Sprite s = new Sprite(whiteTexture);
             this.setBackground(new SpriteDrawable(s));
         }

@@ -36,6 +36,7 @@ import static de.mewel.pixellogic.PixelLogicConstants.LEVEL_FONT;
 import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.PUZZLE_SOLVED_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.SWITCHER_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.TUTORIAL_FONT;
 
 public class PixelLogicAssets {
 
@@ -48,6 +49,12 @@ public class PixelLogicAssets {
     private static String LEVEL_FONT_PREFIX = "level_font_";
 
     public static int LEVEL_FONT_SIZE = 5;
+
+    private static String TUTORIAL_FONT_PREFIX = "tutorial_font_";
+
+    public static int TUTORIAL_FONT_SIZE = 6;
+
+    private static int TUTORIAL_FONT_ITERATIONS = 10;
 
     private static String LEVEL_DIRECTORY = "level";
 
@@ -94,7 +101,8 @@ public class PixelLogicAssets {
     }
 
     protected void loadFonts() {
-        loadTTFFont(GAME_FONT, GAME_FONT_PREFIX);
+        loadTTFFont(GAME_FONT, GAME_FONT_SIZE, GAME_FONT_ITERATIONS, GAME_FONT_PREFIX);
+        loadTTFFont(TUTORIAL_FONT, TUTORIAL_FONT_SIZE, TUTORIAL_FONT_ITERATIONS, TUTORIAL_FONT_PREFIX);
         loadBitmapFont(LEVEL_FONT, LEVEL_FONT_PREFIX);
     }
 
@@ -102,8 +110,8 @@ public class PixelLogicAssets {
         manager.load("icons.png", Texture.class);
     }
 
-    protected void loadTTFFont(String path, String prefix) {
-        for (int i = GAME_FONT_SIZE; i <= (GAME_FONT_SIZE * GAME_FONT_ITERATIONS); i += GAME_FONT_SIZE) {
+    protected void loadTTFFont(String path, int fontSize, int fontIterations, String prefix) {
+        for (int i = fontSize; i <= (fontSize * fontIterations); i += fontSize) {
             String assetName = prefix + i + ".ttf";
             FreetypeFontLoader.FreeTypeFontLoaderParameter gameFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
             gameFont.fontFileName = path;
@@ -151,6 +159,15 @@ public class PixelLogicAssets {
     public BitmapFont getLevelFont(int size) {
         int fixedSize = getFixedLevelFontSize(size);
         BitmapFont bitmapFont = manager.get(LEVEL_FONT_PREFIX + fixedSize + ".fnt", BitmapFont.class);
+        bitmapFont.getData().markupEnabled = true;
+        return bitmapFont;
+    }
+
+    public BitmapFont getTutorialFont(int base) {
+        int size = (int) Math.ceil(base / TUTORIAL_FONT_SIZE) * TUTORIAL_FONT_SIZE;
+        size = Math.min(size, TUTORIAL_FONT_SIZE * TUTORIAL_FONT_ITERATIONS);
+        size = Math.max(size, TUTORIAL_FONT_SIZE);
+        BitmapFont bitmapFont = manager.get(TUTORIAL_FONT_PREFIX + size + ".ttf", BitmapFont.class);
         bitmapFont.getData().markupEnabled = true;
         return bitmapFont;
     }
@@ -245,5 +262,4 @@ public class PixelLogicAssets {
             this.shapeRenderer.dispose();
         }
     }
-
 }

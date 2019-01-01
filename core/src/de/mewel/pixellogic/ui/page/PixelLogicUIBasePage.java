@@ -160,7 +160,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
             this.text = text;
 
             this.background = new PixelLogicUIColoredSurface(assets);
-            this.background.setColor(MAIN_COLOR);
+            this.background.setColor(new Color(MAIN_COLOR));
             this.addActor(this.background);
 
             this.backButton = new HeaderButton(assets.getIcon(3));

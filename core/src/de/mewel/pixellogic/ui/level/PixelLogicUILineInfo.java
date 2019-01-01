@@ -42,7 +42,7 @@ public abstract class PixelLogicUILineInfo extends PixelLogicUILevelGroup {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         Color baseColor = getColor();
-        Color blockColor = isLineComplete() ? LINE_COMPLETE_COLOR : LINE_COLOR;
+        Color blockColor = isLineComplete() ? new Color(LINE_COMPLETE_COLOR) : new Color(LINE_COLOR);
         blockColor.a = baseColor.a * parentAlpha;
         batch.setColor(blockColor);
         batch.draw(texture, getX(), getY(), getWidth() * getScaleX(),
@@ -84,7 +84,7 @@ public abstract class PixelLogicUILineInfo extends PixelLogicUILevelGroup {
     protected abstract boolean isLineComplete();
 
     public Color getLabelColor() {
-        return isLineComplete() ? APP_BACKGROUND : TEXT_COLOR;
+        return isLineComplete() ? new Color(APP_BACKGROUND) : new Color(TEXT_COLOR);
     }
 
     public void reset() {

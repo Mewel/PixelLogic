@@ -198,6 +198,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
                         levelPage.setMessage(getAssets().translate("tutorial.status7b"));
                         levelUI.setEnabled(false).setEnabledRow(3, true);
                         showRow(levelUI, 3);
+                        hideRow(levelUI, 4);
                     }
                 });
     }
@@ -211,6 +212,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
             @Override
             public void run() {
                 showRow(levelUI, 2);
+                hideRow(levelUI, 3);
                 levelPage.setMessage(getAssets().translate("tutorial.status8b"), new Runnable() {
                     @Override
                     public void run() {
@@ -305,6 +307,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
             }
         });
         showRow(levelUI, 1);
+        hideRow(levelUI, 2);
 
     }
 
@@ -320,6 +323,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
                     }
                 });
         showRow(levelUI, 0);
+        hideRow(levelUI, 1);
     }
 
     private void handleStatus14() {
@@ -332,6 +336,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
             public void run() {
                 showColumn(levelUI, 0);
                 showColumn(levelUI, 4);
+                hideRow(levelUI, 0);
                 levelPage.setMessage(getAssets().translate("tutorial.status14b"), new Runnable() {
                     @Override
                     public void run() {
@@ -359,6 +364,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
                         levelPage.showSwitcher(new Runnable() {
                             @Override
                             public void run() {
+                                hideColumn(levelUI, 0);
                                 levelUI.setEnabled(false);
                                 levelUI.setEnabled(0, 4, true);
                                 levelUI.setEnabled(1, 4, true);
@@ -377,6 +383,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
             @Override
             public void run() {
                 showColumn(levelUI, 2);
+                hideColumn(levelUI, 4);
                 levelUI.setEnabled(1, 2, true);
                 levelPage.setMessage(getAssets().translate("tutorial.status16b"));
             }
@@ -393,6 +400,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
             public void run() {
                 showColumn(levelUI, 1);
                 showColumn(levelUI, 3);
+                hideColumn(levelUI, 2);
                 levelPage.setMessage(getAssets().translate("tutorial.status17b"), new Runnable() {
                     @Override
                     public void run() {
@@ -411,8 +419,15 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         this.status = 18;
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
-        levelUI.setEnabled(true);
-        levelPage.setMessage(getAssets().translate("tutorial.status18"));
+        levelPage.setMessage(getAssets().translate("tutorial.status18"),
+                new PixelLogicUITutorialLevelPage.TutorialTypingAdapter(getAssets()) {
+                    @Override
+                    public void end() {
+                        super.end();
+                        fadeInInfoBoxes(levelUI);
+                        levelUI.setEnabled(true);
+                    }
+                });
     }
 
     private void handleStatus19() {
@@ -452,6 +467,16 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
     private void showColumn(PixelLogicUILevel levelUI, int col) {
         SnapshotArray<Actor> colInfo = levelUI.getColumnGroup().getChildren();
         colInfo.get(col).addAction(Actions.fadeIn(.2f));
+    }
+
+    private void hideRow(PixelLogicUILevel levelUI, int row) {
+        SnapshotArray<Actor> rowInfo = levelUI.getRowGroup().getChildren();
+        rowInfo.get(row).addAction(Actions.fadeOut(.2f));
+    }
+
+    private void hideColumn(PixelLogicUILevel levelUI, int col) {
+        SnapshotArray<Actor> colInfo = levelUI.getColumnGroup().getChildren();
+        colInfo.get(col).addAction(Actions.fadeOut(.2f));
     }
 
     private SequenceAction createSolveSequence(final PixelLogicUILevel levelUI, Map<Vector2, Boolean> pixels,
@@ -499,6 +524,17 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         SnapshotArray<Actor> rowInfo = levelUI.getRowGroup().getChildren();
         for (int i = 0; i < rowInfo.size - 1; i++) {
             rowInfo.get(i).addAction(Actions.fadeOut(.5f));
+        }
+    }
+
+    private void fadeInInfoBoxes(PixelLogicUILevel levelUI) {
+        SnapshotArray<Actor> colInfo = levelUI.getColumnGroup().getChildren();
+        for (int i = 0; i < colInfo.size; i++) {
+            colInfo.get(i).addAction(Actions.fadeIn(.5f));
+        }
+        SnapshotArray<Actor> rowInfo = levelUI.getRowGroup().getChildren();
+        for (int i = 0; i < rowInfo.size; i++) {
+            rowInfo.get(i).addAction(Actions.fadeIn(.5f));
         }
     }
 

@@ -15,15 +15,15 @@ public abstract class PixelLogicConstants {
 
     public static final Color PIXEL_EMPTY_COLOR = Color.valueOf("#CEE3F6");
     public static final Color PIXEL_FILLED_COLOR = Color.valueOf("#1C1C1C");
-    public static final Color PIXEL_BLOCKED_COLOR = MAIN_COLOR;
+    public static final Color PIXEL_BLOCKED_COLOR = new Color(MAIN_COLOR);
     public static final Color LINE_COLOR = Color.valueOf("#F5DA81");
-    public static final Color LINE_COMPLETE_COLOR = SECONDARY_COLOR;
+    public static final Color LINE_COMPLETE_COLOR = new Color(SECONDARY_COLOR);
     public static final Color TEXT_COLOR = Color.valueOf("#424242");
     public static final Color TEXT_LIGHT_COLOR = Color.valueOf("#A2A2A2");
     public static final Color GRID_COLOR = Color.valueOf("#8DBEEA");
 
-    public static final Color TOOLBAR_SWITCHER_ACTIVE_COLOR = Color.WHITE;
-    public static final Color TOOLBAR_SWITCHER_INACTIVE_COLOR = Color.DARK_GRAY;
+    public static final Color TOOLBAR_SWITCHER_ACTIVE_COLOR = new Color(Color.WHITE);
+    public static final Color TOOLBAR_SWITCHER_INACTIVE_COLOR = new Color(Color.DARK_GRAY);
 
     public static final String BUTTON_SOUND = "audio/164643__adam-n__pen-click-3.wav";
     public static final String PIXEL_SOUND = "audio/119415__joedeshon__rocker-switch.wav";
@@ -34,6 +34,7 @@ public abstract class PixelLogicConstants {
 
     public static final String GAME_FONT = "fonts/visitor3.otf";
     public static final String LEVEL_FONT = "fonts/numbers.fnt";
+    public static final String TUTORIAL_FONT = "fonts/Quicksand-Regular.ttf";
 
     static {
         Colors.put("MAIN_COLOR", MAIN_COLOR);

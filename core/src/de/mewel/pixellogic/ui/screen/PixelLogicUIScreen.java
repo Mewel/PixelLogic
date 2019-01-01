@@ -27,7 +27,7 @@ public abstract class PixelLogicUIScreen implements Screen, PixelLogicUIElement 
 
     @Override
     public void render(float delta) {
-        Color b = PixelLogicConstants.APP_BACKGROUND;
+        Color b = new Color(PixelLogicConstants.APP_BACKGROUND);
         Gdx.gl.glClearColor(b.r, b.g, b.b, b.a);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);

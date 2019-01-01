@@ -51,8 +51,8 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
     public void reset() {
         this.fillPixel = true;
         this.marker.setX(0);
-        this.penColor = TOOLBAR_SWITCHER_ACTIVE_COLOR;
-        this.xColor = TOOLBAR_SWITCHER_INACTIVE_COLOR;
+        this.penColor = new Color(TOOLBAR_SWITCHER_ACTIVE_COLOR);
+        this.xColor = new Color(TOOLBAR_SWITCHER_INACTIVE_COLOR);
     }
 
     @Override
@@ -108,13 +108,13 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
         float x = this.fillPixel ? 0 : this.getWidth() - this.marker.getWidth();
         this.marker.addAction(Actions.sequence(
                 Actions.moveTo(x, 0, 0.1f),
-                Actions.color(TOOLBAR_SWITCHER_ACTIVE_COLOR, 0.05f),
+                Actions.color(new Color(TOOLBAR_SWITCHER_ACTIVE_COLOR), 0.05f),
                 Actions.color(Color.ORANGE, 0.1f),
                 Actions.run(new Runnable() {
                                 @Override
                                 public void run() {
-                                    penColor = fillPixel ? TOOLBAR_SWITCHER_ACTIVE_COLOR : TOOLBAR_SWITCHER_INACTIVE_COLOR;
-                                    xColor = !fillPixel ? TOOLBAR_SWITCHER_ACTIVE_COLOR : TOOLBAR_SWITCHER_INACTIVE_COLOR;
+                                    penColor = fillPixel ? new Color(TOOLBAR_SWITCHER_ACTIVE_COLOR) : new Color(TOOLBAR_SWITCHER_INACTIVE_COLOR);
+                                    xColor = !fillPixel ? new Color(TOOLBAR_SWITCHER_ACTIVE_COLOR) : new Color(TOOLBAR_SWITCHER_INACTIVE_COLOR);
                                 }
                             }
                 )));

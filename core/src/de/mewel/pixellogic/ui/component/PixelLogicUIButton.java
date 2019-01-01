@@ -13,6 +13,8 @@ import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
+import static de.mewel.pixellogic.PixelLogicConstants.SECONDARY_COLOR;
+
 public abstract class PixelLogicUIButton extends PixelLogicUIGroup {
 
     private Label label;
@@ -30,7 +32,7 @@ public abstract class PixelLogicUIButton extends PixelLogicUIGroup {
         this.blocked = new AtomicBoolean(false);
         this.text = text;
         this.background = new PixelLogicUIColoredSurface(assets);
-        Color bgColor = PixelLogicConstants.SECONDARY_COLOR;
+        Color bgColor = new Color(new Color(SECONDARY_COLOR));
         this.background.setColor(bgColor);
         this.background.setBorder(1, new Color(bgColor).mul(.5f));
         this.addActor(this.background);
