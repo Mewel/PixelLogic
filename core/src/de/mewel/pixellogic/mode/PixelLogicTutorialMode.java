@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.mode;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -41,13 +42,15 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
     public void run() {
         this.levels.get(0).reset();
         this.levels.get(1).reset();
+        this.levels.get(2).reset();
+        this.levels.get(3).reset();
 
-        this.status = 0;
-        runLevel(this.levels.get(0));
+        // this.status = 0;
+        // runLevel(this.levels.get(0));
 
         //this.runLevel(levels.get(1));
         //fadeOutInfoBoxes(getPage().getLevelUI());
-        //handleStatus16();
+        handleStatus10();
     }
 
     private PixelLogicUITutorialLevelPage getPage() {
@@ -64,24 +67,29 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
             if (PixelLogicLevelStatus.playable.equals(changeEvent.getStatus()) && status == 0) {
                 handleStatus1();
-            }
-            if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus()) && status == 3) {
+            } else if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus()) && status == 3) {
                 handleStatus4();
-            }
-            if (PixelLogicLevelStatus.playable.equals(changeEvent.getStatus()) && status == 4) {
+            } else if (PixelLogicLevelStatus.playable.equals(changeEvent.getStatus()) && status == 4) {
                 handleStatus5();
+            } else if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus()) && status == 9) {
+                handleStatus10();
+            } else if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus()) && status == 10) {
+                handleStatus11();
             }
         }
         if (event instanceof PixelLogicBoardChangedEvent) {
             PixelLogicBoardChangedEvent boardChangedEvent = (PixelLogicBoardChangedEvent) event;
             PixelLogicLevel level = boardChangedEvent.getLevel();
-            if (this.status == 6 && level.isRowComplete(4)) {
+            if (this.status == 6 && level.isRowComplete(0)) {
                 handleStatus7();
             }
-            if (this.status == 7 && level.isRowComplete(3)) {
+            if (this.status == 7 && level.isRowComplete(1)) {
                 handleStatus8();
             }
-            if (this.status == 10 && isSet(level, 2, 2, true)) {
+            if (this.status == 8 && level.isSolved()) {
+                handleStatus9();
+            }
+            /*if (this.status == 10 && isSet(level, 2, 2, true)) {
                 handleStatus11();
             }
             if (this.status == 13 && isSet(level, 0, 2, true)) {
@@ -104,7 +112,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
             }
             if (status == 18 && level.isSolved()) {
                 handleStatus19();
-            }
+            }*/
         }
     }
 
@@ -178,10 +186,10 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         this.status = 6;
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
-        int rows = levelPage.getLevel().getRows();
+        PixelLogicLevel level = levelPage.getLevel();
         Map<Vector2, Boolean> pixels = new LinkedHashMap<Vector2, Boolean>();
-        for (int x = 0; x < 5; x++) {
-            pixels.put(new Vector2(x, rows - 1), true);
+        for (int x = 0; x < level.getColumns(); x++) {
+            pixels.put(new Vector2(x, 0), true);
         }
         SequenceAction sequence = createSolveSequence(levelUI, pixels, 0.2f);
         levelUI.addAction(sequence);
@@ -191,16 +199,11 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         this.status = 7;
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
-        levelPage.setMessage(getAssets().translate("tutorial.status7a"),
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        levelPage.setMessage(getAssets().translate("tutorial.status7b"));
-                        levelUI.setEnabled(false).setEnabledRow(3, true);
-                        showRow(levelUI, 3);
-                        hideRow(levelUI, 4);
-                    }
-                });
+
+        levelPage.setMessage(getAssets().translate("tutorial.status7"));
+        levelUI.setEnabled(false).setEnabledRow(1, true);
+        showRow(levelUI, 1);
+        hideRow(levelUI, 0);
     }
 
     private void handleStatus8() {
@@ -208,21 +211,47 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
         levelUI.setEnabled(false);
-        levelPage.setMessage(getAssets().translate("tutorial.status8a"), new Runnable() {
+        levelPage.setMessage(getAssets().translate("tutorial.status8"), new Runnable() {
             @Override
             public void run() {
-                showRow(levelUI, 2);
-                hideRow(levelUI, 3);
-                levelPage.setMessage(getAssets().translate("tutorial.status8b"), new Runnable() {
-                    @Override
-                    public void run() {
-                        handleStatus9(0);
-                    }
-                });
+                levelUI.setEnabled(true);
+                fadeInInfoBoxes(levelUI);
+                levelPage.hideMessage();
             }
         });
     }
 
+    private void handleStatus9() {
+        this.status = 9;
+        final PixelLogicUITutorialLevelPage levelPage = getPage();
+        levelPage.getScreenListener().setDestroyLevelOnClick(true);
+    }
+
+    private void handleStatus10() {
+        this.status = 10;
+        final PixelLogicUITutorialLevelPage levelPage = getPage();
+        levelPage.getScreenListener().setDestroyLevelOnClick(true);
+        this.runLevel(levels.get(2));
+    }
+
+    private void handleStatus11() {
+        this.status = 11;
+        final PixelLogicUITutorialLevelPage levelPage = getPage();
+        final PixelLogicUILevel levelUI = levelPage.getLevelUI();
+
+        runLevel(levels.get(3));
+
+        levelPage.setMessage(getAssets().translate("tutorial.status11"),
+                new PixelLogicUITutorialLevelPage.TutorialTypingAdapter(getAssets()) {
+                    @Override
+                    public void end() {
+
+                    }
+                });
+    }
+
+
+/*
     private void handleStatus9(final int offset) {
         this.status = 9;
         final PixelLogicUITutorialLevelPage levelPage = getPage();
@@ -453,6 +482,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
             }
         });
     }
+    */
 
     private boolean isSet(PixelLogicLevel level, int row, int col, boolean targetValue) {
         Boolean value = level.get(row, col);
@@ -522,7 +552,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
             colInfo.get(i).addAction(Actions.fadeOut(.5f));
         }
         SnapshotArray<Actor> rowInfo = levelUI.getRowGroup().getChildren();
-        for (int i = 0; i < rowInfo.size - 1; i++) {
+        for (int i = 1; i < rowInfo.size; i++) {
             rowInfo.get(i).addAction(Actions.fadeOut(.5f));
         }
     }

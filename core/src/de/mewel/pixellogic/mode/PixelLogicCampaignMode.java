@@ -9,7 +9,6 @@ import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
-import de.mewel.pixellogic.ui.page.PixelLogicUIPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;

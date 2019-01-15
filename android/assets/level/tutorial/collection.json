@@ -5,10 +5,28 @@
   "preserveOrder": true,
   "level": [
     {
-      "name": "HEART"
+      "name": "Heart",
+      "languages": {
+        "de": "Herz"
+      }
     },
     {
-      "name": "RUBIN GOBLET"
+      "name": "Disk",
+      "languages": {
+        "de": "Diskette"
+      }
+    },
+    {
+      "name": "Cloud",
+      "languages": {
+        "de": "Wolke"
+      }
+    },
+    {
+      "name": "Rubin Goblet",
+      "languages": {
+        "de": "Rubinkelch"
+      }
     }
   ]
 }

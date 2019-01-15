@@ -105,11 +105,11 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
         getStage().addActor(this.messageBox);
     }
 
-    @Override
+    /*@Override
     protected void onSolved() {
         showSolvedAnimation();
         getAssets().get().get(PixelLogicConstants.PUZZLE_SOLVED_SOUND, Sound.class).play(.2f);
-    }
+    }*/
 
     @Override
     public void destroyLevel() {
@@ -141,8 +141,13 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
     }
 
     public void setMessage(String text, TypingListener listener) {
+        this.messageBox.addAction(Actions.fadeIn(.3f));
         this.messageBox.setText(text, listener);
         updateMessageBoxBounds();
+    }
+
+    public void hideMessage() {
+        this.messageBox.addAction(Actions.fadeOut(.3f));
     }
 
     public void showNextMessageButton(Runnable action) {
@@ -203,6 +208,11 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
         sequence.addAction(Actions.delay(.2f));
         sequence.addAction(Actions.run(after));
         switcher.addAction(sequence);
+    }
+
+    @Override
+    public TutorialScreenListener getScreenListener() {
+        return (TutorialScreenListener) super.getScreenListener();
     }
 
     public class MessageBox extends Container<HorizontalGroup> {
@@ -352,7 +362,9 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
     }
 
-    protected static class TutorialScreenListener extends ScreenListener {
+    public static class TutorialScreenListener extends ScreenListener {
+
+        private boolean destroyLevelOnClick = false;
 
         public TutorialScreenListener(PixelLogicUILevelPage page) {
             super(page);
@@ -360,8 +372,11 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            // do not destroy levels on click
-            return true;
+            return !destroyLevelOnClick || super.touchDown(event, x, y, pointer, button);
+        }
+
+        public void setDestroyLevelOnClick(boolean destroyLevelOnClick) {
+            this.destroyLevelOnClick = destroyLevelOnClick;
         }
 
     }
@@ -394,7 +409,6 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
     }
 
     protected static class SwitcherModal extends PixelLogicUIModal {
-
 
         public SwitcherModal(PixelLogicAssets assets, PixelLogicEventManager eventManager, Group parent) {
             super(assets, eventManager, parent);

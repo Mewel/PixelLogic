@@ -269,6 +269,10 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         return this.levelStatus;
     }
 
+    public ScreenListener getScreenListener() {
+        return screenListener;
+    }
+
     @Override
     public void dispose() {
         super.dispose();
