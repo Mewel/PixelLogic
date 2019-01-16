@@ -4,8 +4,8 @@ import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
-import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
+import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 
 public class PixelLogicAchievementNoBlock extends PixelLogicAchievement {
 
@@ -30,8 +30,8 @@ public class PixelLogicAchievementNoBlock extends PixelLogicAchievement {
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
             PixelLogicLevelStatusChangeEvent statusChangeEvent = (PixelLogicLevelStatusChangeEvent) event;
             PixelLogicLevel level = statusChangeEvent.getLevel();
+            // 6x6, 5*7, 4*8 are all ok
             if (PixelLogicLevelStatus.loaded.equals(statusChangeEvent.getStatus())) {
-                // 6x6, 5*7, 4*8 are all ok
                 this.isThePuzzelBigEnough = level.getRows() * level.getColumns() >= 32;
                 this.blocked = false;
                 return false;
@@ -52,6 +52,11 @@ public class PixelLogicAchievementNoBlock extends PixelLogicAchievement {
             PixelLogicLevelStatusChangeEvent statusChangeEvent = (PixelLogicLevelStatusChangeEvent) event;
             PixelLogicLevelStatus status = statusChangeEvent.getStatus();
             if (PixelLogicLevelStatus.solved.equals(status)) {
+                // ignore certain level's
+                PixelLogicLevel level = statusChangeEvent.getLevel();
+                if ("Heart".equals(level.getName()) || "Windows".equals(level.getName())) {
+                    return false;
+                }
                 // achievement reached
                 return !this.blocked;
             }

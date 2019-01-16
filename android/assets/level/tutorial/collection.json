@@ -23,9 +23,21 @@
       }
     },
     {
-      "name": "Rubin Goblet",
+      "name": "Ruby Ring",
       "languages": {
-        "de": "Rubinkelch"
+        "de": "Rubinring"
+      }
+    },
+    {
+      "name": "Headphones",
+      "languages": {
+        "de": "Kopfhörer"
+      }
+    },
+    {
+      "name": "Fortress",
+      "languages": {
+        "de": "Burg"
       }
     }
   ]

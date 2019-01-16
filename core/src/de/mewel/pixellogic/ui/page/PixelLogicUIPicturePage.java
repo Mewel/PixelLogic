@@ -1,9 +1,11 @@
 package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
@@ -42,6 +44,14 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
         PictureModeContainer daVinciContainer = new PictureModeContainer(daVinciMode);
         this.pictureModeContainers.add(daVinciContainer);
         getPageRoot().addActor(daVinciContainer);
+
+        // starry night
+        PixelLogicLevelCollection starryNightCollection = getAssets().getLevelCollection("pictures/starrynight");
+        PixelLogicPictureMode starryNightMode = new PixelLogicPictureMode(starryNightCollection);
+        starryNightMode.setup(getGlobal());
+        PictureModeContainer starryNightContainer = new PictureModeContainer(starryNightMode);
+        this.pictureModeContainers.add(starryNightContainer);
+        getPageRoot().addActor(starryNightContainer);
 
         // add listeners
         for (final PictureModeContainer container : this.pictureModeContainers) {
@@ -92,6 +102,9 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
     public void activate(PixelLogicUIPageProperties properties) {
         super.activate(properties);
         for (PictureModeContainer pictureModeContainer : this.pictureModeContainers) {
+            if (pictureModeContainer.isSolved()) {
+                pictureModeContainer.removeButtonListener();
+            }
             pictureModeContainer.updateImage();
             pictureModeContainer.updateLabel();
         }
@@ -106,6 +119,8 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
         private PixelLogicPictureMode mode;
 
         private Container<Label> labelContainer;
+
+        private PixelLogicUIButtonListener buttonListener;
 
         PictureModeContainer(PixelLogicPictureMode mode) {
             super(new VerticalGroup());
@@ -143,16 +158,33 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
 
         public void resize(int width, int height) {
             int padding = getPadding() * 2;
+            Pixmap pixmap = picture.getCollection().getPixmap();
 
-            float size = Math.min(width, height / 1.75f) - padding;
+            float maxSize = Math.min(width, height / 1.75f) - padding;
+            float mult = Math.min(maxSize / pixmap.getWidth(), maxSize / pixmap.getHeight());
+
             getActor().pad(padding / 2);
             getActor().space(padding / 4);
 
-            this.picture.setSize(size, size);
+            this.picture.setSize(pixmap.getWidth() * mult, pixmap.getHeight() * mult);
             this.labelContainer.width(getComponentWidth());
             this.labelContainer.getActor().setStyle(getLabelStyle(new Color(TEXT_COLOR)));
 
             this.width(width);
+        }
+
+        @Override
+        public boolean addListener(EventListener listener) {
+            if (listener instanceof PixelLogicUIButtonListener) {
+                this.buttonListener = (PixelLogicUIButtonListener) listener;
+            }
+            return super.addListener(listener);
+        }
+
+        public void removeButtonListener() {
+            if (this.buttonListener != null) {
+                removeListener(this.buttonListener);
+            }
         }
 
         public Label getLabel(String text, Color color) {

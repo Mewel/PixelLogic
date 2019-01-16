@@ -41,12 +41,12 @@ public class PicturesSpike extends Game implements PixelLogicGlobal {
         this.appScreen = new PixelLogicUIAppScreen(this);
         this.setScreen(this.appScreen);
 
-        PixelLogicLevelCollection collection = getAssets().getLevelCollection("pictures/davinci");
+        PixelLogicLevelCollection collection = getAssets().getLevelCollection("pictures/starrynight");
         final PixelLogicPictureMode mode = new PixelLogicPictureMode(collection);
         mode.setup(this);
         mode.reset();
 
-        List<PixelLogicLevel> levels = mode.getLevels();
+        final List<PixelLogicLevel> levels = mode.getLevels();
         for (PixelLogicLevel level : levels) {
             boolean solvable = PixelLogicUtil.isSolvable(level.getLevelData());
             Gdx.app.log("level loader", level.getName() + " is " + (solvable ? "valid" : "invalid--------------------------------------"));
@@ -54,14 +54,17 @@ public class PicturesSpike extends Game implements PixelLogicGlobal {
             Gdx.app.log("level loader", level.getName() + " complexity " + result.getComplexity());
         }
 
-        mode.activate();
-        mode.run(levels.get(19 - 1));
-
         PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
         pageProperties.put("solvedAnimation", "picture");
         pageProperties.put("pictureCollection", mode.getCollection());
         pageProperties.put("menuBackId", PixelLogicUIPageId.mainMenu);
-        getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties);
+        getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties, new Runnable() {
+            @Override
+            public void run() {
+                mode.activate();
+                mode.run(levels.get(7 - 1));
+            }
+        });
     }
 
     @Override

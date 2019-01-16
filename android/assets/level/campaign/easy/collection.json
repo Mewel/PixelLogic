@@ -5,25 +5,13 @@
   "preserveOrder": true,
   "level": [
     {
-      "name": "Disk",
-      "languages": {
-        "de": "Diskette"
-      }
-    },
-    {
       "name": "Dude"
-    },
-    {
-      "name": "Ruby Ring",
-      "languages": {
-        "de": "Rubin Ring"
-      }
     },
     {
       "name": "Chrome"
     },
     {
-      "name": "christmas tree",
+      "name": "Christmas tree",
       "languages": {
         "de": "Tannenbaum"
       }
@@ -38,18 +26,21 @@
       }
     },
     {
-      "name": "Cloud",
+      "name": "Rubin Goblet",
       "languages": {
-        "de": "Wolke"
+        "de": "Rubinkelch"
       }
-    },
-    {
-      "name": "Headset"
     },
     {
       "name": "Trolley",
       "languages": {
         "de": "Einkaufswagen"
+      }
+    },
+    {
+      "name": "Dromedary",
+      "languages": {
+        "de": "Dromedar"
       }
     }
   ]

@@ -46,6 +46,10 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
         this.background.update(levelIndex, oldLevelIndex, blendTime);
     }
 
+    public PixelLogicLevelCollection getCollection() {
+        return this.background.collection;
+    }
+
     public void animate(final PixelLogicUIBoard board, final int levelIndex, final int oldLevelIndex, float delay) {
         int rows = background.getRows();
         int cols = background.getCols();
