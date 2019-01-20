@@ -34,12 +34,14 @@ public abstract class PixelLogicConstants {
 
     public static final String GAME_FONT = "fonts/visitor3.otf";
     public static final String LEVEL_FONT = "fonts/numbers.fnt";
-    public static final String TUTORIAL_FONT = "fonts/Quicksand-Regular.ttf";
+    public static final String MAIN_FONT = "fonts/Quicksand-Regular.ttf";
+    public static final int MAIN_FONT_PT = 22;
 
     static {
         Colors.put("MAIN_COLOR", MAIN_COLOR);
         Colors.put("SECONDARY_COLOR", SECONDARY_COLOR);
         Colors.put("TEXT_COLOR", TEXT_COLOR);
+        Colors.put("TEXT_LIGHT_COLOR", TEXT_LIGHT_COLOR);
         Colors.put("LINE_COLOR", LINE_COLOR);
         Colors.put("LINE_COMPLETE_COLOR", LINE_COMPLETE_COLOR);
     }

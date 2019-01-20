@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
+import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BASE_SIZE;
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_SOUND;
@@ -33,28 +34,25 @@ import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.GAME_FONT;
 import static de.mewel.pixellogic.PixelLogicConstants.KEY_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.LEVEL_FONT;
+import static de.mewel.pixellogic.PixelLogicConstants.MAIN_FONT;
+import static de.mewel.pixellogic.PixelLogicConstants.MAIN_FONT_PT;
 import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.PUZZLE_SOLVED_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.SWITCHER_SOUND;
-import static de.mewel.pixellogic.PixelLogicConstants.TUTORIAL_FONT;
 
 public class PixelLogicAssets {
 
     private static String GAME_FONT_PREFIX = "game_font_";
 
-    public static int GAME_FONT_SIZE = 13;
+    public static int GAME_FONT_BASE = 13;
 
-    private static int GAME_FONT_ITERATIONS = 10;
+    public static int GAME_FONT_MIN = 13;
 
     private static String LEVEL_FONT_PREFIX = "level_font_";
 
     public static int LEVEL_FONT_SIZE = 5;
 
-    private static String TUTORIAL_FONT_PREFIX = "tutorial_font_";
-
-    public static int TUTORIAL_FONT_SIZE = 6;
-
-    private static int TUTORIAL_FONT_ITERATIONS = 10;
+    private static String MAIN_FONT_ASSET = "main_font.ttf";
 
     private static String LEVEL_DIRECTORY = "level";
 
@@ -101,25 +99,49 @@ public class PixelLogicAssets {
     }
 
     protected void loadFonts() {
-        loadTTFFont(GAME_FONT, GAME_FONT_SIZE, GAME_FONT_ITERATIONS, GAME_FONT_PREFIX);
-        loadTTFFont(TUTORIAL_FONT, TUTORIAL_FONT_SIZE, TUTORIAL_FONT_ITERATIONS, TUTORIAL_FONT_PREFIX);
+        float base = GAME_FONT_BASE * Gdx.graphics.getDensity() * getDistanceFactor();
+        int textSize = Math.max(GAME_FONT_MIN, (int) Math.ceil(base / GAME_FONT_BASE) * GAME_FONT_BASE);
+        int h2Size = Math.max(textSize + GAME_FONT_BASE, (int) (Math.ceil(textSize * 1.5f / GAME_FONT_BASE) * GAME_FONT_BASE));
+        int h1Size = Math.max(textSize + GAME_FONT_BASE * 2, (int) (Math.ceil(textSize * 2f / GAME_FONT_BASE) * GAME_FONT_BASE));
+
+        loadGameFont(GAME_FONT_PREFIX + "text.ttf", textSize);
+        loadGameFont(GAME_FONT_PREFIX + "h1.ttf", h1Size);
+        loadGameFont(GAME_FONT_PREFIX + "h2.ttf", h2Size);
+
+        Gdx.app.log("density:", Gdx.graphics.getDensity() + "");
+        Gdx.app.log("screen size inches:", PixelLogicUIUtil.getScreenSizeInches() + "");
+        Gdx.app.log("base:", base + "");
+        Gdx.app.log("textSize:", textSize + "");
+        Gdx.app.log("h2Size:", h2Size + "");
+        Gdx.app.log("h1Size:", h1Size + "");
+
         loadBitmapFont(LEVEL_FONT, LEVEL_FONT_PREFIX);
+
+        loadMainFont();
+    }
+
+    private void loadGameFont(String assetName, int size) {
+        FreetypeFontLoader.FreeTypeFontLoaderParameter gameFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        gameFont.fontFileName = GAME_FONT;
+        gameFont.fontParameters.color = Color.WHITE;
+        gameFont.fontParameters.size = size;
+        manager.load(assetName, BitmapFont.class, gameFont);
+    }
+
+    private void loadMainFont() {
+        FreetypeFontLoader.FreeTypeFontLoaderParameter gameFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        gameFont.fontFileName = MAIN_FONT;
+        gameFont.fontParameters.color = Color.WHITE;
+        gameFont.fontParameters.size = (int) (MAIN_FONT_PT * Gdx.graphics.getDensity() * getDistanceFactor());
+        manager.load(MAIN_FONT_ASSET, BitmapFont.class, gameFont);
+    }
+
+    protected float getDistanceFactor() {
+        return (PixelLogicUIUtil.isDesktop() || PixelLogicUIUtil.isTablet()) ? 1.5f : 1f;
     }
 
     protected void loadIcons() {
         manager.load("icons.png", Texture.class);
-    }
-
-    protected void loadTTFFont(String path, int fontSize, int fontIterations, String prefix) {
-        for (int i = fontSize; i <= (fontSize * fontIterations); i += fontSize) {
-            String assetName = prefix + i + ".ttf";
-            FreetypeFontLoader.FreeTypeFontLoaderParameter gameFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-            gameFont.fontFileName = path;
-            gameFont.fontParameters.color = Color.WHITE;
-            gameFont.fontParameters.size = i;
-            manager.load(assetName, BitmapFont.class, gameFont);
-            Gdx.app.log("assets", "font " + assetName + " loaded");
-        }
     }
 
     protected void loadBitmapFont(String path, String prefix) {
@@ -146,12 +168,9 @@ public class PixelLogicAssets {
         manager.load("i18n/pixellogic", I18NBundle.class);
     }
 
-    public BitmapFont getGameFont(int base, int size) {
-        int baseSize = (int) Math.ceil(base / GAME_FONT_SIZE) * GAME_FONT_SIZE;
-        int fixedSize = baseSize + size * GAME_FONT_SIZE;
-        fixedSize = Math.min(fixedSize, GAME_FONT_SIZE * GAME_FONT_ITERATIONS);
-        fixedSize = Math.max(fixedSize, GAME_FONT_SIZE);
-        BitmapFont bitmapFont = manager.get(GAME_FONT_PREFIX + fixedSize + ".ttf", BitmapFont.class);
+    public BitmapFont getGameFont(int size) {
+        String postfix = size == 0 ? "text" : (size == 1 ? "h2" : "h1");
+        BitmapFont bitmapFont = manager.get(GAME_FONT_PREFIX + postfix + ".ttf", BitmapFont.class);
         bitmapFont.getData().markupEnabled = true;
         return bitmapFont;
     }
@@ -163,11 +182,8 @@ public class PixelLogicAssets {
         return bitmapFont;
     }
 
-    public BitmapFont getTutorialFont(int base) {
-        int size = (int) Math.ceil(base / TUTORIAL_FONT_SIZE) * TUTORIAL_FONT_SIZE;
-        size = Math.min(size, TUTORIAL_FONT_SIZE * TUTORIAL_FONT_ITERATIONS);
-        size = Math.max(size, TUTORIAL_FONT_SIZE);
-        BitmapFont bitmapFont = manager.get(TUTORIAL_FONT_PREFIX + size + ".ttf", BitmapFont.class);
+    public BitmapFont getMainFont() {
+        BitmapFont bitmapFont = manager.get(MAIN_FONT_ASSET, BitmapFont.class);
         bitmapFont.getData().markupEnabled = true;
         return bitmapFont;
     }

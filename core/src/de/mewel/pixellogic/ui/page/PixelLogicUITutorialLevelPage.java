@@ -23,7 +23,6 @@ import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 import com.rafaskoberg.gdx.typinglabel.TypingListener;
 
-import de.mewel.pixellogic.PixelLogicConstants;
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
@@ -240,7 +239,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
         private void createLabel(String text, TypingListener typingListener) {
             // build label
-            BitmapFont font = PixelLogicUIUtil.getTutorialFont(getAssets());
+            BitmapFont font = PixelLogicUIUtil.getMainFont(getAssets());
             this.label = new TypingLabel(text,
                     new Label.LabelStyle(font, new Color(Color.WHITE)));
             this.label.setWrap(true);

@@ -54,6 +54,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
                 public void onClick() {
                     PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                     pageProperties.put("menuBackId", PixelLogicUIPageId.characters);
+                    PixelLogicUIUtil.playButtonSound(getAssets());
                     getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties, new Runnable() {
                         @Override
                         public void run() {
