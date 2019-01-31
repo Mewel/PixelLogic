@@ -34,9 +34,11 @@ import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.GAME_FONT;
 import static de.mewel.pixellogic.PixelLogicConstants.KEY_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.LEVEL_FONT;
+import static de.mewel.pixellogic.PixelLogicConstants.LEVEL_MUSIC;
 import static de.mewel.pixellogic.PixelLogicConstants.MAIN_FONT;
 import static de.mewel.pixellogic.PixelLogicConstants.MAIN_FONT_PT;
-import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.MENU_MUSIC;
+import static de.mewel.pixellogic.PixelLogicConstants.DRAW_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.PUZZLE_SOLVED_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.SWITCHER_SOUND;
 
@@ -157,11 +159,14 @@ public class PixelLogicAssets {
 
     private void loadAudio() {
         manager.load(BUTTON_SOUND, Sound.class);
-        manager.load(PIXEL_SOUND, Sound.class);
+        manager.load(DRAW_SOUND, Sound.class);
         manager.load(BLOCK_SOUND, Sound.class);
         manager.load(SWITCHER_SOUND, Sound.class);
         manager.load(PUZZLE_SOLVED_SOUND, Sound.class);
         manager.load(KEY_SOUND, Sound.class);
+
+        manager.load(MENU_MUSIC, Music.class);
+        manager.load(LEVEL_MUSIC, Music.class);
     }
 
     private void loadI18n() {

@@ -95,8 +95,8 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         int padding = PixelLogicUIUtil.getBaseHeight() / 2;
 
         if (this.solveLevelButton != null) {
-            //getContent().add(this.solveLevelButton).padBottom(padding);
-            //getContent().row();
+            getContent().add(this.solveLevelButton).padBottom(padding);
+            getContent().row();
         }
         if (this.resetLevelButton != null) {
             getContent().add(this.resetLevelButton).padBottom(padding);

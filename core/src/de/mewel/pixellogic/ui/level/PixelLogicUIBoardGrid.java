@@ -19,26 +19,11 @@ import static de.mewel.pixellogic.PixelLogicConstants.GRID_COLOR;
 
 public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
 
-    private static Map<Integer, Integer> GRID;
+    private static int DISTANCE = 5;
 
     private PixelLogicLevel level;
 
     private PixelLogicUILevelResolution resolution;
-
-    static {
-        GRID = new HashMap<Integer, Integer>();
-        GRID.put(6, 3);
-        GRID.put(7, 3);
-        GRID.put(8, 4);
-        GRID.put(9, 3);
-        GRID.put(10, 5);
-        GRID.put(11, 5);
-        GRID.put(12, 4);
-        GRID.put(13, 5);
-        GRID.put(14, 5);
-        GRID.put(15, 5);
-        GRID.put(16, 4);
-    }
 
     public PixelLogicUIBoardGrid(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicLevel level) {
         super(assets, eventManager);
@@ -67,17 +52,11 @@ public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
         renderer.setColor(new Color(color.r, color.g, color.b, color.a * parentAlpha));
         renderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        Integer gridY = GRID.get(level.getRows());
-        if (gridY != null) {
-            for (int y = gridY; y < level.getRows(); y += gridY) {
-                renderer.box(getX(), getY() + (combined * y) - spaceSize, 0, xWidth, spaceSize, 0f);
-            }
+        for (int y = level.getRows() - DISTANCE; y >= 0; y -= DISTANCE) {
+            renderer.box(getX(), getY() + (combined * y) - spaceSize, 0, xWidth, spaceSize, 0f);
         }
-        Integer gridX = GRID.get(level.getColumns());
-        if (gridX != null) {
-            for (int x = gridX; x < level.getColumns(); x += gridX) {
-                renderer.box(getX() + (combined * x) - spaceSize, getY(), 0, spaceSize, yWidth, 0f);
-            }
+        for (int x = DISTANCE; x < level.getColumns(); x += DISTANCE) {
+            renderer.box(getX() + (combined * x) - spaceSize, getY(), 0, spaceSize, yWidth, 0f);
         }
 
         renderer.end();

@@ -17,6 +17,7 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelSwitcherChangedEvent;
 
 import static de.mewel.pixellogic.PixelLogicConstants.SWITCHER_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.SWITCHER_SOUND_VOLUME;
 import static de.mewel.pixellogic.PixelLogicConstants.TOOLBAR_SWITCHER_ACTIVE_COLOR;
 import static de.mewel.pixellogic.PixelLogicConstants.TOOLBAR_SWITCHER_INACTIVE_COLOR;
 
@@ -100,7 +101,7 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
 
         // sound
         Sound sound = getAssets().get().get(SWITCHER_SOUND, Sound.class);
-        sound.play(.05f);
+        sound.play(SWITCHER_SOUND_VOLUME);
 
         // animate
         this.penColor = TOOLBAR_SWITCHER_INACTIVE_COLOR;

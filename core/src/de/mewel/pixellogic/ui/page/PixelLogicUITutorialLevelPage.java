@@ -37,7 +37,9 @@ import de.mewel.pixellogic.ui.level.PixelLogicUILevelSwitcher;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelToolbar;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 import static de.mewel.pixellogic.PixelLogicConstants.KEY_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.KEY_SOUND_VOLUME;
 import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_EMPTY_COLOR;
 import static de.mewel.pixellogic.PixelLogicConstants.SECONDARY_COLOR;
 
@@ -313,7 +315,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
                                 @Override
                                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                                     Sound clickSound = getAssets().get().get(BUTTON_SOUND, Sound.class);
-                                    clickSound.play(.25f);
+                                    clickSound.play(BUTTON_SOUND_VOLUME);
                                     action.run();
                                     return super.touchDown(event, x, y, pointer, button);
                                 }
@@ -425,7 +427,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
         @Override
         public void onChar(Character ch) {
-            typeSound.play(.1f);
+            typeSound.play(KEY_SOUND_VOLUME);
             super.onChar(ch);
         }
 

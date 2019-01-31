@@ -25,6 +25,7 @@ import de.mewel.pixellogic.util.PixelLogicUtil;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BASE_SIZE;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 
 public class PixelLogicUIUtil {
 
@@ -127,7 +128,7 @@ public class PixelLogicUIUtil {
 
     public static void playButtonSound(PixelLogicAssets assets) {
         Sound clickSound = assets.get().get(BUTTON_SOUND, Sound.class);
-        clickSound.play(.25f);
+        clickSound.play(BUTTON_SOUND_VOLUME);
     }
 
     public static Action blinkAction(Color color, float duration) {

@@ -34,6 +34,9 @@ import de.mewel.pixellogic.ui.level.animation.PixelLogicUIBoardSolvedAnimation;
 import de.mewel.pixellogic.ui.level.animation.PixelLogicUILevelAnimation;
 import de.mewel.pixellogic.ui.level.animation.PixelLogicUIPictureBoardSolvedAnimation;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
+import de.mewel.pixellogic.util.PixelLogicMusic;
+
+import static de.mewel.pixellogic.PixelLogicConstants.PUZZLE_SOLVED_SOUND_VOLUME;
 
 public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
@@ -152,6 +155,12 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
             }
         }));
         this.levelUI.addAction(fadeInAction);
+
+        // music
+        PixelLogicMusic levelMusic = getAppScreen().getLevelMusic();
+        if (!levelMusic.get().isPlaying()) {
+            levelMusic.fadeIn(1f, null);
+        }
     }
 
     public void resetLevel() {
@@ -214,7 +223,12 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     protected void onSolved() {
         changeLevelStatus(PixelLogicLevelStatus.solved);
         this.solvedAnimation = showSolvedAnimation();
-        getAssets().get().get(PixelLogicConstants.PUZZLE_SOLVED_SOUND, Sound.class).play(.2f);
+        getAppScreen().getLevelMusic().fadeOut(.5f, new Runnable() {
+            @Override
+            public void run() {
+                getAssets().get().get(PixelLogicConstants.PUZZLE_SOLVED_SOUND, Sound.class).play(PUZZLE_SOLVED_SOUND_VOLUME);
+            }
+        });
         this.getStage().addAction(Actions.sequence(
                 Actions.delay(.3f),
                 Actions.run(new Runnable() {

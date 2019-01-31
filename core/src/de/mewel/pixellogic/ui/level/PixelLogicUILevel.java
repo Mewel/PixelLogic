@@ -18,7 +18,10 @@ import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelSwitcherChangedEvent;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_SOUND;
-import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_SOUND_VOLUME;
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
+import static de.mewel.pixellogic.PixelLogicConstants.DRAW_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.DRAW_SOUND_VOLUME;
 
 public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
@@ -267,8 +270,8 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
                 return;
             }
             boolean type = this.userAction.selectedPixelType;
-            Sound sound = gui.getAssets().get().get(type ? PIXEL_SOUND : BLOCK_SOUND);
-            sound.play(type ? .05f : .1f);
+            Sound sound = gui.getAssets().get().get(type ? DRAW_SOUND : BLOCK_SOUND);
+            sound.play(type ? DRAW_SOUND_VOLUME : BLOCK_SOUND_VOLUME);
         }
 
     }
