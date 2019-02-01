@@ -19,7 +19,7 @@ import static de.mewel.pixellogic.PixelLogicConstants.GRID_COLOR;
 
 public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
 
-    private static int DISTANCE = 5;
+    private static final int DISTANCE = 5;
 
     private PixelLogicLevel level;
 
@@ -52,7 +52,7 @@ public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
         renderer.setColor(new Color(color.r, color.g, color.b, color.a * parentAlpha));
         renderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        for (int y = level.getRows() - DISTANCE; y >= 0; y -= DISTANCE) {
+        for (int y = level.getRows() - DISTANCE; y >= 1; y -= DISTANCE) {
             renderer.box(getX(), getY() + (combined * y) - spaceSize, 0, xWidth, spaceSize, 0f);
         }
         for (int x = DISTANCE; x < level.getColumns(); x += DISTANCE) {

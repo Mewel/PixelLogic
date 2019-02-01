@@ -70,8 +70,8 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen implements 
         Music baseLevelMusic = getAssets().get().get(LEVEL_MUSIC);
         baseLevelMusic.setLooping(true);
         baseLevelMusic.setVolume(LEVEL_MUSIC_VOLUME);
-        this.menuMusic = new PixelLogicMusic(baseMenuMusic);
-        this.levelMusic = new PixelLogicMusic(baseLevelMusic);
+        this.menuMusic = new PixelLogicMusic(baseMenuMusic).setMaxVolume(MENU_MUSIC_VOLUME);
+        this.levelMusic = new PixelLogicMusic(baseLevelMusic).setMaxVolume(LEVEL_MUSIC_VOLUME);
 
         this.menuMusic.get().play();
     }
@@ -131,8 +131,6 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen implements 
             this.menuMusic.act(delta);
         }
         if (this.levelMusic != null) {
-            Gdx.app.log("level music volume", this.levelMusic.get().getVolume() + "");
-            Gdx.app.log("level music playing", this.levelMusic.get().isPlaying() + "");
             this.levelMusic.act(delta);
         }
     }

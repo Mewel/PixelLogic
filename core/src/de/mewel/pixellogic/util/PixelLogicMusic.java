@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.util;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 
 public class PixelLogicMusic {
@@ -12,23 +13,37 @@ public class PixelLogicMusic {
 
     private float maxVolume;
 
-    // null = nothing, true = fade in, false = fade out
-    private Boolean fade;
+    private Float fromVolume;
 
-    private Runnable afterFadeIn, afterFadeOut;
+    private Float toVolume;
+
+    private Runnable afterFadeAction;
 
     public PixelLogicMusic(Music music) {
         this.music = music;
-        this.fade = null;
         this.maxVolume = this.music.getVolume();
     }
 
-    public void setMaxVolume(float maxVolume) {
+    public PixelLogicMusic setMaxVolume(float maxVolume) {
         this.maxVolume = maxVolume;
+        if (this.music.getVolume() > this.maxVolume) {
+            this.music.setVolume(this.maxVolume);
+        }
+        return this;
     }
 
     public void fadeTo(float time, float volume, Runnable after) {
-
+        if (after != null && afterFadeAction != null) {
+            afterFadeAction.run();
+        }
+        if (!this.music.isPlaying()) {
+            this.music.play();
+        }
+        this.fromVolume = music.getVolume();
+        this.toVolume = volume;
+        this.fadeTime = time;
+        this.currentTime = time;
+        this.afterFadeAction = after;
     }
 
     public void fadeIn(float time) {
@@ -40,21 +55,14 @@ public class PixelLogicMusic {
     }
 
     public void fadeIn(float time, Runnable after) {
-        this.fadeTime = time;
-        this.currentTime = time;
-        this.fade = true;
-        this.music.setVolume(0f);
         if (!this.music.isPlaying()) {
-            this.music.play();
+            this.music.setVolume(0f);
         }
-        this.afterFadeIn = after;
+        fadeTo(time, this.maxVolume, after);
     }
 
     public void fadeOut(float time, Runnable after) {
-        this.fadeTime = time;
-        this.currentTime = time;
-        this.fade = false;
-        this.afterFadeOut = after;
+        fadeTo(time, 0, after);
     }
 
     public Music get() {
@@ -62,28 +70,29 @@ public class PixelLogicMusic {
     }
 
     public void act(float delta) {
-        if (fade == null) {
+        if (toVolume == null || toVolume == this.music.getVolume()) {
             return;
         }
+        boolean fadeIn = this.fromVolume < this.toVolume;
         this.currentTime -= delta;
         if (this.currentTime <= 0) {
             this.currentTime = fadeTime;
-            if (this.fade && this.afterFadeIn != null) {
-                this.afterFadeIn.run();
-                this.afterFadeIn = null;
-            } else if (!this.fade) {
+            this.music.setVolume(this.toVolume);
+            if (this.toVolume == 0f) {
                 this.music.stop();
-                if (this.afterFadeOut != null) {
-                    this.afterFadeOut.run();
-                    this.afterFadeOut = null;
-                }
             }
-            this.music.setVolume(fade ? this.maxVolume : 0f);
-            this.fade = null;
+            if (this.afterFadeAction != null) {
+                this.afterFadeAction.run();
+            }
+            this.fromVolume = null;
+            this.toVolume = null;
+            this.afterFadeAction = null;
             return;
         }
-        float volume = (this.currentTime / this.fadeTime) * this.maxVolume;
-        this.music.setVolume(fade ? this.maxVolume - volume : volume);
+        float time = this.currentTime / this.fadeTime;
+        float volumeDelta = Math.abs(this.fromVolume - this.toVolume);
+        float volumeDiff = volumeDelta * time;
+        this.music.setVolume(fadeIn ? this.toVolume - volumeDiff : this.toVolume + volumeDiff);
     }
 
 }

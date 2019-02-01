@@ -155,12 +155,6 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
             }
         }));
         this.levelUI.addAction(fadeInAction);
-
-        // music
-        PixelLogicMusic levelMusic = getAppScreen().getLevelMusic();
-        if (!levelMusic.get().isPlaying()) {
-            levelMusic.fadeIn(1f, null);
-        }
     }
 
     public void resetLevel() {
@@ -223,7 +217,8 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     protected void onSolved() {
         changeLevelStatus(PixelLogicLevelStatus.solved);
         this.solvedAnimation = showSolvedAnimation();
-        getAppScreen().getLevelMusic().fadeOut(.5f, new Runnable() {
+        final PixelLogicMusic levelMusic = getAppScreen().getLevelMusic();
+        levelMusic.fadeTo(.5f, .05f, new Runnable() {
             @Override
             public void run() {
                 getAssets().get().get(PixelLogicConstants.PUZZLE_SOLVED_SOUND, Sound.class).play(PUZZLE_SOLVED_SOUND_VOLUME);
@@ -235,6 +230,14 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
                                 @Override
                                 public void run() {
                                     changeLevelStatus(PixelLogicLevelStatus.finished);
+                                }
+                            }
+                ),
+                Actions.delay(4f),
+                Actions.run(new Runnable() {
+                                @Override
+                                public void run() {
+                                    levelMusic.fadeIn(.5f);
                                 }
                             }
                 )));
