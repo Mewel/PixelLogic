@@ -8,8 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.Random;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.PixelLogicUIActor;
 
 import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_BLOCKED_COLOR;
@@ -28,8 +27,8 @@ public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIActor {
 
     private Random random;
 
-    public PixelLogicUIRotatingBoardBackground(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager);
+    public PixelLogicUIRotatingBoardBackground(PixelLogicGlobal global) {
+        super(global);
         random = new Random();
         board = new Pixel[pixel][pixel];
         for (int row = 0; row < pixel; row++) {

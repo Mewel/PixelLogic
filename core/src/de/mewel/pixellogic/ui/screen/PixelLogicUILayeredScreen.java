@@ -3,16 +3,15 @@ package de.mewel.pixellogic.ui.screen;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.layer.PixelLogicUILayer;
 
 public abstract class PixelLogicUILayeredScreen extends PixelLogicUIScreen {
 
     protected List<PixelLogicUILayer> layers;
 
-    public PixelLogicUILayeredScreen(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager);
+    public PixelLogicUILayeredScreen(PixelLogicGlobal global) {
+        super(global);
         this.layers = new ArrayList<PixelLogicUILayer>();
     }
 

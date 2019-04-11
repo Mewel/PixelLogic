@@ -108,7 +108,7 @@ public class PixelLogicPictureMode extends PixelLogicListLevelMode {
 
         PixelLogicLevelCollection collection = page.getProperties().get("pictureCollection");
 
-        this.picture = new PixelLogicUIPicture(page.getAssets(), page.getEventManager(), collection);
+        this.picture = new PixelLogicUIPicture(page.getGlobal(), collection);
         this.pageRoot = page.getRoot();
 
         updatePictureBounds(page);

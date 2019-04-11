@@ -2,8 +2,7 @@ package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 
 public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
@@ -14,8 +13,8 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
 
     private PixelLogicUIBoardGrid grid;
 
-    public PixelLogicUIBoard(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager);
+    public PixelLogicUIBoard(PixelLogicGlobal global) {
+        super(global);
     }
 
     public void updateLevelResolution(PixelLogicUILevelResolution resolution) {
@@ -40,11 +39,11 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
     public void load(PixelLogicLevel level) {
         this.level = level;
         this.pixels = new PixelLogicUIBoardPixel[level.getRows()][level.getColumns()];
-        this.grid = new PixelLogicUIBoardGrid(getAssets(), getEventManager(), this.level);
+        this.grid = new PixelLogicUIBoardGrid(getGlobal(), this.level);
         this.addActor(this.grid);
         for (int row = 0; row < level.getRows(); row++) {
             for (int col = 0; col < level.getColumns(); col++) {
-                PixelLogicUIBoardPixel pixel = new PixelLogicUIBoardPixel(getAssets(), row, col);
+                PixelLogicUIBoardPixel pixel = new PixelLogicUIBoardPixel(getGlobal(), row, col);
                 pixel.set(level.get(row, col));
                 this.pixels[row][col] = pixel;
                 this.addActor(pixel);

@@ -6,12 +6,7 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import de.mewel.pixellogic.PixelLogicConstants;
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIActor;
 
@@ -25,8 +20,8 @@ public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
 
     private PixelLogicUILevelResolution resolution;
 
-    public PixelLogicUIBoardGrid(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicLevel level) {
-        super(assets, eventManager);
+    public PixelLogicUIBoardGrid(PixelLogicGlobal global, PixelLogicLevel level) {
+        super(global);
         this.level = level;
         this.setColor(new Color(GRID_COLOR));
     }

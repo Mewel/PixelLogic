@@ -2,8 +2,7 @@ package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 
@@ -11,15 +10,15 @@ public class PixelLogicUIColumnGroup extends PixelLogicUILevelGroup {
 
     private PixelLogicLevel level = null;
 
-    public PixelLogicUIColumnGroup(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager);
+    public PixelLogicUIColumnGroup(PixelLogicGlobal global) {
+        super(global);
     }
 
     @Override
     public void onLevelLoad(PixelLogicLevelStatusChangeEvent event) {
         this.level = event.getLevel();
         for (int i = 0; i < level.getColumns(); i++) {
-            PixelLogicUIColumnInfo part = new PixelLogicUIColumnInfo(getAssets(), getEventManager(), level, i);
+            PixelLogicUIColumnInfo part = new PixelLogicUIColumnInfo(getGlobal(), level, i);
             this.addActor(part);
         }
     }

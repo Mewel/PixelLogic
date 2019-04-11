@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.achievements.PixelLogicAchievements;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.asset.PixelLogicAudio;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
@@ -24,6 +25,8 @@ public class TimeTrialLevelTest extends Game implements PixelLogicGlobal {
 
     private PixelLogicAchievements achievements;
 
+    private PixelLogicAudio audio;
+
     @Override
     public void create() {
         this.eventManager = new PixelLogicEventManager();
@@ -32,6 +35,7 @@ public class TimeTrialLevelTest extends Game implements PixelLogicGlobal {
         this.assets.load();
 
         this.achievements = new PixelLogicAchievements(assets, eventManager);
+        this.audio = new PixelLogicAudio(assets, eventManager);
 
         this.appScreen = new PixelLogicUIAppScreen(this);
         this.setScreen(this.appScreen);
@@ -66,6 +70,9 @@ public class TimeTrialLevelTest extends Game implements PixelLogicGlobal {
 
     @Override
     public void dispose() {
+        if (this.audio != null) {
+            this.audio.dispose();
+        }
         if (this.assets != null) {
             this.assets.dispose();
         }
@@ -94,6 +101,11 @@ public class TimeTrialLevelTest extends Game implements PixelLogicGlobal {
     @Override
     public PixelLogicAchievements getAchievements() {
         return achievements;
+    }
+
+    @Override
+    public PixelLogicAudio getAudio() {
+        return audio;
     }
 
 }

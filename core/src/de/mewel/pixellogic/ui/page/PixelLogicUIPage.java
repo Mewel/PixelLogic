@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.asset.PixelLogicAudio;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIElement;
 import de.mewel.pixellogic.ui.component.PixelLogicUIStage;
@@ -30,7 +31,7 @@ public abstract class PixelLogicUIPage implements PixelLogicUIElement {
     public PixelLogicUIPage(PixelLogicGlobal global, PixelLogicUIPageId pageId) {
         this.global = global;
         this.pageId = pageId;
-        this.stage = new PixelLogicUIStage(global.getAssets(), global.getEventManager());
+        this.stage = new PixelLogicUIStage(global);
         this.properties = new PixelLogicUIPageProperties();
     }
 
@@ -55,6 +56,11 @@ public abstract class PixelLogicUIPage implements PixelLogicUIElement {
     @Override
     public PixelLogicEventManager getEventManager() {
         return global.getEventManager();
+    }
+
+    @Override
+    public PixelLogicAudio getAudio() {
+        return global.getAudio();
     }
 
     public PixelLogicUIAppScreen getAppScreen() {

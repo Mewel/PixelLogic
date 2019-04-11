@@ -4,8 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.utils.Align;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
@@ -21,8 +20,8 @@ public class PixelLogicUIAchievementBlock extends PixelLogicUIGroup {
 
     private Label.LabelStyle headerStyle, descriptionStyle;
 
-    public PixelLogicUIAchievementBlock(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager);
+    public PixelLogicUIAchievementBlock(PixelLogicGlobal global) {
+        super(global);
 
         this.container = new VerticalGroup();
         this.container.left();

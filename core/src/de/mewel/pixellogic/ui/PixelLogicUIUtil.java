@@ -3,7 +3,6 @@ package de.mewel.pixellogic.ui;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,8 +23,6 @@ import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BASE_SIZE;
-import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
-import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 
 public class PixelLogicUIUtil {
 
@@ -124,11 +121,6 @@ public class PixelLogicUIUtil {
             return false;
         }
         return l1.font == l2.font;
-    }
-
-    public static void playButtonSound(PixelLogicAssets assets) {
-        Sound clickSound = assets.get().get(BUTTON_SOUND, Sound.class);
-        clickSound.play(BUTTON_SOUND_VOLUME);
     }
 
     public static Action blinkAction(Color color, float duration) {

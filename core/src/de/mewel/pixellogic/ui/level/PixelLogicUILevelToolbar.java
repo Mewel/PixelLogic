@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.ui.level;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -13,15 +12,17 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.event.PixelLogicEvent;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicTimerEvent;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
+
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 
 public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements PixelLogicListener {
 
@@ -43,8 +44,8 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
 
     private boolean timerRunning;
 
-    public PixelLogicUILevelToolbar(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager);
+    public PixelLogicUILevelToolbar(PixelLogicGlobal global) {
+        super(global);
         this.level = null;
         this.solvedLabel = null;
         this.timerLabel = null;
@@ -57,13 +58,13 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                PixelLogicUIUtil.playButtonSound(getAssets());
+                getAudio().playSound(BUTTON_SOUND, BUTTON_SOUND_VOLUME);
                 getEventManager().fire(new PixelLogicUserEvent(PixelLogicUILevelToolbar.this, PixelLogicUserEvent.Type.LEVEL_MENU_CLICKED));
                 return super.touchDown(event, x, y, pointer, button);
             }
 
         };
-        this.switcher = new PixelLogicUILevelSwitcher(getAssets(), getEventManager());
+        this.switcher = new PixelLogicUILevelSwitcher(getGlobal());
         this.switcherListener = new InputListener() {
 
             @Override

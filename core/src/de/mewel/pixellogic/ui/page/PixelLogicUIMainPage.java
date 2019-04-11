@@ -4,15 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.mode.PixelLogicTutorialMode;
+import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.background.PixelLogicUIRotatingBoardBackground;
+import de.mewel.pixellogic.ui.component.PixelLogicUIAudioButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 import de.mewel.pixellogic.ui.component.PixelLogicUIVerticalGroup;
+
+import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
 
 public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
@@ -30,16 +36,18 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
     private PixelLogicUIButton aboutButton;
 
+    private PixelLogicUIAudioButton audioButton;
+
     public PixelLogicUIMainPage(PixelLogicGlobal global) {
         super(global, PixelLogicUIPageId.mainMenu);
     }
 
     @Override
     protected void buildGui(String headerText, PixelLogicUIPageId backPageId) {
-        this.background = new PixelLogicUIRotatingBoardBackground(getAssets(), getEventManager());
+        this.background = new PixelLogicUIRotatingBoardBackground(getGlobal());
         getStage().addActor(this.background);
 
-        this.backgroundOverlay = new PixelLogicUIColoredSurface(getAssets());
+        this.backgroundOverlay = new PixelLogicUIColoredSurface(getGlobal());
         this.backgroundOverlay.setColor(new Color(255f, 255f, 255f, .5f));
         this.backgroundOverlay.setInheritParentAlpha(false);
         getStage().addActor(this.backgroundOverlay);
@@ -53,7 +61,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         logoImage = new Image(logo);
         logoImage.setOrigin(Align.center);
 
-        this.playButton = new PixelLogicUIButton(getAssets(), getEventManager(), getAssets().translate("play")) {
+        this.playButton = new PixelLogicUIButton(getGlobal(), getAssets().translate("play")) {
             @Override
             public void handleClick() {
                 Preferences preferences = getPreferences();
@@ -78,7 +86,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
             }
         };
 
-        this.achievementButton = new PixelLogicUIButton(getAssets(), getEventManager(), getAssets().translate("achievements")) {
+        this.achievementButton = new PixelLogicUIButton(getGlobal(), getAssets().translate("achievements")) {
             @Override
             public void handleClick() {
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
@@ -86,7 +94,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
             }
         };
 
-        this.aboutButton = new PixelLogicUIButton(getAssets(), getEventManager(), getAssets().translate("about")) {
+        this.aboutButton = new PixelLogicUIButton(getGlobal(), getAssets().translate("about")) {
             @Override
             public void handleClick() {
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
@@ -95,7 +103,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         };
 
         buttonGroup = new PixelLogicUIVerticalGroup();
-        PixelLogicUIColoredSurface buttonGroupBackground = new PixelLogicUIColoredSurface(getAssets());
+        PixelLogicUIColoredSurface buttonGroupBackground = new PixelLogicUIColoredSurface(getGlobal());
         buttonGroupBackground.setColor(new Color(255f, 255f, 255f, .5f));
         buttonGroup.setBackground(buttonGroupBackground);
         buttonGroup.center();
@@ -107,6 +115,18 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         getPageRoot().center();
         getPageRoot().addActor(logoImage);
         getPageRoot().addActor(buttonGroup);
+
+        // make audio button absolute
+        this.audioButton = new PixelLogicUIAudioButton(getAssets(), getGlobal().getAudio());
+        this.audioButton.setColor(TEXT_COLOR);
+        this.audioButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                audioButton.switchAudio();
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+        getStage().getRoot().addActor(audioButton);
     }
 
     @Override
@@ -139,6 +159,10 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         this.buttonGroup.invalidate();
 
         this.logoImage.setScale((int) (height / (this.logoImage.getHeight() * 6f)));
+
+        int audioButtonPosition = width / 20;
+        this.audioButton.setSize(PixelLogicUIUtil.getIconBaseHeight(), PixelLogicUIUtil.getIconBaseHeight());
+        this.audioButton.setPosition(width - (audioButtonPosition + PixelLogicUIUtil.getIconBaseHeight()), audioButtonPosition);
 
         getPageRoot().padTop(getPadding() * 3);
         getPageRoot().space(getSpace() * 3);

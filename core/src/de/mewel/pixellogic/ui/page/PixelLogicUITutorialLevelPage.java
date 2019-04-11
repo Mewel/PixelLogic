@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.ui.page;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -24,8 +23,7 @@ import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 import com.rafaskoberg.gdx.typinglabel.TypingListener;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.asset.PixelLogicAudio;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
@@ -53,7 +51,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
     }
 
     protected PixelLogicUILevelMenu createMenu() {
-        return new TutorialMenu(getAssets(), getEventManager(), this);
+        return new TutorialMenu(getGlobal(), this);
     }
 
     @Override
@@ -123,11 +121,11 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
     }
 
     public void setMessage(String text) {
-        this.setMessage(text, new TutorialTypingAdapter(getAssets()));
+        this.setMessage(text, new TutorialTypingAdapter(getAudio()));
     }
 
     public void setMessage(String text, final Runnable action) {
-        this.setMessage(text, new TutorialTypingAdapter(getAssets()) {
+        this.setMessage(text, new TutorialTypingAdapter(getAudio()) {
             @Override
             public void end() {
                 showNextMessageButton(new Runnable() {
@@ -173,7 +171,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
         switcher.setPosition(getWidth() / 2, getHeight() / 2, Align.center);
         getStage().getRoot().addActor(switcher);
 
-        final SwitcherModal switcherModal = new SwitcherModal(getAssets(), getEventManager(), getStage().getRoot());
+        final SwitcherModal switcherModal = new SwitcherModal(getGlobal(), getStage().getRoot());
         switcherModal.setBounds(0, 0, getWidth(), getHeight());
 
         int padding = (int) toolbar.getHeight() / 32;
@@ -314,8 +312,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
                             next.addListener(new InputListener() {
                                 @Override
                                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                                    Sound clickSound = getAssets().get().get(BUTTON_SOUND, Sound.class);
-                                    clickSound.play(BUTTON_SOUND_VOLUME);
+                                    getAudio().playSound(BUTTON_SOUND, BUTTON_SOUND_VOLUME);
                                     action.run();
                                     return super.touchDown(event, x, y, pointer, button);
                                 }
@@ -384,14 +381,14 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
     private class TutorialMenu extends PixelLogicUILevelMenu {
 
-        public TutorialMenu(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicUILevelPage screen) {
-            super(assets, eventManager, screen);
+        public TutorialMenu(PixelLogicGlobal global, PixelLogicUILevelPage screen) {
+            super(global, screen);
         }
 
         @Override
         protected void buildContent() {
             // continue
-            this.continueButton = new PixelLogicUIButton(getAssets(), getEventManager(), "continue") {
+            this.continueButton = new PixelLogicUIButton(getGlobal(), "continue") {
                 @Override
                 public void handleClick() {
                     close();
@@ -399,7 +396,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
             };
 
             // back
-            this.backButton = new PixelLogicUIButton(getAssets(), getEventManager(), "skip tutorial") {
+            this.backButton = new PixelLogicUIButton(getGlobal(), "skip tutorial") {
                 @Override
                 public void handleClick() {
                     close();
@@ -411,24 +408,24 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
     protected static class SwitcherModal extends PixelLogicUIModal {
 
-        public SwitcherModal(PixelLogicAssets assets, PixelLogicEventManager eventManager, Group parent) {
-            super(assets, eventManager, parent);
+        public SwitcherModal(PixelLogicGlobal global, Group parent) {
+            super(global, parent);
         }
 
     }
 
     public static class TutorialTypingAdapter extends TypingAdapter {
 
-        private Sound typeSound;
-
-        public TutorialTypingAdapter(PixelLogicAssets assets) {
-            this.typeSound = assets.get().get(KEY_SOUND, Sound.class);
-        }
+        private PixelLogicAudio audio;
 
         @Override
         public void onChar(Character ch) {
-            typeSound.play(KEY_SOUND_VOLUME);
+            audio.playSound(KEY_SOUND, KEY_SOUND_VOLUME);
             super.onChar(ch);
+        }
+
+        public TutorialTypingAdapter(PixelLogicAudio audio) {
+            this.audio = audio;
         }
 
     }

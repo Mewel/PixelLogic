@@ -115,7 +115,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
             getActor().bottom();
             getActor().space(getPadding());
 
-            this.button = new PixelLogicUIButton(page.getAssets(), page.getEventManager(), options.name) {
+            this.button = new PixelLogicUIButton(getGlobal(), options.name) {
                 @Override
                 public void handleClick() {
                     startTimeTrial(options);
@@ -159,7 +159,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
             highscoreTable.row();
 
             // line
-            PixelLogicUIColoredSurface line = new PixelLogicUIColoredSurface(page.getAssets());
+            PixelLogicUIColoredSurface line = new PixelLogicUIColoredSurface(page.getGlobal());
             line.setColor(new Color(TEXT_LIGHT_COLOR));
             line.setWidth(getComponentWidth());
             line.setHeight(1);

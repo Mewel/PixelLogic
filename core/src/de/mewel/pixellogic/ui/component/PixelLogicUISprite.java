@@ -4,16 +4,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.PixelLogicUIActor;
 
 public class PixelLogicUISprite extends PixelLogicUIActor {
 
     private Sprite sprite;
 
-    public PixelLogicUISprite(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager);
+    public PixelLogicUISprite(PixelLogicGlobal global) {
+        super(global);
     }
 
     public void setSprite(Sprite sprite) {

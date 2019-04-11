@@ -1,8 +1,5 @@
 package de.mewel.pixellogic.achievements;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 

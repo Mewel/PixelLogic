@@ -16,9 +16,11 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.achievements.PixelLogicAchievement;
 import de.mewel.pixellogic.achievements.PixelLogicAchievementEvent;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.asset.PixelLogicAudio;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
@@ -30,9 +32,7 @@ import static de.mewel.pixellogic.PixelLogicConstants.MAIN_COLOR;
 
 public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLogicListener {
 
-    private PixelLogicAssets assets;
-
-    private PixelLogicEventManager eventManager;
+    private PixelLogicGlobal global;
 
     private Queue<PixelLogicAchievement> achievements;
 
@@ -42,18 +42,17 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
 
     private PixelLogicUIAchievementBlock achievementBlock;
 
-    public PixelLogicUIAchievementLayer(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        this.assets = assets;
-        this.eventManager = eventManager;
-        this.eventManager.listen(this);
+    public PixelLogicUIAchievementLayer(PixelLogicGlobal global) {
+        this.global = global;
+        this.getEventManager().listen(this);
         this.achievements = new LinkedList<PixelLogicAchievement>();
 
         this.stage = new Stage();
-        this.achievementBlock = new PixelLogicUIAchievementBlock(assets, eventManager);
+        this.achievementBlock = new PixelLogicUIAchievementBlock(global);
         this.achievementBlock.setHeaderStyle(getHeaderStyle());
         this.achievementBlock.setDescriptionStyle(getDescriptionStyle());
 
-        PixelLogicUIColoredSurface background = new PixelLogicUIColoredSurface(assets);
+        PixelLogicUIColoredSurface background = new PixelLogicUIColoredSurface(global);
         background.setColor(new Color(MAIN_COLOR));
         background.setBorder(1, new Color(MAIN_COLOR).mul(.5f));
         this.achievementBlock.setBackground(background);
@@ -144,7 +143,7 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
 
     @Override
     public void dispose() {
-        this.eventManager.remove(this);
+        this.getEventManager().remove(this);
     }
 
     @Override
@@ -157,12 +156,17 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
 
     @Override
     public PixelLogicAssets getAssets() {
-        return assets;
+        return global.getAssets();
     }
 
     @Override
     public PixelLogicEventManager getEventManager() {
-        return eventManager;
+        return global.getEventManager();
+    }
+
+    @Override
+    public PixelLogicAudio getAudio() {
+        return global.getAudio();
     }
 
 }

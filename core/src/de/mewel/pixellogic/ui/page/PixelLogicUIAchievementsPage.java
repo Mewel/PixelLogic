@@ -98,7 +98,7 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
             getActor().addActor(this.logo);
             updateLogo();
 
-            this.block = new PixelLogicUIAchievementBlock(global.getAssets(), global.getEventManager());
+            this.block = new PixelLogicUIAchievementBlock(global);
             this.block.setAchievement(achievement.getName(), achievement.getDescription());
             this.block.setHeaderStyle(getHeaderStyle());
             this.block.setDescriptionStyle(getDescriptionStyle());

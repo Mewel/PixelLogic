@@ -1,7 +1,6 @@
 package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -15,7 +14,6 @@ import com.badlogic.gdx.utils.Scaling;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.mewel.pixellogic.PixelLogicConstants;
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicListener;
@@ -36,6 +34,7 @@ import de.mewel.pixellogic.ui.level.animation.PixelLogicUIPictureBoardSolvedAnim
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicMusic;
 
+import static de.mewel.pixellogic.PixelLogicConstants.PUZZLE_SOLVED_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.PUZZLE_SOLVED_SOUND_VOLUME;
 
 public class PixelLogicUILevelPage extends PixelLogicUIPage {
@@ -77,18 +76,18 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
         // LEVEL
         this.levelUI = null;
-        this.toolbar = new PixelLogicUILevelToolbar(getAssets(), getEventManager());
+        this.toolbar = new PixelLogicUILevelToolbar(global);
 
         // MODAL's
         this.menu = createMenu();
-        this.loadingModal = new PixelLogicUIMessageModal("loading next level...", getAssets(), getEventManager(), getStage());
+        this.loadingModal = new PixelLogicUIMessageModal("loading next level...", getGlobal(), getStage());
 
         // STAGE
         this.screenListener = createScreenListener();
     }
 
     protected PixelLogicUILevelMenu createMenu() {
-        return new PixelLogicUILevelMenu(getAssets(), getEventManager(), this);
+        return new PixelLogicUILevelMenu(getGlobal(), this);
     }
 
     protected ScreenListener createScreenListener() {
@@ -138,7 +137,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         this.toolbar.addAction(Actions.fadeIn(.4f));
 
         // level
-        this.levelUI = new PixelLogicUILevel(getAssets(), getEventManager());
+        this.levelUI = new PixelLogicUILevel(getGlobal());
         this.levelUI.getColor().a = .0f;
         this.levelUI.load(level);
         this.getStage().addActor(this.levelUI);
@@ -217,11 +216,11 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     protected void onSolved() {
         changeLevelStatus(PixelLogicLevelStatus.solved);
         this.solvedAnimation = showSolvedAnimation();
-        final PixelLogicMusic levelMusic = getAppScreen().getLevelMusic();
+        final PixelLogicMusic levelMusic = getAudio().getLevelMusic();
         levelMusic.fadeTo(.5f, .05f, new Runnable() {
             @Override
             public void run() {
-                getAssets().get().get(PixelLogicConstants.PUZZLE_SOLVED_SOUND, Sound.class).play(PUZZLE_SOLVED_SOUND_VOLUME);
+                getAudio().playSound(PUZZLE_SOLVED_SOUND, PUZZLE_SOLVED_SOUND_VOLUME);
             }
         });
         this.getStage().addAction(Actions.sequence(

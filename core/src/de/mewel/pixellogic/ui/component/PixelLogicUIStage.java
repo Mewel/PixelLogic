@@ -1,23 +1,21 @@
 package de.mewel.pixellogic.ui.component;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.asset.PixelLogicAudio;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.ui.PixelLogicUIElement;
 
 public class PixelLogicUIStage extends Stage implements PixelLogicUIElement {
 
-    private PixelLogicAssets assets;
+    private PixelLogicGlobal global;
 
-    private PixelLogicEventManager eventManager;
-
-    public PixelLogicUIStage(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        this.assets = assets;
-        this.eventManager = eventManager;
+    public PixelLogicUIStage(PixelLogicGlobal global) {
+        this.global = global;
     }
 
     @Override
@@ -31,12 +29,17 @@ public class PixelLogicUIStage extends Stage implements PixelLogicUIElement {
 
     @Override
     public PixelLogicAssets getAssets() {
-        return assets;
+        return global.getAssets();
     }
 
     @Override
     public PixelLogicEventManager getEventManager() {
-        return eventManager;
+        return global.getEventManager();
+    }
+
+    @Override
+    public PixelLogicAudio getAudio() {
+        return global.getAudio();
     }
 
 }

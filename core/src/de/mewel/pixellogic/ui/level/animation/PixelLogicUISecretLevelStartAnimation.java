@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.Align;
 import java.util.Random;
 
 import de.mewel.pixellogic.model.PixelLogicLevel;
-import de.mewel.pixellogic.PixelLogicConstants;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoard;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoardPixel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIColumnGroup;

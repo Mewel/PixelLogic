@@ -5,16 +5,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import java.util.Collections;
 import java.util.List;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicUIColumnInfo extends PixelLogicUILineInfo {
 
-    public PixelLogicUIColumnInfo(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicLevel level, int column) {
-        super(assets, eventManager, level, column);
+    public PixelLogicUIColumnInfo(PixelLogicGlobal global, PixelLogicLevel level, int column) {
+        super(global, level, column);
     }
 
     @Override

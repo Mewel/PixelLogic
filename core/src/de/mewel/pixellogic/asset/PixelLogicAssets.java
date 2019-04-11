@@ -31,6 +31,7 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import static de.mewel.pixellogic.PixelLogicConstants.BASE_SIZE;
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.DRAW_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.GAME_FONT;
 import static de.mewel.pixellogic.PixelLogicConstants.KEY_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.LEVEL_FONT;
@@ -38,7 +39,6 @@ import static de.mewel.pixellogic.PixelLogicConstants.LEVEL_MUSIC;
 import static de.mewel.pixellogic.PixelLogicConstants.MAIN_FONT;
 import static de.mewel.pixellogic.PixelLogicConstants.MAIN_FONT_PT;
 import static de.mewel.pixellogic.PixelLogicConstants.MENU_MUSIC;
-import static de.mewel.pixellogic.PixelLogicConstants.DRAW_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.PUZZLE_SOLVED_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.SWITCHER_SOUND;
 
@@ -101,7 +101,7 @@ public class PixelLogicAssets {
     }
 
     protected void loadFonts() {
-        float base = GAME_FONT_BASE * Gdx.graphics.getDensity() * getDistanceFactor();
+        float base = (PixelLogicUIUtil.isDesktop() ? 0 : GAME_FONT_BASE) + (GAME_FONT_BASE * Gdx.graphics.getDensity() * getDistanceFactor());
         int textSize = Math.max(GAME_FONT_MIN, (int) Math.ceil(base / GAME_FONT_BASE) * GAME_FONT_BASE);
         int h2Size = Math.max(textSize + GAME_FONT_BASE, (int) (Math.ceil(textSize * 1.5f / GAME_FONT_BASE) * GAME_FONT_BASE));
         int h1Size = Math.max(textSize + GAME_FONT_BASE * 2, (int) (Math.ceil(textSize * 2f / GAME_FONT_BASE) * GAME_FONT_BASE));

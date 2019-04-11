@@ -1,11 +1,14 @@
 package de.mewel.pixellogic.util;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 
 public class PixelLogicMusic {
 
     private Music music;
+
+    private boolean muted;
+
+    private boolean play;
 
     private float fadeTime;
 
@@ -22,6 +25,8 @@ public class PixelLogicMusic {
     public PixelLogicMusic(Music music) {
         this.music = music;
         this.maxVolume = this.music.getVolume();
+        this.muted = false;
+        this.play = false;
     }
 
     public PixelLogicMusic setMaxVolume(float maxVolume) {
@@ -33,10 +38,11 @@ public class PixelLogicMusic {
     }
 
     public void fadeTo(float time, float volume, Runnable after) {
+        this.play = true;
         if (after != null && afterFadeAction != null) {
             afterFadeAction.run();
         }
-        if (!this.music.isPlaying()) {
+        if (!muted && !this.music.isPlaying()) {
             this.music.play();
         }
         this.fromVolume = music.getVolume();
@@ -65,8 +71,40 @@ public class PixelLogicMusic {
         fadeTo(time, 0, after);
     }
 
-    public Music get() {
-        return music;
+    public Music music() {
+        return this.music;
+    }
+
+    public PixelLogicMusic play() {
+        this.play = true;
+        if (!muted) {
+            music.play();
+        }
+        return this;
+    }
+
+    public void stop() {
+        this.play = false;
+        music.stop();
+    }
+
+    public void mute() {
+        this.muted = true;
+        if (music.isPlaying()) {
+            music.stop();
+        }
+    }
+
+    public void unmute() {
+        this.muted = false;
+        if (this.play) {
+            music.play();
+        }
+    }
+
+    public PixelLogicMusic setMuted(boolean muted) {
+        this.muted = muted;
+        return this;
     }
 
     public void act(float delta) {
@@ -93,6 +131,10 @@ public class PixelLogicMusic {
         float volumeDelta = Math.abs(this.fromVolume - this.toVolume);
         float volumeDiff = volumeDelta * time;
         this.music.setVolume(fadeIn ? this.toVolume - volumeDiff : this.toVolume + volumeDiff);
+    }
+
+    public void dispose() {
+        this.music.dispose();
     }
 
 }

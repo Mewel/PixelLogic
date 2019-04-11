@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.PixelLogicUIActor;
 
 public class PixelLogicUIColoredSurface extends PixelLogicUIActor {
@@ -17,8 +17,8 @@ public class PixelLogicUIColoredSurface extends PixelLogicUIActor {
 
     private boolean inheritParentAlpha;
 
-    public PixelLogicUIColoredSurface(PixelLogicAssets assets) {
-        super(assets, null);
+    public PixelLogicUIColoredSurface(PixelLogicGlobal global) {
+        super(global);
         this.borderWidth = 0;
         this.borderColor = null;
         this.inheritParentAlpha = true;

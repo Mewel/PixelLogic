@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 
 import de.mewel.pixellogic.achievements.PixelLogicAchievements;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.asset.PixelLogicAudio;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
@@ -22,6 +23,8 @@ public class PixelLogicGame extends Game implements PixelLogicGlobal {
     private PixelLogicUIAppScreen appScreen;
 
     private PixelLogicAchievements achievements;
+
+    private PixelLogicAudio audio;
 
     @Override
     public void create() {
@@ -63,6 +66,7 @@ public class PixelLogicGame extends Game implements PixelLogicGlobal {
         // pixel logic init
         eventManager = new PixelLogicEventManager();
         achievements = new PixelLogicAchievements(assets, eventManager);
+        audio = new PixelLogicAudio(assets, eventManager);
         appScreen = new PixelLogicUIAppScreen(PixelLogicGame.this);
     }
 
@@ -74,6 +78,9 @@ public class PixelLogicGame extends Game implements PixelLogicGlobal {
 
     @Override
     public void dispose() {
+        if (this.audio != null) {
+            this.audio.dispose();
+        }
         if (this.splashScreen != null) {
             this.splashScreen.dispose();
         }
@@ -110,6 +117,11 @@ public class PixelLogicGame extends Game implements PixelLogicGlobal {
     @Override
     public PixelLogicAchievements getAchievements() {
         return achievements;
+    }
+
+    @Override
+    public PixelLogicAudio getAudio() {
+        return audio;
     }
 
 }

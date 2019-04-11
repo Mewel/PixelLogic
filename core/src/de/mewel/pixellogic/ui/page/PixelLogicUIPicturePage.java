@@ -125,7 +125,7 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
         PictureModeContainer(PixelLogicPictureMode mode) {
             super(new VerticalGroup());
             this.mode = mode;
-            this.picture = new PixelLogicUIPicture(getAssets(), getEventManager(), mode.getCollection());
+            this.picture = new PixelLogicUIPicture(getGlobal(), mode.getCollection());
 
             getActor().setFillParent(true);
             getActor().center();

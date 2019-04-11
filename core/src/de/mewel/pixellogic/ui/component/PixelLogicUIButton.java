@@ -7,12 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import de.mewel.pixellogic.PixelLogicConstants;
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 import static de.mewel.pixellogic.PixelLogicConstants.SECONDARY_COLOR;
 
 public abstract class PixelLogicUIButton extends PixelLogicUIGroup {
@@ -27,11 +27,11 @@ public abstract class PixelLogicUIButton extends PixelLogicUIGroup {
 
     private AtomicBoolean blocked;
 
-    public PixelLogicUIButton(PixelLogicAssets assets, PixelLogicEventManager eventManager, String text) {
-        super(assets, eventManager);
+    public PixelLogicUIButton(PixelLogicGlobal global, String text) {
+        super(global);
         this.blocked = new AtomicBoolean(false);
         this.text = text;
-        this.background = new PixelLogicUIColoredSurface(assets);
+        this.background = new PixelLogicUIColoredSurface(global);
         Color bgColor = new Color(new Color(SECONDARY_COLOR));
         this.background.setColor(bgColor);
         this.background.setBorder(1, new Color(bgColor).mul(.5f));
@@ -95,7 +95,7 @@ public abstract class PixelLogicUIButton extends PixelLogicUIGroup {
         if (block()) {
             return;
         }
-        PixelLogicUIUtil.playButtonSound(getAssets());
+        getAudio().playSound(BUTTON_SOUND, BUTTON_SOUND_VOLUME);
         handleClick();
     }
 

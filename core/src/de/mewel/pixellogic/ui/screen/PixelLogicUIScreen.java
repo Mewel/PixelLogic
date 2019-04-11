@@ -5,20 +5,19 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.PixelLogicConstants;
+import de.mewel.pixellogic.PixelLogicGlobal;
+import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.asset.PixelLogicAudio;
+import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIElement;
 
 public abstract class PixelLogicUIScreen implements Screen, PixelLogicUIElement {
 
-    private PixelLogicAssets assets;
+    private PixelLogicGlobal global;
 
-    private PixelLogicEventManager eventManager;
-
-    public PixelLogicUIScreen(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        this.assets = assets;
-        this.eventManager = eventManager;
+    public PixelLogicUIScreen(PixelLogicGlobal global) {
+        this.global = global;
     }
 
     @Override
@@ -55,12 +54,17 @@ public abstract class PixelLogicUIScreen implements Screen, PixelLogicUIElement 
 
     @Override
     public PixelLogicEventManager getEventManager() {
-        return eventManager;
+        return global.getEventManager();
     }
 
     @Override
     public PixelLogicAssets getAssets() {
-        return assets;
+        return global.getAssets();
+    }
+
+    @Override
+    public PixelLogicAudio getAudio() {
+        return global.getAudio();
     }
 
 }

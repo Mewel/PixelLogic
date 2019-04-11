@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.ui.misc;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,8 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
@@ -26,8 +24,8 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
 
     private Background background;
 
-    public PixelLogicUIPicture(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicLevelCollection collection) {
-        super(assets, eventManager);
+    public PixelLogicUIPicture(PixelLogicGlobal global, PixelLogicLevelCollection collection) {
+        super(global);
         this.background = new Background(collection);
         this.addActor(this.background);
     }
@@ -62,7 +60,7 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
         Vector2 coords = new Vector2(board.getX(), board.getY());
         board.localToStageCoordinates(coords);
 
-        final ResizeableBoard fakeBoard = new ResizeableBoard(board, getAssets(), getEventManager());
+        final ResizeableBoard fakeBoard = new ResizeableBoard(board, getGlobal());
         fakeBoard.setPosition(coords.x - this.getX() - board.getX(),
                 coords.y - this.getY() - board.getY());
         fakeBoard.setSize(board.getWidth(), board.getHeight());
@@ -205,15 +203,15 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
 
         private PixelLogicUIBoardPixel[][] pixels;
 
-        public ResizeableBoard(PixelLogicUIBoard board, PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-            super(assets, eventManager);
+        public ResizeableBoard(PixelLogicUIBoard board, PixelLogicGlobal global) {
+            super(global);
             this.board = board;
             PixelLogicLevel level = board.getLevel();
             this.pixels = new PixelLogicUIBoardPixel[level.getRows()][level.getColumns()];
             for (int row = 0; row < level.getRows(); row++) {
                 for (int col = 0; col < level.getColumns(); col++) {
                     PixelLogicUIBoardPixel boardPixel = this.board.getPixels()[row][col];
-                    this.pixels[row][col] = new PixelLogicUIBoardPixel(getAssets(), row, col);
+                    this.pixels[row][col] = new PixelLogicUIBoardPixel(global, row, col);
                     this.pixels[row][col].setColor(boardPixel.getColor());
                     this.addActor(this.pixels[row][col]);
                 }

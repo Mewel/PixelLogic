@@ -140,7 +140,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
             @Override
             public void run() {
                 secretLevelStatus = 1;
-                final PixelLogicUIMessageModal secretLevelIntroModal = new PixelLogicUIMessageModal("secret level", getAssets(), getEventManager(), stage) {
+                final PixelLogicUIMessageModal secretLevelIntroModal = new PixelLogicUIMessageModal("secret level", getGlobal(), stage) {
                     @Override
                     protected void afterClose() {
                         super.afterClose();

@@ -2,8 +2,7 @@ package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 
@@ -11,15 +10,15 @@ public class PixelLogicUIRowGroup extends PixelLogicUILevelGroup {
 
     private PixelLogicLevel level = null;
 
-    public PixelLogicUIRowGroup(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager);
+    public PixelLogicUIRowGroup(PixelLogicGlobal global) {
+        super(global);
     }
 
     @Override
     public void onLevelLoad(PixelLogicLevelStatusChangeEvent event) {
         this.level = event.getLevel();
         for (int i = 0; i < level.getRows(); i++) {
-            PixelLogicUIRowInfo part = new PixelLogicUIRowInfo(getAssets(), getEventManager(), level, i);
+            PixelLogicUIRowInfo part = new PixelLogicUIRowInfo(getGlobal(), level, i);
             this.addActor(part);
         }
     }

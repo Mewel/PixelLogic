@@ -9,7 +9,6 @@ import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
-import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
 
 public class PixelLogicCharactersMode extends PixelLogicListLevelMode {

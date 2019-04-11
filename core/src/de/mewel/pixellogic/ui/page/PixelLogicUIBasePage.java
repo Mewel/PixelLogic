@@ -11,9 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
-import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.event.PixelLogicEvent;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
@@ -21,6 +19,8 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 import static de.mewel.pixellogic.PixelLogicConstants.MAIN_COLOR;
 
 public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements PixelLogicListener {
@@ -66,7 +66,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
     }
 
     protected Header buildHeader(String headerText, PixelLogicUIPageId backPageId) {
-        return new Header(getAssets(), getEventManager(), headerText, backPageId);
+        return new Header(getGlobal(), headerText, backPageId);
     }
 
     protected VerticalGroup buildRoot() {
@@ -155,19 +155,19 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
 
         private HeaderButton backButton;
 
-        public Header(PixelLogicAssets assets, PixelLogicEventManager eventManager, String text, final PixelLogicUIPageId backPageId) {
-            super(assets, eventManager);
+        public Header(PixelLogicGlobal global, String text, final PixelLogicUIPageId backPageId) {
+            super(global);
             this.text = text;
 
-            this.background = new PixelLogicUIColoredSurface(assets);
+            this.background = new PixelLogicUIColoredSurface(global);
             this.background.setColor(new Color(MAIN_COLOR));
             this.addActor(this.background);
 
-            this.backButton = new HeaderButton(assets.getIcon(3));
+            this.backButton = new HeaderButton(getAssets().getIcon(3));
             this.backButton.addListener(new PixelLogicUIButtonListener() {
                 @Override
                 public void onClick() {
-                    PixelLogicUIUtil.playButtonSound(getAssets());
+                    getAudio().playSound(BUTTON_SOUND, BUTTON_SOUND_VOLUME);
                     getAppScreen().setPage(backPageId, new PixelLogicUIPageProperties());
                 }
             });

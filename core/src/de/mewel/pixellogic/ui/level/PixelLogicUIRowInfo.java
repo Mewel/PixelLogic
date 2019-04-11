@@ -6,16 +6,15 @@ import com.badlogic.gdx.utils.Align;
 import java.util.Collections;
 import java.util.List;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicUIRowInfo extends PixelLogicUILineInfo {
 
-    public PixelLogicUIRowInfo(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicLevel level, int row) {
-        super(assets, eventManager, level, row);
+    public PixelLogicUIRowInfo(PixelLogicGlobal global, PixelLogicLevel level, int row) {
+        super(global, level, row);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.mode;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -23,7 +22,7 @@ import de.mewel.pixellogic.ui.page.PixelLogicUITutorialLevelPage;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_SOUND;
-import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_SOUND_VOLUME;
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 import static de.mewel.pixellogic.PixelLogicConstants.DRAW_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.DRAW_SOUND_VOLUME;
 
@@ -396,7 +395,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         this.status = 21;
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
-        levelPage.setMessage(getAssets().translate("tutorial.status21"), new PixelLogicUITutorialLevelPage.TutorialTypingAdapter(getAssets()) {
+        levelPage.setMessage(getAssets().translate("tutorial.status21"), new PixelLogicUITutorialLevelPage.TutorialTypingAdapter(getAudio()) {
             @Override
             public void end() {
                 fadeInInfoBoxes(levelUI);
@@ -458,8 +457,6 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
     private SequenceAction createSolveSequence(final PixelLogicUILevel levelUI, Map<Vector2, Boolean> pixels,
                                                float delay) {
         SequenceAction solveSequence = Actions.sequence();
-        final Sound drawSound = getAssets().get().get(DRAW_SOUND);
-        final Sound blockSound = getAssets().get().get(BLOCK_SOUND);
         for (final Map.Entry<Vector2, Boolean> entry : pixels.entrySet()) {
             final Vector2 pixel = entry.getKey();
             solveSequence.addAction(Actions.delay(delay));
@@ -469,9 +466,9 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
                     levelUI.setPixel((int) pixel.y, (int) pixel.x, entry.getValue());
                     if (entry.getValue() != null) {
                         if (entry.getValue()) {
-                            drawSound.play(DRAW_SOUND_VOLUME);
+                            getAudio().playSound(DRAW_SOUND, DRAW_SOUND_VOLUME);
                         } else {
-                            blockSound.play(BLOCK_SOUND_VOLUME);
+                            getAudio().playSound(BLOCK_SOUND, BUTTON_SOUND_VOLUME);
                         }
                     }
                 }

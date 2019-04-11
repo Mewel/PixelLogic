@@ -9,8 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
@@ -31,8 +30,8 @@ public abstract class PixelLogicUILineInfo extends PixelLogicUILevelGroup {
 
     protected PixelLogicUILevelResolution resolution;
 
-    public PixelLogicUILineInfo(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicLevel level, int line) {
-        super(assets, eventManager);
+    public PixelLogicUILineInfo(PixelLogicGlobal global, PixelLogicLevel level, int line) {
+        super(global);
         this.level = level;
         this.line = line;
         this.texture = PixelLogicUIUtil.getWhiteTexture();

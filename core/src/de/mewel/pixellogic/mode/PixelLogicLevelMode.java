@@ -2,6 +2,7 @@ package de.mewel.pixellogic.mode;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.asset.PixelLogicAudio;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
@@ -68,8 +69,16 @@ public abstract class PixelLogicLevelMode implements PixelLogicListener {
         return global.getAssets();
     }
 
+    public PixelLogicAudio getAudio() {
+        return global.getAudio();
+    }
+
     public PixelLogicUIAppScreen getAppScreen() {
         return global.getAppScreen();
+    }
+
+    public PixelLogicGlobal getGlobal() {
+        return global;
     }
 
 }

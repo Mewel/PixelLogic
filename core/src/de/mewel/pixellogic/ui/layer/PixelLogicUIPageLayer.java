@@ -5,7 +5,9 @@ import com.badlogic.gdx.Gdx;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.asset.PixelLogicAudio;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
@@ -18,13 +20,10 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer {
 
     private PixelLogicUIPage activePage;
 
-    private PixelLogicAssets assets;
+    private PixelLogicGlobal global;
 
-    private PixelLogicEventManager eventManager;
-
-    public PixelLogicUIPageLayer(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        this.assets = assets;
-        this.eventManager = eventManager;
+    public PixelLogicUIPageLayer(PixelLogicGlobal global) {
+        this.global = global;
         this.pageMap = new HashMap<PixelLogicUIPageId, PixelLogicUIPage>();
         this.activePage = null;
     }
@@ -113,16 +112,20 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer {
 
     @Override
     public PixelLogicAssets getAssets() {
-        return this.assets;
+        return global.getAssets();
     }
 
     @Override
     public PixelLogicEventManager getEventManager() {
-        return eventManager;
+        return global.getEventManager();
+    }
+
+    @Override
+    public PixelLogicAudio getAudio() {
+        return global.getAudio();
     }
 
     public PixelLogicUIPage getActivePage() {
         return activePage;
     }
-
 }

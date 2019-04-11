@@ -8,6 +8,7 @@ import java.util.List;
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.achievements.PixelLogicAchievements;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.asset.PixelLogicAudio;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.mode.PixelLogicPictureMode;
 import de.mewel.pixellogic.model.PixelLogicLevel;
@@ -29,6 +30,8 @@ public class PicturesSpike extends Game implements PixelLogicGlobal {
 
     private PixelLogicAchievements achievements;
 
+    private PixelLogicAudio audio;
+
     @Override
     public void create() {
         this.eventManager = new PixelLogicEventManager();
@@ -37,6 +40,7 @@ public class PicturesSpike extends Game implements PixelLogicGlobal {
         this.assets.load();
 
         this.achievements = new PixelLogicAchievements(assets, eventManager);
+        this.audio = new PixelLogicAudio(assets, eventManager);
 
         this.appScreen = new PixelLogicUIAppScreen(this);
         this.setScreen(this.appScreen);
@@ -69,6 +73,9 @@ public class PicturesSpike extends Game implements PixelLogicGlobal {
 
     @Override
     public void dispose() {
+        if (this.audio != null) {
+            this.audio.dispose();
+        }
         if (this.assets != null) {
             this.assets.dispose();
         }
@@ -99,5 +106,9 @@ public class PicturesSpike extends Game implements PixelLogicGlobal {
         return achievements;
     }
 
+    @Override
+    public PixelLogicAudio getAudio() {
+        return audio;
+    }
 
 }

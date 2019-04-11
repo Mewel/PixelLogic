@@ -5,16 +5,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 public class PixelLogicUIMessageModal extends PixelLogicUIModal {
 
     private String message;
 
-    public PixelLogicUIMessageModal(String message, PixelLogicAssets assets, PixelLogicEventManager eventManager, Stage stage) {
-        super(assets, eventManager, stage.getRoot());
+    public PixelLogicUIMessageModal(String message, PixelLogicGlobal global, Stage stage) {
+        super(global, stage.getRoot());
         this.message = message;
         buildContent();
     }

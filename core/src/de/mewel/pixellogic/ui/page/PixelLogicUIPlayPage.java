@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.mode.PixelLogicCampaignMode;
 import de.mewel.pixellogic.mode.PixelLogicTutorialMode;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
@@ -24,6 +22,8 @@ import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 
 public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
 
@@ -103,7 +103,7 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
 
     @Override
     protected Header buildHeader(String headerText, PixelLogicUIPageId backPageId) {
-        return new PlayHeader(getAssets(), getEventManager(), headerText, backPageId);
+        return new PlayHeader(getGlobal(), headerText, backPageId);
     }
 
     private Preferences getCampaignPreferences() {
@@ -147,7 +147,7 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
             this.labelContainer = new Container<Label>(descriptionLabel);
             getActor().addActor(this.labelContainer);
 
-            this.button = new PixelLogicUIButton(page.getAssets(), page.getEventManager(), buttonText) {
+            this.button = new PixelLogicUIButton(getGlobal(), buttonText) {
                 @Override
                 public void handleClick() {
                     buttonAction.run();
@@ -192,13 +192,13 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
 
         private HeaderButton tutorialButton;
 
-        public PlayHeader(PixelLogicAssets assets, PixelLogicEventManager eventManager, String text, PixelLogicUIPageId backPageId) {
-            super(assets, eventManager, text, backPageId);
-            this.tutorialButton = new HeaderButton(assets.getIcon(6));
+        public PlayHeader(PixelLogicGlobal global, String text, PixelLogicUIPageId backPageId) {
+            super(global, text, backPageId);
+            this.tutorialButton = new HeaderButton(getAssets().getIcon(6));
             this.tutorialButton.addListener(new PixelLogicUIButtonListener() {
                 @Override
                 public void onClick() {
-                    PixelLogicUIUtil.playButtonSound(getAssets());
+                    getAudio().playSound(BUTTON_SOUND, BUTTON_SOUND_VOLUME);
                     PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                     pageProperties.put("menuBackId", PixelLogicUIPageId.play);
                     getAppScreen().setPage(PixelLogicUIPageId.tutorialLevel, pageProperties, new Runnable() {

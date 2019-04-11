@@ -1,15 +1,13 @@
 package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.event.PixelLogicEvent;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
@@ -19,7 +17,6 @@ import de.mewel.pixellogic.ui.level.event.PixelLogicLevelSwitcherChangedEvent;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_SOUND_VOLUME;
-import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 import static de.mewel.pixellogic.PixelLogicConstants.DRAW_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.DRAW_SOUND_VOLUME;
 
@@ -39,8 +36,8 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
     private PixelLogicLevel level;
     private PixelLogicLevelStatus status;
 
-    public PixelLogicUILevel(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager);
+    public PixelLogicUILevel(PixelLogicGlobal global) {
+        super(global);
         this.levelListener = new LevelListener(this);
         this.level = null;
         this.status = null;
@@ -51,17 +48,17 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         this.level = level;
 
         // BOARD
-        this.board = new PixelLogicUIBoard(getAssets(), getEventManager());
+        this.board = new PixelLogicUIBoard(getGlobal());
         addActor(this.board);
         this.board.addListener(this.levelListener);
         this.getEventManager().listen(this.levelListener);
         this.board.load(getLevel());
 
         // LINES
-        this.rowGroup = new PixelLogicUIRowGroup(getAssets(), getEventManager());
+        this.rowGroup = new PixelLogicUIRowGroup(getGlobal());
         addActor(this.rowGroup);
 
-        this.columnGroup = new PixelLogicUIColumnGroup(getAssets(), getEventManager());
+        this.columnGroup = new PixelLogicUIColumnGroup(getGlobal());
         addActor(this.columnGroup);
 
         // enable all
@@ -270,8 +267,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
                 return;
             }
             boolean type = this.userAction.selectedPixelType;
-            Sound sound = gui.getAssets().get().get(type ? DRAW_SOUND : BLOCK_SOUND);
-            sound.play(type ? DRAW_SOUND_VOLUME : BLOCK_SOUND_VOLUME);
+            gui.getAudio().playSound(type ? DRAW_SOUND : BLOCK_SOUND, type ? DRAW_SOUND_VOLUME : BLOCK_SOUND_VOLUME);
         }
 
     }

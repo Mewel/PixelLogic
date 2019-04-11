@@ -2,7 +2,7 @@ package de.mewel.pixellogic.ui.level;
 
 import com.badlogic.gdx.graphics.Color;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 
 import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_BLOCKED_COLOR;
@@ -13,8 +13,8 @@ public class PixelLogicUIBoardPixel extends PixelLogicUIColoredSurface {
 
     private int row, col;
 
-    public PixelLogicUIBoardPixel(PixelLogicAssets assets, int row, int col) {
-        super(assets);
+    public PixelLogicUIBoardPixel(PixelLogicGlobal global, int row, int col) {
+        super(global);
         this.row = row;
         this.col = col;
         setColor(new Color(PIXEL_EMPTY_COLOR));

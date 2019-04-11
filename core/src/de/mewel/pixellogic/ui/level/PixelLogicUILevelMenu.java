@@ -3,18 +3,23 @@ package de.mewel.pixellogic.ui.level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicConstants;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
+import de.mewel.pixellogic.ui.component.PixelLogicUIAudioButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIModal;
 import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.util.PixelLogicUtil;
+
+import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
 
 public class PixelLogicUILevelMenu extends PixelLogicUIModal {
 
@@ -26,8 +31,10 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
 
     private Label statusLabel;
 
-    public PixelLogicUILevelMenu(PixelLogicAssets assets, PixelLogicEventManager eventManager, PixelLogicUILevelPage page) {
-        super(assets, eventManager, page.getStage().getRoot());
+    private PixelLogicUIAudioButton audioButton;
+
+    public PixelLogicUILevelMenu(PixelLogicGlobal global, PixelLogicUILevelPage page) {
+        super(global, page.getStage().getRoot());
         this.page = page;
         this.backButtonPageId = null;
         this.statusLabel = null;
@@ -37,7 +44,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
     protected void buildContent() {
 
         // solve level
-        this.solveLevelButton = new PixelLogicUIButton(getAssets(), getEventManager(), "solve level") {
+        this.solveLevelButton = new PixelLogicUIButton(getGlobal(), "solve level") {
             @Override
             public void handleClick() {
                 close();
@@ -47,7 +54,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         };
 
         // reset level
-        this.resetLevelButton = new PixelLogicUIButton(getAssets(), getEventManager(), getAssets().translate("level.menu.reset")) {
+        this.resetLevelButton = new PixelLogicUIButton(getGlobal(), getAssets().translate("level.menu.reset")) {
             @Override
             public void handleClick() {
                 close();
@@ -56,7 +63,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         };
 
         // continue
-        this.continueButton = new PixelLogicUIButton(getAssets(), getEventManager(), getAssets().translate("level.menu.continue")) {
+        this.continueButton = new PixelLogicUIButton(getGlobal(), getAssets().translate("level.menu.continue")) {
             @Override
             public void handleClick() {
                 close();
@@ -64,7 +71,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         };
 
         // back
-        this.backButton = new PixelLogicUIButton(getAssets(), getEventManager(), getAssets().translate("level.menu.back")) {
+        this.backButton = new PixelLogicUIButton(getGlobal(), getAssets().translate("level.menu.back")) {
             @Override
             public void handleClick() {
                 close();
@@ -72,6 +79,16 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
             }
         };
 
+        // audio button
+        this.audioButton = new PixelLogicUIAudioButton(getAssets(), getGlobal().getAudio());
+        this.audioButton.setColor(Color.WHITE);
+        this.audioButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                audioButton.switchAudio();
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
     }
 
     @Override
@@ -110,6 +127,9 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         if (this.continueButton != null) {
             getContent().add(this.continueButton).padTop(padding);
         }
+        if (this.audioButton != null) {
+            this.addActor(audioButton);
+        }
         this.updateButtonSize();
     }
 
@@ -143,6 +163,10 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         super.sizeChanged();
         this.updateButtonSize();
         this.updateStatusLabelPosition();
+
+        int audioButtonPosition = (int) (getWidth() / 20);
+        this.audioButton.setSize(PixelLogicUIUtil.getIconBaseHeight(), PixelLogicUIUtil.getIconBaseHeight());
+        this.audioButton.setPosition(getWidth() - (audioButtonPosition + PixelLogicUIUtil.getIconBaseHeight()), audioButtonPosition);
     }
 
     public void setStatusText(String text) {

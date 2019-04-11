@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.ui.level;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -10,8 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import de.mewel.pixellogic.PixelLogicConstants;
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelSwitcherChangedEvent;
@@ -33,8 +31,8 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
 
     private boolean fillPixel;
 
-    PixelLogicUILevelSwitcher(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager);
+    PixelLogicUILevelSwitcher(PixelLogicGlobal global) {
+        super(global);
         this.penSprite = getAssets().getIcon(0);
         this.xSprite = getAssets().getIcon(1);
         this.penColor = PixelLogicConstants.TOOLBAR_SWITCHER_ACTIVE_COLOR;
@@ -100,8 +98,7 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
         getEventManager().fire(new PixelLogicLevelSwitcherChangedEvent(PixelLogicUILevelSwitcher.this, fillPixel));
 
         // sound
-        Sound sound = getAssets().get().get(SWITCHER_SOUND, Sound.class);
-        sound.play(SWITCHER_SOUND_VOLUME);
+        getAudio().playSound(SWITCHER_SOUND, SWITCHER_SOUND_VOLUME);
 
         // animate
         this.penColor = TOOLBAR_SWITCHER_INACTIVE_COLOR;

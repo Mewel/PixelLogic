@@ -1,7 +1,6 @@
 package de.mewel.pixellogic.ui.level;
 
-import de.mewel.pixellogic.asset.PixelLogicAssets;
-import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelChangeAdapter;
@@ -12,9 +11,9 @@ public abstract class PixelLogicUILevelGroup extends PixelLogicUIGroup implement
 
     private PixelLogicLevelChangeAdapter changeAdapter;
 
-    public PixelLogicUILevelGroup(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
-        super(assets, eventManager);
-        this.changeAdapter = new PixelLogicLevelChangeAdapter(eventManager);
+    public PixelLogicUILevelGroup(PixelLogicGlobal global) {
+        super(global);
+        this.changeAdapter = new PixelLogicLevelChangeAdapter(getEventManager());
         this.changeAdapter.bind(this);
     }
 

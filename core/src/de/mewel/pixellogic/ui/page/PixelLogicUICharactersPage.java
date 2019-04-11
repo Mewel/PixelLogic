@@ -21,6 +21,8 @@ import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
 import de.mewel.pixellogic.ui.component.PixelLogicUISprite;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_COLOR;
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
 
 public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
@@ -54,7 +56,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
                 public void onClick() {
                     PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                     pageProperties.put("menuBackId", PixelLogicUIPageId.characters);
-                    PixelLogicUIUtil.playButtonSound(getAssets());
+                    getAudio().playSound(BUTTON_SOUND, BUTTON_SOUND_VOLUME);
                     getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties, new Runnable() {
                         @Override
                         public void run() {
@@ -133,7 +135,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
             getActor().left();
             getActor().fill();
 
-            this.logo = new PixelLogicUISprite(getAssets(), getEventManager());
+            this.logo = new PixelLogicUISprite(getGlobal());
             getActor().addActor(this.logo);
             this.updateLogo();
 
