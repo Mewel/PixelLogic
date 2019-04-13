@@ -35,6 +35,8 @@ public class PixelLogicAudio implements PixelLogicListener {
 
     private Map<String, Sound> soundMap;
 
+    private boolean muted;
+
     public PixelLogicAudio(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         this.eventManager = eventManager;
         AssetManager assetManager = assets.get();
@@ -46,7 +48,7 @@ public class PixelLogicAudio implements PixelLogicListener {
         this.soundMap.put(PUZZLE_SOLVED_SOUND, (Sound) assetManager.get(PUZZLE_SOLVED_SOUND));
         this.soundMap.put(KEY_SOUND, (Sound) assetManager.get(KEY_SOUND));
 
-        boolean isMuted = isMuted();
+        this.muted = isMuted();
 
         Music baseMenuMusic = assetManager.get(MENU_MUSIC);
         baseMenuMusic.setLooping(true);
@@ -54,10 +56,10 @@ public class PixelLogicAudio implements PixelLogicListener {
         Music baseLevelMusic = assetManager.get(LEVEL_MUSIC);
         baseLevelMusic.setLooping(true);
         baseLevelMusic.setVolume(LEVEL_MUSIC_VOLUME);
-        this.menuMusic = new PixelLogicMusic(baseMenuMusic).setMaxVolume(MENU_MUSIC_VOLUME).setMuted(isMuted);
-        this.levelMusic = new PixelLogicMusic(baseLevelMusic).setMaxVolume(LEVEL_MUSIC_VOLUME).setMuted(isMuted);
+        this.menuMusic = new PixelLogicMusic(baseMenuMusic).setMaxVolume(MENU_MUSIC_VOLUME).setMuted(this.muted);
+        this.levelMusic = new PixelLogicMusic(baseLevelMusic).setMaxVolume(LEVEL_MUSIC_VOLUME).setMuted(this.muted);
 
-        if(!isMuted) {
+        if (!this.muted) {
             playMenuMusic();
         }
 
@@ -71,6 +73,7 @@ public class PixelLogicAudio implements PixelLogicListener {
     }
 
     public void mute() {
+        this.muted = true;
         getPreferences().putBoolean("mute", true);
         getPreferences().flush();
         this.menuMusic.mute();
@@ -78,6 +81,7 @@ public class PixelLogicAudio implements PixelLogicListener {
     }
 
     public void unmute() {
+        this.muted = false;
         getPreferences().putBoolean("mute", false);
         getPreferences().flush();
         this.menuMusic.unmute();
@@ -85,7 +89,7 @@ public class PixelLogicAudio implements PixelLogicListener {
     }
 
     public boolean isMuted() {
-        return getPreferences().getBoolean("mute", false);
+        return this.muted;
     }
 
     private Preferences getPreferences() {

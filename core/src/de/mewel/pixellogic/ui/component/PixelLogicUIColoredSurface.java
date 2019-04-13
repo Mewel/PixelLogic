@@ -48,15 +48,15 @@ public class PixelLogicUIColoredSurface extends PixelLogicUIActor {
 
         // render surface
         float surfaceAlpha = inheritParentAlpha ? color.a * parentAlpha : color.a;
-        renderer.setColor(new Color(color.r, color.g, color.b, surfaceAlpha));
         renderer.begin(ShapeRenderer.ShapeType.Filled);
+        renderer.setColor(color.r, color.g, color.b, surfaceAlpha);
         renderer.box(0f, 0f, 0, getWidth(), getHeight(), 0f);
         renderer.end();
 
         // render border
         if (this.borderColor != null && this.borderWidth != 0) {
             float borderAlpha = inheritParentAlpha ? borderColor.a * parentAlpha : borderColor.a;
-            renderer.setColor(new Color(borderColor.r, borderColor.g, borderColor.b, borderAlpha));
+            renderer.setColor(borderColor.r, borderColor.g, borderColor.b, borderAlpha);
             renderer.begin(ShapeRenderer.ShapeType.Line);
             for (int i = 0; i < borderWidth; i++) {
                 renderer.box(0f + i, 0f + i, 0, getWidth() - (2 * i), getHeight() - (2 * i), 0f);

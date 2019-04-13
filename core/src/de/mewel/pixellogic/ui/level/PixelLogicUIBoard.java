@@ -15,6 +15,7 @@ public class PixelLogicUIBoard extends PixelLogicUILevelGroup {
 
     public PixelLogicUIBoard(PixelLogicGlobal global) {
         super(global);
+        //this.setTransform(false);
     }
 
     public void updateLevelResolution(PixelLogicUILevelResolution resolution) {

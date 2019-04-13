@@ -12,13 +12,18 @@ import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicUIColumnInfo extends PixelLogicUILineInfo {
 
+    protected boolean lineComplete;
+
     public PixelLogicUIColumnInfo(PixelLogicGlobal global, PixelLogicLevel level, int column) {
         super(global, level, column);
+        this.lineComplete = level.isColumnComplete(column);
     }
 
     @Override
     public void onBoardChange(PixelLogicBoardChangedEvent event) {
+        super.onBoardChange(event);
         if (event.getCol() == line) {
+            this.lineComplete = level.isColumnComplete(event.getCol());
             for (Label label : labels) {
                 label.getStyle().fontColor = getLabelColor();
             }
@@ -27,7 +32,7 @@ public class PixelLogicUIColumnInfo extends PixelLogicUILineInfo {
 
     @Override
     protected boolean isLineComplete() {
-        return level.isColumnComplete(this.line);
+        return lineComplete;
     }
 
     @Override

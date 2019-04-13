@@ -13,18 +13,23 @@ import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicUIRowInfo extends PixelLogicUILineInfo {
 
+    protected boolean lineComplete;
+
     public PixelLogicUIRowInfo(PixelLogicGlobal global, PixelLogicLevel level, int row) {
         super(global, level, row);
+        this.lineComplete = level.isRowComplete(row);
     }
 
     @Override
     protected boolean isLineComplete() {
-        return level.isRowComplete(this.line);
+        return lineComplete;
     }
 
     @Override
     public void onBoardChange(PixelLogicBoardChangedEvent event) {
+        super.onBoardChange(event);
         if (event.getRow() == line) {
+            this.lineComplete = level.isRowComplete(this.line);
             for (Label label : labels) {
                 label.getStyle().fontColor = getLabelColor();
             }

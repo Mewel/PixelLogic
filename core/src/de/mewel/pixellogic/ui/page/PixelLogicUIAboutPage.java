@@ -44,6 +44,10 @@ public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
             creditsText.append(artist).append("\n");
         }
 
+        creditsText.append("\n").append(getAssets().translate("about.music"));
+        creditsText.append("Tobias Weber - Between Worlds").append("\n");
+        creditsText.append("Tobias Weber - The Parting Glas").append("\n");
+
         creditsText.append("\n").append(getAssets().translate("about.thirdParty"));
         List<String> thirdParty = new ArrayList<String>();
         thirdParty.add("libgdx");

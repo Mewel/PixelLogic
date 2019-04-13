@@ -46,40 +46,48 @@ public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIActor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
+
+        // background dimensions
+        int boardWidth = (int) getWidth();
+        int boardHeight = (int) getHeight();
+
+        // init
         batch.end();
         Gdx.gl.glEnable(GL30.GL_BLEND);
         ShapeRenderer renderer = this.getAssets().getShapeRenderer();
         renderer.setProjectionMatrix(batch.getProjectionMatrix());
         renderer.setTransformMatrix(batch.getTransformMatrix());
-        renderer.translate((int) (getWidth() / 2), (int) (getHeight() / 2), 0);
+        renderer.translate((int) (boardWidth / 2), (int) (boardHeight / 2), 0);
         renderer.rotate(0, 0, 1, rotate);
 
         // render board
-        int width = (int) getWidth() / pixel;
-        int height = (int) getHeight() / pixel;
-        int size = (int) (Math.max(width, height) * 1.5f);
+        int pixelWidth = boardWidth / pixel;
+        int pixelHeight = boardHeight / pixel;
+        int size = (int) (Math.max(pixelWidth, pixelHeight) * 1.5f);
         int space = size / 12;
         size = size - space;
         int combined = size + space;
         int start = (-combined * pixel) / 2;
+        int maxRenderHeight = (int) (boardHeight / 1.6f);
 
+        // render
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[0].length; col++) {
+                int x = start + row * combined;
+                int y = start + col * combined;
+                if (x > boardWidth || x < -boardWidth || y > maxRenderHeight || y < -maxRenderHeight) {
+                    continue;
+                }
                 Pixel pixel = board[row][col];
-                Color c1 = new Color(pixel.color);
-                Color c2 = new Color(PIXEL_EMPTY_COLOR);
-                float r = pixel.alpha * c1.r + (1 - pixel.alpha) * c2.r;
-                float g = pixel.alpha * c1.g + (1 - pixel.alpha) * c2.g;
-                float b = pixel.alpha * c1.b + (1 - pixel.alpha) * c2.b;
-                Color c = new Color(r, g, b, parentAlpha);
-                renderer.setColor(c);
-                renderer.begin(ShapeRenderer.ShapeType.Filled);
-                renderer.box(start + row * combined, start + col * combined,
-                        0, size, size, 0f);
-                renderer.end();
+                float r = pixel.alpha * pixel.color.r + (1 - pixel.alpha) * PIXEL_EMPTY_COLOR.r;
+                float g = pixel.alpha * pixel.color.g + (1 - pixel.alpha) * PIXEL_EMPTY_COLOR.g;
+                float b = pixel.alpha * pixel.color.b + (1 - pixel.alpha) * PIXEL_EMPTY_COLOR.b;
+                renderer.setColor(r, g, b, parentAlpha);
+                renderer.box(x, y, 0, size, size, 0f);
             }
         }
-
+        renderer.end();
         Gdx.gl.glDisable(GL30.GL_BLEND);
         batch.begin();
     }

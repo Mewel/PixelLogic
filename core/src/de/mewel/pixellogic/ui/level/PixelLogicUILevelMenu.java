@@ -80,7 +80,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         };
 
         // audio button
-        this.audioButton = new PixelLogicUIAudioButton(getAssets(), getGlobal().getAudio());
+        this.audioButton = new PixelLogicUIAudioButton(getGlobal());
         this.audioButton.setColor(Color.WHITE);
         this.audioButton.addListener(new InputListener() {
             @Override
@@ -163,10 +163,11 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         super.sizeChanged();
         this.updateButtonSize();
         this.updateStatusLabelPosition();
-
-        int audioButtonPosition = (int) (getWidth() / 20);
-        this.audioButton.setSize(PixelLogicUIUtil.getIconBaseHeight(), PixelLogicUIUtil.getIconBaseHeight());
-        this.audioButton.setPosition(getWidth() - (audioButtonPosition + PixelLogicUIUtil.getIconBaseHeight()), audioButtonPosition);
+        if (audioButton != null) {
+            int audioButtonPosition = (int) (getWidth() / 20);
+            this.audioButton.setSize(PixelLogicUIUtil.getIconBaseHeight(), PixelLogicUIUtil.getIconBaseHeight());
+            this.audioButton.setPosition(getWidth() - (audioButtonPosition + PixelLogicUIUtil.getIconBaseHeight()), audioButtonPosition);
+        }
     }
 
     public void setStatusText(String text) {

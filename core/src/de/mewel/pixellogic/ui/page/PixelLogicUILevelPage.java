@@ -1,7 +1,6 @@
 package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -58,8 +57,6 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     protected PixelLogicUIMessageModal loadingModal;
 
     protected PixelLogicUILevelAnimation solvedAnimation;
-
-    protected FPSLogger fpsLogger = new FPSLogger();
 
     static {
         SOLVED_ANIMATION_MAP = new HashMap<String, Class<? extends PixelLogicUILevelAnimation>>();
@@ -198,7 +195,6 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     @Override
     public void render(float delta) {
         super.render(delta);
-
         if (PixelLogicLevelStatus.playable.equals(this.levelStatus) && this.levelUI.isSolved()) {
             this.levelStatus = PixelLogicLevelStatus.finished;
             Action delay = Actions.sequence(Actions.delay(.1f), Actions.run(new Runnable() {
@@ -209,8 +205,6 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
             }));
             getStage().addAction(delay);
         }
-
-        // fpsLogger.log();
     }
 
     protected void onSolved() {

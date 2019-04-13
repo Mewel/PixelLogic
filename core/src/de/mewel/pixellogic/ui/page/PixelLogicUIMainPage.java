@@ -117,7 +117,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         getPageRoot().addActor(buttonGroup);
 
         // make audio button absolute
-        this.audioButton = new PixelLogicUIAudioButton(getAssets(), getGlobal().getAudio());
+        this.audioButton = new PixelLogicUIAudioButton(getGlobal());
         this.audioButton.setColor(TEXT_COLOR);
         this.audioButton.addListener(new InputListener() {
             @Override

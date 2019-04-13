@@ -1,5 +1,7 @@
 package de.mewel.pixellogic.ui.screen;
 
+import com.badlogic.gdx.graphics.FPSLogger;
+
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.layer.PixelLogicUIAchievementLayer;
 import de.mewel.pixellogic.ui.layer.PixelLogicUIPageLayer;
@@ -22,6 +24,8 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
     private PixelLogicUIPageLayer pageLayer;
 
     private PixelLogicUIAchievementLayer achievementLayer;
+
+    protected FPSLogger fpsLogger = new FPSLogger();
 
     public PixelLogicUIAppScreen(PixelLogicGlobal global) {
         super(global);
@@ -76,6 +80,7 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
+        fpsLogger.log();
         getAudio().act(delta);
     }
 

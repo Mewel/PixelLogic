@@ -44,7 +44,7 @@ public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
         ShapeRenderer renderer = this.getAssets().getShapeRenderer();
         renderer.setProjectionMatrix(batch.getProjectionMatrix());
         renderer.setTransformMatrix(batch.getTransformMatrix());
-        renderer.setColor(new Color(color.r, color.g, color.b, color.a * parentAlpha));
+        renderer.setColor(color.r, color.g, color.b, color.a * parentAlpha);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
 
         for (int y = level.getRows() - DISTANCE; y >= 1; y -= DISTANCE) {

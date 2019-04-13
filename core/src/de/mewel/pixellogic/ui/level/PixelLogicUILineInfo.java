@@ -12,6 +12,7 @@ import java.util.List;
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
+import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
 
 import static de.mewel.pixellogic.PixelLogicConstants.APP_BACKGROUND;
 import static de.mewel.pixellogic.PixelLogicConstants.LINE_COLOR;
@@ -41,9 +42,11 @@ public abstract class PixelLogicUILineInfo extends PixelLogicUILevelGroup {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         Color baseColor = getColor();
-        Color blockColor = isLineComplete() ? new Color(LINE_COMPLETE_COLOR) : new Color(LINE_COLOR);
-        blockColor.a = baseColor.a * parentAlpha;
-        batch.setColor(blockColor);
+        boolean lineComplete = isLineComplete();
+        float r = lineComplete ? LINE_COMPLETE_COLOR.r : LINE_COLOR.r;
+        float g = lineComplete ? LINE_COMPLETE_COLOR.g : LINE_COLOR.g;
+        float b = lineComplete ? LINE_COMPLETE_COLOR.b : LINE_COLOR.b;
+        batch.setColor(r, g, b, baseColor.a * parentAlpha);
         batch.draw(texture, getX(), getY(), getWidth() * getScaleX(),
                 getHeight() * getScaleY());
         batch.setColor(baseColor);
