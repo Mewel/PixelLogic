@@ -39,7 +39,7 @@ public abstract class PixelLogicConstants {
     public static final float DRAW_SOUND_VOLUME = .3f;
     public static final float BLOCK_SOUND_VOLUME = .5f;
     public static final float SWITCHER_SOUND_VOLUME = .3f;
-    public static final float PUZZLE_SOLVED_SOUND_VOLUME = .2f;
+    public static final float PUZZLE_SOLVED_SOUND_VOLUME = .3f;
     public static final float KEY_SOUND_VOLUME = .2f;
 
     public static final float MENU_MUSIC_VOLUME = .4f;

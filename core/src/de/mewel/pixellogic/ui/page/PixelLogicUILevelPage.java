@@ -364,9 +364,14 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         public void handle(PixelLogicEvent event) {
             if (event instanceof PixelLogicUserEvent) {
                 PixelLogicUserEvent userEvent = (PixelLogicUserEvent) event;
-                if (PixelLogicUserEvent.Type.LEVEL_MENU_CLICKED.equals(userEvent.getType()) ||
-                        PixelLogicUserEvent.Type.BACK_BUTTON_CLICKED.equals(userEvent.getType())) {
+                if (PixelLogicUserEvent.Type.LEVEL_MENU_CLICKED.equals(userEvent.getType())) {
                     page.menu.show();
+                } else if(PixelLogicUserEvent.Type.BACK_BUTTON_CLICKED.equals(userEvent.getType())) {
+                    if(page.menu.isShown()) {
+                        page.menu.close();
+                    } else {
+                        page.menu.show();
+                    }
                 }
             }
             if (event instanceof PixelLogicLoadNextLevelEvent) {

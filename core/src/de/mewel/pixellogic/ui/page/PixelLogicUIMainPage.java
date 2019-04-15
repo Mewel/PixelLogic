@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
+import de.mewel.pixellogic.event.PixelLogicEvent;
+import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.mode.PixelLogicTutorialMode;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.background.PixelLogicUIRotatingBoardBackground;
@@ -38,8 +40,11 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
     private PixelLogicUIAudioButton audioButton;
 
+    protected Long backButtonTimer;
+
     public PixelLogicUIMainPage(PixelLogicGlobal global) {
         super(global, PixelLogicUIPageId.mainMenu);
+        this.backButtonTimer = 0L;
     }
 
     @Override
@@ -142,6 +147,21 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
             this.aboutButton.unblock();
         }
         fadeIn(null);
+    }
+
+    @Override
+    public void handle(PixelLogicEvent event) {
+        super.handle(event);
+        if (event instanceof PixelLogicUserEvent) {
+            PixelLogicUserEvent userEvent = (PixelLogicUserEvent) event;
+            if (PixelLogicUserEvent.Type.BACK_BUTTON_CLICKED.equals(userEvent.getType())) {
+                if (System.currentTimeMillis() - backButtonTimer < 500) {
+                    Gdx.app.exit();
+                } else {
+                    backButtonTimer = System.currentTimeMillis();
+                }
+            }
+        }
     }
 
     @Override

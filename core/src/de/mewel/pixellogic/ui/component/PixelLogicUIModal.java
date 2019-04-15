@@ -56,6 +56,10 @@ public abstract class PixelLogicUIModal extends PixelLogicUIGroup {
         })));
     }
 
+    public boolean isShown() {
+        return parent.getChildren().contains(this, true);
+    }
+
     protected void afterClose() {
     }
 
