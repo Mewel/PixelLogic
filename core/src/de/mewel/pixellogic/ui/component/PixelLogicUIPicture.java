@@ -1,4 +1,4 @@
-package de.mewel.pixellogic.ui.misc;
+package de.mewel.pixellogic.ui.component;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -165,13 +165,13 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
         public void draw(Batch batch, float parentAlpha) {
             Color color = getColor();
             float alpha = parentAlpha * color.a;
-            batch.setColor(new Color(color.r, color.g, color.b, alpha));
+            batch.setColor(color.r, color.g, color.b, alpha);
             if (sprite != null) {
                 batch.draw(sprite, getX(), getY(), getWidth(), getHeight());
             }
             if (this.newSprite != null) {
                 alpha *= 1 - this.currentBlendTime / this.blendTime;
-                batch.setColor(new Color(color.r, color.g, color.b, alpha));
+                batch.setColor(color.r, color.g, color.b, alpha);
                 batch.draw(newSprite, getX(), getY(), getWidth(), getHeight());
             }
             batch.setColor(color);

@@ -28,12 +28,18 @@ public class PixelLogicUIRowInfo extends PixelLogicUILineInfo {
     @Override
     public void onBoardChange(PixelLogicBoardChangedEvent event) {
         super.onBoardChange(event);
-        if (event.getRow() == line) {
+        if (event.getRow() == line && (event.getValue() == null || event.getValue())) {
             this.lineComplete = level.isRowComplete(this.line);
             for (Label label : labels) {
                 label.getStyle().fontColor = getLabelColor();
             }
         }
+    }
+
+    @Override
+    public void reset() {
+        this.lineComplete = false;
+        super.reset();
     }
 
     @Override

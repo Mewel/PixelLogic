@@ -255,15 +255,12 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
             Color color = getColor();
             batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
             super.draw(batch, parentAlpha);
-
             float size = PixelLogicUIUtil.getIconBaseHeight();
             float offset = size / 2;
             float y = MathUtils.floor(getY()) + offset - 1;
             float x = MathUtils.floor(getX()) + offset;
             float alpha = parentAlpha * color.a;
-            Color spriteColor = Color.WHITE;
-
-            batch.setColor(new Color(spriteColor.r, spriteColor.g, spriteColor.b, spriteColor.a * alpha));
+            batch.setColor(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, Color.WHITE.a * alpha);
             batch.draw(sprite, x, y, size, size);
             batch.setColor(color);
         }

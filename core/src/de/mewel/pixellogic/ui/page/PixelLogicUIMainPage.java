@@ -15,9 +15,10 @@ import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.mode.PixelLogicTutorialMode;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.background.PixelLogicUIRotatingBoardBackground;
-import de.mewel.pixellogic.ui.component.PixelLogicUIAudioButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
+import de.mewel.pixellogic.ui.component.PixelLogicUISettings;
+import de.mewel.pixellogic.ui.component.PixelLogicUISpriteButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIVerticalGroup;
 
 import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
@@ -38,7 +39,9 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
     private PixelLogicUIButton aboutButton;
 
-    private PixelLogicUIAudioButton audioButton;
+    private PixelLogicUISpriteButton settingsButton;
+
+    private PixelLogicUISettings settings;
 
     protected Long backButtonTimer;
 
@@ -121,17 +124,20 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         getPageRoot().addActor(logoImage);
         getPageRoot().addActor(buttonGroup);
 
-        // make audio button absolute
-        this.audioButton = new PixelLogicUIAudioButton(getGlobal());
-        this.audioButton.setColor(TEXT_COLOR);
-        this.audioButton.addListener(new InputListener() {
+        // settings
+        this.settingsButton = new PixelLogicUISpriteButton(getGlobal(), 10);
+        this.settingsButton.setColor(TEXT_COLOR);
+        this.settingsButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                audioButton.switchAudio();
+                settings.show(getStage().getRoot());
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
-        getStage().getRoot().addActor(audioButton);
+        getStage().getRoot().addActor(settingsButton);
+
+        // settings
+        this.settings = new PixelLogicUISettings(getGlobal());
     }
 
     @Override
@@ -181,8 +187,10 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         this.logoImage.setScale((int) (height / (this.logoImage.getHeight() * 6f)));
 
         int audioButtonPosition = width / 20;
-        this.audioButton.setSize(PixelLogicUIUtil.getIconBaseHeight(), PixelLogicUIUtil.getIconBaseHeight());
-        this.audioButton.setPosition(width - (audioButtonPosition + PixelLogicUIUtil.getIconBaseHeight()), audioButtonPosition);
+        this.settingsButton.setSize(PixelLogicUIUtil.getIconBaseHeight(), PixelLogicUIUtil.getIconBaseHeight());
+        this.settingsButton.setPosition(width - (audioButtonPosition + PixelLogicUIUtil.getIconBaseHeight()), audioButtonPosition);
+
+        this.settings.setWidth(width);
 
         getPageRoot().padTop(getPadding() * 3);
         getPageRoot().space(getSpace() * 3);

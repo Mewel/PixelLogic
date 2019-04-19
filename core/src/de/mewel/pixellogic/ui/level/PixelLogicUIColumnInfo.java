@@ -22,12 +22,18 @@ public class PixelLogicUIColumnInfo extends PixelLogicUILineInfo {
     @Override
     public void onBoardChange(PixelLogicBoardChangedEvent event) {
         super.onBoardChange(event);
-        if (event.getCol() == line) {
+        if (event.getCol() == line && (event.getValue() == null || event.getValue())) {
             this.lineComplete = level.isColumnComplete(event.getCol());
             for (Label label : labels) {
                 label.getStyle().fontColor = getLabelColor();
             }
         }
+    }
+
+    @Override
+    public void reset() {
+        this.lineComplete = false;
+        super.reset();
     }
 
     @Override

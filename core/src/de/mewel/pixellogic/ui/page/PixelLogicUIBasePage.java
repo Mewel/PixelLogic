@@ -2,10 +2,7 @@ package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
@@ -18,6 +15,7 @@ import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
+import de.mewel.pixellogic.ui.component.PixelLogicUISpriteButton;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
@@ -130,10 +128,6 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
         return pageRoot;
     }
 
-    public boolean hasHeader() {
-        return this.header != null;
-    }
-
     @Override
     public void handle(PixelLogicEvent event) {
         Gdx.app.log("handle", this.getClass().getName());
@@ -153,7 +147,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
 
         private String text;
 
-        private HeaderButton backButton;
+        private PixelLogicUISpriteButton backButton;
 
         public Header(PixelLogicGlobal global, String text, final PixelLogicUIPageId backPageId) {
             super(global);
@@ -163,7 +157,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
             this.background.setColor(new Color(MAIN_COLOR));
             this.addActor(this.background);
 
-            this.backButton = new HeaderButton(getAssets().getIcon(3));
+            this.backButton = new PixelLogicUISpriteButton(global, 3);
             this.backButton.addListener(new PixelLogicUIButtonListener() {
                 @Override
                 public void onClick() {
@@ -217,30 +211,6 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
             this.background.clear();
             super.clear();
         }
-
-        protected class HeaderButton extends Actor {
-
-            private Sprite sprite;
-
-            public HeaderButton(Sprite sprite) {
-                this.sprite = sprite;
-            }
-
-            @Override
-            public void draw(Batch batch, float parentAlpha) {
-                Color color = getColor();
-                batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-                super.draw(batch, parentAlpha);
-
-                Color spriteColor = Color.WHITE;
-
-                batch.setColor(new Color(spriteColor.r, spriteColor.g, spriteColor.b, 1f));
-                batch.draw(sprite, getX(), getY(), getWidth(), getHeight());
-                batch.setColor(color);
-            }
-
-        }
-
 
     }
 

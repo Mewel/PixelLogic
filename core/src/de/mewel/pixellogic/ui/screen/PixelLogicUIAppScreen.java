@@ -80,7 +80,7 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-        fpsLogger.log();
+        // fpsLogger.log();
         getAudio().act(delta);
     }
 

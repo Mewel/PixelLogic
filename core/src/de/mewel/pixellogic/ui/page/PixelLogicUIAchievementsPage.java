@@ -171,7 +171,7 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
                     float size = PixelLogicUIUtil.getIconBaseHeight();
                     float alpha = parentAlpha * color.a;
 
-                    batch.setColor(new Color(color.r, color.g, color.b, color.a * alpha));
+                    batch.setColor(color.r, color.g, color.b, color.a * alpha);
                     int x = (int) (getX() + getWidth() / 2 - size / 2);
                     int y = (int) (getY() + getHeight() / 2 - size / 2);
                     batch.draw(sprite, x,

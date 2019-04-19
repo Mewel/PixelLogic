@@ -5,18 +5,23 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
-import de.mewel.pixellogic.ui.component.PixelLogicUIAudioButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIModal;
+import de.mewel.pixellogic.ui.component.PixelLogicUISettings;
+import de.mewel.pixellogic.ui.component.PixelLogicUISpriteButton;
 import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.util.PixelLogicUtil;
+
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
+import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 
 public class PixelLogicUILevelMenu extends PixelLogicUIModal {
 
@@ -28,7 +33,9 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
 
     private Label statusLabel;
 
-    private PixelLogicUIAudioButton audioButton;
+    private PixelLogicUISpriteButton settingsButton;
+
+    private PixelLogicUISettings settings;
 
     public PixelLogicUILevelMenu(PixelLogicGlobal global, PixelLogicUILevelPage page) {
         super(global, page.getStage().getRoot());
@@ -76,16 +83,19 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
             }
         };
 
-        // audio button
-        this.audioButton = new PixelLogicUIAudioButton(getGlobal());
-        this.audioButton.setColor(Color.WHITE);
-        this.audioButton.addListener(new InputListener() {
+        // settings
+        this.settingsButton = new PixelLogicUISpriteButton(getGlobal(), 10);
+        this.settingsButton.setColor(Color.WHITE);
+        this.settingsButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                audioButton.switchAudio();
+                settings.show(getStage().getRoot());
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
+
+        // settings
+        this.settings = new PixelLogicUISettings(getGlobal());
     }
 
     @Override
@@ -124,8 +134,8 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         if (this.continueButton != null) {
             getContent().add(this.continueButton).padTop(padding);
         }
-        if (this.audioButton != null) {
-            this.addActor(audioButton);
+        if (this.settingsButton != null) {
+            this.addActor(settingsButton);
         }
         this.updateButtonSize();
     }
@@ -151,6 +161,14 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
     }
 
     @Override
+    public void close() {
+        if(this.settings != null) {
+            getStage().getRoot().removeActor(settings);
+        }
+        super.close();
+    }
+
+    @Override
     protected void afterClose() {
         getEventManager().fire(new PixelLogicUserEvent(this, PixelLogicUserEvent.Type.LEVEL_MENU_CLOSED));
     }
@@ -160,10 +178,13 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         super.sizeChanged();
         this.updateButtonSize();
         this.updateStatusLabelPosition();
-        if (audioButton != null) {
-            int audioButtonPosition = (int) (getWidth() / 20);
-            this.audioButton.setSize(PixelLogicUIUtil.getIconBaseHeight(), PixelLogicUIUtil.getIconBaseHeight());
-            this.audioButton.setPosition(getWidth() - (audioButtonPosition + PixelLogicUIUtil.getIconBaseHeight()), audioButtonPosition);
+        if (settingsButton != null) {
+            int settingsButtonPosition = (int) (getWidth() / 20);
+            this.settingsButton.setSize(PixelLogicUIUtil.getIconBaseHeight(), PixelLogicUIUtil.getIconBaseHeight());
+            this.settingsButton.setPosition(getWidth() - (settingsButtonPosition + PixelLogicUIUtil.getIconBaseHeight()), settingsButtonPosition);
+        }
+        if(settings != null) {
+            this.settings.setWidth(getWidth());
         }
     }
 

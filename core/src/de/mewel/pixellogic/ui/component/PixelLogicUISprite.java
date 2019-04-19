@@ -26,7 +26,7 @@ public class PixelLogicUISprite extends PixelLogicUIActor {
         super.draw(batch, parentAlpha);
         if (sprite != null) {
             float alpha = parentAlpha * color.a;
-            batch.setColor(new Color(color.r, color.g, color.b, color.a * alpha));
+            batch.setColor(color.r, color.g, color.b, color.a * alpha);
             batch.draw(sprite, getX(), getY(), getWidth(), getHeight());
         }
         batch.setColor(color);

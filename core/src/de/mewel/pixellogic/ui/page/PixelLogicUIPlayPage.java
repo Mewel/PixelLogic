@@ -20,6 +20,7 @@ import de.mewel.pixellogic.mode.PixelLogicTutorialMode;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
+import de.mewel.pixellogic.ui.component.PixelLogicUISpriteButton;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_COLOR;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
@@ -190,11 +191,11 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
 
     protected class PlayHeader extends Header {
 
-        private HeaderButton tutorialButton;
+        private PixelLogicUISpriteButton tutorialButton;
 
         public PlayHeader(PixelLogicGlobal global, String text, PixelLogicUIPageId backPageId) {
             super(global, text, backPageId);
-            this.tutorialButton = new HeaderButton(getAssets().getIcon(6));
+            this.tutorialButton = new PixelLogicUISpriteButton(global, 6);
             this.tutorialButton.addListener(new PixelLogicUIButtonListener() {
                 @Override
                 public void onClick() {

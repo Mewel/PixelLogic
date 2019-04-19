@@ -67,9 +67,9 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
         float y = MathUtils.floor(getY()) + offset;
         float x = MathUtils.floor(getX()) + offset;
         float alpha = parentAlpha * color.a;
-        batch.setColor(new Color(this.penColor.r, this.penColor.g, this.penColor.b, this.penColor.a * alpha));
+        batch.setColor(this.penColor.r, this.penColor.g, this.penColor.b, this.penColor.a * alpha);
         batch.draw(penSprite, x, y, size, size);
-        batch.setColor(new Color(this.xColor.r, this.xColor.g, this.xColor.b, this.xColor.a * alpha));
+        batch.setColor(this.xColor.r, this.xColor.g, this.xColor.b, this.xColor.a * alpha);
         batch.draw(xSprite, x + size + 2 * offset, y, size, size);
         batch.setColor(color);
     }

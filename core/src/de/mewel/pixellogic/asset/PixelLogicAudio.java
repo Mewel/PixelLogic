@@ -35,7 +35,7 @@ public class PixelLogicAudio implements PixelLogicListener {
 
     private Map<String, Sound> soundMap;
 
-    private boolean muted;
+    private boolean musicMuted, soundMuted;
 
     public PixelLogicAudio(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         this.eventManager = eventManager;
@@ -48,7 +48,8 @@ public class PixelLogicAudio implements PixelLogicListener {
         this.soundMap.put(PUZZLE_SOLVED_SOUND, (Sound) assetManager.get(PUZZLE_SOLVED_SOUND));
         this.soundMap.put(KEY_SOUND, (Sound) assetManager.get(KEY_SOUND));
 
-        this.muted = isMuted();
+        this.musicMuted = isMusicMuted();
+        this.soundMuted = isSoundMuted();
 
         Music baseMenuMusic = assetManager.get(MENU_MUSIC);
         baseMenuMusic.setLooping(true);
@@ -56,10 +57,10 @@ public class PixelLogicAudio implements PixelLogicListener {
         Music baseLevelMusic = assetManager.get(LEVEL_MUSIC);
         baseLevelMusic.setLooping(true);
         baseLevelMusic.setVolume(LEVEL_MUSIC_VOLUME);
-        this.menuMusic = new PixelLogicMusic(baseMenuMusic).setMaxVolume(MENU_MUSIC_VOLUME).setMuted(this.muted);
-        this.levelMusic = new PixelLogicMusic(baseLevelMusic).setMaxVolume(LEVEL_MUSIC_VOLUME).setMuted(this.muted);
+        this.menuMusic = new PixelLogicMusic(baseMenuMusic).setMaxVolume(MENU_MUSIC_VOLUME).setMuted(this.musicMuted);
+        this.levelMusic = new PixelLogicMusic(baseLevelMusic).setMaxVolume(LEVEL_MUSIC_VOLUME).setMuted(this.musicMuted);
 
-        if (!this.muted) {
+        if (!this.musicMuted) {
             playMenuMusic();
         }
 
@@ -67,29 +68,41 @@ public class PixelLogicAudio implements PixelLogicListener {
     }
 
     public void playSound(String sound, float volume) {
-        if (!isMuted()) {
+        if (!isSoundMuted()) {
             this.soundMap.get(sound).play(volume);
         }
     }
 
-    public void mute() {
-        this.muted = true;
-        getPreferences().putBoolean("mute", true);
-        getPreferences().flush();
+    public void muteMusic() {
+        this.musicMuted = true;
+        getPreferences().putBoolean("muteMusic", true).flush();
         this.menuMusic.mute();
         this.levelMusic.mute();
     }
 
-    public void unmute() {
-        this.muted = false;
-        getPreferences().putBoolean("mute", false);
-        getPreferences().flush();
+    public void muteSound() {
+        this.soundMuted = true;
+        getPreferences().putBoolean("muteSound", true).flush();
+    }
+
+    public void unmuteMusic() {
+        this.musicMuted = false;
+        getPreferences().putBoolean("muteMusic", false).flush();
         this.menuMusic.unmute();
         this.levelMusic.unmute();
     }
 
-    public boolean isMuted() {
-        return this.muted;
+    public void unmuteSound() {
+        this.soundMuted = false;
+        getPreferences().putBoolean("muteSound", false).flush();
+    }
+
+    public boolean isMusicMuted() {
+        return getPreferences().getBoolean("muteMusic", false);
+    }
+
+    public boolean isSoundMuted() {
+        return getPreferences().getBoolean("muteSound", false);
     }
 
     private Preferences getPreferences() {

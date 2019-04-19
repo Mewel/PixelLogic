@@ -2,12 +2,9 @@ package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -28,6 +25,7 @@ import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIModal;
+import de.mewel.pixellogic.ui.component.PixelLogicUISpriteButton;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelMenu;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelResolution;
@@ -220,12 +218,12 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
         private TypingLabel label;
 
-        private NextButton next;
+        private PixelLogicUISpriteButton next;
 
         public MessageBox() {
             super(new HorizontalGroup());
             createLabel("", null);
-            this.next = new NextButton(getAssets().getIcon(7));
+            this.next = new PixelLogicUISpriteButton(getGlobal(), 7);
             this.next.setColor(new Color(SECONDARY_COLOR));
             this.hideNextButton(0);
 
@@ -326,36 +324,6 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
             this.next.clearActions();
             this.next.addAction(Actions.fadeOut(fadeOutDuration));
             this.next.getListeners().clear();
-        }
-
-        private class NextButton extends Actor {
-
-            private Sprite sprite;
-
-            public NextButton(Sprite sprite) {
-                this.sprite = sprite;
-            }
-
-            @Override
-            public void draw(Batch batch, float parentAlpha) {
-                Color color = getColor();
-                batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-
-                float size = PixelLogicUIUtil.getIconBaseHeight();
-                float y = MathUtils.floor(getY()) + getHeight() / 2 - size / 2;
-                float x = MathUtils.floor(getX()) + getWidth() / 2 - size / 2;
-                float alpha = parentAlpha * color.a;
-                Color spriteColor = getColor();
-
-                //Gdx.app.log("alpha", (spriteColor.a * parentAlpha) + "");
-                //Gdx.app.log("actions", this.getActions() + "");
-
-                batch.setColor(new Color(spriteColor.r, spriteColor.g, spriteColor.b, spriteColor.a * alpha));
-                batch.draw(sprite, x, y, size, size);
-                batch.setColor(color);
-                super.draw(batch, parentAlpha);
-            }
-
         }
 
     }

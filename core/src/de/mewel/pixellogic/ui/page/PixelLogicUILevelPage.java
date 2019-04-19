@@ -30,6 +30,7 @@ import de.mewel.pixellogic.ui.level.PixelLogicUILevelToolbar;
 import de.mewel.pixellogic.ui.level.animation.PixelLogicUIBoardSolvedAnimation;
 import de.mewel.pixellogic.ui.level.animation.PixelLogicUILevelAnimation;
 import de.mewel.pixellogic.ui.level.animation.PixelLogicUIPictureBoardSolvedAnimation;
+import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.util.PixelLogicMusic;
 
@@ -344,6 +345,10 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         //this.getRoot().addActorAt(0, this.backgroundImage);
     }
 
+    private boolean isAutoBlockEnabled() {
+        return Gdx.app.getPreferences("pixellogic_settings").getBoolean("autoBlock", false);
+    }
+
     protected static class ScreenListener extends InputListener implements PixelLogicListener {
 
         private PixelLogicUILevelPage page;
@@ -366,26 +371,44 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
                 PixelLogicUserEvent userEvent = (PixelLogicUserEvent) event;
                 if (PixelLogicUserEvent.Type.LEVEL_MENU_CLICKED.equals(userEvent.getType())) {
                     page.menu.show();
-                } else if(PixelLogicUserEvent.Type.BACK_BUTTON_CLICKED.equals(userEvent.getType())) {
-                    if(page.menu.isShown()) {
+                } else if (PixelLogicUserEvent.Type.BACK_BUTTON_CLICKED.equals(userEvent.getType())) {
+                    if (page.menu.isShown()) {
                         page.menu.close();
                     } else {
                         page.menu.show();
                     }
                 }
-            }
-            if (event instanceof PixelLogicLoadNextLevelEvent) {
+            } else if (event instanceof PixelLogicLoadNextLevelEvent) {
                 Gdx.app.log("screen", "next level");
                 page.loadingModal.show();
-            }
-            if (event instanceof PixelLogicNextLevelEvent) {
+            } else if (event instanceof PixelLogicNextLevelEvent) {
                 page.loadingModal.close();
                 PixelLogicNextLevelEvent nextLevelEvent = (PixelLogicNextLevelEvent) event;
                 PixelLogicLevel nextLevel = nextLevelEvent.getNextLevel();
                 page.loadLevel(nextLevel);
+            } else if (event instanceof PixelLogicBoardChangedEvent) {
+                PixelLogicBoardChangedEvent boardChangedEvent = (PixelLogicBoardChangedEvent) event;
+                if (page.isAutoBlockEnabled() && boardChangedEvent.getValue() != null && boardChangedEvent.getValue()) {
+                    PixelLogicLevel level = boardChangedEvent.getLevel();
+                    int row = boardChangedEvent.getRow();
+                    int column = boardChangedEvent.getCol();
+                    if (level.isRowComplete(row)) {
+                        for (int colIndex = 0; colIndex < level.getColumns(); colIndex++) {
+                            if (level.isEmpty(row, colIndex)) {
+                                page.levelUI.setPixel(row, colIndex, false);
+                            }
+                        }
+                    }
+                    if (level.isColumnComplete(column)) {
+                        for (int rowIndex = 0; rowIndex < level.getRows(); rowIndex++) {
+                            if (level.isEmpty(rowIndex, column)) {
+                                page.levelUI.setPixel(rowIndex, column, false);
+                            }
+                        }
+                    }
+                }
             }
         }
-
     }
 
 }

@@ -30,4 +30,8 @@ public class PixelLogicUIActor extends Actor implements PixelLogicUIElement {
         return global.getAudio();
     }
 
+    public PixelLogicGlobal getGlobal() {
+        return global;
+    }
+
 }

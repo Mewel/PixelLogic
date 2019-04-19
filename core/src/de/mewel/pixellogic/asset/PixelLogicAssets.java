@@ -101,8 +101,8 @@ public class PixelLogicAssets {
     }
 
     protected void loadFonts() {
-        float base = (PixelLogicUIUtil.isDesktop() ? 0 : GAME_FONT_BASE) + (GAME_FONT_BASE * Gdx.graphics.getDensity() * getDistanceFactor());
-        int textSize = Math.max(GAME_FONT_MIN, (int) Math.ceil(base / GAME_FONT_BASE) * GAME_FONT_BASE);
+        int base = GAME_FONT_BASE * Math.round(Gdx.graphics.getDensity() * getDistanceFactor());
+        int textSize = Math.max(GAME_FONT_MIN, base);
         int h2Size = Math.max(textSize + GAME_FONT_BASE, (int) (Math.ceil(textSize * 1.5f / GAME_FONT_BASE) * GAME_FONT_BASE));
         int h1Size = Math.max(textSize + GAME_FONT_BASE * 2, (int) (Math.ceil(textSize * 2f / GAME_FONT_BASE) * GAME_FONT_BASE));
 
@@ -134,12 +134,12 @@ public class PixelLogicAssets {
         FreetypeFontLoader.FreeTypeFontLoaderParameter gameFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         gameFont.fontFileName = MAIN_FONT;
         gameFont.fontParameters.color = Color.WHITE;
-        gameFont.fontParameters.size = (int) (MAIN_FONT_PT * Gdx.graphics.getDensity() * getDistanceFactor());
+        gameFont.fontParameters.size = (int) (MAIN_FONT_PT * Gdx.graphics.getDensity() * (getDistanceFactor() - 0.5f));
         manager.load(MAIN_FONT_ASSET, BitmapFont.class, gameFont);
     }
 
     protected float getDistanceFactor() {
-        return (PixelLogicUIUtil.isDesktop() || PixelLogicUIUtil.isTablet()) ? 1.5f : 1f;
+        return (PixelLogicUIUtil.isDesktop() || PixelLogicUIUtil.isTablet()) ? 2f : 1.5f;
     }
 
     protected void loadIcons() {

@@ -42,8 +42,7 @@ public class PixelLogicCharactersMode extends PixelLogicListLevelMode {
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
             if (PixelLogicLevelStatus.solved.equals(changeEvent.getStatus())) {
-                getPreferences().putBoolean(getSolvedProperty(getLevel()), true);
-                getPreferences().flush();
+                getPreferences().putBoolean(getSolvedProperty(getLevel()), true).flush();
             }
         }
     }
