@@ -161,7 +161,9 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         if (event instanceof PixelLogicUserEvent) {
             PixelLogicUserEvent userEvent = (PixelLogicUserEvent) event;
             if (PixelLogicUserEvent.Type.BACK_BUTTON_CLICKED.equals(userEvent.getType())) {
-                if (System.currentTimeMillis() - backButtonTimer < 500) {
+                if (settings.isShown()) {
+                    settings.close();
+                } else if (System.currentTimeMillis() - backButtonTimer < 500) {
                     Gdx.app.exit();
                 } else {
                     backButtonTimer = System.currentTimeMillis();

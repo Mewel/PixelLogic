@@ -41,6 +41,7 @@ public class PixelLogicAchievements implements PixelLogicListener {
         this.achievements.add(new PixelLogicAchievementNoBlock(getAssets()));
         this.achievements.add(new PixelLogicAchievementSecretLevelFind(getAssets()));
         this.achievements.add(new PixelLogicAchievementSecretLevelBeat(getAssets()));
+        this.achievements.add(new PixelLogicAchievementPicture(getAssets()));
 
         // set if done
         for (PixelLogicAchievement achievement : this.achievements) {

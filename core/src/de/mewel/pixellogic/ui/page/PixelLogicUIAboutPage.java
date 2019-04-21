@@ -26,6 +26,8 @@ public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
     protected void build() {
         String intro = getAssets().translate("about.intro");
         String credits = getAssets().translate("about.credits");
+        String privacy = getAssets().translate("about.privacy");
+        String privacyText = getAssets().translate("about.privacyText");
         StringBuilder creditsText = new StringBuilder(getAssets().translate("about.programming"));
         creditsText.append("\n[MAIN_COLOR]mewel");
         creditsText.append("\n\n").append(getAssets().translate("about.pixelArtists"));
@@ -65,6 +67,8 @@ public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
         this.nodes.add(new TextNode(intro));
         this.nodes.add(new HeaderNode(credits));
         this.nodes.add(new TextNode(creditsText.toString()));
+        this.nodes.add(new HeaderNode(privacy));
+        this.nodes.add(new TextNode(privacyText));
 
         for (TextNode node : nodes) {
             getPageRoot().addActor(node);

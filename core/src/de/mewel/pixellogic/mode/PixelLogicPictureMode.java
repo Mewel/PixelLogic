@@ -8,14 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.mewel.pixellogic.event.PixelLogicEvent;
+import de.mewel.pixellogic.event.PixelLogicPictureFinishedEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
+import de.mewel.pixellogic.ui.component.PixelLogicUIPicture;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoard;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
-import de.mewel.pixellogic.ui.component.PixelLogicUIPicture;
 import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.util.PixelLogicLevelLoader;
@@ -41,6 +42,8 @@ public class PixelLogicPictureMode extends PixelLogicListLevelMode {
     @Override
     protected void onFinished() {
         super.onFinished();
+        // achievement
+        this.getEventManager().fire(new PixelLogicPictureFinishedEvent(this));
         // back to main menu
         this.getAppScreen().setPage(PixelLogicUIPageId.picture);
     }

@@ -34,8 +34,11 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
 
     private PixelLogicUISpriteButton closeButton;
 
+    private boolean shown;
+
     public PixelLogicUISettings(PixelLogicGlobal global) {
         super(global);
+        this.shown = false;
         this.container = new Table();
         this.container.setFillParent(true);
 
@@ -78,7 +81,7 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 getAudio().playSound(BUTTON_SOUND, BUTTON_SOUND_VOLUME);
-                addAction(Actions.moveBy(0, -getHeight(), .2f));
+                close();
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
@@ -183,6 +186,16 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
         parent.addActor(this);
         this.setPosition(0, -this.getHeight());
         this.addAction(Actions.moveBy(0, this.getHeight(), .2f));
+        this.shown = true;
+    }
+
+    public void close() {
+        addAction(Actions.moveBy(0, -getHeight(), .2f));
+        shown = false;
+    }
+
+    public boolean isShown() {
+        return shown;
     }
 
 }

@@ -29,7 +29,7 @@ public class FontTest extends Game {
             this.stage = new Stage();
             int pos = 10;
 
-            FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/visitor2.ttf"));
+            FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/visitor2.otf"));
 
             for(int i = 13; i <= 64; i += 13) {
                 FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();

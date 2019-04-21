@@ -45,7 +45,7 @@ public abstract class PixelLogicConstants {
     public static final float MENU_MUSIC_VOLUME = .4f;
     public static final float LEVEL_MUSIC_VOLUME = .4f;
 
-    public static final String GAME_FONT = "fonts/visitor3.otf";
+    public static final String GAME_FONT = "fonts/visitor2.otf";
     public static final String LEVEL_FONT = "fonts/numbers.fnt";
     public static final String MAIN_FONT = "fonts/Quicksand-Regular.ttf";
     public static final int MAIN_FONT_PT = 22;

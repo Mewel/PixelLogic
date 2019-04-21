@@ -387,23 +387,26 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
                 PixelLogicLevel nextLevel = nextLevelEvent.getNextLevel();
                 page.loadLevel(nextLevel);
             } else if (event instanceof PixelLogicBoardChangedEvent) {
-                PixelLogicBoardChangedEvent boardChangedEvent = (PixelLogicBoardChangedEvent) event;
-                if (page.isAutoBlockEnabled() && boardChangedEvent.getValue() != null && boardChangedEvent.getValue()) {
-                    PixelLogicLevel level = boardChangedEvent.getLevel();
-                    int row = boardChangedEvent.getRow();
-                    int column = boardChangedEvent.getCol();
-                    if (level.isRowComplete(row)) {
-                        for (int colIndex = 0; colIndex < level.getColumns(); colIndex++) {
-                            if (level.isEmpty(row, colIndex)) {
-                                page.levelUI.setPixel(row, colIndex, false);
-                            }
+                handleAutoBlock((PixelLogicBoardChangedEvent) event);
+            }
+        }
+
+        protected void handleAutoBlock(PixelLogicBoardChangedEvent event) {
+            if (page.isAutoBlockEnabled() && event.getValue() != null && event.getValue()) {
+                PixelLogicLevel level = event.getLevel();
+                int row = event.getRow();
+                int column = event.getCol();
+                if (level.isRowComplete(row)) {
+                    for (int colIndex = 0; colIndex < level.getColumns(); colIndex++) {
+                        if (level.isEmpty(row, colIndex)) {
+                            page.levelUI.setPixel(row, colIndex, false);
                         }
                     }
-                    if (level.isColumnComplete(column)) {
-                        for (int rowIndex = 0; rowIndex < level.getRows(); rowIndex++) {
-                            if (level.isEmpty(rowIndex, column)) {
-                                page.levelUI.setPixel(rowIndex, column, false);
-                            }
+                }
+                if (level.isColumnComplete(column)) {
+                    for (int rowIndex = 0; rowIndex < level.getRows(); rowIndex++) {
+                        if (level.isEmpty(rowIndex, column)) {
+                            page.levelUI.setPixel(rowIndex, column, false);
                         }
                     }
                 }

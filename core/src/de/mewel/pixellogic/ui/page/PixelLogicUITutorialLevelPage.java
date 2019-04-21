@@ -31,6 +31,7 @@ import de.mewel.pixellogic.ui.level.PixelLogicUILevelMenu;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelResolution;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelSwitcher;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelToolbar;
+import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
@@ -270,7 +271,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
             }
             int iconSize = PixelLogicUIUtil.getIconBaseHeight();
             int iconPadding = iconSize / 2;
-            this.next.setSize(iconSize + iconPadding, iconSize + iconPadding);
+            this.next.setSize(iconSize, iconSize);
             this.labelContainer.width(getWidth() - 2 * getPadding() - (iconSize + iconPadding));
             this.labelContainer.height(getHeight() - 2 * getPadding());
         }
@@ -343,6 +344,10 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
         public void setDestroyLevelOnClick(boolean destroyLevelOnClick) {
             this.destroyLevelOnClick = destroyLevelOnClick;
+        }
+
+        @Override
+        protected void handleAutoBlock(PixelLogicBoardChangedEvent event) {
         }
 
     }
