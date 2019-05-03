@@ -15,7 +15,7 @@ import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
-import de.mewel.pixellogic.ui.component.PixelLogicUISpriteButton;
+import de.mewel.pixellogic.ui.component.PixelLogicUISprite;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
@@ -147,7 +147,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
 
         private String text;
 
-        private PixelLogicUISpriteButton backButton;
+        private PixelLogicUISprite backButton;
 
         public Header(PixelLogicGlobal global, String text, final PixelLogicUIPageId backPageId) {
             super(global);
@@ -157,7 +157,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
             this.background.setColor(new Color(MAIN_COLOR));
             this.addActor(this.background);
 
-            this.backButton = new PixelLogicUISpriteButton(global, 3);
+            this.backButton = new PixelLogicUISprite(global, 3);
             this.backButton.addListener(new PixelLogicUIButtonListener() {
                 @Override
                 public void onClick() {
@@ -180,7 +180,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
             }
             Label.LabelStyle style = new Label.LabelStyle(labelFont, Color.WHITE);
             this.label = new Label(this.text, style);
-            this.addActor(this.label);
+            this.addActorBefore(this.backButton, this.label);
         }
 
         @Override
@@ -200,10 +200,12 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
             this.label.setPosition(x, y);
 
             // back button
-            float size = PixelLogicUIUtil.getIconBaseHeight();
-            y = (int) (this.getHeight() / 2f - size / 2f);
-            x = getPadding();
+            int size = PixelLogicUIUtil.getIconBaseHeight();
+            int iconPadding = size / 2;
+            y = (int) (this.getHeight() / 2f - size / 2f) - iconPadding;
+            x = getPadding() - iconPadding;
             this.backButton.setBounds(x, y, size, size);
+            this.backButton.pad(iconPadding);
         }
 
         @Override

@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
@@ -14,14 +13,11 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIModal;
 import de.mewel.pixellogic.ui.component.PixelLogicUISettings;
-import de.mewel.pixellogic.ui.component.PixelLogicUISpriteButton;
+import de.mewel.pixellogic.ui.component.PixelLogicUISprite;
 import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.util.PixelLogicUtil;
-
-import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
-import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 
 public class PixelLogicUILevelMenu extends PixelLogicUIModal {
 
@@ -33,7 +29,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
 
     private Label statusLabel;
 
-    private PixelLogicUISpriteButton settingsButton;
+    private PixelLogicUISprite settingsButton;
 
     private PixelLogicUISettings settings;
 
@@ -84,7 +80,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         };
 
         // settings
-        this.settingsButton = new PixelLogicUISpriteButton(getGlobal(), 10);
+        this.settingsButton = new PixelLogicUISprite(getGlobal(), 10);
         this.settingsButton.setColor(Color.WHITE);
         this.settingsButton.addListener(new InputListener() {
             @Override
@@ -180,8 +176,10 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         this.updateStatusLabelPosition();
         if (settingsButton != null) {
             int settingsButtonPosition = (int) (getWidth() / 20);
-            this.settingsButton.setSize(PixelLogicUIUtil.getIconBaseHeight(), PixelLogicUIUtil.getIconBaseHeight());
-            this.settingsButton.setPosition(getWidth() - (settingsButtonPosition + PixelLogicUIUtil.getIconBaseHeight()), settingsButtonPosition);
+            int iconSize = PixelLogicUIUtil.getIconBaseHeight();
+            this.settingsButton.setSize(iconSize, iconSize);
+            this.settingsButton.pad(iconSize);
+            this.settingsButton.setPosition(getWidth() - this.settingsButton.getWidth(), 0);
         }
         if(settings != null) {
             this.settings.setWidth(getWidth());

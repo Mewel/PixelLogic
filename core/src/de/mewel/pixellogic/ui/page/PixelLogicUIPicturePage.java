@@ -193,7 +193,7 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
         }
 
         private Label.LabelStyle getLabelStyle(Color color) {
-            BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 2);
+            BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 1);
             return new Label.LabelStyle(labelFont, color);
         }
 

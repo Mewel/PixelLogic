@@ -103,8 +103,8 @@ public class PixelLogicAssets {
     protected void loadFonts() {
         int base = GAME_FONT_BASE * Math.round(Gdx.graphics.getDensity() * getDistanceFactor());
         int textSize = Math.max(GAME_FONT_MIN, base);
-        int h2Size = Math.max(textSize + GAME_FONT_BASE, (int) (Math.ceil(textSize * 1.5f / GAME_FONT_BASE) * GAME_FONT_BASE));
-        int h1Size = Math.max(textSize + GAME_FONT_BASE * 2, (int) (Math.ceil(textSize * 2f / GAME_FONT_BASE) * GAME_FONT_BASE));
+        int h2Size = Math.max(textSize + GAME_FONT_BASE, (int) (Math.ceil(textSize * 1.35f / GAME_FONT_BASE) * GAME_FONT_BASE));
+        int h1Size = Math.max(textSize + GAME_FONT_BASE * 2, (int) (Math.ceil(textSize * 1.7f / GAME_FONT_BASE) * GAME_FONT_BASE));
 
         loadGameFont(GAME_FONT_PREFIX + "text.ttf", textSize);
         loadGameFont(GAME_FONT_PREFIX + "h1.ttf", h1Size);

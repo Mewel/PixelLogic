@@ -25,7 +25,7 @@ import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIModal;
-import de.mewel.pixellogic.ui.component.PixelLogicUISpriteButton;
+import de.mewel.pixellogic.ui.component.PixelLogicUISprite;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelMenu;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelResolution;
@@ -37,6 +37,7 @@ import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 import static de.mewel.pixellogic.PixelLogicConstants.KEY_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.KEY_SOUND_VOLUME;
+import static de.mewel.pixellogic.PixelLogicConstants.MAIN_COLOR;
 import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_EMPTY_COLOR;
 import static de.mewel.pixellogic.PixelLogicConstants.SECONDARY_COLOR;
 
@@ -44,9 +45,15 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
     private MessageBox messageBox;
 
+    private PixelLogicUISprite switcherMarker;
+
     public PixelLogicUITutorialLevelPage(PixelLogicGlobal global) {
         super(global);
         this.messageBox = new MessageBox();
+        this.switcherMarker = new PixelLogicUISprite(global);
+        this.switcherMarker.setSprite(global.getAssets().getIcon(3));
+        this.switcherMarker.getSprite().rotate90(false);
+        this.switcherMarker.setColor(MAIN_COLOR);
     }
 
     protected PixelLogicUILevelMenu createMenu() {
@@ -208,6 +215,28 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
         switcher.addAction(sequence);
     }
 
+    public void showSwitcherMarker() {
+        int size = PixelLogicUIUtil.getIconBaseHeight();
+        this.switcherMarker.setSize(size, size);
+
+        PixelLogicUILevelToolbar toolbar = getToolbar();
+        final PixelLogicUILevelSwitcher switcher = toolbar.getSwitcher();
+        int x = (int) (toolbar.getWidth() - switcher.getWidth() / 2 - switcherMarker.getWidth() / 2);
+        int y = (int) (toolbar.getHeight() + switcherMarker.getHeight() / 3);
+        this.switcherMarker.setPosition(x, y);
+
+        this.switcherMarker.addAction(Actions.forever(Actions.sequence(
+                Actions.moveBy(0, this.switcherMarker.getHeight(), .8f),
+                Actions.moveBy(0, -this.switcherMarker.getHeight(), .8f))));
+
+        getStage().addActor(this.switcherMarker);
+    }
+
+    public void hideSwitcherMarker() {
+        this.switcherMarker.remove();
+        this.switcherMarker.clearActions();
+    }
+
     @Override
     public TutorialScreenListener getScreenListener() {
         return (TutorialScreenListener) super.getScreenListener();
@@ -219,12 +248,12 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
         private TypingLabel label;
 
-        private PixelLogicUISpriteButton next;
+        private PixelLogicUISprite next;
 
         public MessageBox() {
             super(new HorizontalGroup());
             createLabel("", null);
-            this.next = new PixelLogicUISpriteButton(getGlobal(), 7);
+            this.next = new PixelLogicUISprite(getGlobal(), 7);
             this.next.setColor(new Color(SECONDARY_COLOR));
             this.hideNextButton(0);
 
@@ -272,6 +301,8 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
             int iconSize = PixelLogicUIUtil.getIconBaseHeight();
             int iconPadding = iconSize / 2;
             this.next.setSize(iconSize, iconSize);
+            this.next.pad(iconPadding / 2);
+
             this.labelContainer.width(getWidth() - 2 * getPadding() - (iconSize + iconPadding));
             this.labelContainer.height(getHeight() - 2 * getPadding());
         }

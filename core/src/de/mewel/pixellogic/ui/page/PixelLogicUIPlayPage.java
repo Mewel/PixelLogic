@@ -20,7 +20,7 @@ import de.mewel.pixellogic.mode.PixelLogicTutorialMode;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
-import de.mewel.pixellogic.ui.component.PixelLogicUISpriteButton;
+import de.mewel.pixellogic.ui.component.PixelLogicUISprite;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_COLOR;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
@@ -191,11 +191,11 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
 
     protected class PlayHeader extends Header {
 
-        private PixelLogicUISpriteButton tutorialButton;
+        private PixelLogicUISprite tutorialButton;
 
         public PlayHeader(PixelLogicGlobal global, String text, PixelLogicUIPageId backPageId) {
             super(global, text, backPageId);
-            this.tutorialButton = new PixelLogicUISpriteButton(global, 6);
+            this.tutorialButton = new PixelLogicUISprite(global, 6);
             this.tutorialButton.addListener(new PixelLogicUIButtonListener() {
                 @Override
                 public void onClick() {
@@ -220,9 +220,11 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
 
             // tutorial button
             int size = PixelLogicUIUtil.getIconBaseHeight();
-            int y = (int) (this.getHeight() / 2f - size / 2f);
-            int x = (int) this.getWidth() - getPadding() - size;
+            int iconPadding = size / 2;
+            int y = (int) (this.getHeight() / 2f - size / 2f) - iconPadding;
+            int x = (int) this.getWidth() - getPadding() - size - iconPadding;
             this.tutorialButton.setBounds(x, y, size, size);
+            this.tutorialButton.pad(iconPadding);
         }
     }
 

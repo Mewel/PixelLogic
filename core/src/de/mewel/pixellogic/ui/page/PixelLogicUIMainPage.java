@@ -18,7 +18,7 @@ import de.mewel.pixellogic.ui.background.PixelLogicUIRotatingBoardBackground;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 import de.mewel.pixellogic.ui.component.PixelLogicUISettings;
-import de.mewel.pixellogic.ui.component.PixelLogicUISpriteButton;
+import de.mewel.pixellogic.ui.component.PixelLogicUISprite;
 import de.mewel.pixellogic.ui.component.PixelLogicUIVerticalGroup;
 
 import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
@@ -39,7 +39,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
     private PixelLogicUIButton aboutButton;
 
-    private PixelLogicUISpriteButton settingsButton;
+    private PixelLogicUISprite settingsButton;
 
     private PixelLogicUISettings settings;
 
@@ -125,7 +125,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         getPageRoot().addActor(buttonGroup);
 
         // settings
-        this.settingsButton = new PixelLogicUISpriteButton(getGlobal(), 10);
+        this.settingsButton = new PixelLogicUISprite(getGlobal(), 10);
         this.settingsButton.setColor(TEXT_COLOR);
         this.settingsButton.addListener(new InputListener() {
             @Override
@@ -188,9 +188,10 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
         this.logoImage.setScale((int) (height / (this.logoImage.getHeight() * 6f)));
 
-        int audioButtonPosition = width / 20;
-        this.settingsButton.setSize(PixelLogicUIUtil.getIconBaseHeight(), PixelLogicUIUtil.getIconBaseHeight());
-        this.settingsButton.setPosition(width - (audioButtonPosition + PixelLogicUIUtil.getIconBaseHeight()), audioButtonPosition);
+        int iconSize = PixelLogicUIUtil.getIconBaseHeight();
+        this.settingsButton.setSize(iconSize, iconSize);
+        this.settingsButton.pad(iconSize);
+        this.settingsButton.setPosition(width - this.settingsButton.getWidth(), 0);
 
         this.settings.setWidth(width);
 

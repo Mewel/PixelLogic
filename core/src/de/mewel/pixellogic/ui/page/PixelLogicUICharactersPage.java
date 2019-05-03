@@ -136,6 +136,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
             getActor().fill();
 
             this.logo = new PixelLogicUISprite(getGlobal());
+            this.logo.setUseDefaultIconSize(false);
             getActor().addActor(this.logo);
             this.updateLogo();
 
@@ -173,7 +174,6 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
             getActor().space(padding / 2);
 
             this.logo.setSize(logoSize, logoSize);
-
             this.labelContainer.width(getComponentWidth());
             this.labelContainer.getActor().setStyle(getLabelStyle(new Color(TEXT_COLOR)));
 

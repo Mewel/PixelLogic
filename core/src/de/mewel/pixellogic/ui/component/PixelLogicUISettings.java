@@ -32,7 +32,7 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
 
     private PixelLogicUISwitchSpriteButton musicButton, soundButton, autoBlockButton;
 
-    private PixelLogicUISpriteButton closeButton;
+    private PixelLogicUISprite closeButton;
 
     private boolean shown;
 
@@ -57,7 +57,7 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
         this.soundButton.setColor(TEXT_COLOR);
         this.autoBlockButton = new PixelLogicUISwitchSpriteButton(global, 11, 12);
         this.autoBlockButton.setColor(TEXT_COLOR);
-        this.closeButton = new PixelLogicUISpriteButton(global, 3);
+        this.closeButton = new PixelLogicUISprite(global, 3);
         this.closeButton.getSprite().rotate90(false);
         this.closeButton.setColor(TEXT_COLOR);
 

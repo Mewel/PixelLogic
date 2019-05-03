@@ -48,9 +48,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         this.status = 0;
         runLevel(this.levels.get(0));
 
-        /*this.runLevel(levels.get(1));
-        fadeOutInfoBoxes(getPage().getLevelUI());
-        handleStatus16();*/
+        //handleStatus16();
     }
 
     private PixelLogicUITutorialLevelPage getPage() {
@@ -109,30 +107,6 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
             } else if (this.status == 20 && level.isRowComplete(4) && level.isBlocked(4, 1) && level.isBlocked(4, 3)) {
                 handleStatus21();
             }
-            /*if (this.status == 10 && isSet(level, 2, 2, true)) {
-                handleStatus11();
-            }
-            if (this.status == 13 && isSet(level, 0, 2, true)) {
-                handleStatus14();
-            }
-            if (this.status == 14 && isSet(level, 0, 0, false)) {
-                handleStatus15();
-            }
-            if (this.status == 15 &&
-                    isSet(level, 0, 4, false) &&
-                    isSet(level, 1, 4, false) &&
-                    isSet(level, 2, 4, false)) {
-                handleStatus16();
-            }
-            if (this.status == 16 && isSet(level, 1, 2, true)) {
-                handleStatus17();
-            }
-            if (this.status == 17 && isSet(level, 0, 1, true)) {
-                handleStatus18();
-            }
-            if (status == 18 && level.isSolved()) {
-                handleStatus19();
-            }*/
         }
     }
 
@@ -388,6 +362,8 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         this.status = 20;
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
+        levelPage.setMessage(getAssets().translate("tutorial.status20"));
+        levelPage.showSwitcherMarker();
         levelUI.setEnabledRow(4, true);
     }
 
@@ -395,6 +371,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         this.status = 21;
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
+        levelPage.hideSwitcherMarker();
         levelPage.setMessage(getAssets().translate("tutorial.status21"), new PixelLogicUITutorialLevelPage.TutorialTypingAdapter(getAudio()) {
             @Override
             public void end() {
