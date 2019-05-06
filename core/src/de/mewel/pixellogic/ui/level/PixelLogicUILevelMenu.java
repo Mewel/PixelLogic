@@ -159,7 +159,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
     @Override
     public void close() {
         if(this.settings != null) {
-            getStage().getRoot().removeActor(settings);
+            this.settings.remove();
         }
         super.close();
     }

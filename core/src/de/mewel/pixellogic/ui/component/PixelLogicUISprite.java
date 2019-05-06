@@ -11,11 +11,11 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 public class PixelLogicUISprite extends PixelLogicUIActor {
 
-    private Sprite sprite;
+    protected Sprite sprite;
 
-    private int padding;
+    protected int padding;
 
-    private boolean useDefaultIconSize;
+    protected boolean useDefaultIconSize;
 
     public PixelLogicUISprite(PixelLogicGlobal global) {
         super(global);
@@ -51,21 +51,25 @@ public class PixelLogicUISprite extends PixelLogicUIActor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        Color color = getColor();
         super.draw(batch, parentAlpha);
+        draw(batch, parentAlpha, getSprite());
+    }
 
-        if (sprite != null) {
-            float alpha = parentAlpha * color.a;
-            int iconWidth = useDefaultIconSize ? PixelLogicUIUtil.getIconBaseHeight() : (int) getWidth();
-            int iconHeight = useDefaultIconSize ? PixelLogicUIUtil.getIconBaseHeight() : (int) getHeight();
-            float y = MathUtils.floor(getY()) + getHeight() / 2 - iconWidth / 2;
-            float x = MathUtils.floor(getX()) + getWidth() / 2 - iconHeight / 2;
-
-            sprite.setColor(color.r, color.g, color.b, color.a * alpha);
-            sprite.setPosition(x, y);
-            sprite.setSize(getWidth() - this.padding * 2, getHeight() - this.padding * 2);
-            sprite.draw(batch);
+    private void draw(Batch batch, float parentAlpha, Sprite sprite) {
+        if (sprite == null) {
+            return;
         }
+        Color color = getColor();
+        float alpha = parentAlpha * color.a;
+        int iconWidth = useDefaultIconSize ? PixelLogicUIUtil.getIconBaseHeight() : (int) getWidth();
+        int iconHeight = useDefaultIconSize ? PixelLogicUIUtil.getIconBaseHeight() : (int) getHeight();
+        float y = MathUtils.floor(getY()) + getHeight() / 2 - iconWidth / 2;
+        float x = MathUtils.floor(getX()) + getWidth() / 2 - iconHeight / 2;
+
+        sprite.setColor(color.r, color.g, color.b, color.a * alpha);
+        sprite.setPosition(x, y);
+        sprite.setSize(getWidth() - this.padding * 2, getHeight() - this.padding * 2);
+        sprite.draw(batch);
     }
 
 }

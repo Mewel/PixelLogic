@@ -63,13 +63,13 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
 
         int iconSize = PixelLogicUIUtil.getIconBaseHeight();
         this.container.add(this.musicLabel).expandX().left();
-        this.container.add(this.musicButton).width(iconSize).top();
+        this.container.add(this.musicButton).top();
         this.container.row();
         this.container.add(this.soundLabel).expandX().left();
-        this.container.add(this.soundButton).width(iconSize).top();
+        this.container.add(this.soundButton).top();
         this.container.row();
         this.container.add(this.autoBlockLabel).expandX().left();
-        this.container.add(this.autoBlockButton).width(iconSize).top();
+        this.container.add(this.autoBlockButton).top();
         this.container.row();
         this.container.add(this.closeButton).center().colspan(2);
         this.addActor(this.container);
@@ -144,7 +144,7 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
         int space = getSpace();
         int padding = getPadding();
         int iconSize = PixelLogicUIUtil.getIconBaseHeight();
-        this.container.pad(padding / 2, padding, padding / 2, padding);
+        this.container.pad(padding / 2, padding, padding / 6, padding / 2);
         this.container.getCell(this.musicLabel).spaceBottom(space);
         this.container.getCell(this.soundLabel).spaceBottom(space);
         this.container.getCell(this.autoBlockLabel).spaceBottom(space);
@@ -155,6 +155,11 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
         this.soundButton.setSize(iconSize, iconSize);
         this.autoBlockButton.setSize(iconSize, iconSize);
         this.closeButton.setSize(iconSize, iconSize);
+
+        this.musicButton.pad(iconSize / 3);
+        this.soundButton.pad(iconSize / 3);
+        this.autoBlockButton.pad(iconSize / 3);
+        this.closeButton.pad(iconSize / 3);
 
         float prefHeight = this.container.getPrefHeight();
         if (this.getHeight() != prefHeight) {

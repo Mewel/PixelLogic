@@ -17,6 +17,7 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.background.PixelLogicUIRotatingBoardBackground;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
+import de.mewel.pixellogic.ui.component.PixelLogicUIExitDialog;
 import de.mewel.pixellogic.ui.component.PixelLogicUISettings;
 import de.mewel.pixellogic.ui.component.PixelLogicUISprite;
 import de.mewel.pixellogic.ui.component.PixelLogicUIVerticalGroup;
@@ -43,11 +44,10 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
     private PixelLogicUISettings settings;
 
-    protected Long backButtonTimer;
+    private PixelLogicUIExitDialog exitDialog;
 
     public PixelLogicUIMainPage(PixelLogicGlobal global) {
         super(global, PixelLogicUIPageId.mainMenu);
-        this.backButtonTimer = 0L;
     }
 
     @Override
@@ -138,6 +138,9 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
         // settings
         this.settings = new PixelLogicUISettings(getGlobal());
+
+        // exit dialog
+        this.exitDialog = new PixelLogicUIExitDialog(getGlobal(), getStage().getRoot());
     }
 
     @Override
@@ -163,10 +166,10 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
             if (PixelLogicUserEvent.Type.BACK_BUTTON_CLICKED.equals(userEvent.getType())) {
                 if (settings.isShown()) {
                     settings.close();
-                } else if (System.currentTimeMillis() - backButtonTimer < 500) {
-                    Gdx.app.exit();
+                } else if (exitDialog.isShown()) {
+                    exitDialog.close();
                 } else {
-                    backButtonTimer = System.currentTimeMillis();
+                    exitDialog.show();
                 }
             }
         }
@@ -194,6 +197,8 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         this.settingsButton.setPosition(width - this.settingsButton.getWidth(), 0);
 
         this.settings.setWidth(width);
+
+        this.exitDialog.setBounds(0, 0, width, height);
 
         getPageRoot().padTop(getPadding() * 3);
         getPageRoot().space(getSpace() * 3);

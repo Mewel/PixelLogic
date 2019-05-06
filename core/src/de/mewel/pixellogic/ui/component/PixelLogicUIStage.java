@@ -1,5 +1,6 @@
 package de.mewel.pixellogic.ui.component;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -20,7 +21,7 @@ public class PixelLogicUIStage extends Stage implements PixelLogicUIElement {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.BACK) {
+        if (keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE) {
             getEventManager().fire(new PixelLogicUserEvent(this, PixelLogicUserEvent.Type.BACK_BUTTON_CLICKED));
             return true;
         }
