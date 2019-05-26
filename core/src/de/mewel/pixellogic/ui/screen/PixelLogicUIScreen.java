@@ -12,6 +12,8 @@ import de.mewel.pixellogic.asset.PixelLogicAudio;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIElement;
 
+import static de.mewel.pixellogic.PixelLogicConstants.APP_BACKGROUND;
+
 public abstract class PixelLogicUIScreen implements Screen, PixelLogicUIElement {
 
     private PixelLogicGlobal global;
@@ -26,8 +28,7 @@ public abstract class PixelLogicUIScreen implements Screen, PixelLogicUIElement 
 
     @Override
     public void render(float delta) {
-        Color b = new Color(PixelLogicConstants.APP_BACKGROUND);
-        Gdx.gl.glClearColor(b.r, b.g, b.b, b.a);
+        Gdx.gl.glClearColor(APP_BACKGROUND.r, APP_BACKGROUND.g, APP_BACKGROUND.b, APP_BACKGROUND.a);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
     }
