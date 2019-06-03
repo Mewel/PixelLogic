@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
+import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 public abstract class PixelLogicUIModal extends PixelLogicUIGroup {
 
@@ -37,6 +38,9 @@ public abstract class PixelLogicUIModal extends PixelLogicUIGroup {
         this.setColor(0f, 0f, 0f, 0f);
         this.parent.addActor(this);
         this.addAction(Actions.fadeIn(fadeInDuration));
+
+        // update style - due modal was removed during close
+        PixelLogicUIUtil.changeStyle(this, getGlobal().getStyle());
     }
 
     public void show(Actor before) {

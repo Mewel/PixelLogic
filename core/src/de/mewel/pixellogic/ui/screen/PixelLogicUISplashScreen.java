@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
-import static de.mewel.pixellogic.PixelLogicConstants.APP_BACKGROUND;
+import de.mewel.pixellogic.ui.style.PixelLogicUILightStyle;
 
 public class PixelLogicUISplashScreen implements Screen {
 
@@ -26,13 +26,16 @@ public class PixelLogicUISplashScreen implements Screen {
 
     private Image logoImage;
 
+    private Color backgroundColor;
+
     public PixelLogicUISplashScreen() {
         stage = new Stage();
         batch = new SpriteBatch();
-        logoTexture = new Texture("logo.png");
+        logoTexture = new Texture("logo_light.png");
         logoImage = new Image(logoTexture);
         logoImage.setOrigin(Align.center);
         stage.addActor(logoImage);
+        backgroundColor = new PixelLogicUILightStyle().getBackgroundColor();
     }
 
     @Override
@@ -41,7 +44,7 @@ public class PixelLogicUISplashScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(APP_BACKGROUND.r, APP_BACKGROUND.g, APP_BACKGROUND.b, APP_BACKGROUND.a);
+        Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -62,7 +65,7 @@ public class PixelLogicUISplashScreen implements Screen {
         this.logoImage.setY(height / 1.667f);
     }
 
-    protected void updateViewport(int width, int height) {
+    private void updateViewport(int width, int height) {
         OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(false);
         this.stage.setViewport(new ExtendViewport(width, height, camera));

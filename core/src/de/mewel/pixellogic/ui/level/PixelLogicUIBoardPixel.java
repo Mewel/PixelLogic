@@ -1,15 +1,12 @@
 package de.mewel.pixellogic.ui.level;
 
-import com.badlogic.gdx.graphics.Color;
-
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
-
-import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_BLOCKED_COLOR;
-import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_EMPTY_COLOR;
-import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_FILLED_COLOR;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public class PixelLogicUIBoardPixel extends PixelLogicUIColoredSurface {
+
+    private Boolean value;
 
     private int row, col;
 
@@ -17,13 +14,18 @@ public class PixelLogicUIBoardPixel extends PixelLogicUIColoredSurface {
         super(global);
         this.row = row;
         this.col = col;
-        setColor(new Color(PIXEL_EMPTY_COLOR));
+        setColor(getStyle().getPixelEmptyColor());
     }
 
     public void set(Boolean value) {
-        setColor(value == null ? new Color(PIXEL_EMPTY_COLOR) :
-                (value ? new Color(PIXEL_FILLED_COLOR) :
-                        new Color(PIXEL_BLOCKED_COLOR)));
+        this.value = value;
+        updateColor();
+    }
+
+    @Override
+    public void styleChanged(PixelLogicUIStyle style) {
+        super.styleChanged(style);
+        this.updateColor();
     }
 
     public int getRow() {
@@ -32,6 +34,12 @@ public class PixelLogicUIBoardPixel extends PixelLogicUIColoredSurface {
 
     public int getCol() {
         return col;
+    }
+
+    private void updateColor() {
+        setColor(this.value == null ? getStyle().getPixelEmptyColor() :
+                (this.value ? getStyle().getPixelFilledColor() :
+                        getStyle().getPixelBlockedColor()));
     }
 
 }

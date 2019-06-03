@@ -2,11 +2,14 @@ package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
@@ -21,8 +24,7 @@ import de.mewel.pixellogic.ui.component.PixelLogicUIExitDialog;
 import de.mewel.pixellogic.ui.component.PixelLogicUISettings;
 import de.mewel.pixellogic.ui.component.PixelLogicUISprite;
 import de.mewel.pixellogic.ui.component.PixelLogicUIVerticalGroup;
-
-import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
@@ -42,6 +44,8 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
     private PixelLogicUISprite settingsButton;
 
+    private Label versionLabel;
+
     private PixelLogicUISettings settings;
 
     private PixelLogicUIExitDialog exitDialog;
@@ -56,7 +60,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         getStage().addActor(this.background);
 
         this.backgroundOverlay = new PixelLogicUIColoredSurface(getGlobal());
-        this.backgroundOverlay.setColor(new Color(255f, 255f, 255f, .5f));
+        this.backgroundOverlay.setColor(getGlobal().getStyle().getMainMenuBackdropColor());
         this.backgroundOverlay.setInheritParentAlpha(false);
         getStage().addActor(this.backgroundOverlay);
 
@@ -65,8 +69,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
     @Override
     protected void build() {
-        Texture logo = getAssets().getLogo();
-        logoImage = new Image(logo);
+        logoImage = new Image(getLogoTexture());
         logoImage.setOrigin(Align.center);
 
         this.playButton = new PixelLogicUIButton(getGlobal(), getAssets().translate("play")) {
@@ -110,9 +113,11 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
             }
         };
 
+        PixelLogicUIStyle style = getGlobal().getStyle();
+
         buttonGroup = new PixelLogicUIVerticalGroup();
         PixelLogicUIColoredSurface buttonGroupBackground = new PixelLogicUIColoredSurface(getGlobal());
-        buttonGroupBackground.setColor(new Color(255f, 255f, 255f, .5f));
+        buttonGroupBackground.setColor(style.getMainMenuButtonGroupColor());
         buttonGroup.setBackground(buttonGroupBackground);
         buttonGroup.center();
 
@@ -124,9 +129,15 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         getPageRoot().addActor(logoImage);
         getPageRoot().addActor(buttonGroup);
 
+        // version
+        BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 0);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(labelFont, style.getTextColor());
+        this.versionLabel = new Label("1.0.7", labelStyle);
+        getStage().getRoot().addActor(this.versionLabel);
+
         // settings
         this.settingsButton = new PixelLogicUISprite(getGlobal(), 10);
-        this.settingsButton.setColor(TEXT_COLOR);
+        this.settingsButton.setColor(style.getTextColor());
         this.settingsButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -141,6 +152,10 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
         // exit dialog
         this.exitDialog = new PixelLogicUIExitDialog(getGlobal(), getStage().getRoot());
+    }
+
+    private Texture getLogoTexture() {
+        return getAssets().get().get("logo_" + getGlobal().getStyle().getName() + ".png");
     }
 
     @Override
@@ -192,6 +207,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         this.logoImage.setScale((int) (height / (this.logoImage.getHeight() * 6f)));
 
         int iconSize = PixelLogicUIUtil.getIconBaseHeight();
+        this.versionLabel.setPosition(iconSize, iconSize);
         this.settingsButton.setSize(iconSize, iconSize);
         this.settingsButton.pad(iconSize);
         this.settingsButton.setPosition(width - this.settingsButton.getWidth(), 0);
@@ -202,6 +218,16 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
 
         getPageRoot().padTop(getPadding() * 3);
         getPageRoot().space(getSpace() * 3);
+    }
+
+    @Override
+    public void styleChanged(PixelLogicUIStyle style) {
+        super.styleChanged(style);
+        this.settingsButton.setColor(style.getTextColor());
+        this.buttonGroup.getBackground().setColor(style.getMainMenuButtonGroupColor());
+        this.backgroundOverlay.setColor(getGlobal().getStyle().getMainMenuBackdropColor());
+        this.logoImage.setDrawable(new SpriteDrawable(new Sprite(getLogoTexture())));
+        this.versionLabel.getStyle().fontColor = style.getTextColor();
     }
 
     public void pause() {

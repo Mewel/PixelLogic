@@ -3,13 +3,10 @@ package de.mewel.pixellogic.ui.page;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +17,9 @@ import de.mewel.pixellogic.mode.PixelLogicTutorialMode;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
+import de.mewel.pixellogic.ui.component.PixelLogicUIContainer;
 import de.mewel.pixellogic.ui.component.PixelLogicUISprite;
 
-import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_COLOR;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 
@@ -47,7 +44,7 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
         this.campaignMode.setup(getGlobal());
 
         this.modes = new ArrayList<LevelModeUI>();
-        this.modes.add(new LevelModeUI(getCampaignLabel(), getAssets().translate("play.campaign.description"), this, new Runnable() {
+        this.modes.add(new LevelModeUI(getGlobal(), getCampaignLabel(), getAssets().translate("play.campaign.description"), new Runnable() {
             @Override
             public void run() {
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
@@ -61,28 +58,28 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
                 });
             }
         }));
-        this.modes.add(new LevelModeUI(getAssets().translate("play.characters.title"), getAssets().translate("play.characters.description"), this, new Runnable() {
+        this.modes.add(new LevelModeUI(getGlobal(), getAssets().translate("play.characters.title"), getAssets().translate("play.characters.description"), new Runnable() {
             @Override
             public void run() {
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                 getAppScreen().setPage(PixelLogicUIPageId.characters, pageProperties);
             }
         }));
-        this.modes.add(new LevelModeUI(getAssets().translate("play.timeTrial.title"), getAssets().translate("play.timeTrial.description"), this, new Runnable() {
+        this.modes.add(new LevelModeUI(getGlobal(), getAssets().translate("play.timeTrial.title"), getAssets().translate("play.timeTrial.description"), new Runnable() {
             @Override
             public void run() {
                 PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                 getAppScreen().setPage(PixelLogicUIPageId.timeTrial, pageProperties);
             }
         }));
-        this.modes.add(new LevelModeUI(getAssets().translate("play.art.title"), getAssets().translate("play.art.description"),
-                this, new Runnable() {
-            @Override
-            public void run() {
-                PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
-                getAppScreen().setPage(PixelLogicUIPageId.picture, pageProperties);
-            }
-        }));
+        this.modes.add(new LevelModeUI(getGlobal(), getAssets().translate("play.art.title"), getAssets().translate("play.art.description"),
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
+                        getAppScreen().setPage(PixelLogicUIPageId.picture, pageProperties);
+                    }
+                }));
         this.buildModes();
     }
 
@@ -128,15 +125,15 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
         return this.tutorialMode;
     }
 
-    private class LevelModeUI extends Container<VerticalGroup> {
+    private class LevelModeUI extends PixelLogicUIContainer<VerticalGroup> {
 
         private Container<Label> labelContainer;
 
         private PixelLogicUIButton button;
 
-        public LevelModeUI(final String buttonText, final String description,
-                           PixelLogicUIPlayPage page, final Runnable buttonAction) {
-            super(new VerticalGroup());
+        public LevelModeUI(PixelLogicGlobal global, final String buttonText, final String description,
+                           final Runnable buttonAction) {
+            super(global, new VerticalGroup());
 
             getActor().setFillParent(true);
             getActor().center();
@@ -158,10 +155,6 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
             getActor().addActor(this.button);
 
             getActor().pack();
-
-            Texture whiteTexture = PixelLogicUIUtil.getTexture(new Color(BLOCK_COLOR));
-            Sprite s = new Sprite(whiteTexture);
-            this.setBackground(new SpriteDrawable(s));
         }
 
         public void resize() {
@@ -187,6 +180,7 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
             BitmapFont font = PixelLogicUIUtil.getAppFont(getAssets(), 0);
             return new Label.LabelStyle(font, Color.WHITE);
         }
+
     }
 
     protected class PlayHeader extends Header {

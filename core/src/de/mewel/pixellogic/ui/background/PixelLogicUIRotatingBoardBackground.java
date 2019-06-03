@@ -11,10 +11,6 @@ import java.util.Random;
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.PixelLogicUIActor;
 
-import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_BLOCKED_COLOR;
-import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_EMPTY_COLOR;
-import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_FILLED_COLOR;
-
 public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIActor {
 
     private int pixel = 25;
@@ -36,8 +32,8 @@ public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIActor {
                 Pixel pixel = new Pixel(row, col);
                 pixel.alpha = random.nextBoolean() ? 1f : 0f;
                 pixel.color = random.nextFloat() > .4f ?
-                        new Color(PIXEL_FILLED_COLOR) :
-                        new Color(PIXEL_BLOCKED_COLOR);
+                        getGlobal().getStyle().getPixelFilledColor() :
+                        getGlobal().getStyle().getPixelBlockedColor();
                 board[row][col] = pixel;
             }
         }
@@ -71,6 +67,7 @@ public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIActor {
         int maxRenderHeight = (int) (boardHeight / 1.6f);
 
         // render
+        Color emptyColor = getGlobal().getStyle().getPixelEmptyColor();
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[0].length; col++) {
@@ -80,9 +77,9 @@ public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIActor {
                     continue;
                 }
                 Pixel pixel = board[row][col];
-                float r = pixel.alpha * pixel.color.r + (1 - pixel.alpha) * PIXEL_EMPTY_COLOR.r;
-                float g = pixel.alpha * pixel.color.g + (1 - pixel.alpha) * PIXEL_EMPTY_COLOR.g;
-                float b = pixel.alpha * pixel.color.b + (1 - pixel.alpha) * PIXEL_EMPTY_COLOR.b;
+                float r = pixel.alpha * pixel.color.r + (1 - pixel.alpha) * emptyColor.r;
+                float g = pixel.alpha * pixel.color.g + (1 - pixel.alpha) * emptyColor.g;
+                float b = pixel.alpha * pixel.color.b + (1 - pixel.alpha) * emptyColor.b;
                 renderer.setColor(r, g, b, parentAlpha);
                 renderer.box(x, y, 0, size, size, 0f);
             }
@@ -127,8 +124,8 @@ public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIActor {
                         pixel.alpha = 0f;
                         pixel.fade = null;
                         pixel.color = random.nextFloat() > .4f ?
-                                PIXEL_FILLED_COLOR :
-                                PIXEL_BLOCKED_COLOR;
+                                getGlobal().getStyle().getPixelFilledColor() :
+                                getGlobal().getStyle().getPixelBlockedColor();
                     }
                 }
             }

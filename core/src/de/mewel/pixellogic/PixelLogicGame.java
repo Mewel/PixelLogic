@@ -11,6 +11,8 @@ import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIAppScreen;
 import de.mewel.pixellogic.ui.screen.PixelLogicUISplashScreen;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyleController;
 
 public class PixelLogicGame extends Game implements PixelLogicGlobal {
 
@@ -25,6 +27,8 @@ public class PixelLogicGame extends Game implements PixelLogicGlobal {
     private PixelLogicAchievements achievements;
 
     private PixelLogicAudio audio;
+
+    private PixelLogicUIStyleController styleController;
 
     @Override
     public void create() {
@@ -64,6 +68,8 @@ public class PixelLogicGame extends Game implements PixelLogicGlobal {
         assets = new PixelLogicAssets();
         assets.load();
         // pixel logic init
+        styleController = new PixelLogicUIStyleController();
+        styleController.init();
         eventManager = new PixelLogicEventManager();
         achievements = new PixelLogicAchievements(assets, eventManager);
         audio = new PixelLogicAudio(assets, eventManager);
@@ -122,6 +128,16 @@ public class PixelLogicGame extends Game implements PixelLogicGlobal {
     @Override
     public PixelLogicAudio getAudio() {
         return audio;
+    }
+
+    @Override
+    public PixelLogicUIStyle getStyle() {
+        return styleController.get();
+    }
+
+    @Override
+    public PixelLogicUIStyleController getStyleController() {
+        return styleController;
     }
 
 }

@@ -13,14 +13,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.asset.PixelLogicAudio;
+import de.mewel.pixellogic.event.PixelLogicStyleChangedEvent;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
-import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_COLOR;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
-import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
 
 public class PixelLogicUISettings extends PixelLogicUIGroup {
 
@@ -28,9 +28,9 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
 
     private Table container;
 
-    private Label musicLabel, soundLabel, autoBlockLabel;
+    private Label musicLabel, soundLabel, autoBlockLabel, darkModeLabel;
 
-    private PixelLogicUISwitchSpriteButton musicButton, soundButton, autoBlockButton;
+    private PixelLogicUISwitchSpriteButton musicButton, soundButton, autoBlockButton, darkModeButton;
 
     private PixelLogicUISprite closeButton;
 
@@ -43,25 +43,21 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
         this.container.setFillParent(true);
 
         this.background = new PixelLogicUIColoredSurface(global);
-        this.background.setColor(new Color(BLOCK_COLOR));
-        this.background.getColor().a = .8f;
         this.addActor(this.background);
 
         this.musicLabel = new Label("Music", getLabelStyle());
         this.soundLabel = new Label("Sound", getLabelStyle());
         this.autoBlockLabel = new Label("Auto-Block", getLabelStyle());
+        this.darkModeLabel = new Label("Dark Mode", getLabelStyle());
 
         this.musicButton = new PixelLogicUISwitchSpriteButton(global, 8, 9);
-        this.musicButton.setColor(TEXT_COLOR);
         this.soundButton = new PixelLogicUISwitchSpriteButton(global, 8, 9);
-        this.soundButton.setColor(TEXT_COLOR);
         this.autoBlockButton = new PixelLogicUISwitchSpriteButton(global, 11, 12);
-        this.autoBlockButton.setColor(TEXT_COLOR);
+        this.darkModeButton = new PixelLogicUISwitchSpriteButton(global, 11, 12);
         this.closeButton = new PixelLogicUISprite(global, 3);
         this.closeButton.getSprite().rotate90(false);
-        this.closeButton.setColor(TEXT_COLOR);
+        this.styleChanged(global.getStyle());
 
-        int iconSize = PixelLogicUIUtil.getIconBaseHeight();
         this.container.add(this.musicLabel).expandX().left();
         this.container.add(this.musicButton).top();
         this.container.row();
@@ -70,6 +66,9 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
         this.container.row();
         this.container.add(this.autoBlockLabel).expandX().left();
         this.container.add(this.autoBlockButton).top();
+        this.container.row();
+        this.container.add(this.darkModeLabel).expandX().left();
+        this.container.add(this.darkModeButton).top();
         this.container.row();
         this.container.add(this.closeButton).center().colspan(2);
         this.addActor(this.container);
@@ -125,6 +124,15 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
+        this.darkModeButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                PixelLogicUIStyle style = getGlobal().getStyleController().switchStyle();
+                darkModeButton.switchButton();
+                getEventManager().fire(new PixelLogicStyleChangedEvent(PixelLogicUISettings.this, style));
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
     }
 
     protected void update() {
@@ -132,10 +140,31 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
         this.musicButton.setActive(!audio.isMusicMuted());
         this.soundButton.setActive(!audio.isSoundMuted());
         this.autoBlockButton.setActive(!isAutoBlockEnabled());
+        this.darkModeButton.setActive(!getGlobal().getStyle().getName().equals("dark"));
     }
 
     protected boolean isAutoBlockEnabled() {
         return getPreferences().getBoolean("autoBlock", false);
+    }
+
+    @Override
+    public void styleChanged(PixelLogicUIStyle style) {
+        super.styleChanged(style);
+        Color textColor = style.getTextColor();
+        this.musicButton.setColor(textColor);
+        this.soundButton.setColor(textColor);
+        this.autoBlockButton.setColor(textColor);
+        this.darkModeButton.setColor(textColor);
+        this.closeButton.setColor(textColor);
+
+        this.background.setColor(getGlobal().getStyle().getBlockColor());
+        this.background.getColor().a = .8f;
+
+        Color fontColor = getLabelStyle().fontColor;
+        this.musicLabel.getStyle().fontColor = fontColor;
+        this.soundLabel.getStyle().fontColor = fontColor;
+        this.autoBlockLabel.getStyle().fontColor = fontColor;
+        this.darkModeLabel.getStyle().fontColor = fontColor;
     }
 
     @Override
@@ -148,17 +177,20 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
         this.container.getCell(this.musicLabel).spaceBottom(space);
         this.container.getCell(this.soundLabel).spaceBottom(space);
         this.container.getCell(this.autoBlockLabel).spaceBottom(space);
+        this.container.getCell(this.darkModeLabel).spaceBottom(space);
         if (this.background != null) {
             this.background.setSize(this.getWidth(), this.getHeight());
         }
         this.musicButton.setSize(iconSize, iconSize);
         this.soundButton.setSize(iconSize, iconSize);
         this.autoBlockButton.setSize(iconSize, iconSize);
+        this.darkModeButton.setSize(iconSize, iconSize);
         this.closeButton.setSize(iconSize, iconSize);
 
         this.musicButton.pad(iconSize / 3);
         this.soundButton.pad(iconSize / 3);
         this.autoBlockButton.pad(iconSize / 3);
+        this.darkModeButton.pad(iconSize / 3);
         this.closeButton.pad(iconSize / 3);
 
         float prefHeight = this.container.getPrefHeight();
@@ -170,7 +202,7 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
 
     private Label.LabelStyle getLabelStyle() {
         BitmapFont labelFont = PixelLogicUIUtil.getMainFont(getAssets());
-        return new Label.LabelStyle(labelFont, TEXT_COLOR);
+        return new Label.LabelStyle(labelFont, getGlobal().getStyle().getTextColor());
     }
 
     private int getPadding() {

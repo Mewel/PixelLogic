@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.layer.PixelLogicUILayer;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public abstract class PixelLogicUILayeredScreen extends PixelLogicUIScreen {
 
@@ -17,6 +18,17 @@ public abstract class PixelLogicUILayeredScreen extends PixelLogicUIScreen {
 
     public void add(PixelLogicUILayer layer) {
         this.layers.add(layer);
+    }
+
+    public List<PixelLogicUILayer> getLayers() {
+        return layers;
+    }
+
+    @Override
+    public void styleChanged(PixelLogicUIStyle style) {
+        for (PixelLogicUILayer layer : getLayers()) {
+            layer.styleChanged(style);
+        }
     }
 
     @Override

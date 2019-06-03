@@ -18,7 +18,12 @@ public class PixelLogicUIColoredSurface extends PixelLogicUIActor {
     private boolean inheritParentAlpha;
 
     public PixelLogicUIColoredSurface(PixelLogicGlobal global) {
+        this(global, new Color(Color.WHITE));
+    }
+
+    public PixelLogicUIColoredSurface(PixelLogicGlobal global, Color color) {
         super(global);
+        this.setColor(color);
         this.borderWidth = 0;
         this.borderColor = null;
         this.inheritParentAlpha = true;

@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
@@ -20,6 +22,8 @@ import java.util.Locale;
 
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.model.PixelLogicLevel;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyleable;
 import de.mewel.pixellogic.util.PixelLogicUtil;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BASE_SIZE;
@@ -153,6 +157,17 @@ public class PixelLogicUIUtil {
 
         //Use the pythagorean theorem to get the diagonal screen size
         return Math.sqrt(Math.pow(widthInches, 2) + Math.pow(heightInches, 2));
+    }
+
+    public static void changeStyle(Actor actor, PixelLogicUIStyle style) {
+        if (actor instanceof PixelLogicUIStyleable) {
+            ((PixelLogicUIStyleable) actor).styleChanged(style);
+        }
+        if (actor instanceof Group) {
+            for (Actor child : ((Group) actor).getChildren()) {
+                changeStyle(child, style);
+            }
+        }
     }
 
 }

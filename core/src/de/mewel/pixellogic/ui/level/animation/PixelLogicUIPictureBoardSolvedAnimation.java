@@ -2,12 +2,17 @@ package de.mewel.pixellogic.ui.level.animation;
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoardPixel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIColumnGroup;
 import de.mewel.pixellogic.ui.level.PixelLogicUIRowGroup;
 
 public class PixelLogicUIPictureBoardSolvedAnimation extends PixelLogicUIBaseLevelAnimation {
+
+    public PixelLogicUIPictureBoardSolvedAnimation(PixelLogicGlobal global) {
+        super(global);
+    }
 
     @Override
     protected float animatePixel(PixelLogicUIBoardPixel pixel) {

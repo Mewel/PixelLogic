@@ -4,14 +4,17 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoardPixel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIColumnGroup;
 import de.mewel.pixellogic.ui.level.PixelLogicUIRowGroup;
 
-import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_FILLED_COLOR;
-
 public class PixelLogicUIBoardSolvedAnimation extends PixelLogicUIBaseLevelAnimation {
+
+    public PixelLogicUIBoardSolvedAnimation(PixelLogicGlobal global) {
+        super(global);
+    }
 
     @Override
     protected float animateColumnGroup(PixelLogicUIColumnGroup group) {
@@ -37,7 +40,7 @@ public class PixelLogicUIBoardSolvedAnimation extends PixelLogicUIBaseLevelAnima
             return FADE_OUT_TIME;
         }
         SequenceAction sequenceAction = new SequenceAction();
-        sequenceAction.addAction(Actions.color(new Color(PIXEL_FILLED_COLOR), 0.1f));
+        sequenceAction.addAction(Actions.color(new Color(getGlobal().getStyle().getPixelFilledColor()), 0.1f));
         sequenceAction.addAction(Actions.delay(0.2f));
         float mult = (float) (col + row) / (float) (level.getColumns() + level.getRows());
         sequenceAction.addAction(Actions.delay(0.2f * mult));

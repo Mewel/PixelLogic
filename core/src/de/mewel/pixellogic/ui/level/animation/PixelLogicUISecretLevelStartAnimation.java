@@ -8,13 +8,12 @@ import com.badlogic.gdx.utils.Align;
 
 import java.util.Random;
 
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoard;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoardPixel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIColumnGroup;
 import de.mewel.pixellogic.ui.level.PixelLogicUIRowGroup;
-
-import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_BLOCKED_COLOR;
 
 public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUIBaseLevelAnimation {
 
@@ -22,7 +21,8 @@ public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUIBaseLevel
 
     private Random random;
 
-    public PixelLogicUISecretLevelStartAnimation() {
+    public PixelLogicUISecretLevelStartAnimation(PixelLogicGlobal global) {
+        super(global);
         this.random = new Random();
     }
 
@@ -55,7 +55,7 @@ public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUIBaseLevel
         SequenceAction colorizeAction = new SequenceAction();
         colorizeAction.addAction(Actions.delay(delayDuration - .1f));
         float offset = random.nextFloat() * .4f * (random.nextBoolean() ? 1f : -1f);
-        Color newColor = new Color(PIXEL_BLOCKED_COLOR);
+        Color newColor = getGlobal().getStyle().getPixelBlockedColor();
         newColor.r = newColor.r + offset;
         newColor.g = newColor.g + offset;
         newColor.b = newColor.b + offset;

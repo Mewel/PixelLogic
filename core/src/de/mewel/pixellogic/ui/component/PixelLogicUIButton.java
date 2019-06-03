@@ -10,10 +10,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
-import static de.mewel.pixellogic.PixelLogicConstants.SECONDARY_COLOR;
 
 public abstract class PixelLogicUIButton extends PixelLogicUIGroup {
 
@@ -32,9 +32,9 @@ public abstract class PixelLogicUIButton extends PixelLogicUIGroup {
         this.blocked = new AtomicBoolean(false);
         this.text = text;
         this.background = new PixelLogicUIColoredSurface(global);
-        Color bgColor = new Color(new Color(SECONDARY_COLOR));
-        this.background.setColor(bgColor);
-        this.background.setBorder(1, new Color(bgColor).mul(.5f));
+        Color buttonColor = getGlobal().getStyle().getSecondaryColor();
+        this.background.setColor(buttonColor);
+        this.background.setBorder(1, new Color(buttonColor).mul(.5f));
         this.addActor(this.background);
         this.updateLabel(false);
         this.addListener(this.listener = new PixelLogicUIButtonListener() {
@@ -81,6 +81,15 @@ public abstract class PixelLogicUIButton extends PixelLogicUIGroup {
         float x = this.getWidth() / 2 - this.label.getPrefWidth() / 2;
         float y = this.getHeight() / 2 - this.label.getPrefHeight() / 2;
         this.label.setPosition(x, y);
+    }
+
+    @Override
+    public void styleChanged(PixelLogicUIStyle style) {
+        super.styleChanged(style);
+        Color buttonColor = style.getSecondaryColor();
+        this.background.setColor(buttonColor);
+        this.background.setBorder(1, new Color(buttonColor).mul(.5f));
+        this.updateLabel(true);
     }
 
     @Override

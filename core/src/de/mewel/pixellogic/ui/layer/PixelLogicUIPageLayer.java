@@ -13,6 +13,7 @@ import de.mewel.pixellogic.ui.page.PixelLogicUIPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageId;
 import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 import de.mewel.pixellogic.ui.page.event.PixelLogicUIPageChangeEvent;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public class PixelLogicUIPageLayer implements PixelLogicUILayer {
 
@@ -72,6 +73,13 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer {
         activePage.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         if (after != null) {
             after.run();
+        }
+    }
+
+    @Override
+    public void styleChanged(PixelLogicUIStyle style) {
+        for (PixelLogicUIPage page : pageMap.values()) {
+            page.styleChanged(style);
         }
     }
 

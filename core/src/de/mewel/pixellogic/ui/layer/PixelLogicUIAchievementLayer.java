@@ -27,8 +27,7 @@ import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIAchievementBlock;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
-
-import static de.mewel.pixellogic.PixelLogicConstants.MAIN_COLOR;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLogicListener {
 
@@ -53,8 +52,8 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         this.achievementBlock.setDescriptionStyle(getDescriptionStyle());
 
         PixelLogicUIColoredSurface background = new PixelLogicUIColoredSurface(global);
-        background.setColor(new Color(MAIN_COLOR));
-        background.setBorder(1, new Color(MAIN_COLOR).mul(.5f));
+        background.setColor(new Color(global.getStyle().getMainColor()));
+        background.setBorder(1, new Color(global.getStyle().getMainColor()).mul(.5f));
         this.achievementBlock.setBackground(background);
 
         this.stage.addActor(this.achievementBlock);
@@ -139,6 +138,11 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(false);
         stage.setViewport(new ExtendViewport(width, height, camera));
+    }
+
+    @Override
+    public void styleChanged(PixelLogicUIStyle style) {
+
     }
 
     @Override

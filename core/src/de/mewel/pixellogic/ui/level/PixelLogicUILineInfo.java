@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.ui.level;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -13,12 +12,7 @@ import java.util.List;
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
-import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
-
-import static de.mewel.pixellogic.PixelLogicConstants.APP_BACKGROUND;
-import static de.mewel.pixellogic.PixelLogicConstants.LINE_COLOR;
-import static de.mewel.pixellogic.PixelLogicConstants.LINE_COMPLETE_COLOR;
-import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public abstract class PixelLogicUILineInfo extends PixelLogicUILevelGroup {
 
@@ -44,9 +38,13 @@ public abstract class PixelLogicUILineInfo extends PixelLogicUILevelGroup {
     public void draw(Batch batch, float parentAlpha) {
         Color baseColor = getColor();
         boolean lineComplete = isLineComplete();
-        float r = lineComplete ? LINE_COMPLETE_COLOR.r : LINE_COLOR.r;
-        float g = lineComplete ? LINE_COMPLETE_COLOR.g : LINE_COLOR.g;
-        float b = lineComplete ? LINE_COMPLETE_COLOR.b : LINE_COLOR.b;
+        PixelLogicUIStyle style = getGlobal().getStyle();
+        Color lineCompleteColor = style.getLineCompleteColor();
+        Color lineColor = style.getLineColor();
+
+        float r = lineComplete ? lineCompleteColor.r : lineColor.r;
+        float g = lineComplete ? lineCompleteColor.g : lineColor.g;
+        float b = lineComplete ? lineCompleteColor.b : lineColor.b;
         batch.setColor(r, g, b, baseColor.a * parentAlpha);
         batch.draw(texture, getX(), getY(), getWidth() * getScaleX(),
                 getHeight() * getScaleY());
@@ -82,12 +80,19 @@ public abstract class PixelLogicUILineInfo extends PixelLogicUILevelGroup {
         this.labels.clear();
     }
 
+    @Override
+    public void styleChanged(PixelLogicUIStyle style) {
+        super.styleChanged(style);
+        this.updateLabels(this.resolution);
+    }
+
     protected abstract void addLabels(int fontSize, Label.LabelStyle style);
 
     protected abstract boolean isLineComplete();
 
     public Color getLabelColor() {
-        return isLineComplete() ? new Color(APP_BACKGROUND) : new Color(TEXT_COLOR);
+        PixelLogicUIStyle style = getGlobal().getStyle();
+        return isLineComplete() ? new Color(style.getBackgroundColor()) : new Color(style.getTextColor());
     }
 
     public void reset() {

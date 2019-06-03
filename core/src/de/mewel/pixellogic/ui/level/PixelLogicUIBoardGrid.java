@@ -9,8 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIActor;
-
-import static de.mewel.pixellogic.PixelLogicConstants.GRID_COLOR;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
 
@@ -23,7 +22,7 @@ public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
     public PixelLogicUIBoardGrid(PixelLogicGlobal global, PixelLogicLevel level) {
         super(global);
         this.level = level;
-        this.setColor(new Color(GRID_COLOR));
+        this.styleChanged(global.getStyle());
     }
 
     @Override
@@ -61,6 +60,12 @@ public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
 
     public void updateResolution(PixelLogicUILevelResolution resolution) {
         this.resolution = resolution;
+    }
+
+    @Override
+    public void styleChanged(PixelLogicUIStyle style) {
+        super.styleChanged(style);
+        this.setColor(new Color(style.getGridColor()));
     }
 
 }

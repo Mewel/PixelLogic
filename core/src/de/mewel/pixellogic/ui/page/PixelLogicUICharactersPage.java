@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +17,11 @@ import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
+import de.mewel.pixellogic.ui.component.PixelLogicUIContainer;
 import de.mewel.pixellogic.ui.component.PixelLogicUISprite;
 
-import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_COLOR;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
-import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
 
 public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
 
@@ -112,23 +110,20 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
         }
     }
 
-    private class LevelContainer extends Container<HorizontalGroup> {
+    private class LevelContainer extends PixelLogicUIContainer<HorizontalGroup> {
 
         private Sprite image;
 
         private PixelLogicLevel level;
-
-        private PixelLogicGlobal global;
 
         private PixelLogicUISprite logo;
 
         private Container<Label> labelContainer;
 
         LevelContainer(PixelLogicLevel level, Sprite image, PixelLogicGlobal global) {
-            super(new HorizontalGroup());
+            super(global, new HorizontalGroup());
             this.level = level;
             this.image = image;
-            this.global = global;
 
             getActor().setFillParent(true);
             getActor().top();
@@ -140,19 +135,15 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
             getActor().addActor(this.logo);
             this.updateLogo();
 
-            Label descriptionLabel = this.getLabel(level.getDisplayName(), new Color(TEXT_COLOR));
+            Label descriptionLabel = this.getLabel(level.getDisplayName(), getGlobal().getStyle().getTextColor());
             descriptionLabel.setWrap(true);
             this.labelContainer = new Container<Label>(descriptionLabel);
             getActor().addActor(this.labelContainer);
             this.updateLabel();
-
-            Texture whiteTexture = PixelLogicUIUtil.getTexture(new Color(BLOCK_COLOR));
-            Sprite s = new Sprite(whiteTexture);
-            this.setBackground(new SpriteDrawable(s));
         }
 
         private void updateLogo() {
-            Sprite sprite = isSolved() ? image : global.getAssets().getIcon(5);
+            Sprite sprite = isSolved() ? image : getAssets().getIcon(5);
             this.logo.setSprite(sprite);
         }
 
@@ -175,7 +166,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
 
             this.logo.setSize(logoSize, logoSize);
             this.labelContainer.width(getComponentWidth());
-            this.labelContainer.getActor().setStyle(getLabelStyle(new Color(TEXT_COLOR)));
+            this.labelContainer.getActor().setStyle(getLabelStyle(getGlobal().getStyle().getTextColor()));
 
             this.width(width);
         }
@@ -186,7 +177,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
         }
 
         private Label.LabelStyle getLabelStyle(Color color) {
-            BitmapFont labelFont = PixelLogicUIUtil.getAppFont(global.getAssets(), 1);
+            BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 1);
             return new Label.LabelStyle(labelFont, color);
         }
 

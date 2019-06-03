@@ -19,7 +19,6 @@ import de.mewel.pixellogic.ui.component.PixelLogicUISprite;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
-import static de.mewel.pixellogic.PixelLogicConstants.MAIN_COLOR;
 
 public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements PixelLogicListener {
 
@@ -154,7 +153,7 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
             this.text = text;
 
             this.background = new PixelLogicUIColoredSurface(global);
-            this.background.setColor(new Color(MAIN_COLOR));
+            this.background.setColor(new Color(global.getStyle().getMainColor()));
             this.addActor(this.background);
 
             this.backButton = new PixelLogicUISprite(global, 3);

@@ -13,6 +13,8 @@ import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelSwitcherChangedEvent;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyleable;
 
 import static de.mewel.pixellogic.PixelLogicConstants.SWITCHER_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.SWITCHER_SOUND_VOLUME;
@@ -41,7 +43,7 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
         this.fillPixel = true;
 
         this.background = PixelLogicUIUtil.getTexture(Color.LIGHT_GRAY);
-        this.marker = new Marker();
+        this.marker = new Marker(global);
         this.addActor(this.marker);
 
         this.updateBounds();
@@ -52,6 +54,7 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
         this.marker.setX(0);
         this.penColor = new Color(TOOLBAR_SWITCHER_ACTIVE_COLOR);
         this.xColor = new Color(TOOLBAR_SWITCHER_INACTIVE_COLOR);
+        PixelLogicUIUtil.changeStyle(this.marker, getGlobal().getStyle());
     }
 
     @Override
@@ -107,7 +110,7 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
         this.marker.addAction(Actions.sequence(
                 Actions.moveTo(x, 0, 0.1f),
                 Actions.color(new Color(TOOLBAR_SWITCHER_ACTIVE_COLOR), 0.05f),
-                Actions.color(Color.ORANGE, 0.1f),
+                Actions.color(getGlobal().getStyle().getSecondaryColor(), 0.1f),
                 Actions.run(new Runnable() {
                                 @Override
                                 public void run() {
@@ -118,13 +121,16 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
                 )));
     }
 
-    private static class Marker extends Actor {
+    private static class Marker extends Actor implements PixelLogicUIStyleable {
+
+        private PixelLogicGlobal global;
 
         private Texture texture;
 
-        Marker() {
+        Marker(PixelLogicGlobal global) {
+            this.global = global;
             this.texture = PixelLogicUIUtil.getTexture(Color.WHITE);
-            this.setColor(Color.ORANGE);
+            this.setColor(global.getStyle().getSecondaryColor());
         }
 
         @Override
@@ -134,6 +140,11 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
             batch.draw(texture, getX(), getY(), getWidth() * getScaleX(),
                     getHeight() * getScaleY());
             batch.setColor(color);
+        }
+
+        @Override
+        public void styleChanged(PixelLogicUIStyle style) {
+            this.setColor(global.getStyle().getSecondaryColor());
         }
 
         @Override

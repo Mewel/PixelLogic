@@ -158,7 +158,7 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
 
     @Override
     public void close() {
-        if(this.settings != null) {
+        if (this.settings != null) {
             this.settings.remove();
         }
         super.close();
@@ -175,13 +175,12 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
         this.updateButtonSize();
         this.updateStatusLabelPosition();
         if (settingsButton != null) {
-            int settingsButtonPosition = (int) (getWidth() / 20);
             int iconSize = PixelLogicUIUtil.getIconBaseHeight();
             this.settingsButton.setSize(iconSize, iconSize);
             this.settingsButton.pad(iconSize);
             this.settingsButton.setPosition(getWidth() - this.settingsButton.getWidth(), 0);
         }
-        if(settings != null) {
+        if (settings != null) {
             this.settings.setWidth(getWidth());
         }
     }
@@ -199,7 +198,9 @@ public class PixelLogicUILevelMenu extends PixelLogicUIModal {
     }
 
     public void clearStatusText() {
-        this.statusLabel.remove();
+        if (this.statusLabel != null) {
+            this.statusLabel.remove();
+        }
         this.statusLabel = null;
     }
 

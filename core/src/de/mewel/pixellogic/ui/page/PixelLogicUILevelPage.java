@@ -1,7 +1,6 @@
 package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -32,6 +31,7 @@ import de.mewel.pixellogic.ui.level.animation.PixelLogicUILevelAnimation;
 import de.mewel.pixellogic.ui.level.animation.PixelLogicUIPictureBoardSolvedAnimation;
 import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 import de.mewel.pixellogic.util.PixelLogicMusic;
 
 import static de.mewel.pixellogic.PixelLogicConstants.PUZZLE_SOLVED_SOUND;
@@ -47,10 +47,6 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
     protected PixelLogicUILevelMenu menu;
 
-    protected Texture backgroundTexture;
-
-    protected Image backgroundImage;
-
     protected PixelLogicLevelStatus levelStatus;
 
     protected ScreenListener screenListener;
@@ -58,6 +54,8 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     protected PixelLogicUIMessageModal loadingModal;
 
     protected PixelLogicUILevelAnimation solvedAnimation;
+
+    protected Image backgroundImage;
 
     static {
         SOLVED_ANIMATION_MAP = new HashMap<String, Class<? extends PixelLogicUILevelAnimation>>();
@@ -67,10 +65,6 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
     public PixelLogicUILevelPage(PixelLogicGlobal global) {
         super(global, PixelLogicUIPageId.level);
-
-        // BACKGROUND
-        this.backgroundTexture = new Texture(Gdx.files.internal("background/level_1.jpg"));
-        this.backgroundImage = null;
 
         // LEVEL
         this.levelUI = null;
@@ -244,7 +238,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         try {
             animation = animationClass.newInstance();
         } catch (Exception e) {
-            animation = new PixelLogicUIBoardSolvedAnimation();
+            animation = new PixelLogicUIBoardSolvedAnimation(getGlobal());
         }
         animation.setPage(this);
         animation.execute();
@@ -288,7 +282,6 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     public void dispose() {
         super.dispose();
         getEventManager().remove(this.screenListener);
-        this.backgroundTexture.dispose();
     }
 
     protected void updateBounds(int width, int height) {
@@ -338,11 +331,17 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         if (this.backgroundImage != null) {
             this.backgroundImage.remove();
         }
-        this.backgroundImage = new Image(backgroundTexture);
+        this.backgroundImage = new Image(getGlobal().getStyle().getLevelBackgroundTexture(getAssets()));
         this.backgroundImage.setFillParent(true);
         this.backgroundImage.setScaling(Scaling.fill);
         this.backgroundImage.setPosition(this.backgroundImage.getImageWidth(), 0);
-        //this.getRoot().addActorAt(0, this.backgroundImage);
+        this.getRoot().addActorAt(0, this.backgroundImage);
+    }
+
+    @Override
+    public void styleChanged(PixelLogicUIStyle style) {
+        super.styleChanged(style);
+        updateBackgroundImage();
     }
 
     private boolean isAutoBlockEnabled() {

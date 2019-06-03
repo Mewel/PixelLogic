@@ -2,14 +2,11 @@ package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import java.util.ArrayList;
@@ -20,10 +17,8 @@ import de.mewel.pixellogic.mode.PixelLogicPictureMode;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
+import de.mewel.pixellogic.ui.component.PixelLogicUIContainer;
 import de.mewel.pixellogic.ui.component.PixelLogicUIPicture;
-
-import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_COLOR;
-import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
 
 public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
 
@@ -41,7 +36,7 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
         PixelLogicLevelCollection davinciCollection = getAssets().getLevelCollection("pictures/davinci");
         PixelLogicPictureMode daVinciMode = new PixelLogicPictureMode(davinciCollection);
         daVinciMode.setup(getGlobal());
-        PictureModeContainer daVinciContainer = new PictureModeContainer(daVinciMode);
+        PictureModeContainer daVinciContainer = new PictureModeContainer(getGlobal(), daVinciMode);
         this.pictureModeContainers.add(daVinciContainer);
         getPageRoot().addActor(daVinciContainer);
 
@@ -49,7 +44,7 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
         PixelLogicLevelCollection starryNightCollection = getAssets().getLevelCollection("pictures/starrynight");
         PixelLogicPictureMode starryNightMode = new PixelLogicPictureMode(starryNightCollection);
         starryNightMode.setup(getGlobal());
-        PictureModeContainer starryNightContainer = new PictureModeContainer(starryNightMode);
+        PictureModeContainer starryNightContainer = new PictureModeContainer(getGlobal(), starryNightMode);
         this.pictureModeContainers.add(starryNightContainer);
         getPageRoot().addActor(starryNightContainer);
 
@@ -112,7 +107,7 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
         fadeIn(null);
     }
 
-    private class PictureModeContainer extends Container<VerticalGroup> {
+    private class PictureModeContainer extends PixelLogicUIContainer<VerticalGroup> {
 
         private PixelLogicUIPicture picture;
 
@@ -122,8 +117,8 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
 
         private PixelLogicUIButtonListener buttonListener;
 
-        PictureModeContainer(PixelLogicPictureMode mode) {
-            super(new VerticalGroup());
+        PictureModeContainer(PixelLogicGlobal global, PixelLogicPictureMode mode) {
+            super(global, new VerticalGroup());
             this.mode = mode;
             this.picture = new PixelLogicUIPicture(getGlobal(), mode.getCollection());
 
@@ -132,16 +127,12 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
 
             getActor().addActor(this.picture);
 
-            Label descriptionLabel = this.getLabel(getLabelText(), new Color(TEXT_COLOR));
+            Label descriptionLabel = this.getLabel(getLabelText(), getGlobal().getStyle().getTextColor());
             descriptionLabel.setWrap(true);
             descriptionLabel.setAlignment(Align.center);
             this.labelContainer = new Container<Label>(descriptionLabel);
             getActor().addActor(this.labelContainer);
             this.updateLabel();
-
-            Texture whiteTexture = PixelLogicUIUtil.getTexture(new Color(BLOCK_COLOR));
-            Sprite s = new Sprite(whiteTexture);
-            this.setBackground(new SpriteDrawable(s));
         }
 
         private String getLabelText() {
@@ -168,7 +159,7 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
 
             this.picture.setSize(pixmap.getWidth() * mult, pixmap.getHeight() * mult);
             this.labelContainer.width(getComponentWidth());
-            this.labelContainer.getActor().setStyle(getLabelStyle(new Color(TEXT_COLOR)));
+            this.labelContainer.getActor().setStyle(getLabelStyle(getGlobal().getStyle().getTextColor()));
 
             this.width(width);
         }

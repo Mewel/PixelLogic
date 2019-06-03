@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 
 public class PixelLogicUIVerticalGroup extends VerticalGroup {
 
-    PixelLogicUIColoredSurface background;
+    private PixelLogicUIColoredSurface background;
 
     public void setBackground(PixelLogicUIColoredSurface background) {
         this.background = background;
@@ -14,7 +14,7 @@ public class PixelLogicUIVerticalGroup extends VerticalGroup {
     @Override
     protected void sizeChanged() {
         super.sizeChanged();
-        if(this.background != null) {
+        if (this.background != null) {
             this.background.setSize(getWidth(), getHeight());
         }
     }
@@ -22,7 +22,7 @@ public class PixelLogicUIVerticalGroup extends VerticalGroup {
     @Override
     protected void positionChanged() {
         super.positionChanged();
-        if(this.background != null) {
+        if (this.background != null) {
             this.background.setPosition(getX(), getY());
         }
     }
@@ -33,6 +33,10 @@ public class PixelLogicUIVerticalGroup extends VerticalGroup {
             background.draw(batch, parentAlpha);
         }
         super.draw(batch, parentAlpha);
+    }
+
+    public PixelLogicUIColoredSurface getBackground() {
+        return background;
     }
 
 }

@@ -36,6 +36,7 @@ public class PixelLogicUIExitDialog extends PixelLogicUIModal {
         this.cancelButton = new PixelLogicUIButton(getGlobal(), getAssets().translate("cancel")) {
             @Override
             public void handleClick() {
+                Gdx.app.log("cancel", "close");
                 PixelLogicUIExitDialog.this.close();
             }
         };
@@ -44,6 +45,17 @@ public class PixelLogicUIExitDialog extends PixelLogicUIModal {
         getContent().row();
         getContent().add(cancelButton);
         getContent().add(closeButton);
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        if (this.cancelButton != null) {
+            this.cancelButton.unblock();
+        }
+        if (this.closeButton != null) {
+            this.closeButton.unblock();
+        }
     }
 
     @Override

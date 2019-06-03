@@ -79,6 +79,7 @@ public class PixelLogicAssets {
 
         loadLogo();
         loadLevels();
+        loadLevelBackgrounds();
         loadFonts();
         loadIcons();
         loadAudio();
@@ -89,7 +90,8 @@ public class PixelLogicAssets {
     }
 
     private void loadLogo() {
-        manager.load("logo.png", Texture.class);
+        manager.load("logo_light.png", Texture.class);
+        manager.load("logo_dark.png", Texture.class);
     }
 
     private void loadLevels() {
@@ -98,6 +100,11 @@ public class PixelLogicAssets {
             manager.load(collectionName, PixelLogicLevelCollection.class);
             Gdx.app.log("assets", "level collection " + collectionName + " loaded");
         }
+    }
+
+    private void loadLevelBackgrounds() {
+        manager.load("background/light.png", Texture.class);
+        manager.load("background/dark.png", Texture.class);
     }
 
     protected void loadFonts() {
@@ -259,10 +266,6 @@ public class PixelLogicAssets {
             handles.addAll(getLevelHandles(collectionHandle.list()));
         }
         return handles;
-    }
-
-    public Texture getLogo() {
-        return manager.get("logo.png", Texture.class);
     }
 
     public Sprite getIcon(int index) {

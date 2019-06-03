@@ -7,8 +7,9 @@ import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.asset.PixelLogicAudio;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
-public class PixelLogicUIGroup extends Group implements PixelLogicUIElement {
+public abstract class PixelLogicUIGroup extends Group implements PixelLogicUIElement {
 
     private PixelLogicGlobal global;
 
@@ -33,6 +34,11 @@ public class PixelLogicUIGroup extends Group implements PixelLogicUIElement {
     @Override
     public PixelLogicAudio getAudio() {
         return global.getAudio();
+    }
+
+    @Override
+    public void styleChanged(PixelLogicUIStyle style) {
+
     }
 
     @Override

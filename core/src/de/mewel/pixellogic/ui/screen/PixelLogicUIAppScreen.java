@@ -3,7 +3,11 @@ package de.mewel.pixellogic.ui.screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
+import de.mewel.pixellogic.event.PixelLogicEvent;
+import de.mewel.pixellogic.event.PixelLogicListener;
+import de.mewel.pixellogic.event.PixelLogicStyleChangedEvent;
 import de.mewel.pixellogic.ui.layer.PixelLogicUIAchievementLayer;
+import de.mewel.pixellogic.ui.layer.PixelLogicUILayer;
 import de.mewel.pixellogic.ui.layer.PixelLogicUIPageLayer;
 import de.mewel.pixellogic.ui.page.PixelLogicUIAboutPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUIAchievementsPage;
@@ -18,8 +22,9 @@ import de.mewel.pixellogic.ui.page.PixelLogicUIPlayPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUITimeTrialFinishedPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUITimeTrialPage;
 import de.mewel.pixellogic.ui.page.PixelLogicUITutorialLevelPage;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
-public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
+public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen implements PixelLogicListener {
 
     private PixelLogicUIPageLayer pageLayer;
 
@@ -49,6 +54,9 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
         // add
         this.add(this.pageLayer);
         this.add(this.achievementLayer);
+
+        // listen
+        getEventManager().listen(this);
     }
 
     public void setPage(PixelLogicUIPageId pageId) {
@@ -82,6 +90,22 @@ public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen {
         super.render(delta);
         // fpsLogger.log();
         getAudio().act(delta);
+    }
+
+    @Override
+    public void dispose() {
+        getEventManager().remove(this);
+        super.dispose();
+    }
+
+    @Override
+    public void handle(PixelLogicEvent event) {
+        if(event instanceof PixelLogicStyleChangedEvent) {
+            PixelLogicUIStyle newStyle = ((PixelLogicStyleChangedEvent) event).getStyle();
+            for (PixelLogicUILayer layer : getLayers()) {
+                layer.styleChanged(newStyle);
+            }
+        }
     }
 
 }

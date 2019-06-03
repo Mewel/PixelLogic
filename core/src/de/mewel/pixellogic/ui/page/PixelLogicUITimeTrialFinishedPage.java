@@ -10,8 +10,6 @@ import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
-import static de.mewel.pixellogic.PixelLogicConstants.TEXT_COLOR;
-
 public class PixelLogicUITimeTrialFinishedPage extends PixelLogicUIPage {
 
     private Label resultLabel;
@@ -19,7 +17,7 @@ public class PixelLogicUITimeTrialFinishedPage extends PixelLogicUIPage {
     public PixelLogicUITimeTrialFinishedPage(PixelLogicGlobal global) {
         super(global, PixelLogicUIPageId.timeTrialFinished);
         BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 2);
-        Label.LabelStyle style = new Label.LabelStyle(labelFont, new Color(TEXT_COLOR));
+        Label.LabelStyle style = new Label.LabelStyle(labelFont, new Color(global.getStyle().getTextColor()));
         this.resultLabel = new Label("00:00", style);
         getStage().addActor(this.resultLabel);
         centerLabel(this.resultLabel);

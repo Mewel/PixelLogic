@@ -20,9 +20,7 @@ import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
-
-import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_COLOR;
-import static de.mewel.pixellogic.PixelLogicConstants.TEXT_LIGHT_COLOR;
+import de.mewel.pixellogic.ui.component.PixelLogicUIContainer;
 
 public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
 
@@ -37,10 +35,10 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
     @Override
     protected void build() {
         this.modes = new ArrayList<TimeTrialModeUI>();
-        this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialEasyOptions(), this));
-        this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions(), this));
-        this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialInsaneOptions(), this));
-        this.modes.add(new TimeTrialModeUI(new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialEpicOptions(), this));
+        this.modes.add(new TimeTrialModeUI(getGlobal(), new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialEasyOptions(), this));
+        this.modes.add(new TimeTrialModeUI(getGlobal(), new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions(), this));
+        this.modes.add(new TimeTrialModeUI(getGlobal(), new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialInsaneOptions(), this));
+        this.modes.add(new TimeTrialModeUI(getGlobal(), new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialEpicOptions(), this));
 
         /*for(TimeTrialModeUI mode : this.modes) {
             PixelLogicTimeTrialHighscoreStore.clear(mode.options.id.toString());
@@ -92,7 +90,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
         return new Label.LabelStyle(font, Color.WHITE);
     }
 
-    private class TimeTrialModeUI extends Container<VerticalGroup> {
+    private class TimeTrialModeUI extends PixelLogicUIContainer<VerticalGroup> {
 
         private PixelLogicTimeTrialModeOptions options;
 
@@ -104,8 +102,8 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
 
         private Container<Table> highscoreContainer;
 
-        public TimeTrialModeUI(final PixelLogicTimeTrialModeOptions options, PixelLogicUITimeTrialPage page) {
-            super(new VerticalGroup());
+        public TimeTrialModeUI(PixelLogicGlobal global, final PixelLogicTimeTrialModeOptions options, PixelLogicUITimeTrialPage page) {
+            super(global, new VerticalGroup());
 
             this.page = page;
             this.options = options;
@@ -132,10 +130,6 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
 
             getActor().addActor(this.highscoreContainer);
             getActor().pack();
-
-            Texture whiteTexture = PixelLogicUIUtil.getTexture(new Color(BLOCK_COLOR));
-            Sprite s = new Sprite(whiteTexture);
-            this.setBackground(new SpriteDrawable(s));
         }
 
         public void resize() {
@@ -160,7 +154,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
 
             // line
             PixelLogicUIColoredSurface line = new PixelLogicUIColoredSurface(page.getGlobal());
-            line.setColor(new Color(TEXT_LIGHT_COLOR));
+            line.setColor(new Color(getGlobal().getStyle().getTextSecondaryColor()));
             line.setWidth(getComponentWidth());
             line.setHeight(1);
             highscoreTable.add(line).colspan(2).expand();

@@ -5,14 +5,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 
-import de.mewel.pixellogic.PixelLogicConstants;
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.asset.PixelLogicAudio;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIElement;
-
-import static de.mewel.pixellogic.PixelLogicConstants.APP_BACKGROUND;
 
 public abstract class PixelLogicUIScreen implements Screen, PixelLogicUIElement {
 
@@ -28,7 +25,8 @@ public abstract class PixelLogicUIScreen implements Screen, PixelLogicUIElement 
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(APP_BACKGROUND.r, APP_BACKGROUND.g, APP_BACKGROUND.b, APP_BACKGROUND.a);
+        Color color = global.getStyle().getBackgroundColor();
+        Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
     }

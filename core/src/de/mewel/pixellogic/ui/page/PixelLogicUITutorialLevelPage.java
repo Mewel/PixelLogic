@@ -1,9 +1,8 @@
 package de.mewel.pixellogic.ui.page;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -13,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
@@ -24,6 +22,7 @@ import de.mewel.pixellogic.asset.PixelLogicAudio;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIButton;
+import de.mewel.pixellogic.ui.component.PixelLogicUIContainer;
 import de.mewel.pixellogic.ui.component.PixelLogicUIModal;
 import de.mewel.pixellogic.ui.component.PixelLogicUISprite;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
@@ -32,14 +31,12 @@ import de.mewel.pixellogic.ui.level.PixelLogicUILevelResolution;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelSwitcher;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevelToolbar;
 import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 import static de.mewel.pixellogic.PixelLogicConstants.KEY_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.KEY_SOUND_VOLUME;
-import static de.mewel.pixellogic.PixelLogicConstants.MAIN_COLOR;
-import static de.mewel.pixellogic.PixelLogicConstants.PIXEL_EMPTY_COLOR;
-import static de.mewel.pixellogic.PixelLogicConstants.SECONDARY_COLOR;
 
 public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
@@ -49,11 +46,11 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
     public PixelLogicUITutorialLevelPage(PixelLogicGlobal global) {
         super(global);
-        this.messageBox = new MessageBox();
+        this.messageBox = new MessageBox(global);
         this.switcherMarker = new PixelLogicUISprite(global);
         this.switcherMarker.setSprite(global.getAssets().getIcon(3));
         this.switcherMarker.getSprite().rotate90(false);
-        this.switcherMarker.setColor(MAIN_COLOR);
+        this.switcherMarker.setColor(global.getStyle().getMainColor());
     }
 
     protected PixelLogicUILevelMenu createMenu() {
@@ -238,11 +235,17 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
     }
 
     @Override
+    public void styleChanged(PixelLogicUIStyle style) {
+        super.styleChanged(style);
+        this.messageBox.styleChanged(style);
+    }
+
+    @Override
     public TutorialScreenListener getScreenListener() {
         return (TutorialScreenListener) super.getScreenListener();
     }
 
-    public class MessageBox extends Container<HorizontalGroup> {
+    public class MessageBox extends PixelLogicUIContainer<HorizontalGroup> {
 
         private Container<Label> labelContainer;
 
@@ -250,19 +253,20 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
         private PixelLogicUISprite next;
 
-        public MessageBox() {
-            super(new HorizontalGroup());
+        public MessageBox(PixelLogicGlobal global) {
+            super(global, new HorizontalGroup());
             createLabel("", null);
             this.next = new PixelLogicUISprite(getGlobal(), 7);
-            this.next.setColor(new Color(SECONDARY_COLOR));
+            this.next.setColor(new Color(getGlobal().getStyle().getSecondaryColor()));
             this.hideNextButton(0);
 
             getActor().addActor(this.labelContainer);
             getActor().addActor(this.next);
+        }
 
-            Texture whiteTexture = PixelLogicUIUtil.getTexture(new Color(PIXEL_EMPTY_COLOR));
-            Sprite s = new Sprite(whiteTexture);
-            this.setBackground(new SpriteDrawable(s));
+        @Override
+        public Color getBackgroundColor() {
+            return getGlobal().getStyle().getPixelEmptyColor();
         }
 
         private void createLabel(String text, TypingListener typingListener) {
@@ -332,7 +336,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
         }
 
         public void showNextButton(final Runnable action) {
-            this.next.setColor(new Color(SECONDARY_COLOR));
+            this.next.setColor(new Color(getGlobal().getStyle().getSecondaryColor()));
             this.next.getColor().a = 0f;
             this.next.addAction(Actions.sequence(
                     Actions.fadeIn(.2f),
@@ -349,7 +353,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
                             });
                         }
                     }),
-                    PixelLogicUIUtil.blinkAction(new Color(SECONDARY_COLOR), .8f)));
+                    PixelLogicUIUtil.blinkAction(new Color(getGlobal().getStyle().getSecondaryColor()), .8f)));
         }
 
         private void hideNextButton(float fadeOutDuration) {

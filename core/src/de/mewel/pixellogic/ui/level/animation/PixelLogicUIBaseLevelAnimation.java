@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
+import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.level.PixelLogicUIBoardPixel;
 import de.mewel.pixellogic.ui.level.PixelLogicUIColumnGroup;
 import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
@@ -16,7 +17,17 @@ public abstract class PixelLogicUIBaseLevelAnimation implements PixelLogicUILeve
 
     protected static final float FADE_OUT_TIME = .4f;
 
+    private PixelLogicGlobal global;
+
     private PixelLogicUILevelPage page;
+
+    public PixelLogicUIBaseLevelAnimation(PixelLogicGlobal global) {
+        this.global = global;
+    }
+
+    public PixelLogicGlobal getGlobal() {
+        return global;
+    }
 
     @Override
     public void setPage(PixelLogicUILevelPage page) {

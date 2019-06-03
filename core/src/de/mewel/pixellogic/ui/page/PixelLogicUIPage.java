@@ -15,8 +15,10 @@ import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.asset.PixelLogicAudio;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.ui.PixelLogicUIElement;
+import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIStage;
 import de.mewel.pixellogic.ui.screen.PixelLogicUIAppScreen;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public abstract class PixelLogicUIPage implements PixelLogicUIElement {
 
@@ -129,6 +131,11 @@ public abstract class PixelLogicUIPage implements PixelLogicUIElement {
         AlphaAction fadeOut = Actions.fadeOut(.2f);
         Action action = after != null ? Actions.sequence(fadeOut, Actions.run(after)) : fadeOut;
         getStage().addAction(action);
+    }
+
+    @Override
+    public void styleChanged(PixelLogicUIStyle style) {
+        PixelLogicUIUtil.changeStyle(this.stage.getRoot(), style);
     }
 
 }

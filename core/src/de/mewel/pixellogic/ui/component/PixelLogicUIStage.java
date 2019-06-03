@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.ui.component;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -10,6 +9,7 @@ import de.mewel.pixellogic.asset.PixelLogicAudio;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.ui.PixelLogicUIElement;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public class PixelLogicUIStage extends Stage implements PixelLogicUIElement {
 
@@ -41,6 +41,11 @@ public class PixelLogicUIStage extends Stage implements PixelLogicUIElement {
     @Override
     public PixelLogicAudio getAudio() {
         return global.getAudio();
+    }
+
+    @Override
+    public void styleChanged(PixelLogicUIStyle style) {
+
     }
 
 }
