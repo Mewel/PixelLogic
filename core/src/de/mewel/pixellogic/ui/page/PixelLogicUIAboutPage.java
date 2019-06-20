@@ -3,6 +3,9 @@ package de.mewel.pixellogic.ui.page;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -16,7 +19,7 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
 
-    private List<TextNode> nodes;
+    private List<Actor> nodes;
 
     public PixelLogicUIAboutPage(PixelLogicGlobal global) {
         super(global, PixelLogicUIPageId.about, global.getAssets().translate("about"), PixelLogicUIPageId.mainMenu);
@@ -63,14 +66,28 @@ public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
         creditsText.append("\n").append(getAssets().translate("about.jose"));
 
         getPageRoot().space(0);
-        this.nodes = new ArrayList<TextNode>();
+        this.nodes = new ArrayList<Actor>();
         this.nodes.add(new TextNode(intro));
+
+        TextNode wn = new TextNode("[MAIN_COLOR]pixellogic.de@gmail.com");
+        wn.getLabel().setDebug(true);
+        wn.getLabel().setAlignment(Align.center);
+        wn.getLabel().addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.log("lol", "lol");
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+        this.nodes.add(wn);
+
+
         this.nodes.add(new HeaderNode(credits));
         this.nodes.add(new TextNode(creditsText.toString()));
         this.nodes.add(new HeaderNode(privacy));
         this.nodes.add(new TextNode(privacyText));
 
-        for (TextNode node : nodes) {
+        for (Actor node : nodes) {
             getPageRoot().addActor(node);
         }
     }
@@ -78,8 +95,9 @@ public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        for (TextNode node : nodes) {
-            node.resize();
+        int componentWidth = getComponentWidth();
+        for (Actor node : nodes) {
+            node.setWidth(componentWidth);
         }
     }
 
@@ -100,17 +118,23 @@ public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
             getActor().setFillParent(true);
             this.label = this.getLabel(text);
             this.label.setWrap(true);
+
+            this.label.setDebug(true);
+
             this.labelContainer = new Container<Label>(label);
             getActor().addActor(this.labelContainer);
             getActor().pack();
         }
 
-        public void resize() {
-            this.width(getComponentWidth());
-            float padding = getPadding() / 2;
-            this.pad(padding, 0, padding, padding * 2);
+        @Override
+        protected void sizeChanged() {
+            super.sizeChanged();
             this.labelContainer.width(getComponentWidth());
             this.labelContainer.getActor().setStyle(getLabelStyle());
+        }
+
+        public Label getLabel() {
+            return label;
         }
 
         protected Label getLabel(String text) {
@@ -130,7 +154,8 @@ public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
         public HeaderNode(String text) {
             super(text);
             this.label.setAlignment(Align.center);
-            this.labelContainer.padTop(12f + Gdx.graphics.getDensity());
+            this.labelContainer.padTop(24f * Gdx.graphics.getDensity());
+            this.labelContainer.padBottom(8f * Gdx.graphics.getDensity());
         }
 
         protected Label.LabelStyle getLabelStyle() {

@@ -8,9 +8,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:3.0.1"
+        classpath 'com.android.tools.build:gradle:3.4.1'
         classpath "com.mobidevelop.robovm:robovm-gradle-plugin:2.3.3"
-        classpath "com.badlogicgames.gdx:gdx-tools:1.9.7"
+        classpath "com.badlogicgames.gdx:gdx-tools:1.9.9"
     }
 
 }
@@ -38,14 +38,14 @@ allprojects {
 }
 
 project(":desktop") {
-    apply plugin: "java"
+    apply plugin: "java-library"
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+        implementation project(":core")
+        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        implementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     }
 }
 
@@ -55,15 +55,15 @@ project(":android") {
     configurations { natives }
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+        implementation project(":core")
+        implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
 
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
@@ -74,33 +74,33 @@ project(":android") {
 }
 
 project(":ios") {
-    apply plugin: "java"
+    apply plugin: "java-library"
     apply plugin: "robovm"
 
 
     dependencies {
-        compile project(":core")
-        compile "com.mobidevelop.robovm:robovm-rt:$roboVMVersion"
-        compile "com.mobidevelop.robovm:robovm-cocoatouch:$roboVMVersion"
-        compile "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
-        compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
+        implementation project(":core")
+        implementation "com.mobidevelop.robovm:robovm-rt:$roboVMVersion"
+        implementation "com.mobidevelop.robovm:robovm-cocoatouch:$roboVMVersion"
+        implementation "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
+        implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
     }
 }
 
 project(":core") {
-    apply plugin: "java"
+    apply plugin: "java-library"
 
 
     dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile "com.rafaskoberg.gdx:typing-label:1.0.6"
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        implementation "com.rafaskoberg.gdx:typing-label:1.0.6"
     }
 }
 
 project(":tests") {
-    apply plugin: "java"
+    apply plugin: "java-library"
 
     sourceSets.test.java.srcDirs = ["src/"]
 
@@ -114,21 +114,21 @@ project(":tests") {
          *
          */
 
-//        compile project(":android")
-//        compile project(":html")
-//        compile project(":desktop")
+//        implementation project(":android")
+//        implementation project(":html")
+//        implementation project(":desktop")
 
 //        if(System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0) {
-//        	compile project(":ios")
+//        	implementation project(":ios")
 //        }
 
-        compile project(":core")
+        implementation project(":core")
 
-        compile "junit:junit:4.+"
-        compile "org.mockito:mockito-all:1.9.+"
+        implementation "junit:junit:4.+"
+        implementation "org.mockito:mockito-all:1.9.+"
 
-        compile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
 
         testCompile 'junit:junit:4.+'
         testCompile "org.mockito:mockito-all:1.9.+"
