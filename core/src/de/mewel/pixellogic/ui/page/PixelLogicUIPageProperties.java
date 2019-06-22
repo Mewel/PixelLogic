@@ -46,6 +46,7 @@ public class PixelLogicUIPageProperties {
         return data.toString();
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T get(String key) {
         Object o = data.get(key);
         if (o == null) {

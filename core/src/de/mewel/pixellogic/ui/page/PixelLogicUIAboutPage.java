@@ -28,6 +28,30 @@ public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
     @Override
     protected void build() {
         String intro = getAssets().translate("about.intro");
+        TextNode emailLink = new TextNode("[MAIN_COLOR]pixellogic.de@gmail.com");
+        emailLink.getLabel().setDebug(true);
+        emailLink.getLabel().setAlignment(Align.center);
+        emailLink.getLabel().addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.net.openURI("mailto:pixellogic.de@gmail.com");
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+
+        String gitHub = "GitHub";
+        String gitHubText = getAssets().translate("about.githubText");
+        TextNode gitHubLink = new TextNode("[MAIN_COLOR]https://github.com/Mewel/pixellogic");
+        gitHubLink.getLabel().setDebug(true);
+        gitHubLink.getLabel().setAlignment(Align.center);
+        gitHubLink.getLabel().addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.net.openURI("https://github.com/Mewel/pixellogic");
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+
         String credits = getAssets().translate("about.credits");
         String privacy = getAssets().translate("about.privacy");
         String privacyText = getAssets().translate("about.privacyText");
@@ -68,20 +92,10 @@ public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
         getPageRoot().space(0);
         this.nodes = new ArrayList<Actor>();
         this.nodes.add(new TextNode(intro));
-
-        TextNode wn = new TextNode("[MAIN_COLOR]pixellogic.de@gmail.com");
-        wn.getLabel().setDebug(true);
-        wn.getLabel().setAlignment(Align.center);
-        wn.getLabel().addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("lol", "lol");
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
-        this.nodes.add(wn);
-
-
+        this.nodes.add(emailLink);
+        this.nodes.add(new HeaderNode(gitHub));
+        this.nodes.add(new TextNode(gitHubText));
+        this.nodes.add(gitHubLink);
         this.nodes.add(new HeaderNode(credits));
         this.nodes.add(new TextNode(creditsText.toString()));
         this.nodes.add(new HeaderNode(privacy));
@@ -118,9 +132,6 @@ public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
             getActor().setFillParent(true);
             this.label = this.getLabel(text);
             this.label.setWrap(true);
-
-            this.label.setDebug(true);
-
             this.labelContainer = new Container<Label>(label);
             getActor().addActor(this.labelContainer);
             getActor().pack();
