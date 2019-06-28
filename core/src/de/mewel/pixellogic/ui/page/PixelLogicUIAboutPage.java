@@ -29,8 +29,6 @@ public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
     protected void build() {
         String intro = getAssets().translate("about.intro");
         TextNode emailLink = new TextNode("[MAIN_COLOR]pixellogic.de@gmail.com");
-        emailLink.getLabel().setDebug(true);
-        emailLink.getLabel().setAlignment(Align.center);
         emailLink.getLabel().addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -39,11 +37,9 @@ public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
             }
         });
 
-        String gitHub = "GitHub";
+        String gitHub = "[TEXT_COLOR]GitHub";
         String gitHubText = getAssets().translate("about.githubText");
         TextNode gitHubLink = new TextNode("[MAIN_COLOR]https://github.com/Mewel/pixellogic");
-        gitHubLink.getLabel().setDebug(true);
-        gitHubLink.getLabel().setAlignment(Align.center);
         gitHubLink.getLabel().addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

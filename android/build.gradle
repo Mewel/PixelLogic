@@ -28,8 +28,8 @@ android {
         applicationId "de.mewel.pixellogic"
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 7
-        versionName "1.0.7"
+        versionCode 8
+        versionName "1.0.8"
     }
     buildTypes {
         release {
