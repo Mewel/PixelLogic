@@ -25,6 +25,7 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
             this.levels = this.loadLevels();
             this.preferences = Gdx.app.getPreferences("pixellogic_" + getName());
             this.setupDone = true;
+            onSetupDone();
         }
     }
 
@@ -68,6 +69,10 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
         this.preferences.putBoolean("replay", false);
         this.preferences.flush();
         this.reset();
+    }
+
+    protected void onSetupDone() {
+
     }
 
     protected PixelLogicLevel next() {

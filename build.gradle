@@ -96,7 +96,7 @@ project(":core") {
     dependencies {
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        implementation "com.rafaskoberg.gdx:typing-label:1.0.6"
+        implementation "com.rafaskoberg.gdx:typing-label:1.1.0"
     }
 }
 

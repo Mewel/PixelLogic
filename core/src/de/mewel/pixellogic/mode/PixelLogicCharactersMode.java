@@ -3,6 +3,7 @@ package de.mewel.pixellogic.mode;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.mewel.pixellogic.event.PixelLogicCharactersFinishedEvent;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelCollection;
@@ -21,9 +22,27 @@ public class PixelLogicCharactersMode extends PixelLogicListLevelMode {
     @Override
     protected void onFinished() {
         super.onFinished();
-
         // back to main menu
         this.getAppScreen().setPage(PixelLogicUIPageId.characters);
+    }
+
+    @Override
+    protected void onSetupDone() {
+        super.onSetupDone();
+        checkAllSolvedAchievement();
+    }
+
+    private void checkAllSolvedAchievement() {
+        boolean allSolved = true;
+        for (PixelLogicLevel level : getLevels()) {
+            if (!isLevelSolved(level)) {
+                allSolved = false;
+                break;
+            }
+        }
+        if (allSolved) {
+            getEventManager().fire(new PixelLogicCharactersFinishedEvent(this));
+        }
     }
 
     @Override
@@ -43,6 +62,7 @@ public class PixelLogicCharactersMode extends PixelLogicListLevelMode {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
             if (PixelLogicLevelStatus.solved.equals(changeEvent.getStatus())) {
                 getPreferences().putBoolean(getSolvedProperty(getLevel()), true).flush();
+                checkAllSolvedAchievement();
             }
         }
     }
