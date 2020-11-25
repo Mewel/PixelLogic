@@ -212,6 +212,10 @@ public class PixelLogicLevel {
         return levelData;
     }
 
+    public Boolean[][] getPixels() {
+        return pixels;
+    }
+
     public void setPixels(Boolean[][] levelData) {
         this.pixels = levelData;
     }

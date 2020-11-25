@@ -6,14 +6,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicListener;
+import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.model.PixelLogicLevelStatus;
 import de.mewel.pixellogic.ui.level.event.PixelLogicBoardChangedEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelSwitcherChangedEvent;
+import de.mewel.pixellogic.util.PixelLogicUtil;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.BLOCK_SOUND_VOLUME;
@@ -35,6 +40,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
     // game stuff
     private PixelLogicLevel level;
     private PixelLogicLevelStatus status;
+    private List<Boolean[][]> undoList;
 
     public PixelLogicUILevel(PixelLogicGlobal global) {
         super(global);
@@ -42,10 +48,13 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         this.level = null;
         this.status = null;
         this.enabled = null;
+        this.undoList = new ArrayList<Boolean[][]>();
     }
 
     public void load(PixelLogicLevel level) {
         this.level = level;
+        this.undoList = new ArrayList<Boolean[][]>();
+        this.undoList.add(PixelLogicUtil.cloneLevel(this.level.getPixels()));
 
         // BOARD
         this.board = new PixelLogicUIBoard(getGlobal());
@@ -183,70 +192,82 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
     private static class LevelListener extends InputListener implements PixelLogicListener {
 
-        private PixelLogicUILevel gui;
+        private PixelLogicUILevel levelUI;
         private UserAction userAction;
         private boolean selectedPixelType;
 
-        LevelListener(PixelLogicUILevel gui) {
-            this.gui = gui;
+        LevelListener(PixelLogicUILevel levelUI) {
+            this.levelUI = levelUI;
             this.userAction = null;
             this.selectedPixelType = true;
         }
 
         @Override
         public void handle(PixelLogicEvent event) {
+            if (event instanceof PixelLogicUserEvent) {
+                PixelLogicUserEvent userEvent = (PixelLogicUserEvent) event;
+                if (userEvent.getType().equals(PixelLogicUserEvent.Type.LEVEL_UNDO_CLICKED)) {
+                    List<Boolean[][]> list = levelUI.undoList;
+                    if (list.size() > 1) {
+                        Boolean[][] last = list.get(list.size() - 2);
+                        setLevel(levelUI, last);
+                        list.remove(list.size() - 1);
+                    }
+                }
+            }
             if (event instanceof PixelLogicLevelSwitcherChangedEvent) {
                 selectedPixelType = ((PixelLogicLevelSwitcherChangedEvent) event).isFillPixel();
             }
             if (event instanceof PixelLogicLevelStatusChangeEvent) {
                 PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
-                gui.status = changeEvent.getStatus();
+                levelUI.status = changeEvent.getStatus();
             }
         }
 
         @Override
         public boolean touchDown(InputEvent event, float boardX, float boardY, int pointer, int button) {
-            if (!PixelLogicLevelStatus.playable.equals(gui.status)) {
+            if (!PixelLogicLevelStatus.playable.equals(levelUI.status)) {
                 return false;
             }
             Vector2 pixel = toPixel(boardX, boardY);
-            if (pixel == null || !gui.isEnabled((int) pixel.y, (int) pixel.x)) {
+            if (pixel == null || !levelUI.isEnabled((int) pixel.y, (int) pixel.x)) {
                 return false;
             }
-            Boolean currentPixel = gui.level.get((int) pixel.y, (int) pixel.x);
+            Boolean currentPixel = levelUI.level.get((int) pixel.y, (int) pixel.x);
             boolean selected = button != 1 && this.selectedPixelType;
             UserAction.Type action = currentPixel == null ? (selected ? UserAction.Type.FILL : UserAction.Type.BLOCK) : UserAction.Type.EMPTY;
-            this.userAction = new UserAction(gui, action, pixel, selected);
-            update(pixel);
+            this.userAction = new UserAction(levelUI, action, new Vector2(boardX, boardY), pixel, selected);
+            update(new Vector2(boardX, boardY), pixel);
             return true;
         }
 
         @Override
         public void touchUp(InputEvent event, float boardX, float boardY, int pointer, int button) {
             this.userAction = null;
+            levelUI.undoList.add(PixelLogicUtil.cloneLevel(levelUI.getLevel().getPixels()));
         }
 
         @Override
         public void touchDragged(InputEvent event, float boardX, float boardY, int pointer) {
             Vector2 pixel = toPixel(boardX, boardY);
-            if (pixel == null || !gui.isEnabled((int) pixel.y, (int) pixel.x)) {
+            if (pixel == null || !levelUI.isEnabled((int) pixel.y, (int) pixel.x)) {
                 return;
             }
-            update(pixel);
+            update(new Vector2(boardX, boardY), pixel);
         }
 
-        private void update(Vector2 pixel) {
-            String before = gui.level.toPixelString();
-            drawPixel(pixel);
-            String after = gui.level.toPixelString();
+        private void update(Vector2 boardPosition, Vector2 pixel) {
+            String before = levelUI.level.toPixelString();
+            drawPixel(boardPosition, pixel);
+            String after = levelUI.level.toPixelString();
             if (!before.equals(after)) {
                 playSound(pixel);
             }
         }
 
         private Vector2 toPixel(float boardX, float boardY) {
-            PixelLogicLevel level = gui.level;
-            PixelLogicUILevelResolution resolution = gui.resolution;
+            PixelLogicLevel level = levelUI.level;
+            PixelLogicUILevelResolution resolution = levelUI.resolution;
             int x = MathUtils.floor(boardX) / resolution.getGamePixelSizeCombined();
             int y = MathUtils.floor(boardY) / resolution.getGamePixelSizeCombined();
             if (x < 0 || y < 0 || x >= level.getColumns() || y >= level.getRows()) {
@@ -255,11 +276,11 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
             return new Vector2(x, y);
         }
 
-        private void drawPixel(Vector2 pixel) {
+        private void drawPixel(Vector2 boardPosition, Vector2 pixel) {
             if (pixel == null || this.userAction == null) {
                 return;
             }
-            this.userAction.update(pixel, gui.level);
+            this.userAction.update(boardPosition, pixel, levelUI.level);
         }
 
         private void playSound(Vector2 pixel) {
@@ -267,9 +288,19 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
                 return;
             }
             boolean type = this.userAction.selectedPixelType;
-            gui.getAudio().playSound(type ? DRAW_SOUND : BLOCK_SOUND, type ? DRAW_SOUND_VOLUME : BLOCK_SOUND_VOLUME);
+            levelUI.getAudio().playSound(type ? DRAW_SOUND : BLOCK_SOUND, type ? DRAW_SOUND_VOLUME : BLOCK_SOUND_VOLUME);
         }
 
+    }
+
+    public static void setLevel(PixelLogicUILevel levelUI, Boolean[][] pixel) {
+        for (int row = 0; row < levelUI.getLevel().getRows(); row++) {
+            for (int col = 0; col < levelUI.getLevel().getColumns(); col++) {
+                if (levelUI.getLevel().get(row, col) != pixel[row][col]) {
+                    levelUI.setPixel(row, col, pixel[row][col]);
+                }
+            }
+        }
     }
 
     private static class UserAction {
@@ -278,63 +309,49 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
             EMPTY, FILL, BLOCK
         }
 
+        private Boolean[][] levelBefore;
+
         private PixelLogicUILevel levelUI;
 
         private Type type;
 
         private boolean selectedPixelType;
 
+        private Vector2 startPosition;
+
         private Vector2 startPixel;
 
-        private Vector2 lastPixel;
-
-        private Boolean horizontal;
-
-        UserAction(PixelLogicUILevel levelUI, Type type, Vector2 startPixel, boolean selectedPixelType) {
+        UserAction(PixelLogicUILevel levelUI, Type type, Vector2 startPosition, Vector2 startPixel, boolean selectedPixelType) {
             this.levelUI = levelUI;
+            this.levelBefore = PixelLogicUtil.cloneLevel(levelUI.getLevel().getPixels());
+            this.startPosition = startPosition;
             this.startPixel = startPixel;
             this.type = type;
             this.selectedPixelType = selectedPixelType;
-            this.horizontal = null;
         }
 
-        void update(Vector2 pixel, PixelLogicLevel level) {
+        void update(Vector2 boardPosition, Vector2 pixel, PixelLogicLevel level) {
             int startColumn = (int) startPixel.y;
             int startRow = (int) startPixel.x;
+
             if (isDrawable(level, startColumn, startRow)) {
                 this.draw(startColumn, startRow, level, type);
             }
-            if (horizontal == null && this.startPixel.equals(pixel)) {
-                return;
-            }
-            if (horizontal == null) {
-                horizontal = pixel.x != this.startPixel.x;
-            }
+            float angle = MathUtils.atan2(boardPosition.y - startPosition.y, boardPosition.x - startPosition.x) * 180 / MathUtils.PI;
+            boolean horizontal = (angle > -45 && angle < 45) || ((angle > 135 && angle <= 180) || (angle < -135 && angle >= -180));
+
+            // reset original level every time
+            setLevel(levelUI, levelBefore);
+
             // draw pixel
             int startFrom = horizontal ? (int) Math.min(startRow, pixel.x) : (int) Math.min(startColumn, pixel.y);
             int startTo = horizontal ? (int) Math.max(startRow, pixel.x) : (int) Math.max(startColumn, pixel.y);
             for (int i = startFrom; i <= startTo; i++) {
-                draw(level, i, type);
-            }
-            // empty old pixel
-            if (this.lastPixel != null) {
-                int lastFrom = horizontal ? (int) Math.min(lastPixel.x, pixel.x) : (int) Math.min(lastPixel.y, pixel.y);
-                for (int i = lastFrom; i < startFrom; i++) {
-                    draw(level, i, Type.EMPTY);
+                int row = horizontal ? (int) startPixel.y : i;
+                int col = horizontal ? i : (int) startPixel.x;
+                if (isDrawable(level, row, col)) {
+                    draw(row, col, level, type);
                 }
-                int lastTo = horizontal ? (int) Math.max(lastPixel.x, pixel.x) : (int) Math.max(lastPixel.y, pixel.y);
-                for (int i = startTo + 1; i <= lastTo; i++) {
-                    draw(level, i, Type.EMPTY);
-                }
-            }
-            this.lastPixel = pixel;
-        }
-
-        private void draw(PixelLogicLevel level, int i, Type drawType) {
-            int row = horizontal ? (int) startPixel.y : i;
-            int col = horizontal ? i : (int) startPixel.x;
-            if (isDrawable(level, row, col)) {
-                draw(row, col, level, drawType);
             }
         }
 

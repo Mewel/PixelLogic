@@ -51,6 +51,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
         this.switcherMarker.setSprite(global.getAssets().getIcon(3));
         this.switcherMarker.getSprite().rotate90(false);
         this.switcherMarker.setColor(global.getStyle().getMainColor());
+        this.toolbar.getUndoButton().remove();
     }
 
     protected PixelLogicUILevelMenu createMenu() {

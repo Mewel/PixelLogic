@@ -1,9 +1,13 @@
 package de.mewel.pixellogic.ui.page;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -48,7 +52,6 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
         for (final PixelLogicLevel level : levels) {
             Sprite image = collection.getSprite(level.getName(), levelTexture, 8, 8);
             LevelContainer levelContainer = new LevelContainer(level, image, getGlobal());
-
             levelContainer.addListener(new PixelLogicUIButtonListener() {
                 @Override
                 public void onClick() {
@@ -122,6 +125,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
 
         LevelContainer(PixelLogicLevel level, Sprite image, PixelLogicGlobal global) {
             super(global, new HorizontalGroup());
+            this.setTouchable(Touchable.enabled);
             this.level = level;
             this.image = image;
 
@@ -132,6 +136,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
 
             this.logo = new PixelLogicUISprite(getGlobal());
             this.logo.setUseDefaultIconSize(false);
+
             getActor().addActor(this.logo);
             this.updateLogo();
 
@@ -167,8 +172,6 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
             this.logo.setSize(logoSize, logoSize);
             this.labelContainer.width(getComponentWidth());
             this.labelContainer.getActor().setStyle(getLabelStyle(getGlobal().getStyle().getTextColor()));
-
-            this.width(width);
         }
 
         public Label getLabel(String text, Color color) {

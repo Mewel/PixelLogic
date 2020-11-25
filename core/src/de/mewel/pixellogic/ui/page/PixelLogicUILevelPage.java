@@ -7,8 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Scaling;
 
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -236,9 +238,10 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         Class<? extends PixelLogicUILevelAnimation> animationClass = SOLVED_ANIMATION_MAP.get(animationKey);
         PixelLogicUILevelAnimation animation;
         try {
-            animation = animationClass.newInstance();
+            Constructor<? extends PixelLogicUILevelAnimation> constructor = animationClass.getConstructor(PixelLogicGlobal.class);
+            animation = constructor.newInstance(getGlobal());
         } catch (Exception e) {
-            animation = new PixelLogicUIBoardSolvedAnimation(getGlobal());
+            throw new GdxRuntimeException("Unable to instantiate animation class " + animationClass.getName(), e);
         }
         animation.setPage(this);
         animation.execute();

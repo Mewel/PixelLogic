@@ -3,7 +3,7 @@ package de.mewel.pixellogic.event;
 public class PixelLogicUserEvent extends PixelLogicEvent {
 
     public enum Type {
-        BACK_BUTTON_CLICKED, LEVEL_MENU_CLICKED, LEVEL_MENU_CLOSED
+        BACK_BUTTON_CLICKED, LEVEL_MENU_CLICKED, LEVEL_MENU_CLOSED, LEVEL_UNDO_CLICKED
     }
 
     private Type type;

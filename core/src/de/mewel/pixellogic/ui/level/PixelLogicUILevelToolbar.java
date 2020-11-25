@@ -19,6 +19,7 @@ import de.mewel.pixellogic.event.PixelLogicTimerEvent;
 import de.mewel.pixellogic.event.PixelLogicUserEvent;
 import de.mewel.pixellogic.model.PixelLogicLevel;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
+import de.mewel.pixellogic.ui.component.PixelLogicUIButtonListener;
 import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
@@ -30,9 +31,11 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
 
     private MenuButton menuButton;
 
+    private PixelLogicUIUndoButton undoButton;
+
     private PixelLogicUILevelSwitcher switcher;
 
-    private InputListener menuButtonListener, switcherListener;
+    private InputListener menuButtonListener, undoButtonListener, switcherListener;
 
     private PixelLogicLevel level;
 
@@ -64,6 +67,13 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
             }
 
         };
+        this.undoButton = new PixelLogicUIUndoButton(getGlobal());
+        this.undoButtonListener = new PixelLogicUIButtonListener() {
+            @Override
+            public void onClick() {
+                getEventManager().fire(new PixelLogicUserEvent(PixelLogicUILevelToolbar.this, PixelLogicUserEvent.Type.LEVEL_UNDO_CLICKED));
+            }
+        };
         this.switcher = new PixelLogicUILevelSwitcher(getGlobal());
         this.switcherListener = new InputListener() {
 
@@ -76,6 +86,7 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
         };
 
         this.addActor(this.menuButton);
+        this.addActor(this.undoButton);
         this.addActor(this.switcher);
         this.updateBounds();
 
@@ -85,20 +96,24 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
     public void show(PixelLogicLevel level) {
         this.level = level;
         this.menuButton.addAction(Actions.fadeIn(.3f));
+        this.undoButton.addAction(Actions.fadeIn(.3f));
         this.switcher.addAction(Actions.fadeIn(.3f));
         this.switcher.reset();
 
         this.menuButton.addListener(this.menuButtonListener);
+        this.undoButton.addListener(this.undoButtonListener);
         this.switcher.addListener(this.switcherListener);
     }
 
     public void solve() {
         // rm toolbar listeners
         this.menuButton.removeListener(menuButtonListener);
+        this.undoButton.removeListener(undoButtonListener);
         this.switcher.removeListener(switcherListener);
 
         // fade out toolbar elements
         this.menuButton.addAction(Actions.fadeOut(.3f));
+        this.undoButton.addAction(Actions.fadeOut(.3f));
         this.switcher.addAction(Actions.fadeOut(.3f));
 
         // display solved text
@@ -166,6 +181,7 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
                 Label.LabelStyle style = new Label.LabelStyle(labelFont, Color.WHITE);
                 this.timerLabel = new Label("00:00", style);
                 this.addActor(this.timerLabel);
+                updateTimerLabelPosition();
             }
             if (timerEvent.getStatus().equals(PixelLogicTimerEvent.Status.start)) {
                 this.timerRunning = true;
@@ -193,7 +209,6 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
     private void setTimer(long passedTime) {
         this.timerStart = System.currentTimeMillis() - passedTime;
         this.timerLabel.setText(PixelLogicUIUtil.formatMilliseconds(System.currentTimeMillis() - this.timerStart));
-        centerLabel(this.timerLabel);
     }
 
     @Override
@@ -232,14 +247,29 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
         int iconSize = (int) this.getHeight() - (padding * 2);
         int switcherWidth = (int) this.getHeight() * 2;
         this.menuButton.setBounds(padding, padding, iconSize, iconSize);
+        this.undoButton.setBounds(this.getWidth() - switcherWidth - (1.4f * iconSize),
+                (this.getHeight() - iconSize) / 2, iconSize, iconSize);
         this.switcher.setBounds((this.getWidth() - switcherWidth) - padding,
                 (this.getHeight() - iconSize) / 2, switcherWidth, iconSize);
+
         centerLabel(this.solvedLabel);
-        centerLabel(this.timerLabel);
+        updateTimerLabelPosition();
+    }
+
+    private void updateTimerLabelPosition() {
+        if (this.timerLabel != null) {
+            int tX = (int) (this.menuButton.getX() + this.menuButton.getWidth());
+            int space = (int) this.undoButton.getX() - tX;
+            this.timerLabel.setPosition(tX + space / 2 - this.timerLabel.getPrefWidth() / 2, getHeight() / 2 - this.timerLabel.getPrefHeight() / 2);
+        }
     }
 
     public PixelLogicUILevelSwitcher getSwitcher() {
         return this.switcher;
+    }
+
+    public PixelLogicUIUndoButton getUndoButton() {
+        return this.undoButton;
     }
 
     private static class MenuButton extends Actor {

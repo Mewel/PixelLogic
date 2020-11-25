@@ -132,7 +132,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         // version
         BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 0);
         Label.LabelStyle labelStyle = new Label.LabelStyle(labelFont, style.getTextColor());
-        this.versionLabel = new Label("1.1.0", labelStyle);
+        this.versionLabel = new Label("1.2.0", labelStyle);
         getStage().getRoot().addActor(this.versionLabel);
 
         // settings
