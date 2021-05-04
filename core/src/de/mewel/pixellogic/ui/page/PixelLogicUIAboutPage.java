@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 
@@ -16,6 +14,7 @@ import java.util.List;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
+import de.mewel.pixellogic.ui.component.PixelLogicUIText;
 
 public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
 
@@ -117,41 +116,15 @@ public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
         fadeIn(null);
     }
 
-    private class TextNode extends Container<HorizontalGroup> {
+    private class TextNode extends PixelLogicUIText {
 
-        protected Label label;
-
-        protected Container<Label> labelContainer;
-
-        public TextNode(final String text) {
-            super(new HorizontalGroup());
-            getActor().setFillParent(true);
-            this.label = this.getLabel(text);
-            this.label.setWrap(true);
-            this.labelContainer = new Container<Label>(label);
-            getActor().addActor(this.labelContainer);
-            getActor().pack();
+        public TextNode(String text) {
+            super(getGlobal(), text);
         }
 
         @Override
-        protected void sizeChanged() {
-            super.sizeChanged();
-            this.labelContainer.width(getComponentWidth());
-            this.labelContainer.getActor().setStyle(getLabelStyle());
-        }
-
-        public Label getLabel() {
-            return label;
-        }
-
-        protected Label getLabel(String text) {
-            Label.LabelStyle style = getLabelStyle();
-            return new Label(text, style);
-        }
-
-        protected Label.LabelStyle getLabelStyle() {
-            BitmapFont font = PixelLogicUIUtil.getMainFont(getAssets());
-            return new Label.LabelStyle(font, Color.WHITE);
+        public int getComponentWidth() {
+            return PixelLogicUIAboutPage.this.getComponentWidth();
         }
 
     }

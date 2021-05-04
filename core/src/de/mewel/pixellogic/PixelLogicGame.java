@@ -2,6 +2,8 @@ package de.mewel.pixellogic;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import de.mewel.pixellogic.achievements.PixelLogicAchievements;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
@@ -30,10 +32,12 @@ public class PixelLogicGame extends Game implements PixelLogicGlobal {
 
     private PixelLogicUIStyleController styleController;
 
+    private Exception initException;
+
     @Override
     public void create() {
         // libgdx init
-        Gdx.input.setCatchBackKey(true);
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
 
         this.splashScreen = new PixelLogicUISplashScreen();
         this.setScreen(this.splashScreen);
@@ -42,25 +46,38 @@ public class PixelLogicGame extends Game implements PixelLogicGlobal {
     }
 
     private void initAndRun() {
+        initException = null;
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Gdx.app.postRunnable(new Runnable() {
                     @Override
                     public void run() {
-                        // load assets
-                        PixelLogicGame.this.init();
-                        // fade out splash screen and run game
-                        splashScreen.close(1f, new Runnable() {
-                            @Override
-                            public void run() {
-                                PixelLogicGame.this.run();
-                            }
-                        });
+                        try {
+                            // load assets
+                            PixelLogicGame.this.init();
+                            // fade out splash screen and run game
+                            splashScreen.close(1f, new Runnable() {
+                                @Override
+                                public void run() {
+                                    PixelLogicGame.this.run();
+                                }
+                            });
+                        } catch (Exception e) {
+                            initException = e;
+                        }
                     }
                 });
             }
         }).start();
+    }
+
+    @Override
+    public void render() {
+        super.render();
+        if (initException != null) {
+            throw new GdxRuntimeException(initException);
+        }
     }
 
     private void init() {

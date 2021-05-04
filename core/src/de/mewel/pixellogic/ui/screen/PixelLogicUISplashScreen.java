@@ -97,4 +97,5 @@ public class PixelLogicUISplashScreen implements Screen {
             this.logoTexture.dispose();
         }
     }
+
 }

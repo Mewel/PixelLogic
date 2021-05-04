@@ -60,12 +60,6 @@ public class PixelLogicPictureMode extends PixelLogicListLevelMode {
         destroyPicture();
     }
 
-    @Override
-    public void run(PixelLogicLevel level) {
-        storeLastPlayedLevel(level);
-        super.run(level);
-    }
-
     public PixelLogicLevelCollection getCollection() {
         return this.collection;
     }
@@ -76,7 +70,7 @@ public class PixelLogicPictureMode extends PixelLogicListLevelMode {
 
     public int getSolvedIndex() {
         String levelName = getPreferences().getString(getLastPlayedLevelProperty(), null);
-        return levelName != null ? Integer.valueOf(levelName.substring(1)) - 1 : -1;
+        return levelName != null ? Integer.parseInt(levelName.substring(1)) - 1 : -1;
     }
 
     public int getNextLevelIndex() {
