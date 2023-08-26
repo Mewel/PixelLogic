@@ -11,6 +11,7 @@
             android:name="de.mewel.pixellogic.AndroidLauncher"
             android:label="@string/app_name" 
             android:screenOrientation="portrait"
+            android:exported="true"
             android:keepScreenOn="true"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
             <intent-filter>
