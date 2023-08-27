@@ -102,7 +102,7 @@ public class PixelLogicSolverTest {
     }
 
     private PixelLogicSolver.Line buildLine(Boolean[] bLine, int... numbers) {
-        List<Integer> numberList = new ArrayList<Integer>();
+        List<Integer> numberList = new ArrayList<>();
         for (int i : numbers) {
             numberList.add(i);
         }

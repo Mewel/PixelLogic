@@ -12,7 +12,7 @@ public class PixelLogicUIAchievementBlock extends PixelLogicUIGroup {
 
     private PixelLogicUIColoredSurface background;
 
-    private VerticalGroup container;
+    private final VerticalGroup container;
 
     private Label header, description;
 

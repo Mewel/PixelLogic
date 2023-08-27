@@ -32,7 +32,7 @@ android {
         applicationId "de.mewel.pixellogic"
         minSdkVersion 24
         targetSdkVersion 33
-        versionCode 31
+        versionCode 32
         versionName "1.2.3"
     }
     buildTypes {

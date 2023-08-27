@@ -9,9 +9,9 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 public class PixelLogicUILevelResolution {
 
-    private static float PIXEL_SPACE_RELATION = 17f;
+    private static final float PIXEL_SPACE_RELATION = 17f;
 
-    private PixelLogicLevel level;
+    private final PixelLogicLevel level;
 
     private int gamePixelSize;
 

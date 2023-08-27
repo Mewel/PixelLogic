@@ -12,15 +12,16 @@ public class PixelLogicLevel {
 
     private String displayName;
 
-    private int rows, cols;
+    private final int rows;
+    private final int cols;
 
     private Boolean[][] pixels;
 
-    private Boolean[][] levelData;
+    private final Boolean[][] levelData;
 
     private Integer[][] image;
 
-    private Integer[] levelImageOffset;
+    private final Integer[] levelImageOffset;
 
     public PixelLogicLevel(Boolean[][] levelData, boolean preserveSize) {
         this(null, levelData, preserveSize);

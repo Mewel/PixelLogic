@@ -10,7 +10,7 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 public class PixelLogicUIMessageModal extends PixelLogicUIModal {
 
-    private String message;
+    private final String message;
 
     public PixelLogicUIMessageModal(String message, PixelLogicGlobal global, Stage stage) {
         super(global, stage.getRoot());

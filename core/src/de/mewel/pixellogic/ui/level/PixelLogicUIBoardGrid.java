@@ -15,7 +15,7 @@ public class PixelLogicUIBoardGrid extends PixelLogicUIActor {
 
     private static final int DISTANCE = 5;
 
-    private PixelLogicLevel level;
+    private final PixelLogicLevel level;
 
     private PixelLogicUILevelResolution resolution;
 

@@ -21,7 +21,7 @@ import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicUILevelMenu extends PixelLogicUIModal {
 
-    protected PixelLogicUILevelPage page;
+    protected final PixelLogicUILevelPage page;
 
     protected PixelLogicUIButton solveLevelButton, resetLevelButton, continueButton, backButton;
 

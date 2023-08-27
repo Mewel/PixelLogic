@@ -135,13 +135,13 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
 
     protected class Header extends PixelLogicUIGroup {
 
-        private PixelLogicUIColoredSurface background;
+        private final PixelLogicUIColoredSurface background;
 
         private Label label;
 
-        private String text;
+        private final String text;
 
-        private PixelLogicUISprite backButton;
+        private final PixelLogicUISprite backButton;
 
         public Header(PixelLogicGlobal global, String text, final PixelLogicUIPageId backPageId) {
             super(global);

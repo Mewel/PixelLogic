@@ -15,11 +15,11 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 public abstract class PixelLogicUIModal extends PixelLogicUIGroup {
 
-    private Group parent;
+    private final Group parent;
 
-    private PixelLogicUIColoredSurface backdrop;
+    private final PixelLogicUIColoredSurface backdrop;
 
-    private Table content;
+    private final Table content;
 
     private float fadeInDuration;
 

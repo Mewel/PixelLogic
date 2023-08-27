@@ -17,7 +17,7 @@ import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public class PixelLogicUIContainer<T extends WidgetGroup> extends Container<T> implements PixelLogicUIElement {
 
-    private PixelLogicGlobal global;
+    private final PixelLogicGlobal global;
 
     private Texture backgroundTexture;
 

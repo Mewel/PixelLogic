@@ -13,15 +13,15 @@ import de.mewel.pixellogic.ui.PixelLogicUIActor;
 
 public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIActor {
 
-    private int pixel = 25;
+    private final int pixel = 25;
 
     private float rotate = 0;
 
     private float fadeTicker = 0;
 
-    private Pixel board[][];
+    private final Pixel[][] board;
 
-    private Random random;
+    private final Random random;
 
     public PixelLogicUIRotatingBoardBackground(PixelLogicGlobal global) {
         super(global);
@@ -53,7 +53,7 @@ public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIActor {
         ShapeRenderer renderer = this.getAssets().getShapeRenderer();
         renderer.setProjectionMatrix(batch.getProjectionMatrix());
         renderer.setTransformMatrix(batch.getTransformMatrix());
-        renderer.translate((int) (boardWidth / 2), (int) (boardHeight / 2), 0);
+        renderer.translate(boardWidth / 2f, boardHeight / 2f, 0);
         renderer.rotate(0, 0, 1, rotate);
 
         // render board
@@ -134,7 +134,8 @@ public class PixelLogicUIRotatingBoardBackground extends PixelLogicUIActor {
 
     private static class Pixel {
 
-        public int row, col;
+        public final int row;
+        public final int col;
 
         public Color color;
 

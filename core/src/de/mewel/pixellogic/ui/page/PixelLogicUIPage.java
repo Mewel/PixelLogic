@@ -22,9 +22,9 @@ import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public abstract class PixelLogicUIPage implements PixelLogicUIElement {
 
-    private Stage stage;
+    private final Stage stage;
 
-    private PixelLogicUIPageId pageId;
+    private final PixelLogicUIPageId pageId;
 
     private PixelLogicUIPageProperties properties;
 

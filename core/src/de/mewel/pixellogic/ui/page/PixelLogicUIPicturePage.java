@@ -151,8 +151,8 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
             float maxSize = Math.min(width, height / 1.75f) - padding;
             float mult = Math.min(maxSize / pixmap.getWidth(), maxSize / pixmap.getHeight());
 
-            getActor().pad(padding / 2);
-            getActor().space(padding / 4);
+            getActor().pad(padding / 2f);
+            getActor().space(padding / 4f);
 
             this.picture.setSize(pixmap.getWidth() * mult, pixmap.getHeight() * mult);
             this.labelContainer.width(getComponentWidth());

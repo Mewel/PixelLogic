@@ -3,8 +3,6 @@ package de.mewel.pixellogic.util;
 import com.badlogic.gdx.graphics.Color;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -104,13 +102,8 @@ public class PixelLogicUtil {
      */
     public static <K, V extends Comparable<? super V>> List<K> sortByValue(Map<K, V> map) {
         List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
-        Collections.sort(list, new Comparator<Object>() {
-            @SuppressWarnings("unchecked")
-            public int compare(Object o1, Object o2) {
-                return ((Map.Entry<K, V>) (o1)).getValue().compareTo(((Map.Entry<K, V>) (o2)).getValue());
-            }
-        });
-        List<K> result = new ArrayList<K>();
+        list.sort(Map.Entry.comparingByValue());
+        List<K> result = new ArrayList<>();
         for (Iterator<Map.Entry<K, V>> it = list.iterator(); it.hasNext(); ) {
             Map.Entry<K, V> entry = it.next();
             result.add(entry.getKey());
@@ -270,9 +263,7 @@ public class PixelLogicUtil {
         int right = offset[3];
         Boolean[][] newLevel = new Boolean[level.length - (top + bottom)][level[0].length - (left + right)];
         for (int row = 0; row < newLevel.length; row++) {
-            for (int col = 0; col < newLevel[0].length; col++) {
-                newLevel[row][col] = level[top + row][left + col];
-            }
+            System.arraycopy(level[top + row], left, newLevel[row], 0, newLevel[0].length);
         }
         return newLevel;
     }
@@ -339,9 +330,7 @@ public class PixelLogicUtil {
         int cols = level[0].length;
         Boolean[][] newLevel = new Boolean[rows][cols];
         for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                newLevel[row][col] = level[row][col];
-            }
+            System.arraycopy(level[row], 0, newLevel[row], 0, cols);
         }
         return newLevel;
     }

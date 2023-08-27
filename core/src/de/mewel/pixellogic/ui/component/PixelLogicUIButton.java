@@ -21,11 +21,11 @@ public abstract class PixelLogicUIButton extends PixelLogicUIGroup {
 
     private String text;
 
-    private PixelLogicUIColoredSurface background;
+    private final PixelLogicUIColoredSurface background;
 
-    private PixelLogicUIButtonListener listener;
+    private final PixelLogicUIButtonListener listener;
 
-    private AtomicBoolean blocked;
+    private final AtomicBoolean blocked;
 
     public PixelLogicUIButton(PixelLogicGlobal global, String text) {
         super(global);

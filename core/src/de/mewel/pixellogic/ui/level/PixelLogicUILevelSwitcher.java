@@ -23,13 +23,14 @@ import static de.mewel.pixellogic.PixelLogicConstants.TOOLBAR_SWITCHER_INACTIVE_
 
 public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
 
-    private Texture background;
+    private final Texture background;
 
-    private Sprite penSprite, xSprite;
+    private final Sprite penSprite;
+    private final Sprite xSprite;
 
     private Color penColor, xColor;
 
-    private Marker marker;
+    private final Marker marker;
 
     private boolean fillPixel;
 
