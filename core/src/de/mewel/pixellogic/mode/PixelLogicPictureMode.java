@@ -23,7 +23,7 @@ import de.mewel.pixellogic.util.PixelLogicLevelLoader;
 
 public class PixelLogicPictureMode extends PixelLogicListLevelMode {
 
-    private PixelLogicLevelCollection collection;
+    private final PixelLogicLevelCollection collection;
 
     private Group pageRoot;
 
@@ -51,7 +51,7 @@ public class PixelLogicPictureMode extends PixelLogicListLevelMode {
     @Override
     protected List<PixelLogicLevel> loadLevels() {
         List<PixelLogicLevel> levels = PixelLogicLevelLoader.load(getCollection());
-        return new ArrayList<PixelLogicLevel>(levels);
+        return new ArrayList<>(levels);
     }
 
     @Override
@@ -90,9 +90,9 @@ public class PixelLogicPictureMode extends PixelLogicListLevelMode {
         super.handle(event);
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
-            if (PixelLogicLevelStatus.solved.equals(changeEvent.getStatus())) {
+            if (PixelLogicLevelStatus.SOLVED.equals(changeEvent.getStatus())) {
                 handleLevelSolved();
-            } else if (PixelLogicLevelStatus.beforeDestroyed.equals(changeEvent.getStatus())) {
+            } else if (PixelLogicLevelStatus.BEFORE_DESTROYED.equals(changeEvent.getStatus())) {
                 destroyPicture();
             }
         }
@@ -120,12 +120,7 @@ public class PixelLogicPictureMode extends PixelLogicListLevelMode {
         picture.addAction(new SequenceAction(
                 Actions.delay(delay),
                 Actions.fadeIn(.5f),
-                Actions.run(new Runnable() {
-                    @Override
-                    public void run() {
-                        picture.animate(board, levelIndex, oldLevelIndex, delay + .2f);
-                    }
-                })));
+                Actions.run(() -> picture.animate(board, levelIndex, oldLevelIndex, delay + .2f))));
     }
 
     private void updatePictureBounds(PixelLogicUILevelPage page) {
@@ -138,18 +133,14 @@ public class PixelLogicPictureMode extends PixelLogicListLevelMode {
         int pictureWidth = (int) (pixmapWidth * scale);
         int pictureHeight = (int) (pixmapHeight * scale);
 
-        this.picture.setPosition(page.getWidth() / 2 - pictureWidth / 2, page.getHeight() / 2 - pictureHeight / 2 + toolbarHeight / 2);
+        this.picture.setPosition(page.getWidth() / 2 - pictureWidth / 2f,
+                page.getHeight() / 2 - pictureHeight / 2f + toolbarHeight / 2);
         this.picture.setSize(pictureWidth, pictureHeight);
     }
 
     private void destroyPicture() {
         if (pageRoot != null && picture != null) {
-            picture.addAction(new SequenceAction(Actions.fadeOut(.2f), Actions.run(new Runnable() {
-                @Override
-                public void run() {
-                    pageRoot.removeActor(picture);
-                }
-            })));
+            picture.addAction(new SequenceAction(Actions.fadeOut(.2f), Actions.run(() -> pageRoot.removeActor(picture))));
         }
     }
 

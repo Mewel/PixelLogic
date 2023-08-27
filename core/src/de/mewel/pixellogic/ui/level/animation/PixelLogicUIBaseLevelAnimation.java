@@ -17,7 +17,7 @@ public abstract class PixelLogicUIBaseLevelAnimation implements PixelLogicUILeve
 
     protected static final float FADE_OUT_TIME = .4f;
 
-    private PixelLogicGlobal global;
+    private final PixelLogicGlobal global;
 
     private PixelLogicUILevelPage page;
 

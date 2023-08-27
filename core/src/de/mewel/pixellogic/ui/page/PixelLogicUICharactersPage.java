@@ -1,12 +1,9 @@
 package de.mewel.pixellogic.ui.page;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
@@ -48,7 +45,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
         PixelLogicLevelCollection collection = this.mode.getCollection();
         this.levelTexture = new Texture(collection.getPixmap());
 
-        this.levelContainers = new ArrayList<LevelContainer>();
+        this.levelContainers = new ArrayList<>();
         for (final PixelLogicLevel level : levels) {
             Sprite image = collection.getSprite(level.getName(), levelTexture, 8, 8);
             LevelContainer levelContainer = new LevelContainer(level, image, getGlobal());
@@ -58,12 +55,9 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
                     PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                     pageProperties.put("menuBackId", PixelLogicUIPageId.characters);
                     getAudio().playSound(BUTTON_SOUND, BUTTON_SOUND_VOLUME);
-                    getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties, new Runnable() {
-                        @Override
-                        public void run() {
-                            mode.activate();
-                            mode.run(level);
-                        }
+                    getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties, () -> {
+                        mode.activate();
+                        mode.run(level);
                     });
                 }
             });
@@ -82,9 +76,9 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
     protected void updateSize() {
         getPageRoot().setWidth(this.getWidth());
         getPageRoot().pad(0);
-        getPageRoot().padTop(getPadding() / 4);
-        getPageRoot().padBottom(getPadding() / 4);
-        getPageRoot().space(getSpace() / 8);
+        getPageRoot().padTop(getPadding() / 4f);
+        getPageRoot().padBottom(getPadding() / 4f);
+        getPageRoot().space(getSpace() / 8f);
 
         for (LevelContainer levelContainer : this.levelContainers) {
             levelContainer.resize((int) this.getWidth(), (int) this.getHeight());
@@ -115,13 +109,13 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
 
     private class LevelContainer extends PixelLogicUIContainer<HorizontalGroup> {
 
-        private Sprite image;
+        private final Sprite image;
 
-        private PixelLogicLevel level;
+        private final PixelLogicLevel level;
 
-        private PixelLogicUISprite logo;
+        private final PixelLogicUISprite logo;
 
-        private Container<Label> labelContainer;
+        private final Container<Label> labelContainer;
 
         LevelContainer(PixelLogicLevel level, Sprite image, PixelLogicGlobal global) {
             super(global, new HorizontalGroup());
@@ -142,7 +136,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
 
             Label descriptionLabel = this.getLabel(level.getDisplayName(), getGlobal().getStyle().getTextColor());
             descriptionLabel.setWrap(true);
-            this.labelContainer = new Container<Label>(descriptionLabel);
+            this.labelContainer = new Container<>(descriptionLabel);
             getActor().addActor(this.labelContainer);
             this.updateLabel();
         }
@@ -167,7 +161,7 @@ public class PixelLogicUICharactersPage extends PixelLogicUIBasePage {
 
             int groupPadding = padding / 5;
             getActor().pad(groupPadding);
-            getActor().space(padding / 2);
+            getActor().space(padding / 2f);
 
             this.logo.setSize(logoSize, logoSize);
             this.labelContainer.width(getComponentWidth());

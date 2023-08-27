@@ -28,7 +28,7 @@ public class PixelLogicBitmapFontLoader extends AsynchronousAssetLoader<BitmapFo
     @Override
     public BitmapFont loadSync(AssetManager manager, String fileName, FileHandle file, PixelLogicBitmapFontLoaderParameters parameter) {
         int n = data.getImagePaths().length;
-        Array<TextureRegion> regs = new Array<TextureRegion>(n);
+        Array<TextureRegion> regs = new Array<>(n);
         for (int i = 0; i < n; i++) {
             regs.add(new TextureRegion(manager.get(data.getImagePath(i), Texture.class)));
         }
@@ -37,7 +37,7 @@ public class PixelLogicBitmapFontLoader extends AsynchronousAssetLoader<BitmapFo
 
     @Override
     public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, PixelLogicBitmapFontLoaderParameters parameter) {
-        Array<AssetDescriptor> deps = new Array<AssetDescriptor>();
+        Array<AssetDescriptor> deps = new Array<>();
         FileHandle fileHandle = parameter.fileName != null ? Gdx.files.internal(parameter.fileName) : file;
         data = new BitmapFont.BitmapFontData(fileHandle, parameter.flip);
         data.setScale(parameter.scale);
@@ -48,7 +48,7 @@ public class PixelLogicBitmapFontLoader extends AsynchronousAssetLoader<BitmapFo
             textureParams.genMipMaps = parameter.genMipMaps;
             textureParams.minFilter = parameter.minFilter;
             textureParams.magFilter = parameter.magFilter;
-            AssetDescriptor<Texture> descriptor = new AssetDescriptor<Texture>(resolved, Texture.class, textureParams);
+            AssetDescriptor<Texture> descriptor = new AssetDescriptor<>(resolved, Texture.class, textureParams);
             deps.add(descriptor);
         }
         return deps;
@@ -59,22 +59,22 @@ public class PixelLogicBitmapFontLoader extends AsynchronousAssetLoader<BitmapFo
         /**
          * Flips the font vertically if {@code true}. Defaults to {@code false}.
          **/
-        public boolean flip = false;
+        public final boolean flip = false;
 
         /**
          * Generates mipmaps for the font if {@code true}. Defaults to {@code false}.
          **/
-        public boolean genMipMaps = false;
+        public final boolean genMipMaps = false;
 
         /**
          * The {@link Texture.TextureFilter} to use when scaling down the {@link BitmapFont}. Defaults to {@link Texture.TextureFilter#Nearest}.
          */
-        public Texture.TextureFilter minFilter = Texture.TextureFilter.Nearest;
+        public final Texture.TextureFilter minFilter = Texture.TextureFilter.Nearest;
 
         /**
          * The {@link Texture.TextureFilter} to use when scaling up the {@link BitmapFont}. Defaults to {@link Texture.TextureFilter#Nearest}.
          */
-        public Texture.TextureFilter magFilter = Texture.TextureFilter.Nearest;
+        public final Texture.TextureFilter magFilter = Texture.TextureFilter.Nearest;
 
         public String fileName = null;
 

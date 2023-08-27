@@ -4,7 +4,7 @@ public class PixelLogicSecretLevelEvent extends PixelLogicEvent {
 
     public enum Type {find, beat}
 
-    private Type type;
+    private final Type type;
 
     public PixelLogicSecretLevelEvent(Object source, Type type) {
         super(source);

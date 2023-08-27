@@ -13,7 +13,7 @@ import de.mewel.pixellogic.ui.PixelLogicUIElement;
 
 public abstract class PixelLogicUIScreen implements Screen, PixelLogicUIElement {
 
-    private PixelLogicGlobal global;
+    private final PixelLogicGlobal global;
 
     public PixelLogicUIScreen(PixelLogicGlobal global) {
         this.global = global;

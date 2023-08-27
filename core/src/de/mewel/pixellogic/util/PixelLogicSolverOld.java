@@ -50,7 +50,7 @@ public class PixelLogicSolverOld {
     }
 
     private List<Boolean[]> bruteForceLine(Boolean[] line, List<Integer> numbers, int startIndex) {
-        List<Boolean[]> lines = new ArrayList<Boolean[]>();
+        List<Boolean[]> lines = new ArrayList<>();
         if (PixelLogicUtil.countPixel(line) >= PixelLogicUtil.countPixel(numbers)) {
             return lines;
         }

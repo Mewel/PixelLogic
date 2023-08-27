@@ -6,7 +6,7 @@ import de.mewel.pixellogic.ui.page.PixelLogicUIPageProperties;
 
 public class PixelLogicUIPageChangeEvent extends PixelLogicEvent {
 
-    private PixelLogicUIPageProperties data;
+    private final PixelLogicUIPageProperties data;
 
     public PixelLogicUIPageChangeEvent(Object source, PixelLogicUIPageProperties data) {
         super(source);

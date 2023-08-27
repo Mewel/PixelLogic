@@ -5,7 +5,7 @@ import de.mewel.pixellogic.model.PixelLogicLevel;
 
 public class PixelLogicNextLevelEvent extends PixelLogicEvent {
 
-    private PixelLogicLevel nextLevel;
+    private final PixelLogicLevel nextLevel;
 
     public PixelLogicNextLevelEvent(PixelLogicLevelMode source, PixelLogicLevel nextLevel) {
         super(source);

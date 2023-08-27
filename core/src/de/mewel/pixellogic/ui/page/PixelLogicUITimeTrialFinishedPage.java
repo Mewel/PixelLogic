@@ -12,7 +12,7 @@ import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 
 public class PixelLogicUITimeTrialFinishedPage extends PixelLogicUIPage {
 
-    private Label resultLabel;
+    private final Label resultLabel;
 
     public PixelLogicUITimeTrialFinishedPage(PixelLogicGlobal global) {
         super(global, PixelLogicUIPageId.timeTrialFinished);

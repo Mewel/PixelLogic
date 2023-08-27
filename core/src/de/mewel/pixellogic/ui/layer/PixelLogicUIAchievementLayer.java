@@ -31,20 +31,20 @@ import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLogicListener {
 
-    private PixelLogicGlobal global;
+    private final PixelLogicGlobal global;
 
-    private Queue<PixelLogicAchievement> achievements;
+    private final Queue<PixelLogicAchievement> achievements;
 
     private PixelLogicAchievement currentDisplayedAchievment;
 
-    private Stage stage;
+    private final Stage stage;
 
-    private PixelLogicUIAchievementBlock achievementBlock;
+    private final PixelLogicUIAchievementBlock achievementBlock;
 
     public PixelLogicUIAchievementLayer(PixelLogicGlobal global) {
         this.global = global;
         this.getEventManager().listen(this);
-        this.achievements = new LinkedList<PixelLogicAchievement>();
+        this.achievements = new LinkedList<>();
 
         this.stage = new Stage();
         this.achievementBlock = new PixelLogicUIAchievementBlock(global);
@@ -81,6 +81,9 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
 
     private void next() {
         this.currentDisplayedAchievment = this.achievements.poll();
+        if (this.currentDisplayedAchievment == null) {
+            return;
+        }
         this.achievementBlock.setAchievement(this.currentDisplayedAchievment.getName(),
                 this.currentDisplayedAchievment.getDescription());
         this.resizeAchievementBlock(false);
@@ -88,12 +91,7 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         MoveToAction moveIn = Actions.moveTo(padding, padding, .2f);
         DelayAction delay = Actions.delay(7f);
         MoveToAction moveOut = Actions.moveTo(padding, -this.achievementBlock.getHeight(), .2f);
-        RunnableAction onEnd = Actions.run(new Runnable() {
-            @Override
-            public void run() {
-                PixelLogicUIAchievementLayer.this.currentDisplayedAchievment = null;
-            }
-        });
+        RunnableAction onEnd = Actions.run(() -> PixelLogicUIAchievementLayer.this.currentDisplayedAchievment = null);
         Action sequenceAction = Actions.sequence(moveIn, delay, moveOut, onEnd);
         this.achievementBlock.addAction(sequenceAction);
     }
@@ -117,7 +115,7 @@ public class PixelLogicUIAchievementLayer implements PixelLogicUILayer, PixelLog
         int blockHeight = (int) Math.max(minBlockHeight, bestBlockHeight);
         int blockY = visible ? padding : -blockHeight;
         this.achievementBlock.setBounds(padding, blockY, blockWidth, blockHeight);
-        this.achievementBlock.getContainer().pad(width / 72);
+        this.achievementBlock.getContainer().pad(width / 72f);
     }
 
     private int getPadding() {

@@ -7,13 +7,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class PixelLogicEventManager {
 
-    private Queue<Tuple> eventQueue;
+    private final Queue<Tuple> eventQueue;
 
-    private List<PixelLogicListener> listeners;
+    private final List<PixelLogicListener> listeners;
 
     public PixelLogicEventManager() {
-        this.eventQueue = new LinkedBlockingQueue<Tuple>();
-        this.listeners = new ArrayList<PixelLogicListener>();
+        this.eventQueue = new LinkedBlockingQueue<>();
+        this.listeners = new ArrayList<>();
     }
 
     public void fire(PixelLogicEvent event) {
@@ -27,7 +27,7 @@ public class PixelLogicEventManager {
         }
         Tuple tuple;
         while ((tuple = this.eventQueue.peek()) != null) {
-            for (PixelLogicListener listener : new ArrayList<PixelLogicListener>(listeners)) {
+            for (PixelLogicListener listener : new ArrayList<>(listeners)) {
                 listener.handle(tuple.event);
             }
             if (tuple.after != null) {
@@ -57,9 +57,9 @@ public class PixelLogicEventManager {
             this.after = after;
         }
 
-        public PixelLogicEvent event;
+        public final PixelLogicEvent event;
 
-        public Runnable after;
+        public final Runnable after;
 
     }
 

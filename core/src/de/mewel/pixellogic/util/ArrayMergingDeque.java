@@ -13,8 +13,8 @@ import java.util.Map;
  * @author nitsanw
  */
 public class ArrayMergingDeque<KEY, VAL> implements MergingQueue<KEY, VAL> {
-    private final ArrayDeque<KEY> keyQueue = new ArrayDeque<KEY>(1024);
-    private final Map<KEY, VAL> lastValMap = new HashMap<KEY, VAL>(1024);
+    private final ArrayDeque<KEY> keyQueue = new ArrayDeque<>(1024);
+    private final Map<KEY, VAL> lastValMap = new HashMap<>(1024);
 
     @Override
     public VAL poll() {

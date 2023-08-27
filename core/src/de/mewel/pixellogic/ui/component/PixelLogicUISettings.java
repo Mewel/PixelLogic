@@ -24,15 +24,21 @@ import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 
 public class PixelLogicUISettings extends PixelLogicUIGroup {
 
-    private PixelLogicUIColoredSurface background;
+    private final PixelLogicUIColoredSurface background;
 
-    private Table container;
+    private final Table container;
 
-    private Label musicLabel, soundLabel, autoBlockLabel, darkModeLabel;
+    private final Label musicLabel;
+    private final Label soundLabel;
+    private final Label autoBlockLabel;
+    private final Label darkModeLabel;
 
-    private PixelLogicUISwitchSpriteButton musicButton, soundButton, autoBlockButton, darkModeButton;
+    private final PixelLogicUISwitchSpriteButton musicButton;
+    private final PixelLogicUISwitchSpriteButton soundButton;
+    private final PixelLogicUISwitchSpriteButton autoBlockButton;
+    private final PixelLogicUISwitchSpriteButton darkModeButton;
 
-    private PixelLogicUISprite closeButton;
+    private final PixelLogicUISprite closeButton;
 
     private boolean shown;
 
@@ -173,7 +179,7 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
         int space = getSpace();
         int padding = getPadding();
         int iconSize = PixelLogicUIUtil.getIconBaseHeight();
-        this.container.pad(padding / 2, padding, padding / 6, padding / 2);
+        this.container.pad(padding / 2f, padding, padding / 6f, padding / 2f);
         this.container.getCell(this.musicLabel).spaceBottom(space);
         this.container.getCell(this.soundLabel).spaceBottom(space);
         this.container.getCell(this.autoBlockLabel).spaceBottom(space);

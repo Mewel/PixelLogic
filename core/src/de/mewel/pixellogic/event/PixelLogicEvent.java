@@ -2,7 +2,7 @@ package de.mewel.pixellogic.event;
 
 public abstract class PixelLogicEvent {
 
-    private Object source;
+    private final Object source;
 
     public PixelLogicEvent(Object source) {
         this.source = source;

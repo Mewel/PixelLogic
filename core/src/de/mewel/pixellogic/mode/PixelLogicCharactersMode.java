@@ -48,7 +48,7 @@ public class PixelLogicCharactersMode extends PixelLogicListLevelMode {
     @Override
     protected List<PixelLogicLevel> loadLevels() {
         List<PixelLogicLevel> characters = PixelLogicLevelLoader.load(getCollection());
-        return new ArrayList<PixelLogicLevel>(characters);
+        return new ArrayList<>(characters);
     }
 
     public PixelLogicLevelCollection getCollection() {
@@ -60,7 +60,7 @@ public class PixelLogicCharactersMode extends PixelLogicListLevelMode {
         super.handle(event);
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
-            if (PixelLogicLevelStatus.solved.equals(changeEvent.getStatus())) {
+            if (PixelLogicLevelStatus.SOLVED.equals(changeEvent.getStatus())) {
                 getPreferences().putBoolean(getSolvedProperty(getLevel()), true).flush();
                 checkAllSolvedAchievement();
             }

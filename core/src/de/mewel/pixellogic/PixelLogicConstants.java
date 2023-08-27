@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 
 public abstract class PixelLogicConstants {
 
-    public static int BASE_SIZE = 24;
+    public static final int BASE_SIZE = 24;
 
     public static final Color TOOLBAR_SWITCHER_ACTIVE_COLOR = new Color(Color.WHITE);
     public static final Color TOOLBAR_SWITCHER_INACTIVE_COLOR = new Color(Color.DARK_GRAY);

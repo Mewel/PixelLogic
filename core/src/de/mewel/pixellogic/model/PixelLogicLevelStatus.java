@@ -1,5 +1,5 @@
 package de.mewel.pixellogic.model;
 
 public enum PixelLogicLevelStatus {
-    loaded, playable, solved, finished, beforeDestroyed, destroyed
+    LOADED, PLAYABLE, SOLVED, FINISHED, BEFORE_DESTROYED, DESTROYED
 }

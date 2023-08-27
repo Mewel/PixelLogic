@@ -27,15 +27,17 @@ import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 
 public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements PixelLogicListener {
 
-    private Texture backgroundTexture;
+    private final Texture backgroundTexture;
 
-    private MenuButton menuButton;
+    private final MenuButton menuButton;
 
-    private PixelLogicUIUndoButton undoButton;
+    private final PixelLogicUIUndoButton undoButton;
 
-    private PixelLogicUILevelSwitcher switcher;
+    private final PixelLogicUILevelSwitcher switcher;
 
-    private InputListener menuButtonListener, undoButtonListener, switcherListener;
+    private final InputListener menuButtonListener;
+    private final InputListener undoButtonListener;
+    private final InputListener switcherListener;
 
     private PixelLogicLevel level;
 
@@ -153,21 +155,15 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
     public void onLevelBeforeDestroyed(PixelLogicLevelStatusChangeEvent event) {
         this.timerRunning = false;
         if (this.solvedLabel != null) {
-            this.solvedLabel.addAction(Actions.sequence(Actions.fadeOut(.4f), Actions.run(new Runnable() {
-                @Override
-                public void run() {
-                    removeActor(solvedLabel);
-                    solvedLabel = null;
-                }
+            this.solvedLabel.addAction(Actions.sequence(Actions.fadeOut(.4f), Actions.run(() -> {
+                removeActor(solvedLabel);
+                solvedLabel = null;
             })));
         }
         if (this.timerLabel != null) {
-            this.timerLabel.addAction(Actions.sequence(Actions.fadeOut(.4f), Actions.run(new Runnable() {
-                @Override
-                public void run() {
-                    removeActor(timerLabel);
-                    timerLabel = null;
-                }
+            this.timerLabel.addAction(Actions.sequence(Actions.fadeOut(.4f), Actions.run(() -> {
+                removeActor(timerLabel);
+                timerLabel = null;
             })));
         }
     }
@@ -260,7 +256,8 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
         if (this.timerLabel != null) {
             int tX = (int) (this.menuButton.getX() + this.menuButton.getWidth());
             int space = (int) this.undoButton.getX() - tX;
-            this.timerLabel.setPosition(tX + space / 2 - this.timerLabel.getPrefWidth() / 2, getHeight() / 2 - this.timerLabel.getPrefHeight() / 2);
+            this.timerLabel.setPosition(tX + space / 2f - this.timerLabel.getPrefWidth() / 2,
+                    getHeight() / 2 - this.timerLabel.getPrefHeight() / 2);
         }
     }
 
@@ -274,7 +271,7 @@ public class PixelLogicUILevelToolbar extends PixelLogicUILevelGroup implements 
 
     private static class MenuButton extends Actor {
 
-        private Sprite sprite;
+        private final Sprite sprite;
 
         public MenuButton(Sprite sprite) {
             this.sprite = sprite;

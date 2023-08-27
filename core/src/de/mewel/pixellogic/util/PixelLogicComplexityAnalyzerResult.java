@@ -2,9 +2,9 @@ package de.mewel.pixellogic.util;
 
 public class PixelLogicComplexityAnalyzerResult {
 
-    private String name;
+    private final String name;
 
-    private PixelLogicSolverResult result;
+    private final PixelLogicSolverResult result;
 
     public PixelLogicComplexityAnalyzerResult(PixelLogicSolverResult result) {
         this("unknown", result);

@@ -30,7 +30,7 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
 
     @Override
     protected void build() {
-        this.pictureModeContainers = new ArrayList<PictureModeContainer>();
+        this.pictureModeContainers = new ArrayList<>();
 
         // da vinvi
         PixelLogicLevelCollection davinciCollection = getAssets().getLevelCollection("pictures/davinci");
@@ -60,12 +60,9 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
                     pageProperties.put("solvedAnimation", "picture");
                     pageProperties.put("pictureCollection", container.mode.getCollection());
                     pageProperties.put("menuBackId", PixelLogicUIPageId.picture);
-                    getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties, new Runnable() {
-                        @Override
-                        public void run() {
-                            container.mode.activate();
-                            container.mode.run();
-                        }
+                    getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties, () -> {
+                        container.mode.activate();
+                        container.mode.run();
                     });
                 }
             });
@@ -81,9 +78,9 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
     protected void updateSize() {
         getPageRoot().setWidth(this.getWidth());
         getPageRoot().pad(0);
-        getPageRoot().padTop(getPadding() / 4);
-        getPageRoot().padBottom(getPadding() / 4);
-        getPageRoot().space(getSpace() / 8);
+        getPageRoot().padTop(getPadding() / 4f);
+        getPageRoot().padBottom(getPadding() / 4f);
+        getPageRoot().space(getSpace() / 8f);
 
         for (PictureModeContainer pictureModeContainer : this.pictureModeContainers) {
             pictureModeContainer.resize((int) this.getWidth(), (int) this.getHeight());
@@ -109,11 +106,11 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
 
     private class PictureModeContainer extends PixelLogicUIContainer<VerticalGroup> {
 
-        private PixelLogicUIPicture picture;
+        private final PixelLogicUIPicture picture;
 
-        private PixelLogicPictureMode mode;
+        private final PixelLogicPictureMode mode;
 
-        private Container<Label> labelContainer;
+        private final Container<Label> labelContainer;
 
         private PixelLogicUIButtonListener buttonListener;
 
@@ -130,7 +127,7 @@ public class PixelLogicUIPicturePage extends PixelLogicUIBasePage {
             Label descriptionLabel = this.getLabel(getLabelText(), getGlobal().getStyle().getTextColor());
             descriptionLabel.setWrap(true);
             descriptionLabel.setAlignment(Align.center);
-            this.labelContainer = new Container<Label>(descriptionLabel);
+            this.labelContainer = new Container<>(descriptionLabel);
             getActor().addActor(this.labelContainer);
             this.updateLabel();
         }

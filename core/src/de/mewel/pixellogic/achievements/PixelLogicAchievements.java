@@ -13,16 +13,16 @@ import de.mewel.pixellogic.event.PixelLogicListener;
 
 public class PixelLogicAchievements implements PixelLogicListener {
 
-    private PixelLogicAssets assets;
+    private final PixelLogicAssets assets;
 
-    private PixelLogicEventManager eventManager;
+    private final PixelLogicEventManager eventManager;
 
-    private List<PixelLogicAchievement> achievements;
+    private final List<PixelLogicAchievement> achievements;
 
     public PixelLogicAchievements(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         this.assets = assets;
         this.eventManager = eventManager;
-        this.achievements = new ArrayList<PixelLogicAchievement>();
+        this.achievements = new ArrayList<>();
         eventManager.listen(this);
 
         // clearAll();

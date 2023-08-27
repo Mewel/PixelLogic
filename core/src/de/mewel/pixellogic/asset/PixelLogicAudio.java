@@ -29,24 +29,25 @@ import static de.mewel.pixellogic.PixelLogicConstants.SWITCHER_SOUND;
 
 public class PixelLogicAudio implements PixelLogicListener {
 
-    private PixelLogicEventManager eventManager;
+    private final PixelLogicEventManager eventManager;
 
-    private PixelLogicMusic menuMusic, levelMusic;
+    private final PixelLogicMusic menuMusic;
+    private final PixelLogicMusic levelMusic;
 
-    private Map<String, Sound> soundMap;
+    private final Map<String, Sound> soundMap;
 
     private boolean musicMuted, soundMuted;
 
     public PixelLogicAudio(PixelLogicAssets assets, PixelLogicEventManager eventManager) {
         this.eventManager = eventManager;
         AssetManager assetManager = assets.get();
-        this.soundMap = new HashMap<String, Sound>();
-        this.soundMap.put(BUTTON_SOUND, (Sound) assetManager.get(BUTTON_SOUND));
-        this.soundMap.put(DRAW_SOUND, (Sound) assetManager.get(DRAW_SOUND));
-        this.soundMap.put(BLOCK_SOUND, (Sound) assetManager.get(BLOCK_SOUND));
-        this.soundMap.put(SWITCHER_SOUND, (Sound) assetManager.get(SWITCHER_SOUND));
-        this.soundMap.put(PUZZLE_SOLVED_SOUND, (Sound) assetManager.get(PUZZLE_SOLVED_SOUND));
-        this.soundMap.put(KEY_SOUND, (Sound) assetManager.get(KEY_SOUND));
+        this.soundMap = new HashMap<>();
+        this.soundMap.put(BUTTON_SOUND, assetManager.get(BUTTON_SOUND));
+        this.soundMap.put(DRAW_SOUND, assetManager.get(DRAW_SOUND));
+        this.soundMap.put(BLOCK_SOUND, assetManager.get(BLOCK_SOUND));
+        this.soundMap.put(SWITCHER_SOUND, assetManager.get(SWITCHER_SOUND));
+        this.soundMap.put(PUZZLE_SOLVED_SOUND, assetManager.get(PUZZLE_SOLVED_SOUND));
+        this.soundMap.put(KEY_SOUND, assetManager.get(KEY_SOUND));
 
         this.musicMuted = isMusicMuted();
         this.soundMuted = isSoundMuted();
@@ -135,19 +136,9 @@ public class PixelLogicAudio implements PixelLogicListener {
         if (event instanceof PixelLogicUIPageChangeEvent) {
             PixelLogicUIPageChangeEvent pageChangeEvent = (PixelLogicUIPageChangeEvent) event;
             if (pageChangeEvent.getPageId().equals(PixelLogicUIPageId.level)) {
-                menuMusic.fadeOut(1f, new Runnable() {
-                    @Override
-                    public void run() {
-                        levelMusic.fadeIn(1f);
-                    }
-                });
+                menuMusic.fadeOut(1f, () -> levelMusic.fadeIn(1f));
             } else if (pageChangeEvent.oldPageId() != null && pageChangeEvent.oldPageId().equals(PixelLogicUIPageId.level)) {
-                levelMusic.fadeOut(1f, new Runnable() {
-                    @Override
-                    public void run() {
-                        menuMusic.fadeIn(1f);
-                    }
-                });
+                levelMusic.fadeOut(1f, () -> menuMusic.fadeIn(1f));
             }
         }
     }

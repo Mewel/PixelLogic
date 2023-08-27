@@ -5,10 +5,10 @@ import java.util.Map;
 
 public class PixelLogicUIPageProperties {
 
-    private Map<String, Object> data;
+    private final Map<String, Object> data;
 
     public PixelLogicUIPageProperties() {
-        this.data = new HashMap<String, Object>();
+        this.data = new HashMap<>();
     }
 
     public String getString(String key) {

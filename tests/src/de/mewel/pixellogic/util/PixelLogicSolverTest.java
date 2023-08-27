@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 public class PixelLogicSolverTest {
 
     @Test
-    public void solve() throws Exception {
+    public void solve() {
         // test valid
         Boolean[][] level = PixelLogicUtil.sampleLevel();
         List<List<Integer>> rowData = PixelLogicUtil.getRowData(level);
@@ -90,7 +90,7 @@ public class PixelLogicSolverTest {
     }
 
     private PixelLogicSolver.Line buildLine(int pixels, int... numbers) {
-        List<Integer> numberList = new ArrayList<Integer>();
+        List<Integer> numberList = new ArrayList<>();
         for (int i : numbers) {
             numberList.add(i);
         }

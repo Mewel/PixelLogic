@@ -9,13 +9,13 @@ import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 
 public class PixelLogicAchievementNoBlock extends PixelLogicAchievement {
 
-    private Boolean isThePuzzelBigEnough;
+    private Boolean isThePuzzleBigEnough;
 
     private Boolean blocked;
 
     PixelLogicAchievementNoBlock(PixelLogicAssets assets) {
         super(assets);
-        this.isThePuzzelBigEnough = null;
+        this.isThePuzzleBigEnough = null;
         this.blocked = null;
     }
 
@@ -31,8 +31,8 @@ public class PixelLogicAchievementNoBlock extends PixelLogicAchievement {
             PixelLogicLevelStatusChangeEvent statusChangeEvent = (PixelLogicLevelStatusChangeEvent) event;
             PixelLogicLevel level = statusChangeEvent.getLevel();
             // 6x6, 5*7, 4*8 are all ok
-            if (PixelLogicLevelStatus.loaded.equals(statusChangeEvent.getStatus())) {
-                this.isThePuzzelBigEnough = level.getRows() * level.getColumns() >= 32;
+            if (PixelLogicLevelStatus.LOADED.equals(statusChangeEvent.getStatus())) {
+                this.isThePuzzleBigEnough = level.getRows() * level.getColumns() >= 32;
                 this.blocked = false;
                 return false;
             }
@@ -44,14 +44,14 @@ public class PixelLogicAchievementNoBlock extends PixelLogicAchievement {
                 this.blocked = false;
             }
         }
-        if (this.isThePuzzelBigEnough == null || this.blocked == null || !this.isThePuzzelBigEnough || this.blocked) {
+        if (this.isThePuzzleBigEnough == null || this.blocked == null || !this.isThePuzzleBigEnough || this.blocked) {
             return false;
         }
         // check if level is solved or destroyed
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
             PixelLogicLevelStatusChangeEvent statusChangeEvent = (PixelLogicLevelStatusChangeEvent) event;
             PixelLogicLevelStatus status = statusChangeEvent.getStatus();
-            if (PixelLogicLevelStatus.solved.equals(status)) {
+            if (PixelLogicLevelStatus.SOLVED.equals(status)) {
                 // ignore certain level's
                 PixelLogicLevel level = statusChangeEvent.getLevel();
                 if ("Heart".equals(level.getName()) || "Windows".equals(level.getName())) {
@@ -60,8 +60,8 @@ public class PixelLogicAchievementNoBlock extends PixelLogicAchievement {
                 // achievement reached
                 return !this.blocked;
             }
-            if (PixelLogicLevelStatus.destroyed.equals(status)) {
-                this.isThePuzzelBigEnough = null;
+            if (PixelLogicLevelStatus.DESTROYED.equals(status)) {
+                this.isThePuzzleBigEnough = null;
                 this.blocked = null;
                 return false;
             }

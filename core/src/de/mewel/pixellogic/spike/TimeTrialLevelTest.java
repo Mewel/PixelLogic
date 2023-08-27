@@ -5,9 +5,7 @@ import com.badlogic.gdx.Gdx;
 import de.mewel.pixellogic.achievements.PixelLogicAchievements;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.asset.PixelLogicAudio;
-import de.mewel.pixellogic.event.PixelLogicEvent;
 import de.mewel.pixellogic.event.PixelLogicEventManager;
-import de.mewel.pixellogic.event.PixelLogicListener;
 import de.mewel.pixellogic.event.PixelLogicNextLevelEvent;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
@@ -33,12 +31,9 @@ public class TimeTrialLevelTest extends AbstractSpikeGame {
         mode.activate();
         mode.run();
 
-        eventManager.listen(new PixelLogicListener() {
-            @Override
-            public void handle(PixelLogicEvent event) {
-                if (event instanceof PixelLogicNextLevelEvent) {
-                    Gdx.app.log("lvl", ((PixelLogicNextLevelEvent) event).getNextLevel().toString());
-                }
+        eventManager.listen(event -> {
+            if (event instanceof PixelLogicNextLevelEvent) {
+                Gdx.app.log("lvl", ((PixelLogicNextLevelEvent) event).getNextLevel().toString());
             }
         });
     }

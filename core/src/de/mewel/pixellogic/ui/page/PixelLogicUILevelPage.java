@@ -41,7 +41,7 @@ import static de.mewel.pixellogic.PixelLogicConstants.PUZZLE_SOLVED_SOUND_VOLUME
 
 public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
-    protected static Map<String, Class<? extends PixelLogicUILevelAnimation>> SOLVED_ANIMATION_MAP;
+    protected static final Map<String, Class<? extends PixelLogicUILevelAnimation>> SOLVED_ANIMATION_MAP;
 
     protected PixelLogicUILevel levelUI;
 
@@ -60,7 +60,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     protected Image backgroundImage;
 
     static {
-        SOLVED_ANIMATION_MAP = new HashMap<String, Class<? extends PixelLogicUILevelAnimation>>();
+        SOLVED_ANIMATION_MAP = new HashMap<>();
         SOLVED_ANIMATION_MAP.put("default", PixelLogicUIBoardSolvedAnimation.class);
         SOLVED_ANIMATION_MAP.put("picture", PixelLogicUIPictureBoardSolvedAnimation.class);
     }
@@ -104,16 +104,13 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     public void deactivate(final Runnable after) {
         getEventManager().remove(this.screenListener);
         getStage().removeListener(this.screenListener);
-        if (!PixelLogicLevelStatus.destroyed.equals(this.levelStatus)) {
+        if (!PixelLogicLevelStatus.DESTROYED.equals(this.levelStatus)) {
             this.destroyLevel();
         }
         this.menu.deactivate();
-        super.deactivate(new Runnable() {
-            @Override
-            public void run() {
-                Action action = Actions.sequence(Actions.fadeOut(.5f), Actions.run(after));
-                getStage().addAction(action);
-            }
+        super.deactivate(() -> {
+            Action action = Actions.sequence(Actions.fadeOut(.5f), Actions.run(after));
+            getStage().addAction(action);
         });
     }
 
@@ -135,18 +132,8 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         this.levelUI.getColor().a = .0f;
         this.levelUI.load(level);
         this.getStage().addActor(this.levelUI);
-        changeLevelStatus(PixelLogicLevelStatus.loaded, new Runnable() {
-            @Override
-            public void run() {
-                updateBounds((int) getWidth(), (int) getHeight());
-            }
-        });
-        Action fadeInAction = Actions.sequence(Actions.fadeIn(.4f), Actions.run(new Runnable() {
-            @Override
-            public void run() {
-                changeLevelStatus(PixelLogicLevelStatus.playable);
-            }
-        }));
+        changeLevelStatus(PixelLogicLevelStatus.LOADED, () -> updateBounds((int) getWidth(), (int) getHeight()));
+        Action fadeInAction = Actions.sequence(Actions.fadeIn(.4f), Actions.run(() -> changeLevelStatus(PixelLogicLevelStatus.PLAYABLE)));
         this.levelUI.addAction(fadeInAction);
     }
 
@@ -155,7 +142,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     }
 
     public void destroyLevel() {
-        changeLevelStatus(PixelLogicLevelStatus.beforeDestroyed);
+        changeLevelStatus(PixelLogicLevelStatus.BEFORE_DESTROYED);
 
         // destroy animation
         if (this.solvedAnimation != null) {
@@ -164,26 +151,20 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
         }
 
         // toolbar
-        Action fadeOutToolbarAction = Actions.sequence(Actions.fadeOut(.4f), Actions.run(new Runnable() {
-            @Override
-            public void run() {
-                if (toolbar == null) {
-                    return;
-                }
-                toolbar.remove();
+        Action fadeOutToolbarAction = Actions.sequence(Actions.fadeOut(.4f), Actions.run(() -> {
+            if (toolbar == null) {
+                return;
             }
+            toolbar.remove();
         }));
         this.toolbar.addAction(fadeOutToolbarAction);
 
         // level
-        Action fadeOutLevelAction = Actions.sequence(Actions.fadeOut(.4f), Actions.run(new Runnable() {
-            @Override
-            public void run() {
-                if (levelUI != null) {
-                    levelUI.clear();
-                    levelUI.remove();
-                    changeLevelStatus(PixelLogicLevelStatus.destroyed);
-                }
+        Action fadeOutLevelAction = Actions.sequence(Actions.fadeOut(.4f), Actions.run(() -> {
+            if (levelUI != null) {
+                levelUI.clear();
+                levelUI.remove();
+                changeLevelStatus(PixelLogicLevelStatus.DESTROYED);
             }
         }));
         this.levelUI.addAction(fadeOutLevelAction);
@@ -192,44 +173,24 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
     @Override
     public void render(float delta) {
         super.render(delta);
-        if (PixelLogicLevelStatus.playable.equals(this.levelStatus) && this.levelUI.isSolved()) {
-            this.levelStatus = PixelLogicLevelStatus.finished;
-            Action delay = Actions.sequence(Actions.delay(.1f), Actions.run(new Runnable() {
-                @Override
-                public void run() {
-                    onSolved();
-                }
-            }));
+        if (PixelLogicLevelStatus.PLAYABLE.equals(this.levelStatus) && this.levelUI.isSolved()) {
+            this.levelStatus = PixelLogicLevelStatus.FINISHED;
+            Action delay = Actions.sequence(Actions.delay(.1f), Actions.run(this::onSolved));
             getStage().addAction(delay);
         }
     }
 
     protected void onSolved() {
-        changeLevelStatus(PixelLogicLevelStatus.solved);
+        changeLevelStatus(PixelLogicLevelStatus.SOLVED);
         this.solvedAnimation = showSolvedAnimation();
         final PixelLogicMusic levelMusic = getAudio().getLevelMusic();
-        levelMusic.fadeTo(.5f, .05f, new Runnable() {
-            @Override
-            public void run() {
-                getAudio().playSound(PUZZLE_SOLVED_SOUND, PUZZLE_SOLVED_SOUND_VOLUME);
-            }
-        });
+        levelMusic.fadeTo(.5f, .05f, () -> getAudio().playSound(PUZZLE_SOLVED_SOUND, PUZZLE_SOLVED_SOUND_VOLUME));
         this.getStage().addAction(Actions.sequence(
                 Actions.delay(.3f),
-                Actions.run(new Runnable() {
-                                @Override
-                                public void run() {
-                                    changeLevelStatus(PixelLogicLevelStatus.finished);
-                                }
-                            }
+                Actions.run(() -> changeLevelStatus(PixelLogicLevelStatus.FINISHED)
                 ),
                 Actions.delay(4f),
-                Actions.run(new Runnable() {
-                                @Override
-                                public void run() {
-                                    levelMusic.fadeIn(.5f);
-                                }
-                            }
+                Actions.run(() -> levelMusic.fadeIn(.5f)
                 )));
     }
 
@@ -353,7 +314,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
     protected static class ScreenListener extends InputListener implements PixelLogicListener {
 
-        private PixelLogicUILevelPage page;
+        private final PixelLogicUILevelPage page;
 
         ScreenListener(PixelLogicUILevelPage page) {
             this.page = page;
@@ -361,7 +322,7 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
 
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            if (PixelLogicLevelStatus.finished.equals(this.page.getLevelStatus())) {
+            if (PixelLogicLevelStatus.FINISHED.equals(this.page.getLevelStatus())) {
                 this.page.destroyLevel();
             }
             return super.touchDown(event, x, y, pointer, button);
@@ -372,12 +333,12 @@ public class PixelLogicUILevelPage extends PixelLogicUIPage {
             if (event instanceof PixelLogicUserEvent) {
                 PixelLogicUserEvent userEvent = (PixelLogicUserEvent) event;
                 if (PixelLogicUserEvent.Type.LEVEL_MENU_CLICKED.equals(userEvent.getType()) &&
-                        PixelLogicLevelStatus.playable.equals(page.getLevelStatus())) {
+                        PixelLogicLevelStatus.PLAYABLE.equals(page.getLevelStatus())) {
                     page.menu.show();
                 } else if (PixelLogicUserEvent.Type.BACK_BUTTON_CLICKED.equals(userEvent.getType())) {
                     if (page.menu.isShown()) {
                         page.menu.close();
-                    } else if (PixelLogicLevelStatus.playable.equals(page.getLevelStatus())) {
+                    } else if (PixelLogicLevelStatus.PLAYABLE.equals(page.getLevelStatus())) {
                         page.menu.show();
                     }
                 }

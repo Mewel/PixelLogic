@@ -4,7 +4,7 @@ import de.mewel.pixellogic.event.PixelLogicEvent;
 
 public class PixelLogicAchievementEvent extends PixelLogicEvent {
 
-    private PixelLogicAchievement achievement;
+    private final PixelLogicAchievement achievement;
 
     public PixelLogicAchievementEvent(PixelLogicAchievements source, PixelLogicAchievement achievement) {
         super(source);

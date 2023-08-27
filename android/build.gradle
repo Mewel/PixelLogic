@@ -3,7 +3,7 @@ android {
         config {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
-            storeFile file(System.getProperty("user.home") + '/Desktop/pixellogic-debug/pixellogic-debug.jks')
+            storeFile file('F:/Programmieren/pixellogic-release/pixellogic-debug/pixellogic-debug.jks')
             storePassword 'android'
         }
     }
@@ -21,14 +21,18 @@ android {
         }
         androidTest.setRoot('tests')
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
     defaultConfig {
         applicationId "de.mewel.pixellogic"
-        minSdkVersion 14
+        minSdkVersion 24
         targetSdkVersion 31
-        versionCode 23
+        versionCode 29
         versionName "1.2.3"
     }
     buildTypes {
@@ -99,8 +103,8 @@ eclipse {
     }
 
     jdt {
-        sourceCompatibility = 1.6
-        targetCompatibility = 1.6
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
 
     classpath {

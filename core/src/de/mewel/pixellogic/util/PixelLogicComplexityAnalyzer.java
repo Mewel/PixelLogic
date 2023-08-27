@@ -9,7 +9,7 @@ import de.mewel.pixellogic.model.PixelLogicLevelCollection;
 public abstract class PixelLogicComplexityAnalyzer {
 
     public static List<PixelLogicComplexityAnalyzerResult> analyze(PixelLogicLevelCollection collection) {
-        List<PixelLogicComplexityAnalyzerResult> resultList = new ArrayList<PixelLogicComplexityAnalyzerResult>();
+        List<PixelLogicComplexityAnalyzerResult> resultList = new ArrayList<>();
         List<PixelLogicLevel> levels = PixelLogicLevelLoader.load(collection);
         for (PixelLogicLevel level : levels) {
             resultList.add(analyze(level));

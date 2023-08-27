@@ -13,7 +13,7 @@ import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public class PixelLogicUIStage extends Stage implements PixelLogicUIElement {
 
-    private PixelLogicGlobal global;
+    private final PixelLogicGlobal global;
 
     public PixelLogicUIStage(PixelLogicGlobal global) {
         this.global = global;

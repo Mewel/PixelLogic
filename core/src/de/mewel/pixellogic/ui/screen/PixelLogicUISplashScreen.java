@@ -18,15 +18,15 @@ import de.mewel.pixellogic.ui.style.PixelLogicUILightStyle;
 
 public class PixelLogicUISplashScreen implements Screen {
 
-    private Stage stage;
+    private final Stage stage;
 
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
 
-    private Texture logoTexture;
+    private final Texture logoTexture;
 
-    private Image logoImage;
+    private final Image logoImage;
 
-    private Color backgroundColor;
+    private final Color backgroundColor;
 
     public PixelLogicUISplashScreen() {
         stage = new Stage();
@@ -61,7 +61,7 @@ public class PixelLogicUISplashScreen implements Screen {
         this.stage.getRoot().setBounds(0, 0, width, height);
 
         this.logoImage.setScale((int) (height / (this.logoImage.getHeight() * 6f)));
-        this.logoImage.setX(width / 2);
+        this.logoImage.setX(width / 2f);
         this.logoImage.setY(height / 1.667f);
     }
 

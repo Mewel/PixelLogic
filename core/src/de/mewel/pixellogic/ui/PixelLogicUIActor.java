@@ -10,7 +10,7 @@ import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public abstract class PixelLogicUIActor extends Actor implements PixelLogicUIElement {
 
-    private PixelLogicGlobal global;
+    private final PixelLogicGlobal global;
 
     public PixelLogicUIActor(PixelLogicGlobal global) {
         this.global = global;

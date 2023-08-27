@@ -84,12 +84,9 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
                     PixelLogicUIPlayPage page = (PixelLogicUIPlayPage) getAppScreen().getPage(PixelLogicUIPageId.play);
                     final PixelLogicTutorialMode tutorialMode = page.getTutorialMode();
                     pageProperties.put("menuBackId", PixelLogicUIPageId.play);
-                    getAppScreen().setPage(PixelLogicUIPageId.tutorialLevel, pageProperties, new Runnable() {
-                        @Override
-                        public void run() {
-                            tutorialMode.activate();
-                            tutorialMode.run();
-                        }
+                    getAppScreen().setPage(PixelLogicUIPageId.tutorialLevel, pageProperties, () -> {
+                        tutorialMode.activate();
+                        tutorialMode.run();
                     });
                     return;
                 }
@@ -132,7 +129,7 @@ public class PixelLogicUIMainPage extends PixelLogicUIBasePage {
         // version
         BitmapFont labelFont = PixelLogicUIUtil.getAppFont(getAssets(), 0);
         Label.LabelStyle labelStyle = new Label.LabelStyle(labelFont, style.getTextColor());
-        this.versionLabel = new Label("1.2.2", labelStyle);
+        this.versionLabel = new Label("1.2.3", labelStyle);
         getStage().getRoot().addActor(this.versionLabel);
 
         // settings

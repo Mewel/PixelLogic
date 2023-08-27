@@ -34,7 +34,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
     private PixelLogicUIBoard board;
 
     // input
-    private LevelListener levelListener;
+    private final LevelListener levelListener;
     private Boolean[][] enabled;
 
     // game stuff
@@ -48,12 +48,12 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
         this.level = null;
         this.status = null;
         this.enabled = null;
-        this.undoList = new ArrayList<Boolean[][]>();
+        this.undoList = new ArrayList<>();
     }
 
     public void load(PixelLogicLevel level) {
         this.level = level;
-        this.undoList = new ArrayList<Boolean[][]>();
+        this.undoList = new ArrayList<>();
         this.undoList.add(PixelLogicUtil.cloneLevel(this.level.getPixels()));
 
         // BOARD
@@ -192,7 +192,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
     private static class LevelListener extends InputListener implements PixelLogicListener {
 
-        private PixelLogicUILevel levelUI;
+        private final PixelLogicUILevel levelUI;
         private UserAction userAction;
         private boolean selectedPixelType;
 
@@ -226,7 +226,7 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
 
         @Override
         public boolean touchDown(InputEvent event, float boardX, float boardY, int pointer, int button) {
-            if (!PixelLogicLevelStatus.playable.equals(levelUI.status)) {
+            if (!PixelLogicLevelStatus.PLAYABLE.equals(levelUI.status)) {
                 return false;
             }
             Vector2 pixel = toPixel(boardX, boardY);
@@ -309,17 +309,17 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
             EMPTY, FILL, BLOCK
         }
 
-        private Boolean[][] levelBefore;
+        private final Boolean[][] levelBefore;
 
-        private PixelLogicUILevel levelUI;
+        private final PixelLogicUILevel levelUI;
 
-        private Type type;
+        private final Type type;
 
-        private boolean selectedPixelType;
+        private final boolean selectedPixelType;
 
-        private Vector2 startPosition;
+        private final Vector2 startPosition;
 
-        private Vector2 startPixel;
+        private final Vector2 startPixel;
 
         UserAction(PixelLogicUILevel levelUI, Type type, Vector2 startPosition, Vector2 startPixel, boolean selectedPixelType) {
             this.levelUI = levelUI;
@@ -364,11 +364,8 @@ public class PixelLogicUILevel extends PixelLogicUILevelGroup {
             if (Type.BLOCK.equals(this.type) && filled) {
                 return false;
             }
-            if (Type.EMPTY.equals(this.type) &&
-                    ((this.selectedPixelType && blocked) || (!this.selectedPixelType && filled))) {
-                return false;
-            }
-            return true;
+            return !Type.EMPTY.equals(this.type) ||
+                    ((!this.selectedPixelType || !blocked) && (this.selectedPixelType || !filled));
         }
 
         private void draw(int row, int col, PixelLogicLevel level, Type type) {

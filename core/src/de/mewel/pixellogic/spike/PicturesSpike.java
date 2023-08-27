@@ -50,12 +50,9 @@ public class PicturesSpike extends AbstractSpikeGame {
         pageProperties.put("solvedAnimation", "picture");
         pageProperties.put("pictureCollection", mode.getCollection());
         pageProperties.put("menuBackId", PixelLogicUIPageId.mainMenu);
-        getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties, new Runnable() {
-            @Override
-            public void run() {
-                mode.activate();
-                mode.run(levels.get(7 - 1));
-            }
+        getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties, () -> {
+            mode.activate();
+            mode.run(levels.get(7 - 1));
         });
     }
 

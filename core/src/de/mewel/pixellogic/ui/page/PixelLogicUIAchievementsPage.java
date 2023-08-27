@@ -27,7 +27,7 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
 
     @Override
     protected void build() {
-        this.achievementContainers = new ArrayList<AchievementContainer>();
+        this.achievementContainers = new ArrayList<>();
         List<PixelLogicAchievement> achievements = getGlobal().getAchievements().list();
         for (PixelLogicAchievement achievement : achievements) {
             AchievementContainer achievementContainer = new AchievementContainer(achievement, getGlobal());
@@ -45,9 +45,9 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
     protected void updateSize() {
         getPageRoot().setWidth(this.getWidth());
         getPageRoot().pad(0);
-        getPageRoot().padTop(getPadding() / 4);
-        getPageRoot().padBottom(getPadding() / 4);
-        getPageRoot().space(getSpace() / 8);
+        getPageRoot().padTop(getPadding() / 4f);
+        getPageRoot().padBottom(getPadding() / 4f);
+        getPageRoot().space(getSpace() / 8f);
 
         for (AchievementContainer achievementContainer : this.achievementContainers) {
             achievementContainer.resize((int) this.getWidth(), (int) this.getHeight());
@@ -69,11 +69,11 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
 
     private class AchievementContainer extends PixelLogicUIContainer<HorizontalGroup> {
 
-        private PixelLogicAchievement achievement;
+        private final PixelLogicAchievement achievement;
 
-        private Logo logo;
+        private final Logo logo;
 
-        private PixelLogicUIAchievementBlock block;
+        private final PixelLogicUIAchievementBlock block;
 
         AchievementContainer(PixelLogicAchievement achievement, PixelLogicGlobal global) {
             super(global, new HorizontalGroup());
@@ -111,7 +111,7 @@ public class PixelLogicUIAchievementsPage extends PixelLogicUIBasePage {
 
             int groupPadding = padding / 5;
             getActor().pad(groupPadding);
-            getActor().space(padding / 2);
+            getActor().space(padding / 2f);
 
             this.block.setHeaderStyle(getHeaderStyle());
             this.block.setDescriptionStyle(getDescriptionStyle());

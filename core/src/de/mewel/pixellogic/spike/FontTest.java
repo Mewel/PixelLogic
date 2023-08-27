@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 public class FontTest extends Game {
 
-    private static Color BG_COLOR = Color.BLACK;
+    private static final Color BG_COLOR = Color.BLACK;
 
     @Override
     public void create() {
@@ -23,7 +23,7 @@ public class FontTest extends Game {
 
     private static class TestScreen implements Screen {
 
-        private Stage stage;
+        private final Stage stage;
 
         public TestScreen() {
             this.stage = new Stage();

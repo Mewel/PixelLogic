@@ -39,7 +39,7 @@ public abstract class PixelLogicTimeTrialHighscoreStore {
     }
 
     public static List<Highscore> list(String mode) {
-        List<Highscore> highscoreList = new ArrayList<Highscore>();
+        List<Highscore> highscoreList = new ArrayList<>();
         Preferences preferences = Gdx.app.getPreferences("pixellogic_highscore_" + mode);
         for (int i = 1; i <= MAX_ENTRIES; i++) {
             String highscoreAsString = preferences.getString(String.valueOf(i), null);

@@ -111,21 +111,18 @@ public class PixelLogicUILevelSwitcher extends PixelLogicUIGroup {
                 Actions.moveTo(x, 0, 0.1f),
                 Actions.color(new Color(TOOLBAR_SWITCHER_ACTIVE_COLOR), 0.05f),
                 Actions.color(getGlobal().getStyle().getSecondaryColor(), 0.1f),
-                Actions.run(new Runnable() {
-                                @Override
-                                public void run() {
-                                    penColor = fillPixel ? new Color(TOOLBAR_SWITCHER_ACTIVE_COLOR) : new Color(TOOLBAR_SWITCHER_INACTIVE_COLOR);
-                                    xColor = !fillPixel ? new Color(TOOLBAR_SWITCHER_ACTIVE_COLOR) : new Color(TOOLBAR_SWITCHER_INACTIVE_COLOR);
-                                }
-                            }
+                Actions.run(() -> {
+                    penColor = fillPixel ? new Color(TOOLBAR_SWITCHER_ACTIVE_COLOR) : new Color(TOOLBAR_SWITCHER_INACTIVE_COLOR);
+                    xColor = !fillPixel ? new Color(TOOLBAR_SWITCHER_ACTIVE_COLOR) : new Color(TOOLBAR_SWITCHER_INACTIVE_COLOR);
+                }
                 )));
     }
 
     private static class Marker extends Actor implements PixelLogicUIStyleable {
 
-        private PixelLogicGlobal global;
+        private final PixelLogicGlobal global;
 
-        private Texture texture;
+        private final Texture texture;
 
         Marker(PixelLogicGlobal global) {
             this.global = global;

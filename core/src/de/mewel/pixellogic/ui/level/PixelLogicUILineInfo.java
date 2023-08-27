@@ -16,13 +16,13 @@ import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public abstract class PixelLogicUILineInfo extends PixelLogicUILevelGroup {
 
-    protected PixelLogicLevel level;
+    protected final PixelLogicLevel level;
 
-    protected int line;
+    protected final int line;
 
-    protected List<Label> labels;
+    protected final List<Label> labels;
 
-    protected Texture texture;
+    protected final Texture texture;
 
     protected PixelLogicUILevelResolution resolution;
 
@@ -31,7 +31,7 @@ public abstract class PixelLogicUILineInfo extends PixelLogicUILevelGroup {
         this.level = level;
         this.line = line;
         this.texture = PixelLogicUIUtil.getWhiteTexture();
-        this.labels = new ArrayList<Label>();
+        this.labels = new ArrayList<>();
     }
 
     @Override

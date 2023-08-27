@@ -15,8 +15,8 @@ public class PixelLogicUtilTest {
     }
 
     @Test
-    public void isSolved() throws Exception {
-        List<Integer> numbers = new ArrayList<Integer>();
+    public void isSolved() {
+        List<Integer> numbers = new ArrayList<>();
         numbers.add(1);
         assertFalse(PixelLogicUtil.isSolved(new Boolean[]{null, null}, numbers));
         assertTrue(PixelLogicUtil.isSolved(new Boolean[]{true, null}, numbers));
@@ -28,7 +28,7 @@ public class PixelLogicUtilTest {
     }
 
     @Test
-    public void createRandomLevelSpeedTest() throws Exception {
+    public void createRandomLevelSpeedTest() {
         long sTime = System.currentTimeMillis();
         for (int i = 0; i < 50; i++) {
             Boolean[][] randomLevel = PixelLogicUtil.createRandomLevel(9, 9, 4f, -1);
@@ -44,7 +44,7 @@ public class PixelLogicUtilTest {
     }
 
     @Test
-    public void solveSpeedTest() throws Exception {
+    public void solveSpeedTest() {
         PixelLogicRawLevelFormat pixelLogicRawLevelFormat = PixelLogicRawLevelFormat.ofNON(getPuzzle6());
         System.out.println("Puzzle successfully parsed. Start solving...");
 /*

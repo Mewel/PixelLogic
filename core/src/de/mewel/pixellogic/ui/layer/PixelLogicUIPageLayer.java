@@ -17,15 +17,15 @@ import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public class PixelLogicUIPageLayer implements PixelLogicUILayer {
 
-    private Map<PixelLogicUIPageId, PixelLogicUIPage> pageMap;
+    private final Map<PixelLogicUIPageId, PixelLogicUIPage> pageMap;
 
     private PixelLogicUIPage activePage;
 
-    private PixelLogicGlobal global;
+    private final PixelLogicGlobal global;
 
     public PixelLogicUIPageLayer(PixelLogicGlobal global) {
         this.global = global;
-        this.pageMap = new HashMap<PixelLogicUIPageId, PixelLogicUIPage>();
+        this.pageMap = new HashMap<>();
         this.activePage = null;
     }
 
@@ -55,12 +55,7 @@ public class PixelLogicUIPageLayer implements PixelLogicUILayer {
 
         // activate page
         if (this.activePage != null) {
-            this.activePage.deactivate(new Runnable() {
-                @Override
-                public void run() {
-                    activate(page, activePage, data, after);
-                }
-            });
+            this.activePage.deactivate(() -> activate(page, activePage, data, after));
             return;
         }
         activate(page, null, data, after);

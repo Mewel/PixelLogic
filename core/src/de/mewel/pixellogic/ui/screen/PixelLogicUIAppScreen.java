@@ -26,9 +26,9 @@ import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public class PixelLogicUIAppScreen extends PixelLogicUILayeredScreen implements PixelLogicListener {
 
-    private PixelLogicUIPageLayer pageLayer;
+    private final PixelLogicUIPageLayer pageLayer;
 
-    private PixelLogicUIAchievementLayer achievementLayer;
+    private final PixelLogicUIAchievementLayer achievementLayer;
 
     protected FPSLogger fpsLogger = new FPSLogger();
 

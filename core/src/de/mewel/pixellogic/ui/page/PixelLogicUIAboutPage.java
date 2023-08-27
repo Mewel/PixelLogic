@@ -54,7 +54,7 @@ public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
         creditsText.append("\n[MAIN_COLOR]mewel");
         creditsText.append("\n\n").append(getAssets().translate("about.pixelArtists"));
 
-        List<String> pixelArtists = new ArrayList<String>();
+        List<String> pixelArtists = new ArrayList<>();
         pixelArtists.add("Johan Vinet");
         pixelArtists.add("Luis Zuno");
         pixelArtists.add("Alex's Assets");
@@ -73,7 +73,7 @@ public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
         creditsText.append("Tobias Weber - The Parting Glas").append("\n");
 
         creditsText.append("\n").append(getAssets().translate("about.thirdParty"));
-        List<String> thirdParty = new ArrayList<String>();
+        List<String> thirdParty = new ArrayList<>();
         thirdParty.add("libgdx");
         thirdParty.add("google quicksand regular font");
         thirdParty.add("visitor2 font");
@@ -85,7 +85,7 @@ public class PixelLogicUIAboutPage extends PixelLogicUIBasePage {
         creditsText.append("\n").append(getAssets().translate("about.jose"));
 
         getPageRoot().space(0);
-        this.nodes = new ArrayList<Actor>();
+        this.nodes = new ArrayList<>();
         this.nodes.add(new TextNode(intro));
         this.nodes.add(emailLink);
         this.nodes.add(new HeaderNode(gitHub));

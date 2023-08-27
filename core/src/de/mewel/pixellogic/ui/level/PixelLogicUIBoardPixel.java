@@ -8,7 +8,8 @@ public class PixelLogicUIBoardPixel extends PixelLogicUIColoredSurface {
 
     private Boolean value;
 
-    private int row, col;
+    private final int row;
+    private final int col;
 
     public PixelLogicUIBoardPixel(PixelLogicGlobal global, int row, int col) {
         super(global);

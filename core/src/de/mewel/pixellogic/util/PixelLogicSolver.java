@@ -11,7 +11,7 @@ public class PixelLogicSolver {
         int rows = rowNumbers.size();
         int cols = colNumbers.size();
 
-        Map<String, Line> lines = new HashMap<String, Line>();
+        Map<String, Line> lines = new HashMap<>();
         for (int i = 0; i < rows; i++) {
             String id = "r" + i;
             lines.put(id, new Line(id, rowNumbers.get(i), cols));
@@ -29,7 +29,7 @@ public class PixelLogicSolver {
             }
         }
 
-        ArrayMergingDeque<String, Line> solveQueue = new ArrayMergingDeque<String, Line>();
+        ArrayMergingDeque<String, Line> solveQueue = new ArrayMergingDeque<>();
         for (Line line : lines.values()) {
             solveQueue.offer(line.id, line);
         }
@@ -80,11 +80,11 @@ public class PixelLogicSolver {
         if (newLine != null && PixelLogicUtil.differs(booleanLine, newLine)) {
             return line.update(newLine);
         }
-        return new ArrayList<Pixel>();
+        return new ArrayList<>();
     }
 
     private List<Boolean[]> bruteForceLine(Line line, Boolean[] booleanLine, int startIndex, int filledPixel) {
-        List<Boolean[]> lines = new ArrayList<Boolean[]>();
+        List<Boolean[]> lines = new ArrayList<>();
         if (filledPixel >= line.requiredPixels) {
             return lines;
         }
@@ -152,20 +152,20 @@ public class PixelLogicSolver {
 
     static class Line {
 
-        String id;
+        final String id;
 
-        List<Integer> numbers;
+        final List<Integer> numbers;
 
-        List<Pixel> pixels;
+        final List<Pixel> pixels;
 
-        int requiredPixels;
+        final int requiredPixels;
 
         boolean solved;
 
         Line(String id, List<Integer> numbers, int pixels) {
             this.id = id;
             this.numbers = numbers;
-            this.pixels = new ArrayList<Pixel>(pixels);
+            this.pixels = new ArrayList<>(pixels);
             this.requiredPixels = PixelLogicUtil.countPixel(numbers);
             this.solved = false;
         }
@@ -185,7 +185,7 @@ public class PixelLogicSolver {
         }
 
         List<Pixel> blockPixel() {
-            List<Pixel> dirtyPixels = new ArrayList<Pixel>();
+            List<Pixel> dirtyPixels = new ArrayList<>();
             for (Pixel pixel : pixels) {
                 if (pixel.value == 0) {
                     pixel.value = 1;
@@ -205,7 +205,7 @@ public class PixelLogicSolver {
         }
 
         List<Pixel> update(Boolean[] line) {
-            List<Pixel> dirtyPixels = new ArrayList<Pixel>();
+            List<Pixel> dirtyPixels = new ArrayList<>();
             for (int i = 0; i < line.length; i++) {
                 Boolean b = line[i];
                 if (b == null) {
@@ -231,14 +231,15 @@ public class PixelLogicSolver {
 
         @Override
         public boolean equals(Object obj) {
-            return obj != null && obj instanceof Line && id.equals(((Line) obj).id);
+            return obj instanceof Line && id.equals(((Line) obj).id);
         }
 
     }
 
     static class Pixel {
 
-        int row, col;
+        final int row;
+        final int col;
 
         // 0 = unknown, 1 = false, 2 = true
         byte value;

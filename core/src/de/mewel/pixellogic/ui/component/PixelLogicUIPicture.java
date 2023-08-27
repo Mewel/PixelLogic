@@ -22,7 +22,7 @@ import de.mewel.pixellogic.ui.level.animation.PixelLogicUIBaseLevelAnimation;
 
 public class PixelLogicUIPicture extends PixelLogicUIGroup {
 
-    private Background background;
+    private final Background background;
 
     public PixelLogicUIPicture(PixelLogicGlobal global, PixelLogicLevelCollection collection) {
         super(global);
@@ -76,18 +76,8 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
                 Actions.moveTo(width * col, height * row, .2f)
         ));
         boardAnimation.addAction(Actions.delay(.5f));
-        boardAnimation.addAction(Actions.run(new Runnable() {
-            @Override
-            public void run() {
-                fakeBoard.animate();
-            }
-        }));
-        boardAnimation.addAction(Actions.run(new Runnable() {
-            @Override
-            public void run() {
-                background.update(levelIndex, oldLevelIndex, .5f);
-            }
-        }));
+        boardAnimation.addAction(Actions.run(fakeBoard::animate));
+        boardAnimation.addAction(Actions.run(() -> background.update(levelIndex, oldLevelIndex, .5f)));
         boardAnimation.addAction(Actions.delay(1.6f));
         boardAnimation.addAction(Actions.fadeOut(0));
         fakeBoard.addAction(boardAnimation);
@@ -96,9 +86,9 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
 
     private static class Background extends Actor {
 
-        private PixelLogicLevelCollection collection;
+        private final PixelLogicLevelCollection collection;
 
-        private Pixmap unsolved;
+        private final Pixmap unsolved;
 
         private Sprite sprite;
 
@@ -199,9 +189,9 @@ public class PixelLogicUIPicture extends PixelLogicUIGroup {
 
     private static class ResizeableBoard extends PixelLogicUIGroup {
 
-        private PixelLogicUIBoard board;
+        private final PixelLogicUIBoard board;
 
-        private PixelLogicUIBoardPixel[][] pixels;
+        private final PixelLogicUIBoardPixel[][] pixels;
 
         public ResizeableBoard(PixelLogicUIBoard board, PixelLogicGlobal global) {
             super(global);

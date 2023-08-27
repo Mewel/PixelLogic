@@ -68,12 +68,12 @@ public class PixelLogicUIUtil {
     }
 
     public static int getBaseHeight() {
-        int baseHeight = MathUtils.floor(Gdx.graphics.getHeight() / (BASE_SIZE * 10)) * BASE_SIZE;
+        int baseHeight = MathUtils.floor(Gdx.graphics.getHeight() / (BASE_SIZE * 10f)) * BASE_SIZE;
         return Math.max(BASE_SIZE, baseHeight);
     }
 
     public static int getIconBaseHeight() {
-        int baseHeight = MathUtils.floor(Gdx.graphics.getHeight() / (BASE_SIZE * 20)) * BASE_SIZE;
+        int baseHeight = MathUtils.floor(Gdx.graphics.getHeight() / (BASE_SIZE * 20f)) * BASE_SIZE;
         return Math.max(BASE_SIZE, baseHeight);
     }
 

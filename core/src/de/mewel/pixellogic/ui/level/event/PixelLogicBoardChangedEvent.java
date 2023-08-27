@@ -6,11 +6,12 @@ import de.mewel.pixellogic.ui.level.PixelLogicUILevel;
 
 public class PixelLogicBoardChangedEvent extends PixelLogicEvent {
 
-    private PixelLogicLevel level;
+    private final PixelLogicLevel level;
 
-    private int row, col;
+    private final int row;
+    private final int col;
 
-    private Boolean value;
+    private final Boolean value;
 
     /**
      * A particular pixel changed

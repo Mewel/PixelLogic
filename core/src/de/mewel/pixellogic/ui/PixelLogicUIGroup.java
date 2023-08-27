@@ -11,7 +11,7 @@ import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public abstract class PixelLogicUIGroup extends Group implements PixelLogicUIElement {
 
-    private PixelLogicGlobal global;
+    private final PixelLogicGlobal global;
 
     public PixelLogicUIGroup(PixelLogicGlobal global) {
         this.global = global;

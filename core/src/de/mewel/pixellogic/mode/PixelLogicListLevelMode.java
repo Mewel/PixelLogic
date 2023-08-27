@@ -130,9 +130,9 @@ public abstract class PixelLogicListLevelMode extends PixelLogicLevelMode {
         super.handle(event);
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
-            if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus())) {
+            if (PixelLogicLevelStatus.DESTROYED.equals(changeEvent.getStatus())) {
                 loadNextLevel();
-            } else if (PixelLogicLevelStatus.solved.equals(changeEvent.getStatus())) {
+            } else if (PixelLogicLevelStatus.SOLVED.equals(changeEvent.getStatus())) {
                 this.preferences.remove(getPixelsProperty(level));
                 this.preferences.flush();
             }

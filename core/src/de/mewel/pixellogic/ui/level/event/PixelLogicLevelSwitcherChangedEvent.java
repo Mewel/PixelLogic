@@ -6,7 +6,7 @@ import de.mewel.pixellogic.event.PixelLogicEvent;
 
 public class PixelLogicLevelSwitcherChangedEvent extends PixelLogicEvent {
 
-    private boolean fillPixel;
+    private final boolean fillPixel;
 
     public PixelLogicLevelSwitcherChangedEvent(Actor source, boolean fillPixel) {
         super(source);

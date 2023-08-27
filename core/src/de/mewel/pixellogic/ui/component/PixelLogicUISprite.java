@@ -63,8 +63,8 @@ public class PixelLogicUISprite extends PixelLogicUIActor {
         float alpha = parentAlpha * color.a;
         int iconWidth = useDefaultIconSize ? PixelLogicUIUtil.getIconBaseHeight() : (int) getWidth();
         int iconHeight = useDefaultIconSize ? PixelLogicUIUtil.getIconBaseHeight() : (int) getHeight();
-        float y = MathUtils.floor(getY()) + getHeight() / 2 - iconWidth / 2;
-        float x = MathUtils.floor(getX()) + getWidth() / 2 - iconHeight / 2;
+        float y = MathUtils.floor(getY()) + getHeight() / 2 - iconWidth / 2f;
+        float x = MathUtils.floor(getX()) + getWidth() / 2 - iconHeight / 2f;
 
         sprite.setColor(color.r, color.g, color.b, color.a * alpha);
         sprite.setPosition(x, y);

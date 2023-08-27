@@ -45,7 +45,7 @@ public class PixelLogicUIColumnInfo extends PixelLogicUILineInfo {
     protected void addLabels(int fontSize, Label.LabelStyle style) {
         int yOffset = fontSize + (fontSize / 3);
         float x = getWidth() / 2 + 1;
-        float y = yOffset / 5;
+        float y = yOffset / 5f;
         List<Integer> colLevelData = PixelLogicUtil.getNumbersOfCol(level.getLevelData(), this.line);
         Collections.reverse(colLevelData);
         for (int i = 0; i < colLevelData.size(); i++) {

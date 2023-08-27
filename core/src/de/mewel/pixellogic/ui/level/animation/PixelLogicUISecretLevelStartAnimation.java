@@ -19,7 +19,7 @@ public class PixelLogicUISecretLevelStartAnimation extends PixelLogicUIBaseLevel
 
     private static final float DELAY = .3f;
 
-    private Random random;
+    private final Random random;
 
     public PixelLogicUISecretLevelStartAnimation(PixelLogicGlobal global) {
         super(global);

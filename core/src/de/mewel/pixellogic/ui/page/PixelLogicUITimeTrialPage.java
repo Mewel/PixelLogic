@@ -1,14 +1,11 @@
 package de.mewel.pixellogic.ui.page;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +31,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
 
     @Override
     protected void build() {
-        this.modes = new ArrayList<TimeTrialModeUI>();
+        this.modes = new ArrayList<>();
         this.modes.add(new TimeTrialModeUI(getGlobal(), new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialEasyOptions(), this));
         this.modes.add(new TimeTrialModeUI(getGlobal(), new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions(), this));
         this.modes.add(new TimeTrialModeUI(getGlobal(), new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialInsaneOptions(), this));
@@ -48,7 +45,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
 
     protected void buildModes() {
         Label descriptionLabel = getDescriptionLabel();
-        this.labelContainer = new Container<Label>(descriptionLabel);
+        this.labelContainer = new Container<>(descriptionLabel);
         getPageRoot().addActor(this.labelContainer);
         for (TimeTrialModeUI mode : this.modes) {
             getPageRoot().addActor(mode);
@@ -92,15 +89,15 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
 
     private class TimeTrialModeUI extends PixelLogicUIContainer<VerticalGroup> {
 
-        private PixelLogicTimeTrialModeOptions options;
+        private final PixelLogicTimeTrialModeOptions options;
 
-        private PixelLogicUITimeTrialPage page;
+        private final PixelLogicUITimeTrialPage page;
 
-        private PixelLogicUIButton button;
+        private final PixelLogicUIButton button;
 
-        private Table highscoreTable;
+        private final Table highscoreTable;
 
-        private Container<Table> highscoreContainer;
+        private final Container<Table> highscoreContainer;
 
         public TimeTrialModeUI(PixelLogicGlobal global, final PixelLogicTimeTrialModeOptions options, PixelLogicUITimeTrialPage page) {
             super(global, new VerticalGroup());
@@ -126,7 +123,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
             this.highscoreTable.setFillParent(true);
             updateHighscoreTable();
 
-            this.highscoreContainer = new Container<Table>(this.highscoreTable);
+            this.highscoreContainer = new Container<>(this.highscoreTable);
 
             getActor().addActor(this.highscoreContainer);
             getActor().pack();
@@ -134,7 +131,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
 
         public void resize() {
             this.width(getComponentWidth());
-            float padding = getPadding() / 2;
+            float padding = getPadding() / 2f;
             this.pad(padding, 0, padding, padding * 2);
             this.highscoreContainer.width(getComponentWidth());
             updateHighscoreTable();
@@ -188,12 +185,9 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
             data.put("options", options);
             data.put("mode", options.id);
             data.put("menuBackId", PixelLogicUIPageId.timeTrial);
-            page.getAppScreen().setPage(PixelLogicUIPageId.level, data, new Runnable() {
-                @Override
-                public void run() {
-                    mode.activate();
-                    mode.run();
-                }
+            page.getAppScreen().setPage(PixelLogicUIPageId.level, data, () -> {
+                mode.activate();
+                mode.run();
             });
         }
 

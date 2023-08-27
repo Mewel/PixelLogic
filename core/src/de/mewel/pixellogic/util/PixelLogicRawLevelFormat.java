@@ -5,8 +5,8 @@ import java.util.List;
 
 public class PixelLogicRawLevelFormat {
 
-    private List<List<Integer>> rows;
-    private List<List<Integer>> columns;
+    private final List<List<Integer>> rows;
+    private final List<List<Integer>> columns;
 
     public PixelLogicRawLevelFormat(List<List<Integer>> rows, List<List<Integer>> columns) {
         this.rows = rows;
@@ -31,8 +31,8 @@ public class PixelLogicRawLevelFormat {
         String[] lines = data.split("\n");
         boolean parseRows = false;
         boolean parseColumns = false;
-        List<List<Integer>> rows = new ArrayList<List<Integer>>();
-        List<List<Integer>> columns = new ArrayList<List<Integer>>();
+        List<List<Integer>> rows = new ArrayList<>();
+        List<List<Integer>> columns = new ArrayList<>();
         for (String line : lines) {
             if (line.startsWith("rows")) {
                 parseRows = true;
@@ -56,10 +56,10 @@ public class PixelLogicRawLevelFormat {
 
     private static List<Integer> getLineData(String line) {
         if(line.trim().isEmpty()) {
-            return new ArrayList<Integer>();
+            return new ArrayList<>();
         }
         String[] numbers = line.split(",");
-        List<Integer> lineData = new ArrayList<Integer>();
+        List<Integer> lineData = new ArrayList<>();
         for (String number : numbers) {
             lineData.add(Integer.valueOf(number));
         }

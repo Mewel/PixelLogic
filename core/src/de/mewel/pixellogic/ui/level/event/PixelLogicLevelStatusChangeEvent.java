@@ -7,9 +7,9 @@ import de.mewel.pixellogic.ui.page.PixelLogicUILevelPage;
 
 public class PixelLogicLevelStatusChangeEvent extends PixelLogicEvent {
 
-    private PixelLogicLevel level;
+    private final PixelLogicLevel level;
 
-    private PixelLogicLevelStatus status;
+    private final PixelLogicLevelStatus status;
 
     public PixelLogicLevelStatusChangeEvent(PixelLogicUILevelPage source, PixelLogicLevel level, PixelLogicLevelStatus status) {
         super(source);

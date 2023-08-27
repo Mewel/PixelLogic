@@ -9,11 +9,11 @@ import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public abstract class PixelLogicUILayeredScreen extends PixelLogicUIScreen {
 
-    protected List<PixelLogicUILayer> layers;
+    protected final List<PixelLogicUILayer> layers;
 
     public PixelLogicUILayeredScreen(PixelLogicGlobal global) {
         super(global);
-        this.layers = new ArrayList<PixelLogicUILayer>();
+        this.layers = new ArrayList<>();
     }
 
     public void add(PixelLogicUILayer layer) {

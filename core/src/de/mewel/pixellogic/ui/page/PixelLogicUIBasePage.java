@@ -86,19 +86,14 @@ public abstract class PixelLogicUIBasePage extends PixelLogicUIPage implements P
     @Override
     public void deactivate(final Runnable after) {
         this.getEventManager().remove(this);
-        fadeOut(new Runnable() {
-            @Override
-            public void run() {
-                PixelLogicUIBasePage.super.deactivate(after);
-            }
-        });
+        fadeOut(() -> PixelLogicUIBasePage.super.deactivate(after));
     }
 
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
         if (this.header != null) {
-            this.header.setHeight(height / 12);
+            this.header.setHeight(height / 12f);
             this.header.setWidth(width);
         }
     }

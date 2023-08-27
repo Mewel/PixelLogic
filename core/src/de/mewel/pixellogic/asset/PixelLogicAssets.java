@@ -44,21 +44,21 @@ import static de.mewel.pixellogic.PixelLogicConstants.SWITCHER_SOUND;
 
 public class PixelLogicAssets {
 
-    private static String GAME_FONT_PREFIX = "game_font_";
+    private static final String GAME_FONT_PREFIX = "game_font_";
 
-    public static int GAME_FONT_BASE = 13;
+    public static final int GAME_FONT_BASE = 13;
 
-    public static int GAME_FONT_MIN = 13;
+    public static final int GAME_FONT_MIN = 13;
 
-    private static String LEVEL_FONT_PREFIX = "level_font_";
+    private static final String LEVEL_FONT_PREFIX = "level_font_";
 
-    public static int LEVEL_FONT_SIZE = 5;
+    public static final int LEVEL_FONT_SIZE = 5;
 
-    private static String MAIN_FONT_ASSET = "main_font.ttf";
+    private static final String MAIN_FONT_ASSET = "main_font.ttf";
 
-    private static String LEVEL_DIRECTORY = "level";
+    private static final String LEVEL_DIRECTORY = "level";
 
-    private AssetManager manager;
+    private final AssetManager manager;
 
     private ShapeRenderer shapeRenderer;
 
@@ -209,7 +209,7 @@ public class PixelLogicAssets {
     }
 
     public static int getFixedLevelFontSize(int size) {
-        int fixedSize = (int) Math.ceil(size / LEVEL_FONT_SIZE) * LEVEL_FONT_SIZE;
+        int fixedSize = (int) Math.ceil((float)size / (float)LEVEL_FONT_SIZE) * LEVEL_FONT_SIZE;
         fixedSize = Math.max(fixedSize, getLevelFontIterationStart() * LEVEL_FONT_SIZE);
         fixedSize = Math.min(fixedSize, getLevelFontIterationEnd() * LEVEL_FONT_SIZE);
         return fixedSize;
@@ -226,7 +226,7 @@ public class PixelLogicAssets {
     }
 
     public List<PixelLogicLevelCollection> listLevels() {
-        List<PixelLogicLevelCollection> collections = new ArrayList<PixelLogicLevelCollection>();
+        List<PixelLogicLevelCollection> collections = new ArrayList<>();
         for (FileHandle collectionHandle : getLevelHandles()) {
             PixelLogicLevelCollection levelCollection = getLevelCollection(collectionHandle.path());
             if (levelCollection != null) {
@@ -254,7 +254,7 @@ public class PixelLogicAssets {
     }
 
     private List<FileHandle> getLevelHandles(FileHandle[] collectionsHandle) {
-        List<FileHandle> handles = new ArrayList<FileHandle>();
+        List<FileHandle> handles = new ArrayList<>();
         for (FileHandle collectionHandle : collectionsHandle) {
             if (!collectionHandle.isDirectory()) {
                 continue;
@@ -279,9 +279,7 @@ public class PixelLogicAssets {
     }
 
     public void dispose() {
-        if (this.manager != null) {
-            this.manager.dispose();
-        }
+        this.manager.dispose();
         if (this.shapeRenderer != null) {
             this.shapeRenderer.dispose();
         }

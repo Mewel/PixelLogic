@@ -16,7 +16,7 @@ import de.mewel.pixellogic.model.PixelLogicLevel;
 public class PixelLogicUtil {
 
     public static List<List<Integer>> getRowData(Boolean[][] level) {
-        List<List<Integer>> rowData = new ArrayList<List<Integer>>();
+        List<List<Integer>> rowData = new ArrayList<>();
         int rows = level.length;
         for (int row = 0; row < rows; row++) {
             rowData.add(getNumbersOfRow(level, row));
@@ -25,7 +25,7 @@ public class PixelLogicUtil {
     }
 
     public static List<List<Integer>> getColumnData(Boolean[][] level) {
-        List<List<Integer>> colData = new ArrayList<List<Integer>>();
+        List<List<Integer>> colData = new ArrayList<>();
         int cols = level[0].length;
         for (int col = 0; col < cols; col++) {
             colData.add(getNumbersOfCol(level, col));
@@ -60,7 +60,7 @@ public class PixelLogicUtil {
     }
 
     public static List<Integer> getConnectedPixel(Boolean[] line) {
-        List<Integer> numbers = new ArrayList<Integer>();
+        List<Integer> numbers = new ArrayList<>();
         int consecutive = 0;
         for (Boolean pixel : line) {
             if (pixel != null && pixel) {
@@ -103,7 +103,7 @@ public class PixelLogicUtil {
      * @return a sorted list of keys
      */
     public static <K, V extends Comparable<? super V>> List<K> sortByValue(Map<K, V> map) {
-        List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(map.entrySet());
+        List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
         Collections.sort(list, new Comparator<Object>() {
             @SuppressWarnings("unchecked")
             public int compare(Object o1, Object o2) {

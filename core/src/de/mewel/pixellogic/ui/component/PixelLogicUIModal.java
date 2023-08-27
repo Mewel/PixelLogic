@@ -50,13 +50,10 @@ public abstract class PixelLogicUIModal extends PixelLogicUIGroup {
     }
 
     public void close() {
-        this.addAction(Actions.sequence(Actions.fadeOut(this.fadeInDuration), Actions.run(new Runnable() {
-            @Override
-            public void run() {
-                PixelLogicUIModal modal = PixelLogicUIModal.this;
-                modal.parent.removeActor(modal);
-                afterClose();
-            }
+        this.addAction(Actions.sequence(Actions.fadeOut(this.fadeInDuration), Actions.run(() -> {
+            PixelLogicUIModal modal = PixelLogicUIModal.this;
+            modal.parent.removeActor(modal);
+            afterClose();
         })));
     }
 

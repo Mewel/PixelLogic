@@ -12,9 +12,9 @@ import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
 
 public class PixelLogicUIUndoButton extends PixelLogicUIGroup {
 
-    private PixelLogicUIColoredSurface background;
+    private final PixelLogicUIColoredSurface background;
 
-    private Sprite sprite;
+    private final Sprite sprite;
 
     public PixelLogicUIUndoButton(PixelLogicGlobal global) {
         super(global);

@@ -63,25 +63,25 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         }
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
-            if (PixelLogicLevelStatus.playable.equals(changeEvent.getStatus()) && status == 0) {
+            if (PixelLogicLevelStatus.PLAYABLE.equals(changeEvent.getStatus()) && status == 0) {
                 handleStatus1();
-            } else if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus()) && status == 3) {
+            } else if (PixelLogicLevelStatus.DESTROYED.equals(changeEvent.getStatus()) && status == 3) {
                 handleStatus4();
-            } else if (PixelLogicLevelStatus.playable.equals(changeEvent.getStatus()) && status == 4) {
+            } else if (PixelLogicLevelStatus.PLAYABLE.equals(changeEvent.getStatus()) && status == 4) {
                 handleStatus5();
-            } else if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus()) && status == 9) {
+            } else if (PixelLogicLevelStatus.DESTROYED.equals(changeEvent.getStatus()) && status == 9) {
                 handleStatus10();
-            } else if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus()) && status == 10) {
+            } else if (PixelLogicLevelStatus.DESTROYED.equals(changeEvent.getStatus()) && status == 10) {
                 handleStatus11();
-            } else if (PixelLogicLevelStatus.playable.equals(changeEvent.getStatus()) && status == 11) {
+            } else if (PixelLogicLevelStatus.PLAYABLE.equals(changeEvent.getStatus()) && status == 11) {
                 handleStatus12();
-            } else if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus()) && status == 14) {
+            } else if (PixelLogicLevelStatus.DESTROYED.equals(changeEvent.getStatus()) && status == 14) {
                 handleStatus15();
-            } else if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus()) && status == 15) {
+            } else if (PixelLogicLevelStatus.DESTROYED.equals(changeEvent.getStatus()) && status == 15) {
                 handleStatus16();
-            } else if (PixelLogicLevelStatus.playable.equals(changeEvent.getStatus()) && status == 16) {
+            } else if (PixelLogicLevelStatus.PLAYABLE.equals(changeEvent.getStatus()) && status == 16) {
                 handleStatus17();
-            } else if (PixelLogicLevelStatus.solved.equals(changeEvent.getStatus()) && status == 21) {
+            } else if (PixelLogicLevelStatus.SOLVED.equals(changeEvent.getStatus()) && status == 21) {
                 handleStatus22();
             }
         }
@@ -116,13 +116,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         PixelLogicUILevel levelUI = levelPage.getLevelUI();
         levelUI.setEnabled(false);
 
-        levelPage.setMessage(getAssets().translate("tutorial.status1"),
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        handleStatus2();
-                    }
-                });
+        levelPage.setMessage(getAssets().translate("tutorial.status1"), this::handleStatus2);
     }
 
     private void handleStatus2() {
@@ -134,17 +128,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
 
         SequenceAction solveSequence = createSolveSequence(levelUI, pixelMap, .05f);
         solveSequence.addAction(Actions.delay(1f));
-        solveSequence.addAction(Actions.run(new Runnable() {
-            @Override
-            public void run() {
-                levelPage.showNextMessageButton(new Runnable() {
-                    @Override
-                    public void run() {
-                        handleStatus3();
-                    }
-                });
-            }
-        }));
+        solveSequence.addAction(Actions.run(() -> levelPage.showNextMessageButton(this::handleStatus3)));
         levelUI.addAction(solveSequence);
     }
 
@@ -168,13 +152,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         // Actor topInfo = rowInfo.get(rowInfo.size - 1);
         // topInfo.addAction(PixelLogicUIUtil.blinkAction(Color.RED, 1f));
 
-        levelPage.setMessage(getAssets().translate("tutorial.status5"),
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        handleStatus6();
-                    }
-                });
+        levelPage.setMessage(getAssets().translate("tutorial.status5"), this::handleStatus6);
     }
 
     private void handleStatus6() {
@@ -182,7 +160,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
         PixelLogicLevel level = levelPage.getLevel();
-        Map<Vector2, Boolean> pixels = new LinkedHashMap<Vector2, Boolean>();
+        Map<Vector2, Boolean> pixels = new LinkedHashMap<>();
         for (int x = 0; x < level.getColumns(); x++) {
             pixels.put(new Vector2(x, 0), true);
         }
@@ -206,13 +184,10 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
         levelUI.setEnabled(false);
-        levelPage.setMessage(getAssets().translate("tutorial.status8"), new Runnable() {
-            @Override
-            public void run() {
-                levelUI.setEnabled(true);
-                fadeInInfoBoxes(levelUI);
-                levelPage.hideMessage();
-            }
+        levelPage.setMessage(getAssets().translate("tutorial.status8"), () -> {
+            levelUI.setEnabled(true);
+            fadeInInfoBoxes(levelUI);
+            levelPage.hideMessage();
         });
     }
 
@@ -242,23 +217,17 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         levelUI.setEnabled(false);
 
         levelPage.setMessage(getAssets().translate("tutorial.status12a"),
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        fadeOutRows(levelUI, -1);
-                        fadeOutColumns(levelUI, 1);
-                        levelPage.setMessage(getAssets().translate("tutorial.status12b"), new Runnable() {
-                            @Override
-                            public void run() {
-                                Map<Vector2, Boolean> pixels = new LinkedHashMap<Vector2, Boolean>();
-                                pixels.put(new Vector2(1, 3), true);
-                                pixels.put(new Vector2(1, 2), true);
-                                pixels.put(new Vector2(1, 0), true);
-                                SequenceAction sequence = createSolveSequence(levelUI, pixels, 0.2f);
-                                levelUI.addAction(sequence);
-                            }
-                        });
-                    }
+                () -> {
+                    fadeOutRows(levelUI, -1);
+                    fadeOutColumns(levelUI, 1);
+                    levelPage.setMessage(getAssets().translate("tutorial.status12b"), () -> {
+                        Map<Vector2, Boolean> pixels = new LinkedHashMap<>();
+                        pixels.put(new Vector2(1, 3), true);
+                        pixels.put(new Vector2(1, 2), true);
+                        pixels.put(new Vector2(1, 0), true);
+                        SequenceAction sequence = createSolveSequence(levelUI, pixels, 0.2f);
+                        levelUI.addAction(sequence);
+                    });
                 });
     }
 
@@ -277,14 +246,11 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
 
-        levelPage.setMessage(getAssets().translate("tutorial.status14"), new Runnable() {
-            @Override
-            public void run() {
-                levelUI.setEnabled(true);
-                fadeInInfoBoxes(levelUI);
-                levelPage.hideMessage();
-                levelPage.getScreenListener().setDestroyLevelOnClick(true);
-            }
+        levelPage.setMessage(getAssets().translate("tutorial.status14"), () -> {
+            levelUI.setEnabled(true);
+            fadeInInfoBoxes(levelUI);
+            levelPage.hideMessage();
+            levelPage.getScreenListener().setDestroyLevelOnClick(true);
         });
     }
 
@@ -307,37 +273,26 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         fadeOutRows(levelUI, 4);
         fadeOutColumns(levelUI, -1);
 
-        levelPage.setMessage(getAssets().translate("tutorial.status17a"), new Runnable() {
-            @Override
-            public void run() {
-                levelPage.setMessage(getAssets().translate("tutorial.status17b"), new Runnable() {
-                    @Override
-                    public void run() {
-                        Map<Vector2, Boolean> pixels = new LinkedHashMap<Vector2, Boolean>();
-                        pixels.put(new Vector2(0, 4), true);
-                        pixels.put(new Vector2(2, 4), true);
-                        pixels.put(new Vector2(4, 4), true);
-                        SequenceAction sequence = createSolveSequence(levelUI, pixels, 0.5f);
-                        levelUI.addAction(sequence);
-                    }
-                });
-            }
-        });
+        levelPage.setMessage(getAssets().translate("tutorial.status17a"), () -> levelPage.setMessage(getAssets().translate("tutorial.status17b"), () -> {
+            Map<Vector2, Boolean> pixels = new LinkedHashMap<>();
+            pixels.put(new Vector2(0, 4), true);
+            pixels.put(new Vector2(2, 4), true);
+            pixels.put(new Vector2(4, 4), true);
+            SequenceAction sequence = createSolveSequence(levelUI, pixels, 0.5f);
+            levelUI.addAction(sequence);
+        }));
     }
 
     private void handleStatus18() {
         this.status = 18;
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
-        levelPage.showSwitcher(new Runnable() {
-            @Override
-            public void run() {
-                Map<Vector2, Boolean> pixels = new LinkedHashMap<Vector2, Boolean>();
-                pixels.put(new Vector2(1, 4), false);
-                pixels.put(new Vector2(3, 4), false);
-                SequenceAction sequence = createSolveSequence(levelUI, pixels, 0.5f);
-                levelUI.addAction(sequence);
-            }
+        levelPage.showSwitcher(() -> {
+            Map<Vector2, Boolean> pixels = new LinkedHashMap<>();
+            pixels.put(new Vector2(1, 4), false);
+            pixels.put(new Vector2(3, 4), false);
+            SequenceAction sequence = createSolveSequence(levelUI, pixels, 0.5f);
+            levelUI.addAction(sequence);
         });
     }
 
@@ -345,16 +300,13 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         this.status = 19;
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
-        levelPage.setMessage(getAssets().translate("tutorial.status19"), new Runnable() {
-            @Override
-            public void run() {
-                Map<Vector2, Boolean> pixels = new LinkedHashMap<Vector2, Boolean>();
-                for (int col = levelUI.getLevel().getColumns() - 1; col >= 0; col--) {
-                    pixels.put(new Vector2(col, 4), null);
-                }
-                SequenceAction sequence = createSolveSequence(levelUI, pixels, 0.1f);
-                levelUI.addAction(new SequenceAction(Actions.delay(.5f, sequence)));
+        levelPage.setMessage(getAssets().translate("tutorial.status19"), () -> {
+            Map<Vector2, Boolean> pixels = new LinkedHashMap<>();
+            for (int col = levelUI.getLevel().getColumns() - 1; col >= 0; col--) {
+                pixels.put(new Vector2(col, 4), null);
             }
+            SequenceAction sequence = createSolveSequence(levelUI, pixels, 0.1f);
+            levelUI.addAction(new SequenceAction(Actions.delay(.5f, sequence)));
         });
     }
 
@@ -387,23 +339,10 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         final PixelLogicUITutorialLevelPage levelPage = getPage();
         final PixelLogicUILevel levelUI = levelPage.getLevelUI();
         levelUI.setEnabled(false);
-        levelPage.setMessage(getAssets().translate("tutorial.status22a"), new Runnable() {
-            @Override
-            public void run() {
-                levelPage.setMessage(getAssets().translate("tutorial.status22b"), new Runnable() {
-                    @Override
-                    public void run() {
-                        levelPage.setMessage(getAssets().translate("tutorial.status22c"), new Runnable() {
-                            @Override
-                            public void run() {
-                                levelPage.destroyLevel();
-                                getAppScreen().setPage(PixelLogicUIPageId.play);
-                            }
-                        });
-                    }
-                });
-            }
-        });
+        levelPage.setMessage(getAssets().translate("tutorial.status22a"), () -> levelPage.setMessage(getAssets().translate("tutorial.status22b"), () -> levelPage.setMessage(getAssets().translate("tutorial.status22c"), () -> {
+            levelPage.destroyLevel();
+            getAppScreen().setPage(PixelLogicUIPageId.play);
+        })));
     }
 
     private boolean isSet(PixelLogicLevel level, int row, int col, boolean targetValue) {
@@ -437,16 +376,13 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
         for (final Map.Entry<Vector2, Boolean> entry : pixels.entrySet()) {
             final Vector2 pixel = entry.getKey();
             solveSequence.addAction(Actions.delay(delay));
-            solveSequence.addAction(Actions.run(new Runnable() {
-                @Override
-                public void run() {
-                    levelUI.setPixel((int) pixel.y, (int) pixel.x, entry.getValue());
-                    if (entry.getValue() != null) {
-                        if (entry.getValue()) {
-                            getAudio().playSound(DRAW_SOUND, DRAW_SOUND_VOLUME);
-                        } else {
-                            getAudio().playSound(BLOCK_SOUND, BUTTON_SOUND_VOLUME);
-                        }
+            solveSequence.addAction(Actions.run(() -> {
+                levelUI.setPixel((int) pixel.y, (int) pixel.x, entry.getValue());
+                if (entry.getValue() != null) {
+                    if (entry.getValue()) {
+                        getAudio().playSound(DRAW_SOUND, DRAW_SOUND_VOLUME);
+                    } else {
+                        getAudio().playSound(BLOCK_SOUND, BUTTON_SOUND_VOLUME);
                     }
                 }
             }));
@@ -455,7 +391,7 @@ public class PixelLogicTutorialMode extends PixelLogicLevelMode {
     }
 
     private Map<Vector2, Boolean> toPixelVectorMap(Boolean[][] levelData) {
-        Map<Vector2, Boolean> pixels = new LinkedHashMap<Vector2, Boolean>();
+        Map<Vector2, Boolean> pixels = new LinkedHashMap<>();
         for (int row = 0; row < levelData.length; row++) {
             for (int col = 0; col < levelData[0].length; col++) {
                 if (levelData[row][col]) {

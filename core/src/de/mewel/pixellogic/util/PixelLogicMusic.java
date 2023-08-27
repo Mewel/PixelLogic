@@ -4,7 +4,7 @@ import com.badlogic.gdx.audio.Music;
 
 public class PixelLogicMusic {
 
-    private Music music;
+    private final Music music;
 
     private boolean muted;
 

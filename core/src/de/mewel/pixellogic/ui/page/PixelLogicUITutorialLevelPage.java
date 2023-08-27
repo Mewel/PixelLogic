@@ -1,6 +1,5 @@
 package de.mewel.pixellogic.ui.page;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
@@ -40,9 +39,9 @@ import static de.mewel.pixellogic.PixelLogicConstants.KEY_SOUND_VOLUME;
 
 public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
-    private MessageBox messageBox;
+    private final MessageBox messageBox;
 
-    private PixelLogicUISprite switcherMarker;
+    private final PixelLogicUISprite switcherMarker;
 
     public PixelLogicUITutorialLevelPage(PixelLogicGlobal global) {
         super(global);
@@ -132,12 +131,9 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
         this.setMessage(text, new TutorialTypingAdapter(getAudio()) {
             @Override
             public void end() {
-                showNextMessageButton(new Runnable() {
-                    @Override
-                    public void run() {
-                        hideNextButton();
-                        action.run();
-                    }
+                showNextMessageButton(() -> {
+                    hideNextButton();
+                    action.run();
                 });
             }
         });
@@ -184,30 +180,15 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
         SequenceAction sequence = new SequenceAction();
         sequence.addAction(Actions.delay(.5f));
-        sequence.addAction(Actions.run(new Runnable() {
-            @Override
-            public void run() {
-                switcherModal.show(switcher);
-            }
-        }));
+        sequence.addAction(Actions.run(() -> switcherModal.show(switcher)));
         sequence.addAction(Actions.delay(1f));
         sequence.addAction(Actions.fadeIn(.5f));
         sequence.addAction(Actions.delay(1f));
-        sequence.addAction(Actions.run(new Runnable() {
-            @Override
-            public void run() {
-                switcher.swap();
-            }
-        }));
+        sequence.addAction(Actions.run(switcher::swap));
         sequence.addAction(Actions.delay(1f));
         sequence.addAction(Actions.moveTo(x, y, .2f));
         sequence.addAction(Actions.delay(.2f));
-        sequence.addAction(Actions.run(new Runnable() {
-            @Override
-            public void run() {
-                switcherModal.close();
-            }
-        }));
+        sequence.addAction(Actions.run(switcherModal::close));
         sequence.addAction(Actions.delay(.2f));
         sequence.addAction(Actions.run(after));
         switcher.addAction(sequence);
@@ -246,13 +227,13 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
         return (TutorialScreenListener) super.getScreenListener();
     }
 
-    public class MessageBox extends PixelLogicUIContainer<HorizontalGroup> {
+    public static class MessageBox extends PixelLogicUIContainer<HorizontalGroup> {
 
         private Container<Label> labelContainer;
 
         private TypingLabel label;
 
-        private PixelLogicUISprite next;
+        private final PixelLogicUISprite next;
 
         public MessageBox(PixelLogicGlobal global) {
             super(global, new HorizontalGroup());
@@ -281,7 +262,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
             }
             // build container
             if (this.labelContainer == null) {
-                this.labelContainer = new Container<Label>(this.label);
+                this.labelContainer = new Container<>(this.label);
                 this.labelContainer.align(Align.topLeft);
             } else {
                 this.labelContainer.setActor(this.label);
@@ -388,7 +369,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
     }
 
-    private class TutorialMenu extends PixelLogicUILevelMenu {
+    private static class TutorialMenu extends PixelLogicUILevelMenu {
 
         public TutorialMenu(PixelLogicGlobal global, PixelLogicUILevelPage screen) {
             super(global, screen);
@@ -425,7 +406,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
 
     public static class TutorialTypingAdapter extends TypingAdapter {
 
-        private PixelLogicAudio audio;
+        private final PixelLogicAudio audio;
 
         @Override
         public void onChar(Character ch) {

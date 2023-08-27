@@ -53,13 +53,13 @@ public class PixelLogicLevelCollectionLoader extends SynchronousAssetLoader<Pixe
         if (!pixmapHandle.exists()) {
             throw new GdxRuntimeException("Couldn't load '" + pixmapHandle.path() + "'");
         }
-        Array<AssetDescriptor> dependencies = new Array<AssetDescriptor>();
-        dependencies.add(new AssetDescriptor<Pixmap>(pixmapHandle, Pixmap.class));
+        Array<AssetDescriptor> dependencies = new Array<>();
+        dependencies.add(new AssetDescriptor<>(pixmapHandle, Pixmap.class));
         if (levelmapHandle.exists()) {
-            dependencies.add(new AssetDescriptor<Pixmap>(levelmapHandle, Pixmap.class));
+            dependencies.add(new AssetDescriptor<>(levelmapHandle, Pixmap.class));
         }
         if (unsolvedHandle.exists()) {
-            dependencies.add(new AssetDescriptor<Pixmap>(unsolvedHandle, Pixmap.class));
+            dependencies.add(new AssetDescriptor<>(unsolvedHandle, Pixmap.class));
         }
         return dependencies;
     }

@@ -4,7 +4,7 @@ import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public class PixelLogicStyleChangedEvent extends PixelLogicEvent {
 
-    private PixelLogicUIStyle style;
+    private final PixelLogicUIStyle style;
 
     public PixelLogicStyleChangedEvent(Object source, PixelLogicUIStyle style) {
         super(source);

@@ -6,7 +6,7 @@ public class PixelLogicUserEvent extends PixelLogicEvent {
         BACK_BUTTON_CLICKED, LEVEL_MENU_CLICKED, LEVEL_MENU_CLOSED, LEVEL_UNDO_CLICKED
     }
 
-    private Type type;
+    private final Type type;
 
     public PixelLogicUserEvent(Object source, Type type) {
         super(source);

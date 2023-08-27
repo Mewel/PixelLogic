@@ -47,7 +47,7 @@ public class PixelLogicCampaignMode extends PixelLogicListLevelMode {
     public void handle(PixelLogicEvent event) {
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
-            if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus())) {
+            if (PixelLogicLevelStatus.DESTROYED.equals(changeEvent.getStatus())) {
                 getLevelPage().getMenu().clearStatusText();
             }
         }
@@ -59,7 +59,7 @@ public class PixelLogicCampaignMode extends PixelLogicListLevelMode {
 
     @Override
     protected List<PixelLogicLevel> loadLevels() {
-        List<PixelLogicLevel> levels = new ArrayList<PixelLogicLevel>();
+        List<PixelLogicLevel> levels = new ArrayList<>();
         levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("campaign/easy")));
         levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("campaign/medium")));
         levels.addAll(PixelLogicLevelLoader.load(getAssets().getLevelCollection("campaign/hard")));

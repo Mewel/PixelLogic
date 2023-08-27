@@ -9,7 +9,7 @@ import de.mewel.pixellogic.ui.level.event.PixelLogicLevelStatusChangeEvent;
 
 public abstract class PixelLogicUILevelGroup extends PixelLogicUIGroup implements PixelLogicLevelChangeListener {
 
-    private PixelLogicLevelChangeAdapter changeAdapter;
+    private final PixelLogicLevelChangeAdapter changeAdapter;
 
     public PixelLogicUILevelGroup(PixelLogicGlobal global) {
         super(global);

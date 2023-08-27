@@ -3,7 +3,6 @@ package de.mewel.pixellogic.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +17,7 @@ public abstract class PixelLogicLevelLoader {
 
     public static List<PixelLogicLevel> load(PixelLogicLevelCollection collection) {
         if (collection == null) {
-            return new ArrayList<PixelLogicLevel>();
+            return new ArrayList<>();
         }
         if (collection.getLevelList() == null) {
             return loadByAutoDetect(collection);
@@ -35,7 +34,7 @@ public abstract class PixelLogicLevelLoader {
         int rows = pixmapHeight / levelHeight;
         List<Integer> orderList = collection.getOrder();
 
-        List<PixelLogicLevel> levels = new ArrayList<PixelLogicLevel>();
+        List<PixelLogicLevel> levels = new ArrayList<>();
         int levelCounter = 0;
         int orderCounter = 0;
         for (int y = 0; y < rows; y++) {
@@ -63,14 +62,14 @@ public abstract class PixelLogicLevelLoader {
         // order is pre calculated -> cause calculating the complexity takes to much time
         List<Integer> order = collection.getOrder();
         if (order != null && order.size() == levelList.size()) {
-            List<PixelLogicLevel> orderedLevelList = new ArrayList<PixelLogicLevel>(levelList.size());
+            List<PixelLogicLevel> orderedLevelList = new ArrayList<>(levelList.size());
             for (int i = 0; i < levelList.size(); i++) {
                 orderedLevelList.add(levelList.get(order.get(i)));
             }
             return orderedLevelList;
         }
         // not pre calculated -> we analyze the complexity and print it -> to hard to put it back ;)
-        Map<PixelLogicLevel, Float> complexityMap = new HashMap<PixelLogicLevel, Float>();
+        Map<PixelLogicLevel, Float> complexityMap = new HashMap<>();
         for (PixelLogicLevel level : levelList) {
             PixelLogicComplexityAnalyzerResult result = PixelLogicComplexityAnalyzer.analyze(level);
             complexityMap.put(level, result.getComplexity());
@@ -90,7 +89,7 @@ public abstract class PixelLogicLevelLoader {
     }
 
     private static List<PixelLogicLevel> loadOrdered(PixelLogicLevelCollection collection) {
-        List<PixelLogicLevel> levelList = new ArrayList<PixelLogicLevel>();
+        List<PixelLogicLevel> levelList = new ArrayList<>();
         for (int i = 0; i < collection.getLevelList().size(); i++) {
             PixelLogicLevel level = load(collection, i);
             /*boolean solvable = PixelLogicUtil.isSolvable(level.getLevelData());
@@ -131,7 +130,7 @@ public abstract class PixelLogicLevelLoader {
         }
     }
 
-    private static Integer[][] getImageData(PixelLogicLevelCollection collection, PixelLogicLevelData levelData, Pixmap pixmap) throws IOException {
+    private static Integer[][] getImageData(PixelLogicLevelCollection collection, PixelLogicLevelData levelData, Pixmap pixmap) {
         if (pixmap == null) {
             return null;
         }
@@ -148,8 +147,8 @@ public abstract class PixelLogicLevelLoader {
         return parseImage(pixmap, srcX, srcY, collection.getPixmapWidth(), collection.getPixmapHeight());
     }
 
-    private static Integer[][] parseImage(Pixmap pixmap, int srcX, int srcY, int width, int height) throws IOException {
-        Integer imageData[][] = new Integer[height][width];
+    private static Integer[][] parseImage(Pixmap pixmap, int srcX, int srcY, int width, int height) {
+        Integer[][] imageData = new Integer[height][width];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int pixel = pixmap.getPixel(x + srcX, y + srcY);

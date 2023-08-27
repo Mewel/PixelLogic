@@ -16,11 +16,11 @@ import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public abstract class PixelLogicUIText extends Container<HorizontalGroup> implements PixelLogicUIElement {
 
-    protected PixelLogicGlobal global;
+    protected final PixelLogicGlobal global;
 
-    protected Label label;
+    protected final Label label;
 
-    protected Container<Label> labelContainer;
+    protected final Container<Label> labelContainer;
 
     public PixelLogicUIText(PixelLogicGlobal global, final String text) {
         super(new HorizontalGroup());
@@ -29,7 +29,7 @@ public abstract class PixelLogicUIText extends Container<HorizontalGroup> implem
         getActor().setFillParent(true);
         this.label = new Label(text, getLabelStyle());
         this.label.setWrap(true);
-        this.labelContainer = new Container<Label>(label);
+        this.labelContainer = new Container<>(label);
         getActor().addActor(this.labelContainer);
         getActor().pack();
     }

@@ -31,11 +31,11 @@ import de.mewel.pixellogic.util.PixelLogicUtil;
 
 public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
 
-    private PixelLogicTimeTrialModeOptions options;
+    private final PixelLogicTimeTrialModeOptions options;
 
     private AtomicInteger round;
 
-    private PixelLogicStopWatch stopWatch;
+    private final PixelLogicStopWatch stopWatch;
 
     /**
      * 0 = no secret level
@@ -63,32 +63,24 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
             return;
         }
         getEventManager().fire(new PixelLogicLoadNextLevelEvent(this));
-        new Thread() {
-            @Override
-            public void run() {
-                Random random = new Random();
-                int offset = random.nextInt(options.levelSizeOffset[roundNumber] + 1);
-                boolean side = random.nextBoolean();
+        new Thread(() -> {
+            Random random = new Random();
+            int offset = random.nextInt(options.levelSizeOffset[roundNumber] + 1);
+            boolean side = random.nextBoolean();
 
-                int rows = options.levelSizeXY == null ? options.levelSize[roundNumber] :
-                        options.levelSizeXY[roundNumber * 2 + 1];
-                int cols = options.levelSizeXY == null ? options.levelSize[roundNumber] :
-                        options.levelSizeXY[roundNumber * 2];
-                float minDifficulty = options.levelMinDifficulty[roundNumber];
-                float maxDifficulty = options.levelMaxDifficulty[roundNumber];
-                rows += side ? offset : -offset;
-                cols += side ? -offset : offset;
+            int rows = options.levelSizeXY == null ? options.levelSize[roundNumber] :
+                    options.levelSizeXY[roundNumber * 2 + 1];
+            int cols = options.levelSizeXY == null ? options.levelSize[roundNumber] :
+                    options.levelSizeXY[roundNumber * 2];
+            float minDifficulty = options.levelMinDifficulty[roundNumber];
+            float maxDifficulty = options.levelMaxDifficulty[roundNumber];
+            rows += side ? offset : -offset;
+            cols += side ? -offset : offset;
 
-                Boolean[][] randomLevelData = PixelLogicUtil.createRandomLevel(rows, cols, minDifficulty, maxDifficulty);
-                final PixelLogicLevel level = createLevel(randomLevelData);
-                Gdx.app.postRunnable(new Runnable() {
-                    @Override
-                    public void run() {
-                        runLevel(level);
-                    }
-                });
-            }
-        }.start();
+            Boolean[][] randomLevelData = PixelLogicUtil.createRandomLevel(rows, cols, minDifficulty, maxDifficulty);
+            final PixelLogicLevel level = createLevel(randomLevelData);
+            Gdx.app.postRunnable(() -> runLevel(level));
+        }).start();
     }
 
     private void runSecretLevel() {
@@ -169,7 +161,7 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
         super.handle(event);
         if (event instanceof PixelLogicLevelStatusChangeEvent) {
             PixelLogicLevelStatusChangeEvent changeEvent = (PixelLogicLevelStatusChangeEvent) event;
-            if (PixelLogicLevelStatus.destroyed.equals(changeEvent.getStatus())) {
+            if (PixelLogicLevelStatus.DESTROYED.equals(changeEvent.getStatus())) {
                 if (secretLevelStatus == 0) {
                     runNext();
                 } else if (secretLevelStatus == 1) {
@@ -179,13 +171,13 @@ public class PixelLogicTimeTrialMode extends PixelLogicLevelMode {
                     PixelLogicUIPageProperties data = new PixelLogicUIPageProperties();
                 }
             }
-            if (PixelLogicLevelStatus.playable.equals(changeEvent.getStatus())) {
+            if (PixelLogicLevelStatus.PLAYABLE.equals(changeEvent.getStatus())) {
                 if (secretLevelStatus == 0) {
                     long elapsed = this.stopWatch.startOrResume();
                     this.getEventManager().fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.start, elapsed));
                 }
             }
-            if (PixelLogicLevelStatus.finished.equals(changeEvent.getStatus())) {
+            if (PixelLogicLevelStatus.FINISHED.equals(changeEvent.getStatus())) {
                 if (secretLevelStatus == 0) {
                     long elapsed = this.stopWatch.pause();
                     this.getEventManager().fire(new PixelLogicTimerEvent(this, PixelLogicTimerEvent.Status.stop, elapsed));

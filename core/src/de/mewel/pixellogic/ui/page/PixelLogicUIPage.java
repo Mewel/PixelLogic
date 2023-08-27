@@ -28,7 +28,7 @@ public abstract class PixelLogicUIPage implements PixelLogicUIElement {
 
     private PixelLogicUIPageProperties properties;
 
-    private PixelLogicGlobal global;
+    private final PixelLogicGlobal global;
 
     public PixelLogicUIPage(PixelLogicGlobal global, PixelLogicUIPageId pageId) {
         this.global = global;

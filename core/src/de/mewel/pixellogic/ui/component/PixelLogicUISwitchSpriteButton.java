@@ -1,18 +1,15 @@
 package de.mewel.pixellogic.ui.component;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
-import de.mewel.pixellogic.ui.PixelLogicUIActor;
 
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND;
 import static de.mewel.pixellogic.PixelLogicConstants.BUTTON_SOUND_VOLUME;
 
 public class PixelLogicUISwitchSpriteButton extends PixelLogicUISprite {
 
-    protected Sprite sprite2;
+    protected final Sprite sprite2;
 
     protected boolean active;
 

@@ -5,7 +5,7 @@ import de.mewel.pixellogic.event.PixelLogicEvent;
 
 public abstract class PixelLogicAchievement {
 
-    private PixelLogicAssets assets;
+    private final PixelLogicAssets assets;
 
     private boolean done;
 

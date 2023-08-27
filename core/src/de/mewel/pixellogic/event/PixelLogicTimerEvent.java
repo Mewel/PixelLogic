@@ -6,9 +6,9 @@ public class PixelLogicTimerEvent extends PixelLogicEvent {
         start, stop, pause, resume, reset
     }
 
-    private Status status;
+    private final Status status;
 
-    private long time;
+    private final long time;
 
     public PixelLogicTimerEvent(Object source, Status status, long time) {
         super(source);

@@ -43,42 +43,27 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
         this.campaignMode = new PixelLogicCampaignMode();
         this.campaignMode.setup(getGlobal());
 
-        this.modes = new ArrayList<LevelModeUI>();
-        this.modes.add(new LevelModeUI(getGlobal(), getCampaignLabel(), getAssets().translate("play.campaign.description"), new Runnable() {
-            @Override
-            public void run() {
-                PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
-                pageProperties.put("menuBackId", PixelLogicUIPageId.play);
-                getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties, new Runnable() {
-                    @Override
-                    public void run() {
-                        campaignMode.activate();
-                        campaignMode.run();
-                    }
-                });
-            }
+        this.modes = new ArrayList<>();
+        this.modes.add(new LevelModeUI(getGlobal(), getCampaignLabel(), getAssets().translate("play.campaign.description"), () -> {
+            PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
+            pageProperties.put("menuBackId", PixelLogicUIPageId.play);
+            getAppScreen().setPage(PixelLogicUIPageId.level, pageProperties, () -> {
+                campaignMode.activate();
+                campaignMode.run();
+            });
         }));
-        this.modes.add(new LevelModeUI(getGlobal(), getAssets().translate("play.characters.title"), getAssets().translate("play.characters.description"), new Runnable() {
-            @Override
-            public void run() {
-                PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
-                getAppScreen().setPage(PixelLogicUIPageId.characters, pageProperties);
-            }
+        this.modes.add(new LevelModeUI(getGlobal(), getAssets().translate("play.characters.title"), getAssets().translate("play.characters.description"), () -> {
+            PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
+            getAppScreen().setPage(PixelLogicUIPageId.characters, pageProperties);
         }));
-        this.modes.add(new LevelModeUI(getGlobal(), getAssets().translate("play.timeTrial.title"), getAssets().translate("play.timeTrial.description"), new Runnable() {
-            @Override
-            public void run() {
-                PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
-                getAppScreen().setPage(PixelLogicUIPageId.timeTrial, pageProperties);
-            }
+        this.modes.add(new LevelModeUI(getGlobal(), getAssets().translate("play.timeTrial.title"), getAssets().translate("play.timeTrial.description"), () -> {
+            PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
+            getAppScreen().setPage(PixelLogicUIPageId.timeTrial, pageProperties);
         }));
         this.modes.add(new LevelModeUI(getGlobal(), getAssets().translate("play.art.title"), getAssets().translate("play.art.description"),
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
-                        getAppScreen().setPage(PixelLogicUIPageId.picture, pageProperties);
-                    }
+                () -> {
+                    PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
+                    getAppScreen().setPage(PixelLogicUIPageId.picture, pageProperties);
                 }));
         this.buildModes();
     }
@@ -127,9 +112,9 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
 
     private class LevelModeUI extends PixelLogicUIContainer<VerticalGroup> {
 
-        private Container<Label> labelContainer;
+        private final Container<Label> labelContainer;
 
-        private PixelLogicUIButton button;
+        private final PixelLogicUIButton button;
 
         public LevelModeUI(PixelLogicGlobal global, final String buttonText, final String description,
                            final Runnable buttonAction) {
@@ -142,7 +127,7 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
 
             Label descriptionLabel = this.getLabel(description);
             descriptionLabel.setWrap(true);
-            this.labelContainer = new Container<Label>(descriptionLabel);
+            this.labelContainer = new Container<>(descriptionLabel);
             getActor().addActor(this.labelContainer);
 
             this.button = new PixelLogicUIButton(getGlobal(), buttonText) {
@@ -159,7 +144,7 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
 
         public void resize() {
             this.width(getComponentWidth());
-            float padding = getPadding() / 2;
+            float padding = getPadding() / 2f;
             this.pad(padding, 0, padding, padding * 2);
             this.button.setSize(getButtonWidth(), getButtonHeight());
 
@@ -185,7 +170,7 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
 
     protected class PlayHeader extends Header {
 
-        private PixelLogicUISprite tutorialButton;
+        private final PixelLogicUISprite tutorialButton;
 
         public PlayHeader(PixelLogicGlobal global, String text, PixelLogicUIPageId backPageId) {
             super(global, text, backPageId);
@@ -196,12 +181,9 @@ public class PixelLogicUIPlayPage extends PixelLogicUIBasePage {
                     getAudio().playSound(BUTTON_SOUND, BUTTON_SOUND_VOLUME);
                     PixelLogicUIPageProperties pageProperties = new PixelLogicUIPageProperties();
                     pageProperties.put("menuBackId", PixelLogicUIPageId.play);
-                    getAppScreen().setPage(PixelLogicUIPageId.tutorialLevel, pageProperties, new Runnable() {
-                        @Override
-                        public void run() {
-                            tutorialMode.activate();
-                            tutorialMode.run();
-                        }
+                    getAppScreen().setPage(PixelLogicUIPageId.tutorialLevel, pageProperties, () -> {
+                        tutorialMode.activate();
+                        tutorialMode.run();
                     });
                 }
             });
