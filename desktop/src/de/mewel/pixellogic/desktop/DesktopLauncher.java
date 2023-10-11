@@ -4,7 +4,6 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 import de.mewel.pixellogic.PixelLogicGame;
-import de.mewel.pixellogic.spike.PicturesSpike;
 
 public class DesktopLauncher {
 

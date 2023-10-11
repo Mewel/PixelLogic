@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -24,12 +23,7 @@ public abstract class PixelLogicTimeTrialHighscoreStore {
         List<Highscore> highscoreList = list(mode);
         Highscore newHighscore = new Highscore(time);
         highscoreList.add(newHighscore);
-        Collections.sort(highscoreList, new Comparator<Highscore>() {
-            @Override
-            public int compare(Highscore h1, Highscore h2) {
-                return h1.time == h2.time ? 0 : (h1.time > h2.time ? 1 : -1);
-            }
-        });
+        highscoreList.sort(Comparator.comparingLong(h -> h.time));
         highscoreList = highscoreList.subList(0, Math.min(highscoreList.size(), 5));
         int rank = highscoreList.indexOf(newHighscore);
         if (rank >= 0) {
@@ -83,7 +77,7 @@ public abstract class PixelLogicTimeTrialHighscoreStore {
 
         @Override
         public String toString() {
-            return String.valueOf(time) + "|" + String.valueOf(date);
+            return time + "|" + date;
         }
 
         static Highscore of(String string) {
@@ -92,8 +86,8 @@ public abstract class PixelLogicTimeTrialHighscoreStore {
             }
             Highscore highscore = new Highscore();
             String[] parts = string.split("\\|");
-            highscore.time = Long.valueOf(parts[0]);
-            highscore.date = Long.valueOf(parts[1]);
+            highscore.time = Long.parseLong(parts[0]);
+            highscore.date = Long.parseLong(parts[1]);
             return highscore;
         }
 

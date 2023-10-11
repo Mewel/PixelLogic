@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
+import java.util.concurrent.CompletableFuture;
+
 import de.mewel.pixellogic.achievements.PixelLogicAchievements;
 import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.asset.PixelLogicAudio;
@@ -34,42 +36,41 @@ public class PixelLogicGame extends Game implements PixelLogicGlobal {
 
     private Exception initException;
 
+    private final CompletableFuture<Void> future;
+
+    public PixelLogicGame() {
+        this.future = new CompletableFuture<>();
+    }
+
     @Override
     public void create() {
         // libgdx init
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
 
+        // splash screen
         this.splashScreen = new PixelLogicUISplashScreen();
         this.setScreen(this.splashScreen);
 
+        // run
         initAndRun();
     }
 
     private void initAndRun() {
-        initException = null;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Gdx.app.postRunnable(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            // load assets
-                            PixelLogicGame.this.init();
-                            // fade out splash screen and run game
-                            splashScreen.close(1f, new Runnable() {
-                                @Override
-                                public void run() {
-                                    PixelLogicGame.this.run();
-                                }
-                            });
-                        } catch (Exception e) {
-                            initException = e;
-                        }
-                    }
+        this.initException = null;
+        Gdx.app.postRunnable(() -> {
+            try {
+                // load assets
+                PixelLogicGame.this.init();
+                // fade out splash screen and run game
+                splashScreen.close(1f, () -> {
+                    PixelLogicGame.this.run();
+                    future.complete(null);
                 });
+            } catch (Exception e) {
+                initException = e;
+                future.completeExceptionally(e);
             }
-        }).start();
+        });
     }
 
     @Override
@@ -120,6 +121,10 @@ public class PixelLogicGame extends Game implements PixelLogicGlobal {
             this.achievements.dispose();
         }
         super.dispose();
+    }
+
+    public CompletableFuture<Void> ready() {
+        return future;
     }
 
     @Override
