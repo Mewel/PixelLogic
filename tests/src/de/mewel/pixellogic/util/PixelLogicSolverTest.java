@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -58,11 +59,11 @@ public class PixelLogicSolverTest {
         // easy test's
         line = buildLine(2, 1);
         solver.solveLine(line);
-        assertTrue("there shouldn't be any changes", line.getAmountOf((byte) 2) == 0);
+        assertEquals("there shouldn't be any changes", 0, line.getAmountOf((byte) 2));
 
         line = buildLine(3, 2);
         solver.solveLine(line);
-        assertTrue("there shouldn't be any changes", line.getAmountOf((byte) 2) == 1);
+        assertEquals("there shouldn't be any changes", 1, line.getAmountOf((byte) 2));
         assertArrayEquals(new Boolean[]{null, true, null}, line.toBooleanLine());
 
         line = buildLine(3, 1, 1);
