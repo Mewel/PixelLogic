@@ -1,0 +1,233 @@
+{
+  "id": "hard",
+  "pixmapWidth": 12,
+  "pixmapHeight": 16,
+  "level": [
+    {
+      "name": "Grotto"
+    },
+    {
+      "name": "Bomb Case",
+      "languages": {
+        "de": "Bombe"
+      }
+    },
+    {
+      "name": "Dinosaur"
+    },
+    {
+      "name": "Blob"
+    },
+    {
+      "name": "Archer",
+      "languages": {
+        "de": "Bogenschütze"
+      }
+    },
+    {
+      "name": "Evil Bat"
+    },
+    {
+      "name": "Ghost",
+      "languages": {
+        "de": "Geist"
+      }
+    },
+    {
+      "name": "Skeleton",
+      "languages": {
+        "de": "Skelett"
+      }
+    },
+    {
+      "name": "Space Ship",
+      "languages": {
+        "de": "Raumschiff"
+      }
+    },
+    {
+      "name": "Death Sign",
+      "languages": {
+        "de": "Todeszeichen"
+      }
+    },
+    {
+      "name": "Mushroom",
+      "languages": {
+        "de": "Fliegenpilz"
+      }
+    },
+    {
+      "name": "Power Sphere"
+    },
+    {
+      "name": "Magic Ring",
+      "languages": {
+        "de": "magischer Ring"
+      }
+    },
+    {
+      "name": "Goblet",
+      "languages": {
+        "de": "Kelch"
+      }
+    },
+    {
+      "name": "Candle",
+      "languages": {
+        "de": "Kerze"
+      }
+    },
+    {
+      "name": "Torch",
+      "languages": {
+        "de": "Fackel"
+      }
+    },
+    {
+      "name": "Key",
+      "languages": {
+        "de": "Schlüssel"
+      }
+    },
+    {
+      "name": "Helmet",
+      "languages": {
+        "de": "Helm"
+      }
+    },
+    {
+      "name": "Shield",
+      "languages": {
+        "de": "Schild"
+      }
+    },
+    {
+      "name": "Health Potion",
+      "languages": {
+        "de": "Heiltrank"
+      }
+    },
+    {
+      "name": "Barrel",
+      "languages": {
+        "de": "Fass"
+      }
+    },
+    {
+      "name": "Cherries",
+      "languages": {
+        "de": "Kirschen"
+      }
+    },
+    {
+      "name": "Sword",
+      "languages": {
+        "de": "Schwert"
+      }
+    },
+    {
+      "name": "Chilli"
+    },
+    {
+      "name": "Candy",
+      "languages": {
+        "de": "Zuckerstange"
+      }
+    },
+    {
+      "name": "Bible",
+      "languages": {
+        "de": "Bibel"
+      }
+    },
+    {
+      "name": "Gold",
+      "languages": {
+        "de": "Geld"
+      }
+    },
+    {
+      "name": "Nuthatch",
+      "languages": {
+        "de": "Kleiber"
+      }
+    },
+    {
+      "name": "Wine",
+      "languages": {
+        "de": "Wein"
+      }
+    },
+    {
+      "name": "Dota 2"
+    },
+    {
+      "name": "Crystal",
+      "languages": {
+        "de": "Kristall"
+      }
+    },
+    {
+      "name": "Blue Tulip",
+      "languages": {
+        "de": "blaue Tulpe"
+      }
+    },
+    {
+      "name": "Gold Mask",
+      "languages": {
+        "de": "goldene Maske"
+      }
+    },
+    {
+      "name": "Present",
+      "languages": {
+        "de": "Geschenk"
+      }
+    },
+    {
+      "name": "Ruby",
+      "languages": {
+        "de": "Rubin"
+      }
+    }
+  ],
+  "order": [
+    33,
+    28,
+    9,
+    8,
+    17,
+    25,
+    19,
+    15,
+    2,
+    4,
+    32,
+    3,
+    18,
+    13,
+    14,
+    29,
+    20,
+    34,
+    6,
+    26,
+    10,
+    0,
+    1,
+    30,
+    11,
+    5,
+    21,
+    7,
+    12,
+    22,
+    23,
+    24,
+    27,
+    16,
+    31
+  ]
+}
