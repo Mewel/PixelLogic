@@ -15,6 +15,7 @@ fonts/numbers.png
 fonts/visitor2.otf
 i18n/pixellogic.properties
 i18n/pixellogic_de.properties
+i18n/pixellogic_es.properties
 icons.png
 level/campaign/easy/collection.json
 level/campaign/easy/levelmap.png
