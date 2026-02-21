@@ -51,10 +51,10 @@ public class PixelLogicUISettings extends PixelLogicUIGroup {
         this.background = new PixelLogicUIColoredSurface(global);
         this.addActor(this.background);
 
-        this.musicLabel = new Label("Music", getLabelStyle());
-        this.soundLabel = new Label("Sound", getLabelStyle());
-        this.autoBlockLabel = new Label("Auto-Block", getLabelStyle());
-        this.darkModeLabel = new Label("Dark Mode", getLabelStyle());
+        this.musicLabel = new Label(getAssets().translate("settings.music"), getLabelStyle());
+        this.soundLabel = new Label(getAssets().translate("settings.sound"), getLabelStyle());
+        this.autoBlockLabel = new Label(getAssets().translate("settings.autoBlock"), getLabelStyle());
+        this.darkModeLabel = new Label(getAssets().translate("settings.darkMode"), getLabelStyle());
 
         this.musicButton = new PixelLogicUISwitchSpriteButton(global, 8, 9);
         this.soundButton = new PixelLogicUISwitchSpriteButton(global, 8, 9);
