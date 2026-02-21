@@ -1,5 +1,11 @@
 package de.mewel.pixellogic.ui.page;
 
+import static de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions.Mode;
+import static de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialEasyOptions;
+import static de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialEpicOptions;
+import static de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions;
+import static de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialInsaneOptions;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
@@ -11,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.mewel.pixellogic.PixelLogicGlobal;
+import de.mewel.pixellogic.asset.PixelLogicAssets;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialHighscoreStore;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialMode;
 import de.mewel.pixellogic.mode.PixelLogicTimeTrialModeOptions;
@@ -32,10 +39,11 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
     @Override
     protected void build() {
         this.modes = new ArrayList<>();
-        this.modes.add(new TimeTrialModeUI(getGlobal(), new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialEasyOptions(), this));
-        this.modes.add(new TimeTrialModeUI(getGlobal(), new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialHardcoreOptions(), this));
-        this.modes.add(new TimeTrialModeUI(getGlobal(), new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialInsaneOptions(), this));
-        this.modes.add(new TimeTrialModeUI(getGlobal(), new PixelLogicTimeTrialModeOptions.PixelLogicTimeTrialEpicOptions(), this));
+        PixelLogicAssets assets = getAssets();
+        this.modes.add(new TimeTrialModeUI(getGlobal(), new PixelLogicTimeTrialEasyOptions(assets.translate("timeTrial.easyMode")), this));
+        this.modes.add(new TimeTrialModeUI(getGlobal(), new PixelLogicTimeTrialHardcoreOptions(assets.translate("timeTrial.hardMode")), this));
+        this.modes.add(new TimeTrialModeUI(getGlobal(), new PixelLogicTimeTrialInsaneOptions(assets.translate("timeTrial.insaneMode")), this));
+        this.modes.add(new TimeTrialModeUI(getGlobal(), new PixelLogicTimeTrialEpicOptions(assets.translate("timeTrial.epicMode")), this));
 
         /*for(TimeTrialModeUI mode : this.modes) {
             PixelLogicTimeTrialHighscoreStore.clear(mode.options.id.toString());
@@ -142,9 +150,13 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
             this.highscoreTable.clearChildren();
             List<PixelLogicTimeTrialHighscoreStore.Highscore> highscoreList = PixelLogicTimeTrialHighscoreStore.list(options.id.name());
 
+            String highscoreText = getAssets().translate("timeTrial.highscore");
+            String timeText = getAssets().translate("timeTrial.time");
+            String noGamesText = getAssets().translate("timeTrial.noGames");
+
             // header
-            Label normalHighscoreLabel = page.getLabel("[TEXT_LIGHT_COLOR]highscore");
-            Label normalTimeLabel = page.getLabel("[TEXT_LIGHT_COLOR]time");
+            Label normalHighscoreLabel = page.getLabel("[TEXT_LIGHT_COLOR]" + highscoreText);
+            Label normalTimeLabel = page.getLabel("[TEXT_LIGHT_COLOR]" + timeText);
             highscoreTable.add(normalHighscoreLabel).growX().left();
             highscoreTable.add(normalTimeLabel).right();
             highscoreTable.row();
@@ -160,7 +172,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
             // score
             if (!highscoreList.isEmpty()) {
                 final Integer rank = page.getProperties().getInt("rank");
-                final PixelLogicTimeTrialModeOptions.Mode mode = page.getProperties().get("mode");
+                final Mode mode = page.getProperties().get("mode");
                 boolean lastRankInvalid = rank == null || rank == -1 || mode == null || !mode.equals(options.id);
                 for (int i = 0; i < highscoreList.size(); i++) {
                     String color = lastRankInvalid || rank != i ? "[TEXT_COLOR]" : "[MAIN_COLOR]";
@@ -172,7 +184,7 @@ public class PixelLogicUITimeTrialPage extends PixelLogicUIBasePage {
                     highscoreTable.row();
                 }
             } else {
-                highscoreTable.add(page.getLabel("[TEXT_COLOR]no games played")).colspan(2).center();
+                highscoreTable.add(page.getLabel("[TEXT_COLOR]" + noGamesText)).colspan(2).center();
                 highscoreTable.row();
             }
         }

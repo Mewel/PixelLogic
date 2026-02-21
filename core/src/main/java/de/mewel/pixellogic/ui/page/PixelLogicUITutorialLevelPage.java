@@ -205,8 +205,8 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
         this.switcherMarker.setPosition(x, y);
 
         this.switcherMarker.addAction(Actions.forever(Actions.sequence(
-            Actions.moveBy(0, this.switcherMarker.getHeight(), .8f),
-            Actions.moveBy(0, -this.switcherMarker.getHeight(), .8f))));
+                Actions.moveBy(0, this.switcherMarker.getHeight(), .8f),
+                Actions.moveBy(0, -this.switcherMarker.getHeight(), .8f))));
 
         getStage().addActor(this.switcherMarker);
     }
@@ -320,21 +320,21 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
             this.next.setColor(new Color(getGlobal().getStyle().getSecondaryColor()));
             this.next.getColor().a = 0f;
             this.next.addAction(Actions.sequence(
-                Actions.fadeIn(.2f),
-                Actions.run(new Runnable() {
-                    @Override
-                    public void run() {
-                        next.addListener(new InputListener() {
-                            @Override
-                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                                getAudio().playSound(BUTTON_SOUND, BUTTON_SOUND_VOLUME);
-                                action.run();
-                                return super.touchDown(event, x, y, pointer, button);
-                            }
-                        });
-                    }
-                }),
-                PixelLogicUIUtil.blinkAction(new Color(getGlobal().getStyle().getSecondaryColor()), .8f)));
+                    Actions.fadeIn(.2f),
+                    Actions.run(new Runnable() {
+                        @Override
+                        public void run() {
+                            next.addListener(new InputListener() {
+                                @Override
+                                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                                    getAudio().playSound(BUTTON_SOUND, BUTTON_SOUND_VOLUME);
+                                    action.run();
+                                    return super.touchDown(event, x, y, pointer, button);
+                                }
+                            });
+                        }
+                    }),
+                    PixelLogicUIUtil.blinkAction(new Color(getGlobal().getStyle().getSecondaryColor()), .8f)));
         }
 
         private void hideNextButton(float fadeOutDuration) {
@@ -377,7 +377,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
         @Override
         protected void buildContent() {
             // continue
-            this.continueButton = new PixelLogicUIButton(getGlobal(), "continue") {
+            this.continueButton = new PixelLogicUIButton(getGlobal(), getAssets().translate("tutorial.continue")) {
                 @Override
                 public void handleClick() {
                     close();
@@ -385,7 +385,7 @@ public class PixelLogicUITutorialLevelPage extends PixelLogicUILevelPage {
             };
 
             // back
-            this.backButton = new PixelLogicUIButton(getGlobal(), "skip tutorial") {
+            this.backButton = new PixelLogicUIButton(getGlobal(), getAssets().translate("tutorial.skip")) {
                 @Override
                 public void handleClick() {
                     close();
