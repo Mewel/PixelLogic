@@ -7,7 +7,16 @@ dependencies {
   api "com.github.tommyettinger:regexodus:$regExodusVersion"
   api "com.github.tommyettinger:typing-label:$typingLabelVersion"
 
+  testImplementation platform("org.junit:junit-bom:5.14.3")
+  testImplementation "org.junit.jupiter:junit-jupiter"
+  testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
+
+}
+
+tasks.test {
+  useJUnitPlatform()
 }

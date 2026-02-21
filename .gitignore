@@ -68,6 +68,7 @@ com_crashlytics_export_strings.xml
 /html/build/
 /ios/build/
 /ios-moe/build/
+/lwjgl3/build/
 
 /nbbuild/
 /android/nbbuild/
@@ -117,3 +118,4 @@ Thumbs.db
 !/ios-moe/xcode/*.xcodeproj/xcshareddata
 !/ios-moe/xcode/*.xcodeproj/project.pbxproj
 /ios-moe/xcode/native/
+/lwjgl3/build/
