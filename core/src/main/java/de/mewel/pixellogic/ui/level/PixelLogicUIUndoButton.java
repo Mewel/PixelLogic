@@ -9,6 +9,7 @@ import de.mewel.pixellogic.PixelLogicGlobal;
 import de.mewel.pixellogic.ui.PixelLogicUIGroup;
 import de.mewel.pixellogic.ui.PixelLogicUIUtil;
 import de.mewel.pixellogic.ui.component.PixelLogicUIColoredSurface;
+import de.mewel.pixellogic.ui.style.PixelLogicUIStyle;
 
 public class PixelLogicUIUndoButton extends PixelLogicUIGroup {
 
@@ -28,6 +29,12 @@ public class PixelLogicUIUndoButton extends PixelLogicUIGroup {
     protected void sizeChanged() {
         super.sizeChanged();
         this.background.setSize(this.getWidth(), this.getHeight());
+    }
+
+    @Override
+    public void styleChanged(PixelLogicUIStyle style) {
+        super.styleChanged(style);
+        this.background.setColor(style.getSecondaryColor());
     }
 
     @Override

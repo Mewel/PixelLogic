@@ -50,3 +50,11 @@
 # These two lines are used with mapping files; see https://developer.android.com/build/shrink-code#retracing
 -keepattributes LineNumberTable,SourceFile
 -renamesourcefileattribute SourceFile
+
+# Pixelllogic Rules
+-keepclassmembers class de.mewel.pixellogic.model.** {
+    <fields>;
+}
+-keep class de.mewel.pixellogic.model.** { *; }
+-keep class de.mewel.pixellogic.ui.level.animation.** { *; }
+-keep class de.mewel.pixellogic.PixelLogicGlobal { *; }
